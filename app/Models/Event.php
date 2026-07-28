@@ -82,10 +82,13 @@ class Event extends Model
         return $query->where('slug', $value);
     }
 
+    public function scopeOpen($query)
+    {
+        return $query->where('status', 'OPEN');
+    }
+
     public static function getOpenEvents()
     {
-        return self::orderBy('start', 'desc')->get()->groupBy(function ($item) {
-            return Carbon::parse($item->start)->format('d-M-y');
-        });
+        return self::open()->orderBy('start', 'desc')->get();
     }
 }

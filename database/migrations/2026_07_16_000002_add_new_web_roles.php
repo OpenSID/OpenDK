@@ -29,45 +29,31 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace Database\Seeders\Demo;
+use Illuminate\Database\Migrations\Migration;
+use Spatie\Permission\Models\Role;
 
-use App\Models\Prosedur;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Schema;
-
-class DemoProsedurSeeder extends Seeder
+return new class extends Migration
 {
     /**
-     * Run the database seeds.
-     *
-     * @return void
+     * Run the migrations.
+     * Tambahkan role baru untuk instalasi existing yang sudah melewati seeder awal.
      */
-    public function run()
+    public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-        Prosedur::truncate();
-        Schema::enableForeignKeyConstraints();
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $data = [
-            [
-                'judul_prosedur' => 'Prosedur Penerbitan Kartu Tanda Penduduk Elektronik (KTP-el)',
-                'file_prosedur'  => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type'      => 'pdf',
-            ],
-            [
-                'judul_prosedur' => 'Prosedur Pengurusan Kartu Keluarga (KK)',
-                'file_prosedur'  => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type'      => 'pdf',
-            ],
-            [
-                'judul_prosedur' => 'Prosedur Penerbitan Surat Keterangan Pindah Domisili',
-                'file_prosedur'  => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type'      => 'pdf',
-            ],
-        ];
+        Role::firstOrCreate(['name' => 'admin-komplain', 'guard_name' => 'web']);
+        Role::firstOrCreate(['name' => 'administrator-website', 'guard_name' => 'web']);
 
-        foreach ($data as $prosedur) {
-            Prosedur::create($prosedur);
-        }
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
     }
-}
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Role::where('name', 'admin-komplain')->where('guard_name', 'web')->delete();
+        Role::where('name', 'administrator-website')->where('guard_name', 'web')->delete();
+    }
+};

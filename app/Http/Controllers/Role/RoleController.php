@@ -65,7 +65,8 @@ class RoleController extends Controller
      */
     public function getData()
     {
-        $roles = Role::select('roles.*');
+        // Filter hanya guard 'web' untuk menghindari duplikasi dengan role guard 'api'
+        $roles = Role::web()->select('roles.*');
 
         return DataTables::of($roles)
             ->addColumn('users_count', function ($role) {
@@ -215,16 +216,23 @@ class RoleController extends Controller
         try {
             // Jika menggunakan paket Spatie, periksa apakah ada model yang terkait dengan role ini
             $role = Role::findOrFail($id);
+
+            // Cek apakah role ini termasuk role sistem yang tidak boleh dihapus
+            if (in_array($role->name, Role::PROTECTED_ROLES)) {
+                session()->flash('error', 'Role sistem "' . $role->name . '" tidak dapat dihapus.');
+
+                return back();
+            }
+
             if ($role->users()->exists()) {
                 session()->flash('error', 'Role tidak bisa dihapus karena masih memiliki user');
 
                 return back();
             }
-                $role->delete();
-                session()->flash('success', 'Berhasil menghapus role: ' . $role->name);
+            $role->delete();
+            session()->flash('success', 'Berhasil menghapus role: ' . $role->name);
 
-                return redirect()->route('setting.role.index');
-
+            return redirect()->route('setting.role.index');
         } catch (\Exception $e) {
             Log::error('Role deletion failed', [
                 'error' => $e->getMessage(),
@@ -266,16 +274,16 @@ class RoleController extends Controller
         $users = $role->users()->select('users.id', 'users.name', 'users.email', 'users.status');
 
         return datatables($users)
-        ->editColumn('status', function ($user) {
-            return $user->status === 1
-                ? '<span class="badge badge-success">Aktif</span>'
-                : '<span class="badge badge-danger">Nonaktif</span>';
-        })
-        ->addColumn('aksi', function ($user) {
-            $editUrl = e(route('setting.user.edit', $user->id));
-            return '<a href="' . $editUrl . '" class="btn btn-sm btn-primary">Edit</a>';
-        })
-        ->rawColumns(['status', 'aksi'])
-        ->make(true);
+            ->editColumn('status', function ($user) {
+                return $user->status === 1
+                    ? '<span class="badge badge-success">Aktif</span>'
+                    : '<span class="badge badge-danger">Nonaktif</span>';
+            })
+            ->addColumn('aksi', function ($user) {
+                $editUrl = e(route('setting.user.edit', $user->id));
+                return '<a href="' . $editUrl . '" class="btn btn-sm btn-primary">Edit</a>';
+            })
+            ->rawColumns(['status', 'aksi'])
+            ->make(true);
     }
 }

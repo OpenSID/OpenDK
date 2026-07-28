@@ -36,6 +36,10 @@ use Spatie\Permission\Models\Permission;
 
 describe('Route Permission Middleware', function () {
     beforeEach(function () {
+        $this->withoutMiddleware([\App\Http\Middleware\CompleteProfile::class]);
+        $this->seed(\Database\Seeders\DasSettingTableSeeder::class);
+        $this->seed(\Database\Seeders\DasProfilTableSeeder::class);
+        $this->seed(\Database\Seeders\DasDataUmumTableSeeder::class);
         $this->seed(\Database\Seeders\RoleSpatieSeeder::class);
     });
 
@@ -57,15 +61,12 @@ describe('Route Permission Middleware', function () {
         $response->assertStatus(200);
     });
 
-    test('counter route is accessible when user has access.counter permission', function () {
-        $permission = Permission::firstOrCreate(['name' => 'access.counter', 'guard_name' => 'web']);
-
+    test('counter route is accessible to authenticated user', function () {
         $user = User::first();
         if (!$user) {
             $user = User::factory()->create();
         }
 
-        $user->givePermissionTo($permission);
         $this->actingAs($user);
 
         $response = $this->get('/counter');
@@ -80,8 +81,8 @@ describe('Route Permission Middleware', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-
-        $user->givePermissionTo($permission);
+        
+        $user->givePermissionTo(['access.informasi', 'access.informasi.prosedur', 'access.informasi.prosedur.view']);
         $this->actingAs($user);
 
         $response = $this->get('/informasi/prosedur');
@@ -96,8 +97,8 @@ describe('Route Permission Middleware', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-
-        $user->givePermissionTo($permission);
+        
+        $user->givePermissionTo(['access.data.penduduk', 'access.data.penduduk.view']);
         $this->actingAs($user);
 
         $response = $this->get('/data/penduduk');

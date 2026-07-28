@@ -74,8 +74,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',
-            'filter[kecamatan]' => config('profil.kecamatan_id'),
+            'filter[id]' => 'pendidikan-dalam-kk',            
+            'filter[kode_kecamatan]' => config('profil.kecamatan_id'),
         ];
         foreach (years_list() as $year) {
             $filters['filter[tahun]'] = $year;
@@ -103,7 +103,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $filters = [
             'filter[id]' => 'pendidikan-dalam-kk',
             'filter[tahun]' => $year,
-            'filter[kecamatan]' => config('profil.kecamatan_id'),
+            'filter[kode_kecamatan]' => config('profil.kecamatan_id'),
         ];
         $desaAll = (new DesaService)->listDesa();
         foreach ($desaAll as $desa) {
@@ -131,7 +131,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
             'filter[id]' => 'pendidikan-dalam-kk',
             'filter[tahun]' => $year,
             'filter[desa]' => $did,
-            'filter[kecamatan]' => config('profil.kecamatan_id'),
+            'filter[kode_kecamatan]' => config('profil.kecamatan_id'),
         ];
 
         try {
@@ -149,9 +149,9 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',
-            'filter[desa]' => $did,
-            'filter[kecamatan]' => config('profil.kecamatan_id'),
+            'filter[id]' => 'pendidikan-dalam-kk',     
+            'filter[desa]' => $did,       
+            'filter[kode_kecamatan]' => config('profil.kecamatan_id'),
         ];
         foreach (years_list() as $year) {
             $filters['filter[tahun]'] = $year;

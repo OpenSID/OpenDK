@@ -47,7 +47,7 @@ class StatistikChartPendudukPerkawinanService extends BaseApiService
                 $filters = [
                     'filter[id]' => 'status-perkawinan',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => $this->kodeKecamatan,
+                    'filter[kode_kecamatan]' => $this->kodeKecamatan,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;

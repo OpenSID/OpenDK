@@ -51,7 +51,7 @@ test('user cannot login with invalid credentials', function () {
         ->assertJson(['message' => 'Pengguna tidak dikenali']);
 });
 
-test('user cannot login if not admin-desa or super-admin', function () {
+test('user cannot login if they have no required permissions', function () {
     $user = User::factory()->create([
         'email' => 'user@mail.com',
         'password' => 'password',
@@ -65,7 +65,7 @@ test('user cannot login if not admin-desa or super-admin', function () {
     ]);
 
     $response->assertStatus(422)
-        ->assertJson(['message' => 'Grup pengguna bukan admin-desa']);
+        ->assertJson(['message' => 'Akses tidak diizinkan']);
 });
 
 test('authenticated user can get their profile', function () {

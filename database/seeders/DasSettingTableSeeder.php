@@ -134,6 +134,14 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
+            [
+                'key' => 'sinkronisasi_database_gabungan',
+                'value' => '0',
+                'type' => 'boolean',
+                'description' => 'Aktifkan Sinkronisasi ke Database Gabungan.',
+                'kategori' => 'sinkronisasi',
+                'option' => '{}',
+            ],
         ];
 
         foreach ($settings as $setting) {

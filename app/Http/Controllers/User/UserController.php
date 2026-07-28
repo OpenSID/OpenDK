@@ -70,7 +70,7 @@ class UserController extends Controller
     {
         $page_title = 'Pengguna';
         $page_description = 'Tambah Data';
-        $item = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        $item = Role::web()->where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
         $pengurus = Pengurus::status()->doesntHave('user')->get();
 
         return view('user.create', compact('page_title', 'page_description', 'item', 'pengurus'));
@@ -139,7 +139,7 @@ class UserController extends Controller
         $page_title = 'Pengguna';
         $page_description = 'Ubah Data';
         $user = User::findOrFail($id);
-        $item = Role::where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
+        $item = Role::web()->where('name', '!=', 'super-admin')->pluck('name', 'name')->toArray();
         $pengurus = Pengurus::status()->doesntHave('user')->orWhere('id', $user->pengurus_id)->get();
 
         return view('user.edit', compact('page_title', 'page_description', 'user', 'item', 'pengurus'));

@@ -2,8 +2,6 @@
 
 return [
     'access.dashboard' => 'Beranda',
-    'access.counter' => 'Counter',
-    'access.change_default' => 'Ubah Default',
     'access.informasi' => 'Informasi',
     'access.informasi.prosedur' => 'Informasi - Prosedur',
     'access.informasi.regulasi' => 'Informasi - Regulasi',
@@ -49,7 +47,6 @@ return [
     'access.admin_komplain' => 'Admin Komplain',
     'access.pesan' => 'Pesan',
     'access.surat' => 'Surat',
-    'access.api' => 'API',
     'access.setting' => 'Pengaturan',
     'access.setting.user' => 'Pengaturan - User',
     'access.setting.role' => 'Pengaturan - Role',

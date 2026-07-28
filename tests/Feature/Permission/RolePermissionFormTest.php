@@ -37,6 +37,10 @@ use Spatie\Permission\Models\Permission;
 
 describe('Role Permission Form Display', function () {
     beforeEach(function () {
+        $this->withoutMiddleware([\App\Http\Middleware\CompleteProfile::class]);
+        $this->seed(\Database\Seeders\DasSettingTableSeeder::class);
+        $this->seed(\Database\Seeders\DasProfilTableSeeder::class);
+        $this->seed(\Database\Seeders\DasDataUmumTableSeeder::class);
         $this->seed(\Database\Seeders\RoleSpatieSeeder::class);
     });
 
@@ -47,11 +51,10 @@ describe('Role Permission Form Display', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-        $user->givePermissionTo($permission);
+        $user->givePermissionTo(['access.setting.role', 'access.setting.role.edit']);
         $this->actingAs($user);
 
-        $role = Role::create([
-            'name' => 'test-role-form',
+        $role = Role::firstOrCreate(['name' => 'test-role-form', 'guard_name' => 'web'], [
             'display_name' => 'Test Role Form',
             'description' => 'Test Description',
         ]);
@@ -71,11 +74,10 @@ describe('Role Permission Form Display', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-        $user->givePermissionTo($permission);
+        $user->givePermissionTo(['access.setting.role', 'access.setting.role.edit']);
         $this->actingAs($user);
 
-        $role = Role::create([
-            'name' => 'test-role-friendly',
+        $role = Role::firstOrCreate(['name' => 'test-role-friendly', 'guard_name' => 'web'], [
             'display_name' => 'Test Role Friendly',
             'description' => 'Test Description',
         ]);
@@ -95,11 +97,10 @@ describe('Role Permission Form Display', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-        $user->givePermissionTo($permission);
+        $user->givePermissionTo(['access.setting.role', 'access.setting.role.edit']);
         $this->actingAs($user);
 
-        $role = Role::create([
-            'name' => 'test-role-all-perms',
+        $role = Role::firstOrCreate(['name' => 'test-role-all-perms', 'guard_name' => 'web'], [
             'display_name' => 'Test Role All Permissions',
             'description' => 'Test Description',
         ]);
@@ -124,11 +125,10 @@ describe('Role Permission Form Display', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-        $user->givePermissionTo($permission);
+        $user->givePermissionTo(['access.setting.role', 'access.setting.role.edit']);
         $this->actingAs($user);
 
-        $role = Role::create([
-            'name' => 'test-role-child',
+        $role = Role::firstOrCreate(['name' => 'test-role-child', 'guard_name' => 'web'], [
             'display_name' => 'Test Role Child',
             'description' => 'Test Description',
         ]);

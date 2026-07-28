@@ -75,3 +75,20 @@ jobs:
         DB_USERNAME: root
         DB_PASSWORD: secret
       run: php artisan migrate && php artisan scribe:generate && php artisan test
+
+    - name: Generate OpenAPI Spec
+      env:
+        DB_CONNECTION: mysql
+        DB_DATABASE: testing_db
+        DB_USERNAME: root
+        DB_PASSWORD: secret
+      run: php artisan scribe:copy-openapi
+
+    - name: Validate OpenAPI Spec
+      run: php bin/validate-openapi.php
+
+    - name: Upload OpenAPI Spec as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: openapi-spec
+        path: openapi/openapi.yaml

@@ -38,6 +38,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @group Autentikasi
+ *
+ * Endpoint untuk login, logout, refresh token JWT, dan informasi user.
+ */
 class AuthController extends Controller
 {
     /**
@@ -51,9 +56,22 @@ class AuthController extends Controller
     }
 
     /**
-     * Get a JWT via given credentials.
+     * Login
      *
-     * @return JsonResponse
+     * Mendapatkan JWT token dengan credentials email dan password.
+     * Hanya user dengan permission `access.data`, `access.api`, atau `access.setting` yang diizinkan.
+     *
+     * @unauthenticated
+     * @bodyParam email string required Email pengguna. Example: admin@mail.com
+     * @bodyParam password string required Password pengguna. Example: password
+     * @response {
+     *   "access_token": "eyJ0eXAiOiJKV1Qi...",
+     *   "token_type": "bearer",
+     *   "expires_in": 3600
+     * }
+     * @response status=401 {
+     *   "message": "Pengguna tidak dikenali"
+     * }
      */
     public function login(Request $request)
     {

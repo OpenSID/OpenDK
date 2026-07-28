@@ -37,33 +37,9 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class DemoArtikelSeeder extends Seeder
 {
-    /**
-     * Unduh gambar dari Picsum Photos dan simpan ke storage/artikel/.
-     */
-    private function downloadGambar(string $seed, int $width = 800, int $height = 500): ?string
-    {
-        try {
-            $url      = "https://picsum.photos/seed/{$seed}/{$width}/{$height}";
-            $response = Http::timeout(15)->get($url);
-
-            if ($response->successful()) {
-                $filename = "demo_{$seed}.jpg";
-                Storage::disk('public')->put("artikel/{$filename}", $response->body());
-
-                return $filename;
-            }
-        } catch (\Exception $e) {
-            // Jika gagal unduh, kembalikan null (aman — accessor handle null)
-            logger()->warning("DemoArtikelSeeder: gagal unduh gambar [{$seed}]: " . $e->getMessage());
-        }
-
-        return null;
-    }
-
     /**
      * Run the database seeds.
      *
@@ -175,5 +151,28 @@ class DemoArtikelSeeder extends Seeder
                 'tanggal_terbit' => $data['tanggal'],
             ]);
         }
+    }
+
+    /**
+     * Unduh gambar dari Picsum Photos dan simpan ke storage/artikel/.
+     */
+    private function downloadGambar(string $seed, int $width = 800, int $height = 500): ?string
+    {
+        try {
+            $url      = "https://picsum.photos/seed/{$seed}/{$width}/{$height}";
+            $response = Http::timeout(15)->get($url);
+
+            if ($response->successful()) {
+                $filename = "demo_{$seed}.jpg";
+                Storage::disk('public')->put("artikel/{$filename}", $response->body());
+
+                return $filename;
+            }
+        } catch (\Exception $e) {
+            // Jika gagal unduh, kembalikan null (aman — accessor handle null)
+            logger()->warning("DemoArtikelSeeder: gagal unduh gambar [{$seed}]: " . $e->getMessage());
+        }
+
+        return null;
     }
 }

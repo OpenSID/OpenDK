@@ -74,7 +74,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',            
+            'filter[id]' => 'pendidikan-dalam-kk',
             'filter[kode_kecamatan]' => config('profil.kecamatan_id'),
         ];
         foreach (years_list() as $year) {
@@ -149,8 +149,8 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
         $requests = [];
         $dataPendidikan = [];
         $filters = [
-            'filter[id]' => 'pendidikan-dalam-kk',     
-            'filter[desa]' => $did,       
+            'filter[id]' => 'pendidikan-dalam-kk',
+            'filter[desa]' => $did,
             'filter[kode_kecamatan]' => config('profil.kecamatan_id'),
         ];
         foreach (years_list() as $year) {

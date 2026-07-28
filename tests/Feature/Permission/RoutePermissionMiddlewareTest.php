@@ -81,7 +81,7 @@ describe('Route Permission Middleware', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         $user->givePermissionTo(['access.informasi', 'access.informasi.prosedur', 'access.informasi.prosedur.view']);
         $this->actingAs($user);
 
@@ -97,7 +97,7 @@ describe('Route Permission Middleware', function () {
         if (!$user) {
             $user = User::factory()->create();
         }
-        
+
         $user->givePermissionTo(['access.data.penduduk', 'access.data.penduduk.view']);
         $this->actingAs($user);
 

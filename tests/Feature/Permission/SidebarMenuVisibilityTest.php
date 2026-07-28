@@ -124,7 +124,7 @@ describe('Sidebar Menu Visibility', function () {
 
     test('user with admin-komplain role does not see informasi menu in sidebar', function () {
         $role = \App\Models\Role::where('name', 'admin-komplain')->where('guard_name', 'web')->first();
-        
+
         $user = User::factory()->create();
         $user->assignRole($role);
         $this->actingAs($user);
@@ -137,7 +137,7 @@ describe('Sidebar Menu Visibility', function () {
 
     test('user with super-admin role sees all 4 dashboard cards', function () {
         $role = \App\Models\Role::where('name', 'super-admin')->where('guard_name', 'web')->first();
-        
+
         $user = User::factory()->create();
         $user->assignRole($role);
         $this->actingAs($user);
@@ -153,7 +153,7 @@ describe('Sidebar Menu Visibility', function () {
 
     test('user without permissions does not see any of the 4 dashboard cards', function () {
         $role = \App\Models\Role::where('name', 'admin-komplain')->where('guard_name', 'web')->first();
-        
+
         $user = User::factory()->create();
         $user->assignRole($role);
         $this->actingAs($user);
@@ -170,7 +170,7 @@ describe('Sidebar Menu Visibility', function () {
     test('user with only access.data.penduduk permission sees only the penduduk dashboard card', function () {
         $permDashboard = Permission::firstOrCreate(['name' => 'access.dashboard', 'guard_name' => 'web']);
         $permPenduduk = Permission::firstOrCreate(['name' => 'access.data.penduduk', 'guard_name' => 'web']);
-        
+
         $user = User::factory()->create();
         $user->givePermissionTo([$permDashboard, $permPenduduk]);
         $this->actingAs($user);

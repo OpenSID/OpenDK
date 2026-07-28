@@ -35,7 +35,6 @@ use App\Traits\HandlesResourceDeletion;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 
 class Event extends Model
 {

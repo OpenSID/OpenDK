@@ -27,6 +27,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1657](https://github.com/OpenSID/OpenDK/issues/1657) Penambahan data dummy seeder untuk demo OpenDK.
 4. [#1674](https://github.com/OpenSID/OpenDK/issues/1674) Generate & publish OpenAPI spec untuk OpenDK + dokumentasi runbook integrasi.
 5. [#1673](https://github.com/OpenSID/OpenDK/issues/1673) Contract tests consumer-driven antara OpenSID (consumer) dan OpenDK (provider).
+6. [#1675](https://github.com/OpenSID/OpenDK/issues/1675) Penambahan unit & integration tests untuk lifecycle API key.
 
 #### CATATAN TAMBAHAN
 

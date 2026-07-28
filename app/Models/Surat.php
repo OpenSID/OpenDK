@@ -50,6 +50,7 @@ class Surat extends Model
         'nomor',
         'nama',
         'file',
+        'file_hash',
         'keterangan',
         'log_verifikasi',
         'verifikasi_operator',

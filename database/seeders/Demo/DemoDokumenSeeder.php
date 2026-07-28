@@ -33,6 +33,7 @@ namespace Database\Seeders\Demo;
 
 use App\Models\FormDokumen;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DemoDokumenSeeder extends Seeder
 {
@@ -43,9 +44,36 @@ class DemoDokumenSeeder extends Seeder
      */
     public function run()
     {
-        FormDokumen::create([
-            'nama_dokumen' => 'Panduan OpenDK',
-            'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-        ]);
+        Schema::disableForeignKeyConstraints();
+        FormDokumen::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        $data = [
+            [
+                'nama_dokumen' => 'Panduan Pengguna OpenDK',
+                'description'  => 'Panduan lengkap penggunaan aplikasi OpenDK (Dashboard Kecamatan Terbuka) untuk administrator dan operator kecamatan.',
+                'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'is_published' => true,
+                'published_at' => now()->subDays(30),
+            ],
+            [
+                'nama_dokumen' => 'Laporan Realisasi Anggaran Kecamatan Semester I 2024',
+                'description'  => 'Laporan realisasi anggaran belanja dan pendapatan kecamatan untuk periode semester pertama Tahun Anggaran 2024.',
+                'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'is_published' => true,
+                'published_at' => now()->subDays(15),
+            ],
+            [
+                'nama_dokumen' => 'Peraturan Camat tentang Standar Pelayanan Publik',
+                'description'  => 'Peraturan Camat Ile Boleng tentang penetapan standar pelayanan publik di lingkungan Kecamatan Ile Boleng.',
+                'file_dokumen' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'is_published' => true,
+                'published_at' => now()->subDays(7),
+            ],
+        ];
+
+        foreach ($data as $dokumen) {
+            FormDokumen::create($dokumen);
+        }
     }
 }

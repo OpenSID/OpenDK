@@ -60,6 +60,17 @@ class WebsiteController extends BaseController
         $this->websiteApiRepository = $websiteApiRepository;
         $this->prefix = config('theme-api.website.cache_prefix', 'website:api');
     }
+    /**
+     * Data website lengkap (profil, desa, events, medsos, navigasi, slides, dll).
+     *
+     * @group Website
+     *
+     * @queryParam page int Halaman. Example: 1
+     * @queryParam per_page int Item per halaman. Example: 10
+     * @response {
+     *   "data": [{"id": "profile", "attributes": {"nama_kecamatan": "..."}}]
+     * }
+     */
     public function index(Request $request): Fractal|JsonResponse
     {
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);

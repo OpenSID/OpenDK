@@ -25,6 +25,9 @@
         <testsuite name="Browser">
             <directory suffix="Test.php">./tests/Browser</directory>
         </testsuite>
+        <testsuite name="Contract">
+            <directory suffix="Test.php">./tests/Contract</directory>
+        </testsuite>
     </testsuites>
     
     <coverage includeUncoveredFiles="true" processUncoveredFiles="true" pathCoverage="true">

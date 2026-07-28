@@ -9,7 +9,8 @@
         "test:coverage": "php vendor/bin/pest --coverage",
         "test:perf": "k6 run tests/performance/load-test.js",
         "test:perf:rate-limit": "k6 run tests/performance/rate-limit-test.js",
-        "test:perf:ci": "k6 run --out json=tests/performance/k6-results.json tests/performance/load-test.js"
+        "test:perf:ci": "k6 run --out json=tests/performance/k6-results.json tests/performance/load-test.js",        
+        "test:contract": "php vendor/bin/pest tests/Contract --group=contract"
     },
     "devDependencies": {
         "@shufo/prettier-plugin-blade": "^1.15.0",

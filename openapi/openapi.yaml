@@ -1,0 +1,1009 @@
+openapi: 3.0.3
+info:
+  title: 'OpenDK Kecamatan API Documentation'
+  description: 'API publik dan internal OpenDK untuk integrasi dengan OpenSID.'
+  version: 1.0.0
+  x-logo:
+    url: 'https://opendk.my.id/favicon.ico'
+    altText: 'OpenDK Logo'
+servers:
+  -
+    url: 'http://localhost:8000'
+tags:
+  -
+    name: Autentikasi
+    description: "\nEndpoint untuk login, logout, refresh token JWT, dan informasi user."
+  -
+    name: Endpoints
+    description: ''
+  -
+    name: 'OpenSID Integration'
+    description: "Kontrak ZIP:\n- Berisi 1 file `*.xlsx` (data penduduk) dan file foto `*.jpg`/`*.png`.\n- Kolom XLSX: desa_id, id, nomor_nik, nama, nomor_kk, jenis_kelamin,\n  tempat_lahir, tanggal_lahir, agama, pendidikan_dlm_kk, pekerjaan,\n  kawin, hubungan_keluarga, kewarganegaraan, nama_ibu, nama_ayah,\n  gol_darah, akta_lahir, nik_ayah, nik_ibu, foto, alamat, dusun,\n  rw, rt, status_dasar, status_rekam."
+components:
+  securitySchemes:
+    default:
+      type: http
+      scheme: bearer
+      description: 'Anda dapat memperoleh API key dari halaman pengaturan OpenDK. Key dikirim sebagai Bearer token di header Authorization.'
+security:
+  -
+    default: []
+paths:
+  /api/v1/auth/login:
+    post:
+      summary: Login
+      operationId: login
+      description: "Mendapatkan JWT token dengan credentials email dan password.\nHanya user dengan permission `access.data`, `access.api`, atau `access.setting` yang diizinkan."
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  access_token: eyJ0eXAiOiJKV1Qi...
+                  token_type: bearer
+                  expires_in: 3600
+                properties:
+                  access_token:
+                    type: string
+                    example: eyJ0eXAiOiJKV1Qi...
+                  token_type:
+                    type: string
+                    example: bearer
+                  expires_in:
+                    type: integer
+                    example: 3600
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Pengguna tidak dikenali'
+                properties:
+                  message:
+                    type: string
+                    example: 'Pengguna tidak dikenali'
+      tags:
+        - Autentikasi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: 'Email pengguna.'
+                  example: admin@mail.com
+                password:
+                  type: string
+                  description: 'Password pengguna.'
+                  example: password
+              required:
+                - email
+                - password
+      security: []
+  /api/v1/auth/logout:
+    post:
+      summary: 'Log the user out (Invalidate the token).'
+      operationId: logTheUserOutInvalidateTheToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Autentikasi
+  /api/v1/auth/refresh:
+    post:
+      summary: 'Refresh a token.'
+      operationId: refreshAToken
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Autentikasi
+  /api/v1/auth/me:
+    get:
+      summary: 'Get the authenticated User.'
+      operationId: getTheAuthenticatedUser
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Autentikasi
+  /api/v1/test:
+    get:
+      summary: ''
+      operationId: getApiV1Test
+      description: ''
+      parameters: []
+      responses:
+        401:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: Unauthenticated.
+                properties:
+                  message:
+                    type: string
+                    example: Unauthenticated.
+      tags:
+        - Endpoints
+  /api/v1/penduduk/test:
+    post:
+      summary: 'Test endpoint untuk verifikasi API berjalan.'
+      operationId: testEndpointUntukVerifikasiAPIBerjalan
+      description: ''
+      parameters: []
+      responses: {  }
+      tags:
+        - Endpoints
+  /api/v1/penduduk:
+    post:
+      summary: 'Hapus data penduduk secara batch (via JSON).'
+      operationId: hapusDataPendudukSecaraBatchviaJSON
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Proses sync Data Penduduk OpenSID sedang berjalan'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Proses sync Data Penduduk OpenSID sedang berjalan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hapus_penduduk:
+                  type: array
+                  description: 'Array objek penduduk yang akan dihapus. Setiap objek berisi: id_pend_desa (int), foto (string/null), desa_id (string).'
+                  example:
+                    - architecto
+                  items:
+                    type: string
+                desa_id:
+                  type: string
+                  description: 'Kode desa.'
+                  example: '3201012001'
+              required:
+                - hapus_penduduk
+                - desa_id
+  /api/v1/penduduk/storedata:
+    post:
+      summary: 'Sinkronisasi data dan foto penduduk via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataDanFotoPendudukViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Data Foto Telah Berhasil di Sinkronkan'
+                properties:
+                  message:
+                    type: string
+                    example: 'Data Foto Telah Berhasil di Sinkronkan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'File ZIP (max 5MB) berisi data penduduk + foto.'
+              required:
+                - file
+  /api/v1/laporan-apbdes:
+    post:
+      summary: 'Sinkronisasi data APBDes dari OpenSID (JSON + base64 file).'
+      operationId: sinkronisasiDataAPBDesDariOpenSIDJSON+Base64File
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Proses sync data Laporan Apbdes OpenSID sedang berjalan'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Proses sync data Laporan Apbdes OpenSID sedang berjalan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                desa_id:
+                  type: string
+                  description: 'Kode desa.'
+                  example: '3201012001'
+                laporan_apbdes:
+                  type: array
+                  description: 'Array objek laporan.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 'ID laporan.'
+                        example: 1
+                      judul:
+                        type: string
+                        description: 'Judul laporan.'
+                        example: 'Laporan APBDes 2024'
+                      tahun:
+                        type: integer
+                        description: 'Tahun anggaran.'
+                        example: 2024
+                      semester:
+                        type: integer
+                        description: 'Semester (1/2).'
+                        example: 1
+                      nama_file:
+                        type: string
+                        description: 'Nama file.'
+                        example: apbdes_2024_s1.pdf
+                      file:
+                        type: string
+                        description: 'File base64 encoded.'
+                        example: architecto
+                    required:
+                      - id
+                      - judul
+                      - tahun
+                      - semester
+                      - nama_file
+                      - file
+              required:
+                - desa_id
+                - laporan_apbdes
+  /api/v1/laporan-penduduk:
+    post:
+      summary: 'Sinkronisasi laporan penduduk dari OpenSID (JSON + base64 file).'
+      operationId: sinkronisasiLaporanPendudukDariOpenSIDJSON+Base64File
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Proses sync data Laporan Penduduk OpenSID sedang berjalan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                desa_id:
+                  type: string
+                  description: 'Kode desa.'
+                  example: '3201012001'
+                laporan_penduduk:
+                  type: array
+                  description: 'Array objek laporan.'
+                  example:
+                    - []
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: 'ID laporan.'
+                        example: 1
+                      judul:
+                        type: string
+                        description: 'Judul laporan.'
+                        example: 'Laporan Penduduk Jan 2024'
+                      bulan:
+                        type: integer
+                        description: 'Bulan (1-12).'
+                        example: 1
+                      tahun:
+                        type: integer
+                        description: Tahun.
+                        example: 2024
+                      file:
+                        type: string
+                        description: 'File base64 encoded.'
+                        example: architecto
+                      nama_file:
+                        type: string
+                        description: 'Nama file.'
+                        example: penduduk_2024_01.pdf
+                    required:
+                      - id
+                      - judul
+                      - bulan
+                      - tahun
+                      - file
+                      - nama_file
+              required:
+                - desa_id
+                - laporan_penduduk
+  /api/v1/pesan:
+    post:
+      summary: 'Kirim pesan baru atau balas pesan dari OpenSID.'
+      operationId: kirimPesanBaruAtauBalasPesanDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Berhasil mengirim pesan'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Berhasil mengirim pesan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pesan:
+                  type: string
+                  description: 'Isi pesan.'
+                  example: 'Berikut kami kirimkan laporan bulanan.'
+                judul:
+                  type: string
+                  description: 'Judul pesan (wajib untuk pesan baru).'
+                  example: 'Laporan Bulanan'
+                kode_desa:
+                  type: string
+                  description: 'Kode desa pengirim.'
+                  example: '3201012001'
+                pengirim:
+                  type: string
+                  description: 'Pengirim pesan.'
+                  example: operator@desa.id
+                nama_pengirim:
+                  type: string
+                  description: 'Nama pengirim.'
+                  example: Ahmad
+                pesan_id:
+                  type: integer
+                  description: 'ID pesan untuk membalas percakapan yang sudah ada.'
+                  example: 5
+              required:
+                - pesan
+                - kode_desa
+                - pengirim
+                - nama_pengirim
+  /api/v1/pesan/getpesan:
+    post:
+      summary: 'Ambil daftar pesan untuk desa tertentu.'
+      operationId: ambilDaftarPesanUntukDesaTertentu
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  data:
+                    -
+                      id: 1
+                      judul: Laporan
+                      detailPesan: []
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 1
+                        judul: Laporan
+                        detailPesan: []
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        judul:
+                          type: string
+                          example: Laporan
+                        detailPesan:
+                          type: array
+                          example: []
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kode_desa:
+                  type: string
+                  description: 'Kode desa.'
+                  example: '3201012001'
+                id:
+                  type: integer
+                  description: 'ID pesan terakhir yang diterima (untuk pagination).'
+                  example: 0
+              required:
+                - kode_desa
+  /api/v1/pesan/detail:
+    get:
+      summary: 'Lihat detail percakapan pesan.'
+      operationId: lihatDetailPercakapanPesan
+      description: ''
+      parameters:
+        -
+          in: query
+          name: id
+          description: 'ID pesan.'
+          example: 1
+          required: true
+          schema:
+            type: integer
+            description: 'ID pesan.'
+            example: 1
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  data:
+                    id: 1
+                    judul: Laporan
+                    detailPesan:
+                      -
+                        id: 1
+                        text: 'Isi pesan'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        example: 1
+                      judul:
+                        type: string
+                        example: Laporan
+                      detailPesan:
+                        type: array
+                        example:
+                          -
+                            id: 1
+                            text: 'Isi pesan'
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            text:
+                              type: string
+                              example: 'Isi pesan'
+      tags:
+        - 'OpenSID Integration'
+  /api/v1/pembangunan:
+    post:
+      summary: 'Sinkronisasi data pembangunan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataPembangunanViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan'
+                  status: success
+                properties:
+                  message:
+                    type: string
+                    example: 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan'
+                  status:
+                    type: string
+                    example: success
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'File ZIP (max 50MB) berisi data pembangunan.'
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - file
+                - desa_id
+  /api/v1/pembangunan/dokumentasi:
+    post:
+      summary: 'Sinkronisasi dokumentasi pembangunan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDokumentasiPembangunanViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan'
+                  status: success
+                properties:
+                  message:
+                    type: string
+                    example: 'Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan'
+                  status:
+                    type: string
+                    example: success
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'File ZIP (max 50MB) berisi data dokumentasi.'
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - file
+                - desa_id
+  /api/v1/identitas-desa:
+    post:
+      summary: 'Sinkronisasi identitas desa dari OpenSID.'
+      operationId: sinkronisasiIdentitasDesaDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Proses sinkronisasi identitas desa sudah selesai'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Proses sinkronisasi identitas desa sudah selesai'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                kode_desa:
+                  type: string
+                  description: 'Kode desa.'
+                  example: '3201012001'
+                sebutan_desa:
+                  type: string
+                  description: 'Sebutan desa.'
+                  example: Kampung
+                website:
+                  type: string
+                  description: 'URL website desa.'
+                  example: 'https://desa.example.com'
+                path:
+                  type: string
+                  description: 'Path menu profil.'
+                  example: profil/desa
+              required:
+                - kode_desa
+  /api/v1/program-bantuan:
+    post:
+      summary: 'Sinkronisasi data program bantuan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataProgramBantuanViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'Data Bantuan Sedang di Sinkronkan'
+                  status: success
+                properties:
+                  message:
+                    type: string
+                    example: 'Data Bantuan Sedang di Sinkronkan'
+                  status:
+                    type: string
+                    example: success
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'File ZIP (max 50MB) berisi data program bantuan.'
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - file
+                - desa_id
+  /api/v1/program-bantuan/peserta:
+    post:
+      summary: 'Sinkronisasi data peserta program bantuan via ZIP dari OpenSID.'
+      operationId: sinkronisasiDataPesertaProgramBantuanViaZIPDariOpenSID
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: success
+                  message: 'Data Bantuan Sedang di Sinkronkan'
+                properties:
+                  status:
+                    type: string
+                    example: success
+                  message:
+                    type: string
+                    example: 'Data Bantuan Sedang di Sinkronkan'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: 'File ZIP (max 50MB) berisi data peserta bantuan.'
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - file
+                - desa_id
+  /api/v1/surat:
+    get:
+      summary: 'Daftar surat untuk desa tertentu.'
+      operationId: daftarSuratUntukDesaTertentu
+      description: ''
+      parameters:
+        -
+          in: query
+          name: desa_id
+          description: 'Kode desa.'
+          example: '3201012001'
+          required: true
+          schema:
+            type: string
+            description: 'Kode desa.'
+            example: '3201012001'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Daftar Surat'
+                  data:
+                    -
+                      nomor: 001/SK/2024
+                      file: surat.pdf
+                      nama: 'SK Kepala Desa'
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Daftar Surat'
+                  data:
+                    type: array
+                    example:
+                      -
+                        nomor: 001/SK/2024
+                        file: surat.pdf
+                        nama: 'SK Kepala Desa'
+                    items:
+                      type: object
+                      properties:
+                        nomor:
+                          type: string
+                          example: 001/SK/2024
+                        file:
+                          type: string
+                          example: surat.pdf
+                        nama:
+                          type: string
+                          example: 'SK Kepala Desa'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - desa_id
+  /api/v1/surat/kirim:
+    post:
+      summary: 'Kirim surat dari OpenSID ke OpenDK (TTE).'
+      operationId: kirimSuratDariOpenSIDKeOpenDKTTE
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: true
+                  message: 'Surat Berhasil Dikirim!'
+                  data:
+                    nomor: 001/SK/2024
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Surat Berhasil Dikirim!'
+                  data:
+                    type: object
+                    properties:
+                      nomor:
+                        type: string
+                        example: 001/SK/2024
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                desa_id:
+                  type: string
+                  description: 'Kode desa.'
+                  example: '3201012001'
+                nik:
+                  type: string
+                  description: 'NIK penduduk (16 digit).'
+                  example: '3201012001000001'
+                tanggal:
+                  type: string
+                  description: 'Tanggal surat (Y-m-d).'
+                  example: '2024-01-15'
+                nomor:
+                  type: string
+                  description: 'Nomor surat (unique).'
+                  example: 001/SK/2024
+                nama:
+                  type: string
+                  description: 'Nama surat.'
+                  example: 'SK Kepala Desa'
+                file:
+                  type: string
+                  format: binary
+                  description: 'File PDF surat (max 2MB).'
+              required:
+                - desa_id
+                - nik
+                - tanggal
+                - nomor
+                - nama
+                - file
+  /api/v1/surat/download:
+    get:
+      summary: 'Download file surat dalam format PDF.'
+      operationId: downloadFileSuratDalamFormatPDF
+      description: ''
+      parameters:
+        -
+          in: query
+          name: desa_id
+          description: 'Kode desa.'
+          example: '3201012001'
+          required: true
+          schema:
+            type: string
+            description: 'Kode desa.'
+            example: '3201012001'
+        -
+          in: query
+          name: nomor
+          description: 'Nomor surat.'
+          example: 001/SK/2024
+          required: true
+          schema:
+            type: string
+            description: 'Nomor surat.'
+            example: 001/SK/2024
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  Content-Type: application/pdf
+                  Content-Disposition: 'inline; filename="surat.pdf"'
+                properties:
+                  Content-Type:
+                    type: string
+                    example: application/pdf
+                  Content-Disposition:
+                    type: string
+                    example: 'inline; filename="surat.pdf"'
+      tags:
+        - 'OpenSID Integration'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                desa_id:
+                  type: string
+                  description: ''
+                  example: architecto
+                nomor:
+                  type: string
+                  description: ''
+                  example: architecto
+              required:
+                - desa_id
+                - nomor

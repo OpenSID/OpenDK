@@ -75,6 +75,8 @@ class DemoDatabaseSeeder extends Seeder
 
         $this->call(DatabaseSeeder::class);
 
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
         $this->call(DemoDasProfilTableSeeder::class);
         $this->call(DemoDasDataUmumTableSeeder::class);
         $this->call(DemoDasDataDesaTableSeeder::class);

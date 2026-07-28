@@ -52,6 +52,17 @@ class ProsedurController extends BaseController
         $this->prefix = config('theme-api.prosedur.cache_prefix', 'prosedur:api');
     }
 
+    /**
+     * Daftar prosedur pelayanan.
+     *
+     * @group Prosedur
+     *
+     * @queryParam page int Halaman. Example: 1
+     * @queryParam per_page int Item per halaman. Example: 10
+     * @response {
+     *   "data": [{"id": 1, "judul": "Prosedur Pembuatan KTP", "konten": "..."}]
+     * }
+     */
     public function index(Request $request): Fractal|JsonResponse
     {
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);

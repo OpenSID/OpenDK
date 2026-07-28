@@ -44,7 +44,7 @@ class StatistikChartPendudukPendidikanService extends BaseApiService
                 $filters = [
                     'filter[id]' => 'pendidikan-dalam-kk',
                     'filter[tahun]' => $year,
-                    'filter[kecamatan]' => $this->kodeKecamatan,
+                    'filter[kode_kecamatan]' => $this->kodeKecamatan,
                 ];
                 if ($did != 'Semua') {
                     $filters['filter[desa]'] = $did;

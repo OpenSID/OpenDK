@@ -32,7 +32,6 @@
 namespace Tests;
 
 use App\Models\Profil;
-use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Tests\Traits\WithSettingAplikasi;

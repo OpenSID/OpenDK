@@ -4,8 +4,6 @@ use App\Models\ApiKey;
 use App\Models\User;
 use App\Services\KeyService;
 use function Pest\Laravel\getJson;
-use function Pest\Laravel\postJson;
-use function Pest\Laravel\deleteJson;
 
 beforeEach(function () {
     $this->keyService = app(KeyService::class);

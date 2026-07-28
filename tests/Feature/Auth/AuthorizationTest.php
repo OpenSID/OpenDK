@@ -57,5 +57,5 @@ describe('Permission Checks', function () {
         $this->actingAs($guestUser)
             ->get(route('informasi.artikel.index'))
             ->assertForbidden();
-    });    
+    });
 });

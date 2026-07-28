@@ -73,7 +73,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
             return response()->json('Welcome to api route');
         });
 
-        /**
+        /*
          * Penduduk
          */
         Route::group(['prefix' => 'penduduk', 'controller' => PendudukController::class], function () {
@@ -133,7 +133,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         });
     });
 
-    /**
+    /*
      * API Key management (JWT auth only, no token.registered)
      */
     Route::group(['prefix' => 'api-keys', 'controller' => ApiKeyController::class, 'middleware' => 'auth:api'], function () {
@@ -144,7 +144,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         Route::delete('{apiKey}', 'destroy');
     });
 
-    /**
+    /*
      * API Key validation (stateless, no JWT required)
      */
     Route::group(['prefix' => 'key', 'middleware' => 'api.key'], function () {

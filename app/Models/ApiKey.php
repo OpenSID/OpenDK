@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
@@ -11,6 +11,14 @@ use Illuminate\Support\Str;
 class ApiKey extends Model
 {
     use HasFactory;
+
+    public const STATUS_ACTIVE = 'active';
+
+    public const STATUS_REVOKED = 'revoked';
+
+    public const STATUS_DISABLED = 'disabled';
+
+    public const STATUS_EXPIRED = 'expired';
 
     protected $fillable = [
         'user_id',
@@ -28,11 +36,6 @@ class ApiKey extends Model
         'expires_at' => 'datetime',
         'last_used_at' => 'datetime',
     ];
-
-    public const STATUS_ACTIVE = 'active';
-    public const STATUS_REVOKED = 'revoked';
-    public const STATUS_DISABLED = 'disabled';
-    public const STATUS_EXPIRED = 'expired';
 
     public function user(): BelongsTo
     {

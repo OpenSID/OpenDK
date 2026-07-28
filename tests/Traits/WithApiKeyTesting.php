@@ -11,6 +11,7 @@ use Tymon\JWTAuth\JWT;
 trait WithApiKeyTesting
 {
     protected User $testUser;
+
     protected string $jwtToken;
 
     protected function setUpApiKeyTesting(): void

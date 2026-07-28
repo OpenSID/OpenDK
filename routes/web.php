@@ -305,7 +305,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::get('/dashboard', DashboardController::class)->middleware(['auth:web', 'action_permission:access.dashboard'])->name('dashboard');
 
         Route::namespace('\App\Http\Controllers\Auth')->group(function () {
-            Route::group(['prefix' => 'changedefault', 'middleware' => ['action_permission:access.change_default']], function () {
+            Route::group(['prefix' => 'changedefault'], function () {
                 Route::get('/', 'ChangeDefaultController@index')->name('change-default');
                 Route::post('store', ['as' => 'changedefault.store', 'uses' => 'ChangeDefaultController@store']);
             });
@@ -1058,7 +1058,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Counter
          */
-        Route::group(['prefix' => 'counter', 'middleware' => ['action_permission:access.counter']], function () {
+        Route::group(['prefix' => 'counter'], function () {
             Route::get('/', [CounterController::class, 'index'])->name('counter.index');
             Route::get('cetak', [CounterController::class, 'cetak'])->name('counter.cetak');
             Route::get('export-excel', [CounterController::class, 'exportExcel'])->name('counter.export.excel');
@@ -1082,7 +1082,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     // Semua Desa
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
-    })->middleware('action_permission:access.api');
+    });
 
     Route::get('testEmail', TestEmailController::class)->name('testEmail');
 });

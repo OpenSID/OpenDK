@@ -10,65 +10,73 @@
 
     <section class="content container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-xs-6" data-testid="card-desa">
-                <div class="small-box bg-aqua">
-                    <div class="inner">
-                        <h3>{{ number_format($data['desa'] ?? 0, 0, ',', '.') }}</h3>
-                        <p>{{ config('setting.sebutan_desa') }}</p>
+            @if (auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->can('access.data.data_desa')))
+                <div class="col-lg-3 col-xs-6" data-testid="card-desa">
+                    <div class="small-box bg-aqua">
+                        <div class="inner">
+                            <h3>{{ number_format($data['desa'] ?? 0, 0, ',', '.') }}</h3>
+                            <p>{{ config('setting.sebutan_desa') }}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-building-o"></i>
+                        </div>
+                        <a href="{{ route('data.data-desa.index') }}" class="small-box-footer">
+                            Selengkapnya <i class="fa fa-arrow-circle-right"></i>
+                        </a>
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-building-o"></i>
-                    </div>
-                    <a href="{{ route('data.data-desa.index') }}" class="small-box-footer">
-                        Selengkapnya <i class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
-            </div>
+            @endif
 
-            <div class="col-lg-3 col-xs-6" data-testid="card-penduduk">
-                <div class="small-box bg-green">
-                    <div class="inner">
-                        <h3>{{ number_format($data['penduduk'] ?? 0, 0, ',', '.') }}</h3>
-                        <p>Penduduk</p>
+            @if (auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->can('access.data.penduduk')))
+                <div class="col-lg-3 col-xs-6" data-testid="card-penduduk">
+                    <div class="small-box bg-green">
+                        <div class="inner">
+                            <h3>{{ number_format($data['penduduk'] ?? 0, 0, ',', '.') }}</h3>
+                            <p>Penduduk</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <a href="{{ route('data.penduduk.index') }}" class="small-box-footer">
+                            Selengkapnya <i class="fa fa-arrow-circle-right"></i>
+                        </a>
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <a href="{{ route('data.penduduk.index') }}" class="small-box-footer">
-                        Selengkapnya <i class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
-            </div>
+            @endif
 
-            <div class="col-lg-3 col-xs-6" data-testid="card-keluarga">
-                <div class="small-box bg-yellow">
-                    <div class="inner">
-                        <h3>{{ number_format($data['keluarga'] ?? 0, 0, ',', '.') }}</h3>
-                        <p>Keluarga</p>
+            @if (auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->can('access.data.keluarga')))
+                <div class="col-lg-3 col-xs-6" data-testid="card-keluarga">
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>{{ number_format($data['keluarga'] ?? 0, 0, ',', '.') }}</h3>
+                            <p>Keluarga</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <a href="{{ route('data.keluarga.index') }}" class="small-box-footer">
+                            Selengkapnya <i class="fa fa-arrow-circle-right"></i>
+                        </a>
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-users"></i>
-                    </div>
-                    <a href="{{ route('data.keluarga.index') }}" class="small-box-footer">
-                        Selengkapnya <i class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
-            </div>
+            @endif
 
-            <div class="col-lg-3 col-xs-6" data-testid="card-program-bantuan">
-                <div class="small-box bg-red">
-                    <div class="inner">
-                        <h3>{{ number_format($data['program_bantuan'] ?? 0, 0, ',', '.') }}</h3>
-                        <p>Program Bantuan</p>
+            @if (auth()->check() && (auth()->user()->hasRole('super-admin') || auth()->user()->can('access.data.program_bantuan')))
+                <div class="col-lg-3 col-xs-6" data-testid="card-program-bantuan">
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>{{ number_format($data['program_bantuan'] ?? 0, 0, ',', '.') }}</h3>
+                            <p>Program Bantuan</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-heart-o"></i>
+                        </div>
+                        <a href="{{ route('data.program-bantuan.index') }}" class="small-box-footer">
+                            Selengkapnya <i class="fa fa-arrow-circle-right"></i>
+                        </a>
                     </div>
-                    <div class="icon">
-                        <i class="fa fa-heart-o"></i>
-                    </div>
-                    <a href="{{ route('data.program-bantuan.index') }}" class="small-box-footer">
-                        Selengkapnya <i class="fa fa-arrow-circle-right"></i>
-                    </a>
                 </div>
-            </div>
+            @endif
         </div>
 
         <div class="nav-tabs-custom">

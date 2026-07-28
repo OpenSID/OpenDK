@@ -170,6 +170,15 @@ class StatistikPendudukController extends BaseController
         });
     }
     
+    /**
+     * Daftar tahun yang tersedia untuk data statistik penduduk.
+     *
+     * @group Statistik Penduduk
+     *
+     * @response {
+     *   "data": [{"type": "tahun", "attributes": [2019, 2020, 2021, 2022, 2023, 2024, 2025]}]
+     * }
+     */
     public function listYear(Request $request): Fractal|JsonResponse
     {
         $params = $request->only(['page', 'filter', 'search', 'sort', 'order', 'include']);

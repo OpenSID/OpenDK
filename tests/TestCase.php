@@ -31,6 +31,7 @@
 
 namespace Tests;
 
+use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -46,6 +47,27 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        // Ensure a Profil record with valid kecamatan_id exists so the
+        // CompleteProfile middleware does not redirect to data.profil.index.
+        Profil::firstOrCreate(
+            ['id' => 1],
+            [
+                'nama' => 'Kecamatan Test',
+                'kecamatan_id' => '33010100',
+                'provinsi_id' => '33',
+                'kabupaten_id' => '33010',
+                'nama_provinsi' => 'Jawa Tengah',
+                'nama_kabupaten' => 'Banjarnegara',
+                'nama_kecamatan' => 'Pagentan',
+                'alamat' => 'Alamat Test',
+                'kode_pos' => '53471',
+                'telepon' => '0123456789',
+                'email' => 'test@example.com',
+                'tahun_pembentukan' => '2024',
+                'dasar_pembentukan' => 'Dasar Pembentukan Test',
+            ]
+        );
 
         // Authenticate a user for all tests to prevent 403 errors
         // This is necessary for Laravel 11 where authorization is stricter

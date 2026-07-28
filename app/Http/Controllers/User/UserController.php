@@ -35,13 +35,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Pengurus;
+use App\Models\Role;
 use App\Models\User;
 use App\Traits\HandlesFileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Spatie\Permission\Models\Role;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -79,7 +79,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param  Request  $request
      *
      * @return Response
      */
@@ -110,7 +110,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */
@@ -124,7 +124,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */
@@ -148,8 +148,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param  Request  $request
+     * @param  int  $id
      *
      * @return Response
      */
@@ -183,8 +183,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param int     $id
+     * @param  Request  $request
+     * @param  int  $id
      *
      * @return Response
      */
@@ -215,7 +215,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */
@@ -244,7 +244,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource permanently from storage.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */
@@ -272,7 +272,7 @@ class UserController extends Controller
     /**
      * Active User.
      *
-     * @param int $id
+     * @param  int  $id
      *
      * @return Response
      */

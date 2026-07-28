@@ -161,21 +161,101 @@ npx playwright test
 docker compose down
 ```
 
-## 5. Contract Tests dengan OpenAPI Spec
+## 5. Consumer-Side Contract Tests (OpenSID → OpenDK)
 
-OpenAPI spec (`openapi/openapi.yaml`) digunakan sebagai kontrak untuk API testing.
+OpenAPI spec (`openapi/openapi.yaml`) digunakan sebagai kontrak untuk memvalidasi
+request payload dari OpenSID. Test ini memastikan request yang dikirim OpenSID
+sesuai dengan schema yang diharapkan OpenDK.
 
-### Validasi Otomatis di CI
+### Struktur Test
 
-Setiap PR akan menjalankan:
+```
+tests/Contract/
+├── OpenApiContractTest.php    # Pest test — validasi payload vs spec
+└── examples/
+    ├── auth/
+    │   ├── login-success.json
+    │   ├── login-missing-email.json
+    │   └── login-missing-password.json
+    ├── penduduk/
+    │   ├── hapus-success.json
+    │   └── hapus-missing-field.json
+    ├── laporan-apbdes/
+    │   └── sync-success.json
+    ├── laporan-penduduk/
+    │   └── sync-success.json
+    ├── pesan/
+    │   ├── kirim-success.json
+    │   ├── kirim-missing-pesan.json
+    │   └── getpesan-success.json
+    └── identitas-desa/
+        └── sync-success.json
+```
 
-1. **generate-openapi** -- regenerate spec dari kode
-2. **validate-openapi** -- validasi YAML & struktur OpenAPI
-3. **contract-check** -- verify bahwa spec up-to-date dengan kode
+### Menjalankan Contract Tests Lokal
 
-Lihat [.github/workflows/openapi.yml](../.github/workflows/openapi.yml).
+```bash
+# Via composer (recommended)
+composer test:contract
 
-### Cara Menambahkan Endpoint Baru ke Spec
+# Via pest langsung
+php vendor/bin/pest tests/Contract --group=contract
+
+# Via npm
+npm run test:contract
+```
+
+Contoh output sukses:
+
+```
+PASS  Tests\Contract\OpenApiContractTest
+✓ request payload matches OpenAPI spec: Auth login success
+✓ request payload matches OpenAPI spec: Auth login missing password
+✓ request payload matches OpenAPI spec: Auth login missing email
+✓ request payload matches OpenAPI spec: Penduduk hapus success
+✓ request payload matches OpenAPI spec: Penduduk hapus missing desa_id
+✓ request payload matches OpenAPI spec: Laporan APBDes sync success
+✓ request payload matches OpenAPI spec: Laporan Penduduk sync success
+✓ request payload matches OpenAPI spec: Pesan kirim success
+✓ request payload matches OpenAPI spec: Pesan kirim missing pesan
+✓ request payload matches OpenAPI spec: Pesan getpesan success
+✓ request payload matches OpenAPI spec: Identitas desa sync success
+
+Tests:  11 passed (22 assertions)
+```
+
+### CI Pipeline
+
+Setiap PR ke `master`/`dev` menjalankan contract tests via
+[contract.yml](../.github/workflows/contract.yml):
+
+1. **composer install** — install dependencies
+2. **validate-openapi** — validasi YAML & struktur OpenAPI
+3. **contract tests** — validasi 11+ contoh payload terhadap spec
+
+Build **gagal** jika ada contoh request yang tidak sesuai spec, misalnya:
+- Field required tidak dikirim
+- Tipe data tidak sesuai (string vs integer vs object)
+- Field tambahan yang tidak dikenal (strict mode)
+
+### Menambahkan Contoh Payload Baru
+
+1. Buat file JSON di `tests/Contract/examples/<endpoint>/<nama-file>.json`
+2. Daftarkan di dataset `contract_examples` di `OpenApiContractTest.php`:
+   ```php
+   'endpoint/request-name.json' => [
+       'label' => 'Deskripsi singkat',
+       'path' => '/api/v1/endpoint',
+       'method' => 'post',
+       'should_succeed' => true, // false untuk negative test
+   ],
+   ```
+3. Jalankan test untuk verifikasi:
+   ```bash
+   composer test:contract
+   ```
+
+### Menambahkan Endpoint Baru ke Spec
 
 1. Definisikan route di `routes/api-frontend.php` atau `routes/api.php`
 2. Tambahkan PHPDoc annotations di controller method:
@@ -199,6 +279,7 @@ public function index() { ... }
 
 ```bash
 composer generate-openapi
+composer test:contract  # verifikasi spec baru tidak merusak kontrak
 ```
 
 ## 6. ZIP Contract Validation
@@ -353,6 +434,7 @@ Pipeline CI terdiri dari beberapa workflow:
 
 | Workflow | File | Trigger |
 |---|---|---|
+| Contract Tests | `.github/workflows/contract.yml` | PR ke master/dev |
 | OpenAPI Validate | `.github/workflows/openapi.yml` | PR ke master/dev |
 | Laravel Test | `.github/workflows/test.yml` | PR ke master/rilis-dev |
 | Composer | `.github/workflows/composer.yml` | PR (jika composer.json berubah) |

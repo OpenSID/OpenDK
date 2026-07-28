@@ -63,3 +63,6 @@ nul
 # Agent
 /.qwen
 graphify-out
+
+# Scribe (auto-generated, contains auth tokens)
+.scribe/

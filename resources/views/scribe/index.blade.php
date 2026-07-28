@@ -1392,7 +1392,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@/tmp/phps0gg3e6p7l741MBjUfK" </code></pre></div>
+    --form "file=@/tmp/phpvptc7irt9vc6bZO4WPv" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -1430,7 +1430,7 @@ $response = $client-&gt;post(
         'multipart' =&gt; [
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phps0gg3e6p7l741MBjUfK', 'r')
+                'contents' =&gt; fopen('/tmp/phpvptc7irt9vc6bZO4WPv', 'r')
             ],
         ],
     ]
@@ -1545,7 +1545,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>File ZIP (max 5MB) berisi data penduduk + foto. Example: <code>/tmp/phps0gg3e6p7l741MBjUfK</code></p>
+<p>File ZIP (max 5MB) berisi data penduduk + foto. Example: <code>/tmp/phpvptc7irt9vc6bZO4WPv</code></p>
         </div>
         </form>
 
@@ -1569,9 +1569,22 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"desa_id\": \"3201012001\",
-    \"laporan_apbdes\": [
-        \"architecto\"
-    ]
+    \"laporan_apbdes\": {
+        \"0\": {
+            \"id\": 16,
+            \"judul\": \"architecto\",
+            \"tahun\": 16,
+            \"semester\": 16,
+            \"nama_file\": \"architecto\",
+            \"file\": \"architecto\"
+        },
+        \"id\": 1,
+        \"judul\": \"Laporan APBDes 2024\",
+        \"tahun\": 2024,
+        \"semester\": 1,
+        \"nama_file\": \"apbdes_2024_s1.pdf\",
+        \"file\": \"architecto\"
+    }
 }"
 </code></pre></div>
 
@@ -1589,9 +1602,22 @@ const headers = {
 
 let body = {
     "desa_id": "3201012001",
-    "laporan_apbdes": [
-        "architecto"
-    ]
+    "laporan_apbdes": {
+        "0": {
+            "id": 16,
+            "judul": "architecto",
+            "tahun": 16,
+            "semester": 16,
+            "nama_file": "architecto",
+            "file": "architecto"
+        },
+        "id": 1,
+        "judul": "Laporan APBDes 2024",
+        "tahun": 2024,
+        "semester": 1,
+        "nama_file": "apbdes_2024_s1.pdf",
+        "file": "architecto"
+    }
 };
 
 fetch(url, {
@@ -1615,7 +1641,20 @@ $response = $client-&gt;post(
         'json' =&gt; [
             'desa_id' =&gt; '3201012001',
             'laporan_apbdes' =&gt; [
-                'architecto',
+                [
+                    'id' =&gt; 16,
+                    'judul' =&gt; 'architecto',
+                    'tahun' =&gt; 16,
+                    'semester' =&gt; 16,
+                    'nama_file' =&gt; 'architecto',
+                    'file' =&gt; 'architecto',
+                ],
+                'id' =&gt; 1,
+                'judul' =&gt; 'Laporan APBDes 2024',
+                'tahun' =&gt; 2024,
+                'semester' =&gt; 1,
+                'nama_file' =&gt; 'apbdes_2024_s1.pdf',
+                'file' =&gt; 'architecto',
             ],
         ],
     ]
@@ -1737,11 +1776,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
         <details>
             <summary style="padding-bottom: 10px;">
                 <b style="line-height: 2;"><code>laporan_apbdes</code></b>&nbsp;&nbsp;
-<small>string[]</small>&nbsp;
+<small>object[]</small>&nbsp;
  &nbsp;
  &nbsp;
 <br>
-<p>Array objek laporan. Setiap objek berisi: id (int), judul (string), tahun (int), semester (int 1/2), nama_file (string), file (string base64 encoded).</p>
+<p>Array objek laporan.</p>
             </summary>
                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
@@ -1749,11 +1788,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="laporan_apbdes.0.id"                data-endpoint="POSTapi-v1-laporan-apbdes"
-               value="16"
+               step="any"               name="laporan_apbdes.id"                data-endpoint="POSTapi-v1-laporan-apbdes"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>ID laporan. Example: <code>1</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>judul</code></b>&nbsp;&nbsp;
@@ -1761,11 +1800,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="laporan_apbdes.0.judul"                data-endpoint="POSTapi-v1-laporan-apbdes"
-               value="architecto"
+                              name="laporan_apbdes.judul"                data-endpoint="POSTapi-v1-laporan-apbdes"
+               value="Laporan APBDes 2024"
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>Judul laporan. Example: <code>Laporan APBDes 2024</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>tahun</code></b>&nbsp;&nbsp;
@@ -1773,11 +1812,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="laporan_apbdes.0.tahun"                data-endpoint="POSTapi-v1-laporan-apbdes"
-               value="16"
+               step="any"               name="laporan_apbdes.tahun"                data-endpoint="POSTapi-v1-laporan-apbdes"
+               value="2024"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>Tahun anggaran. Example: <code>2024</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>semester</code></b>&nbsp;&nbsp;
@@ -1785,11 +1824,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="laporan_apbdes.0.semester"                data-endpoint="POSTapi-v1-laporan-apbdes"
-               value="16"
+               step="any"               name="laporan_apbdes.semester"                data-endpoint="POSTapi-v1-laporan-apbdes"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>Semester (1/2). Example: <code>1</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>nama_file</code></b>&nbsp;&nbsp;
@@ -1797,11 +1836,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="laporan_apbdes.0.nama_file"                data-endpoint="POSTapi-v1-laporan-apbdes"
-               value="architecto"
+                              name="laporan_apbdes.nama_file"                data-endpoint="POSTapi-v1-laporan-apbdes"
+               value="apbdes_2024_s1.pdf"
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>Nama file. Example: <code>apbdes_2024_s1.pdf</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
@@ -1809,11 +1848,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="laporan_apbdes.0.file"                data-endpoint="POSTapi-v1-laporan-apbdes"
+                              name="laporan_apbdes.file"                data-endpoint="POSTapi-v1-laporan-apbdes"
                value="architecto"
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>File base64 encoded. Example: <code>architecto</code></p>
                     </div>
                                     </details>
         </div>
@@ -1839,9 +1878,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Accept: application/json" \
     --data "{
     \"desa_id\": \"3201012001\",
-    \"laporan_penduduk\": [
-        \"architecto\"
-    ]
+    \"laporan_penduduk\": {
+        \"0\": {
+            \"id\": 16,
+            \"judul\": \"architecto\",
+            \"bulan\": 16,
+            \"tahun\": 16,
+            \"file\": \"architecto\"
+        },
+        \"id\": 1,
+        \"judul\": \"Laporan Penduduk Jan 2024\",
+        \"bulan\": 1,
+        \"tahun\": 2024,
+        \"nama_file\": \"penduduk_2024_01.pdf\",
+        \"file\": \"architecto\"
+    }
 }"
 </code></pre></div>
 
@@ -1859,9 +1910,21 @@ const headers = {
 
 let body = {
     "desa_id": "3201012001",
-    "laporan_penduduk": [
-        "architecto"
-    ]
+    "laporan_penduduk": {
+        "0": {
+            "id": 16,
+            "judul": "architecto",
+            "bulan": 16,
+            "tahun": 16,
+            "file": "architecto"
+        },
+        "id": 1,
+        "judul": "Laporan Penduduk Jan 2024",
+        "bulan": 1,
+        "tahun": 2024,
+        "nama_file": "penduduk_2024_01.pdf",
+        "file": "architecto"
+    }
 };
 
 fetch(url, {
@@ -1885,7 +1948,19 @@ $response = $client-&gt;post(
         'json' =&gt; [
             'desa_id' =&gt; '3201012001',
             'laporan_penduduk' =&gt; [
-                'architecto',
+                [
+                    'id' =&gt; 16,
+                    'judul' =&gt; 'architecto',
+                    'bulan' =&gt; 16,
+                    'tahun' =&gt; 16,
+                    'file' =&gt; 'architecto',
+                ],
+                'id' =&gt; 1,
+                'judul' =&gt; 'Laporan Penduduk Jan 2024',
+                'bulan' =&gt; 1,
+                'tahun' =&gt; 2024,
+                'nama_file' =&gt; 'penduduk_2024_01.pdf',
+                'file' =&gt; 'architecto',
             ],
         ],
     ]
@@ -2007,11 +2082,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
         <details>
             <summary style="padding-bottom: 10px;">
                 <b style="line-height: 2;"><code>laporan_penduduk</code></b>&nbsp;&nbsp;
-<small>string[]</small>&nbsp;
+<small>object[]</small>&nbsp;
  &nbsp;
  &nbsp;
 <br>
-<p>Array objek laporan. Setiap objek berisi: id (int), judul (string), bulan (int 1-12), tahun (int), nama_file (string), file (string base64 encoded).</p>
+<p>Array objek laporan.</p>
             </summary>
                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
@@ -2019,11 +2094,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="laporan_penduduk.0.id"                data-endpoint="POSTapi-v1-laporan-penduduk"
-               value="16"
+               step="any"               name="laporan_penduduk.id"                data-endpoint="POSTapi-v1-laporan-penduduk"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>ID laporan. Example: <code>1</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>judul</code></b>&nbsp;&nbsp;
@@ -2031,11 +2106,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="laporan_penduduk.0.judul"                data-endpoint="POSTapi-v1-laporan-penduduk"
-               value="architecto"
+                              name="laporan_penduduk.judul"                data-endpoint="POSTapi-v1-laporan-penduduk"
+               value="Laporan Penduduk Jan 2024"
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>Judul laporan. Example: <code>Laporan Penduduk Jan 2024</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>bulan</code></b>&nbsp;&nbsp;
@@ -2043,11 +2118,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="laporan_penduduk.0.bulan"                data-endpoint="POSTapi-v1-laporan-penduduk"
-               value="16"
+               step="any"               name="laporan_penduduk.bulan"                data-endpoint="POSTapi-v1-laporan-penduduk"
+               value="1"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>Bulan (1-12). Example: <code>1</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>tahun</code></b>&nbsp;&nbsp;
@@ -2055,11 +2130,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="number" style="display: none"
-               step="any"               name="laporan_penduduk.0.tahun"                data-endpoint="POSTapi-v1-laporan-penduduk"
-               value="16"
+               step="any"               name="laporan_penduduk.tahun"                data-endpoint="POSTapi-v1-laporan-penduduk"
+               value="2024"
                data-component="body">
     <br>
-<p>Example: <code>16</code></p>
+<p>Tahun. Example: <code>2024</code></p>
                     </div>
                                                                 <div style="margin-left: 14px; clear: unset;">
                         <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
@@ -2067,11 +2142,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
  &nbsp;
                 <input type="text" style="display: none"
-                              name="laporan_penduduk.0.file"                data-endpoint="POSTapi-v1-laporan-penduduk"
+                              name="laporan_penduduk.file"                data-endpoint="POSTapi-v1-laporan-penduduk"
                value="architecto"
                data-component="body">
     <br>
-<p>Example: <code>architecto</code></p>
+<p>File base64 encoded. Example: <code>architecto</code></p>
+                    </div>
+                                                                <div style="margin-left: 14px; clear: unset;">
+                        <b style="line-height: 2;"><code>nama_file</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="laporan_penduduk.nama_file"                data-endpoint="POSTapi-v1-laporan-penduduk"
+               value="penduduk_2024_01.pdf"
+               data-component="body">
+    <br>
+<p>Nama file. Example: <code>penduduk_2024_01.pdf</code></p>
                     </div>
                                     </details>
         </div>
@@ -2730,7 +2817,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@/tmp/php0a1o18tas8hs733xtaR" </code></pre></div>
+    --form "file=@/tmp/phpsh71433hgje8cT1iuj3" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -2773,7 +2860,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/php0a1o18tas8hs733xtaR', 'r')
+                'contents' =&gt; fopen('/tmp/phpsh71433hgje8cT1iuj3', 'r')
             ],
         ],
     ]
@@ -2889,7 +2976,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>File ZIP (max 50MB) berisi data pembangunan. Example: <code>/tmp/php0a1o18tas8hs733xtaR</code></p>
+<p>File ZIP (max 50MB) berisi data pembangunan. Example: <code>/tmp/phpsh71433hgje8cT1iuj3</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -2924,7 +3011,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@/tmp/php7ptaa0hmchcr4oZOGpJ" </code></pre></div>
+    --form "file=@/tmp/phpdpkvteffdsbffpfNeA3" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -2967,7 +3054,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/php7ptaa0hmchcr4oZOGpJ', 'r')
+                'contents' =&gt; fopen('/tmp/phpdpkvteffdsbffpfNeA3', 'r')
             ],
         ],
     ]
@@ -3083,7 +3170,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>File ZIP (max 50MB) berisi data dokumentasi. Example: <code>/tmp/php7ptaa0hmchcr4oZOGpJ</code></p>
+<p>File ZIP (max 50MB) berisi data dokumentasi. Example: <code>/tmp/phpdpkvteffdsbffpfNeA3</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -3340,7 +3427,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@/tmp/php2mfaigp9r31h0RnzVI4" </code></pre></div>
+    --form "file=@/tmp/phplgiuovlnl39je33vchK" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3383,7 +3470,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/php2mfaigp9r31h0RnzVI4', 'r')
+                'contents' =&gt; fopen('/tmp/phplgiuovlnl39je33vchK', 'r')
             ],
         ],
     ]
@@ -3499,7 +3586,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>File ZIP (max 50MB) berisi data program bantuan. Example: <code>/tmp/php2mfaigp9r31h0RnzVI4</code></p>
+<p>File ZIP (max 50MB) berisi data program bantuan. Example: <code>/tmp/phplgiuovlnl39je33vchK</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -3534,7 +3621,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@/tmp/phpe1ti5j584f95cUkfwrI" </code></pre></div>
+    --form "file=@/tmp/phpm89k7fg41e0s0agsYJu" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -3577,7 +3664,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phpe1ti5j584f95cUkfwrI', 'r')
+                'contents' =&gt; fopen('/tmp/phpm89k7fg41e0s0agsYJu', 'r')
             ],
         ],
     ]
@@ -3693,7 +3780,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>File ZIP (max 50MB) berisi data peserta bantuan. Example: <code>/tmp/phpe1ti5j584f95cUkfwrI</code></p>
+<p>File ZIP (max 50MB) berisi data peserta bantuan. Example: <code>/tmp/phpm89k7fg41e0s0agsYJu</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -3938,7 +4025,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --form "tanggal=2024-01-15"\
     --form "nomor=001/SK/2024"\
     --form "nama=SK Kepala Desa"\
-    --form "file=@/tmp/phpfeke7fgb5ikj9a7ZIAW" </code></pre></div>
+    --form "file=@/tmp/phpqq8i4qvbpj3g1JVffej" </code></pre></div>
 
 
 <div class="javascript-example">
@@ -4001,7 +4088,7 @@ $response = $client-&gt;post(
             ],
             [
                 'name' =&gt; 'file',
-                'contents' =&gt; fopen('/tmp/phpfeke7fgb5ikj9a7ZIAW', 'r')
+                'contents' =&gt; fopen('/tmp/phpqq8i4qvbpj3g1JVffej', 'r')
             ],
         ],
     ]
@@ -4180,7 +4267,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                value=""
                data-component="body">
     <br>
-<p>File PDF surat (max 2MB). Example: <code>/tmp/phpfeke7fgb5ikj9a7ZIAW</code></p>
+<p>File PDF surat (max 2MB). Example: <code>/tmp/phpqq8i4qvbpj3g1JVffej</code></p>
         </div>
         </form>
 

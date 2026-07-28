@@ -43,7 +43,13 @@ class LaporanApbdesController extends Controller
      * @group OpenSID Integration
      *
      * @bodyParam desa_id string required Kode desa. Example: 3201012001
-     * @bodyParam laporan_apbdes array required Array objek laporan. Setiap objek berisi: id (int), judul (string), tahun (int), semester (int 1/2), nama_file (string), file (string base64 encoded).
+     * @bodyParam laporan_apbdes object[] required Array objek laporan.
+     * @bodyParam laporan_apbdes.id integer required ID laporan. Example: 1
+     * @bodyParam laporan_apbdes.judul string required Judul laporan. Example: Laporan APBDes 2024
+     * @bodyParam laporan_apbdes.tahun integer required Tahun anggaran. Example: 2024
+     * @bodyParam laporan_apbdes.semester integer required Semester (1/2). Example: 1
+     * @bodyParam laporan_apbdes.nama_file string required Nama file. Example: apbdes_2024_s1.pdf
+     * @bodyParam laporan_apbdes.file string required File base64 encoded.
      * @response {
      *   "status": "success",
      *   "message": "Proses sync data Laporan Apbdes OpenSID sedang berjalan"

@@ -26,6 +26,9 @@
         <testsuite name="ApiKey">
             <directory suffix="Test.php">./tests/ApiKey</directory>
         </testsuite>
+        <testsuite name="Contract">
+            <directory suffix="Test.php">./tests/Contract</directory>
+        </testsuite>
     </testsuites>
     
     <logging>

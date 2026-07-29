@@ -29,6 +29,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 5. [#1673](https://github.com/OpenSID/OpenDK/issues/1673) Contract tests consumer-driven antara OpenSID (consumer) dan OpenDK (provider).
 6. [#1675](https://github.com/OpenSID/OpenDK/issues/1675) Penambahan unit & integration tests untuk lifecycle API key.
 7. [#1676](https://github.com/OpenSID/OpenDK/issues/1676) Workflow integration CI/CD pipeline.
+8. [#1677](https://github.com/OpenSID/OpenDK/issues/1677) Penambahan End-to-end (E2E) dan Performance testing untuk alur sinkronisasi data.
 
 #### CATATAN TAMBAHAN
 

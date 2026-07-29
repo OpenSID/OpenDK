@@ -124,7 +124,7 @@
 
                         $('#lokasi-pembangunan').text(response.data.attributes.lokasi);
                         $('#keterangan').text(response.data.attributes.keterangan);
-                        $('#anggaran').text('Rp. '+Number(response.data.attributes.anggaran).toLocaleString('id-ID') ?? '-');
+                        $('#anggaran').text('Rp. ' + Number(response.data.attributes.anggaran).toLocaleString('id-ID') ?? '-');
                         $('#volume').text(response.data.attributes.volume ?? '-');
                         $('#tahun').text(response.data.attributes.tahun_anggaran ?? '-');
                         $('#pelaksana').text(response.data.attributes.pelaksana_kegiatan ?? '-');

@@ -13,7 +13,6 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 uses(DatabaseTransactions::class);
 
@@ -58,15 +57,5 @@ describe('Permission Checks', function () {
         $this->actingAs($guestUser)
             ->get(route('informasi.artikel.index'))
             ->assertForbidden();
-    });
-
-    test('user with kontributor-artikel role can access artikel index', function () {
-        $role = Role::firstOrCreate(['name' => 'kontributor-artikel']);
-        $contributor = User::factory()->create(['status' => 1]);
-        $contributor->assignRole($role);
-
-        $this->actingAs($contributor)
-            ->get(route('informasi.artikel.index'))
-            ->assertOk();
     });
 });

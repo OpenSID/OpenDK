@@ -1,0 +1,735 @@
+name: Integration Regression
+
+on:
+  pull_request:
+    branches: [master, rilis-dev, dev, bug-fix]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  PHP_VERSION: "8.4"
+  NODE_VERSION: "20"
+  COVERAGE_MIN_THRESHOLD: 30
+  COVERAGE_DROP_THRESHOLD: 2
+
+# ───────────────────────────────────────────────────────────────────────
+# Pipeline DAG
+# ───────────────────────────────────────────────────────────────────────
+#  lint ──────────────────────────────────────┐
+#  unit (coverage) ───────────────────────────┤
+#                                             ├──→ coverage-gate
+#  generate-openapi ──→ contract ─────────────┤
+#                                             ├──→ e2e (gated)
+#  integration (coverage) ────────────────────┘
+# ───────────────────────────────────────────────────────────────────────
+
+jobs:
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 1 — Lint (Laravel Pint)
+  # ═════════════════════════════════════════════════════════════════════
+  # lint:
+  #   name: "Lint (Pint)"
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 5
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+
+  #     - name: Setup PHP
+  #       uses: shivammathur/setup-php@v2
+  #       with:
+  #         php-version: ${{ env.PHP_VERSION }}
+  #         tools: composer:v2
+  #         coverage: none
+
+  #     - name: Get Composer cache directory
+  #       id: composer-cache
+  #       run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+  #     - name: Cache Composer dependencies
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: ${{ steps.composer-cache.outputs.dir }}
+  #         key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+  #         restore-keys: composer-${{ runner.os }}-
+
+  #     - name: Install Composer dependencies
+  #       run: composer install --no-interaction --prefer-dist --no-progress
+
+  #     - name: Run Laravel Pint (dry-run)
+  #       run: vendor/bin/pint --test
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 2 — Unit Tests  (MySQL, fast)
+  # ═════════════════════════════════════════════════════════════════════
+  unit:
+    name: "Unit Tests"
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, exif, iconv
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan jwt:secret
+          chmod -R 777 storage bootstrap/cache
+          touch storage/installed
+          mkdir -p build/logs
+
+      - name: Import test database
+        run: |
+          tar -xzf database/database_test.sql.tar.gz -C database
+          echo "Waiting for MySQL to be ready..."
+          sleep 15
+          mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate --force
+
+      - name: Run Unit Tests with coverage
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: |
+          php artisan test --testsuite=Unit --coverage-clover=build/logs/unit-clover.xml
+
+      - name: Display coverage summary
+        if: always()
+        run: |
+          if [ -f build/logs/unit-coverage.txt ]; then
+            cat build/logs/unit-coverage.txt
+          fi
+
+      - name: Upload unit coverage artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-unit
+          path: build/logs/unit-clover.xml
+          retention-days: 7
+
+      - name: Upload unit JUnit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-unit
+          path: build/report.junit.xml
+          retention-days: 7
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: build/logs/unit-clover.xml
+          flags: unit
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 3 — Generate & Validate OpenAPI Spec (Scribe + MySQL)
+  # ═════════════════════════════════════════════════════════════════════
+  generate-openapi:
+    name: "Generate OpenAPI Spec"
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, exif, iconv, yaml
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan jwt:secret
+          chmod -R 777 storage bootstrap/cache
+          touch storage/installed
+          mkdir -p build/logs
+
+      - name: Import test database
+        run: |
+          tar -xzf database/database_test.sql.tar.gz -C database
+          echo "Waiting for MySQL to be ready..."
+          sleep 15
+          mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate --force
+
+      - name: Generate OpenAPI Spec (Scribe)
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: |
+          php artisan scribe:generate
+          php artisan scribe:copy-openapi
+
+      - name: Validate OpenAPI Spec
+        run: php bin/validate-openapi.php
+
+      - name: Check for unexpected spec diff
+        run: |
+          if git diff --name-only | grep -q 'openapi/openapi.yaml'; then
+            echo "::warning::openapi/openapi.yaml has uncommitted changes. Run 'composer generate-openapi' locally and commit."
+          fi
+
+      - name: Upload OpenAPI spec artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-spec
+          path: openapi/openapi.yaml
+          retention-days: 14
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 4 — Contract Tests (Consumer — OpenSID payloads vs OpenAPI)
+  # ═════════════════════════════════════════════════════════════════════
+  contract:
+    name: "Contract Tests (Consumer)"
+    needs: generate-openapi
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, gd
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Download OpenAPI spec artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: openapi-spec
+          path: openapi/
+
+      - name: Validate OpenAPI spec
+        run: php bin/validate-openapi.php
+
+      - name: Run Contract Tests
+        run: php artisan test --testsuite=Contract
+
+      - name: Upload contract JUnit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-contract
+          path: build/report.junit.xml
+          retention-days: 7
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 5 — Integration / Feature Tests (MySQL, full stack)
+  # ═════════════════════════════════════════════════════════════════════
+  integration:
+    name: "Integration Tests (Provider)"
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, exif, iconv
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan jwt:secret
+          chmod -R 777 storage bootstrap/cache
+          touch storage/installed
+          mkdir -p build/logs
+
+      - name: Import test database
+        run: |
+          tar -xzf database/database_test.sql.tar.gz -C database
+          echo "Waiting for MySQL to be ready..."
+          sleep 15
+          mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
+      - name: Run database migrations
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate --force
+
+      - name: Generate OpenAPI Spec (Scribe)
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: |
+          php artisan scribe:generate
+          php artisan scribe:copy-openapi
+
+      - name: Run Integration Tests with coverage
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: |
+          php artisan test --testsuite=Feature --coverage-clover=build/logs/integration-clover.xml
+
+      - name: Display coverage summary
+        if: always()
+        run: |
+          if [ -f build/logs/integration-coverage.txt ]; then
+            cat build/logs/integration-coverage.txt
+          fi
+
+      - name: Upload integration coverage artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-integration
+          path: build/logs/integration-clover.xml
+          retention-days: 7
+
+      - name: Upload integration JUnit report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: report-integration
+          path: build/report.junit.xml
+          retention-days: 7
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: build/logs/integration-clover.xml
+          flags: integration
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 6 — E2E Tests  (Playwright, optional / gated)
+  # ═════════════════════════════════════════════════════════════════════
+  e2e:
+    name: "E2E Tests (Playwright)"
+    if: >
+      github.event_name == 'push' ||
+      contains(github.event.pull_request.labels.*.name, 'run-e2e')
+    needs: [lint, unit, contract, integration]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl, gd, exif, iconv
+          coverage: none
+          tools: composer:v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          php artisan jwt:secret
+          chmod -R 777 storage bootstrap/cache
+          touch storage/installed
+          mkdir -p build/logs
+
+      - name: Import test database
+        run: |
+          tar -xzf database/database_test.sql.tar.gz -C database
+          echo "Waiting for MySQL to be ready..."
+          sleep 15
+          mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
+      - name: Run E2E Tests (Playwright)
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+          E2E_ADMIN_EMAIL: ${{ secrets.E2E_ADMIN_EMAIL }}
+          E2E_ADMIN_PASSWORD: ${{ secrets.E2E_ADMIN_PASSWORD }}
+          CI: true
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 7 — Coverage Gate  (threshold check)
+  # ═════════════════════════════════════════════════════════════════════
+  coverage-gate:
+    name: "Coverage Gate"
+    needs: [unit, integration]
+    if: always() && needs.unit.result == 'success' && needs.integration.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare coverage directory
+        run: mkdir -p build/logs
+
+      - name: Download unit coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-unit
+          path: build/logs/
+
+      - name: Download integration coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-integration
+          path: build/logs/
+
+      - name: Check coverage threshold
+        run: |
+          php bin/check-coverage.php \
+            --min=${{ env.COVERAGE_MIN_THRESHOLD }} \
+            --drop=${{ env.COVERAGE_DROP_THRESHOLD }} \
+            --unit=build/logs/unit-clover.xml \
+            --integration=build/logs/integration-clover.xml
+
+      - name: Upload combined coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          files: build/logs/unit-clover.xml,build/logs/integration-clover.xml
+          flags: combined
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  # ═════════════════════════════════════════════════════════════════════
+  # Job 8 — CI Summary & Flaky Test Detection
+  # ═════════════════════════════════════════════════════════════════════
+  ci-summary:
+    name: "CI Summary"
+    needs: [lint, unit, generate-openapi, contract, integration, e2e, coverage-gate]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Download all test reports
+        uses: actions/download-artifact@v4
+        if: always()
+        with:
+          path: build/artifacts/
+
+      - name: Generate CI summary
+        if: always()
+        run: |
+          echo "## 🔄 CI Pipeline Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Lint | ${{ needs.lint.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Unit Tests | ${{ needs.unit.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Generate OpenAPI | ${{ needs.generate-openapi.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Contract Tests | ${{ needs.contract.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Integration Tests | ${{ needs.integration.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| E2E Tests | ${{ needs.e2e.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Coverage Gate | ${{ needs.coverage-gate.result }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+      - name: Detect flaky tests from JUnit reports
+        if: always()
+        run: |
+          JUNIT_DIR="build/artifacts"
+          if [ -d "$JUNIT_DIR" ]; then
+            php bin/detect-flaky-tests.php "$JUNIT_DIR"
+          else
+            echo "No JUnit reports found, skipping flaky test detection."
+          fi
+
+      - name: Report test durations
+        if: always()
+        run: |
+          JUNIT_DIR="build/artifacts"
+          echo "## ⏱️ Test Durations" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          FOUND_REPORTS=false
+          for xml in $(find "$JUNIT_DIR" -name "*.xml" -type f 2>/dev/null); do
+            FOUND_REPORTS=true
+            SUITE_NAME=$(basename "$(dirname "$xml")")
+            echo "### ${SUITE_NAME}" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Test | Duration (s) |" >> $GITHUB_STEP_SUMMARY
+            echo "|------|-------------|" >> $GITHUB_STEP_SUMMARY
+
+            php -r '
+              $xml = simplexml_load_file($argv[1]);
+              if (!$xml) exit;
+              foreach ($xml->testsuite as $ts) {
+                  $tests = [];
+                  foreach ($ts->testcase as $tc) {
+                      $name = (string)($tc["classname"] . "::" . $tc["name"]);
+                      $time = (float)($tc["time"] ?? 0);
+                      $tests[] = ["name" => $name, "time" => $time];
+                  }
+                  usort($tests, fn($a, $b) => $b["time"] <=> $a["time"]);
+                  $shown = 0;
+                  foreach (array_slice($tests, 0, 10) as $t) {
+                      if ($t["time"] > 0) {
+                          echo "| `" . $t["name"] . "` | " . round($t["time"], 3) . " |\n";
+                          $shown++;
+                      }
+                  }
+                  if (!$shown) {
+                      echo "| _no timed tests_ | - |\n";
+                  }
+                  $totalTime = array_sum(array_column($tests, "time"));
+                  echo "\n**Total:** " . count($tests) . " tests in " . round($totalTime, 2) . "s\n\n";
+              }
+            ' "$xml" >> $GITHUB_STEP_SUMMARY
+          done
+
+          if [ "$FOUND_REPORTS" = false ]; then
+            echo "_No JUnit reports available._" >> $GITHUB_STEP_SUMMARY
+          fi

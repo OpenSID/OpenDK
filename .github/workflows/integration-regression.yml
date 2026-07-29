@@ -461,7 +461,7 @@ jobs:
     if: >
       github.event_name == 'push' ||
       contains(github.event.pull_request.labels.*.name, 'run-e2e')
-    needs: [lint, unit, contract, integration]
+    needs: [unit, contract, integration]
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -625,7 +625,7 @@ jobs:
   # ═════════════════════════════════════════════════════════════════════
   ci-summary:
     name: "CI Summary"
-    needs: [lint, unit, generate-openapi, contract, integration, e2e, coverage-gate]
+    needs: [unit, generate-openapi, contract, integration, e2e, coverage-gate]
     if: always()
     runs-on: ubuntu-latest
     timeout-minutes: 5

@@ -28,6 +28,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 4. [#1674](https://github.com/OpenSID/OpenDK/issues/1674) Generate & publish OpenAPI spec untuk OpenDK + dokumentasi runbook integrasi.
 5. [#1673](https://github.com/OpenSID/OpenDK/issues/1673) Contract tests consumer-driven antara OpenSID (consumer) dan OpenDK (provider).
 6. [#1675](https://github.com/OpenSID/OpenDK/issues/1675) Penambahan unit & integration tests untuk lifecycle API key.
+7. [#1676](https://github.com/OpenSID/OpenDK/issues/1676) Workflow integration CI/CD pipeline.
 
 #### CATATAN TAMBAHAN
 

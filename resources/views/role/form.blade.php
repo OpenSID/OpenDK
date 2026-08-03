@@ -24,19 +24,10 @@
                 @php
                     $no = 1;
                     $actions = ['view', 'create', 'edit', 'delete', 'export', 'import'];
-                    
+
                     // Modul-modul yang read-only saat mode Database Gabungan aktif
                     $isGabungan = ($settings['sinkronisasi_database_gabungan'] ?? null) == 1;
-                    $gabunganModules = [
-                        'access.data.data_desa',
-                        'access.data.anggaran_desa',
-                        'access.data.laporan_penduduk',
-                        'access.data.laporan_apbdes',
-                        'access.data.penduduk',
-                        'access.data.keluarga',
-                        'access.data.pembangunan',
-                        'access.data.program_bantuan'
-                    ];
+                    $gabunganModules = ['access.data.data_desa', 'access.data.anggaran_desa', 'access.data.laporan_penduduk', 'access.data.laporan_apbdes', 'access.data.penduduk', 'access.data.keluarga', 'access.data.pembangunan', 'access.data.program_bantuan'];
                 @endphp
                 @foreach ($permissions as $key => $permission)
                     @if (isset($permission['parent_id']) && $permission['parent_id'] == 0)
@@ -47,7 +38,7 @@
                             } else {
                                 $permission_val = 0;
                             }
-                            
+
                             // Cek apakah ini modul gabungan
                             $isModulGabungan = $isGabungan && in_array($permission['name'] ?? '', $gabunganModules);
                         @endphp
@@ -81,7 +72,7 @@
                                     if ($actionChild && isset($role)) {
                                         $actionChecked = permission_val($role->id, $actionChild['slug'] ?? $actionChild['name']);
                                     }
-                                    
+
                                     // Sembunyikan operasi manipulasi data (CRUD & Import) jika modul gabungan aktif
                                     $hideAction = $isModulGabungan && in_array($action, ['create', 'edit', 'delete', 'import']);
                                 @endphp

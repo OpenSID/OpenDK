@@ -93,7 +93,7 @@
 
                 let slidesHtml = '';
                 slides.forEach(slide => {
-                    const imageSrc = slide.gambar && slide.gambar.startsWith('http') ? slide.gambar : (slide.gambar ? '{{ asset("") }}' + slide.gambar : '{{ asset("img/placeholder.jpg") }}');
+                    const imageSrc = slide.gambar && slide.gambar.startsWith('http') ? slide.gambar : (slide.gambar ? '{{ asset('') }}' + slide.gambar : '{{ asset('img/placeholder.jpg') }}');
                     slidesHtml += '<div class="swiper-slide">' +
                         '<div class="slider-class">' +
                         '<div class="legend"></div>' +
@@ -142,7 +142,7 @@
                     const iconClass = getSosmedIcon(sosmed.nama);
                     sosmed.logo = sosmed.logo ? sosmed.logo.replace(/\/+img\//, 'img/') : '';
 
-                    const logoPath = sosmed.logo ? (sosmed.logo.startsWith('http') ? sosmed.logo : '{{ asset("") }}' + sosmed.logo) : '';
+                    const logoPath = sosmed.logo ? (sosmed.logo.startsWith('http') ? sosmed.logo : '{{ asset('') }}' + sosmed.logo) : '';
                     socialHtml += '<li style="margin: 4px">' +
                         '<a href="' + (sosmed.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                         '<img src="' + logoPath + '" class="logo-medsos" alt="Media Sosial Image">' +
@@ -200,7 +200,7 @@
                 }
 
                 let eventsHtml = '';
-                
+
                 const processEvent = (event) => {
                     const statusClass = event.status === 'OPEN' ? 'bg-maroon' : 'bg-gray';
                     const eventDate = event.start ? new Date(event.start).toLocaleDateString('id-ID', {
@@ -251,7 +251,7 @@
 
                 // First set of items
                 mediaTerkait.forEach(data => {
-                    const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset("storage/media_terkait") }}/' + data.logo) : '';
+                    const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset('storage/media_terkait') }}/' + data.logo) : '';
                     mediaHtml += '<li>' +
                         '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                         '<img src="' + logoPath + '" alt="Logo">' +
@@ -262,7 +262,7 @@
                 // Duplicate for seamless loop if more than 1 item
                 if (jumlahItem > 1) {
                     mediaTerkait.forEach(data => {
-                        const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset("storage/media_terkait") }}/' + data.logo) : '';
+                        const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset('storage/media_terkait') }}/' + data.logo) : '';
                         mediaHtml += '<li>' +
                             '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                             '<img src="' + logoPath + '" alt="Logo">' +
@@ -282,7 +282,7 @@
 
                 let socialHtml = '<ul style="list-style-type: none; display:flex; padding: 0;">';
                 medsos.forEach(data => {
-                    const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset("") }}' + data.logo) : '';
+                    const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset('') }}' + data.logo) : '';
                     socialHtml += '<li style="margin: 4px">' +
                         '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                         '<img src="' + logoPath + '" class="logo-medsos" alt="Media Sosial Image">' +
@@ -301,7 +301,7 @@
                 let sinergiHtml = '<div class="row" style="margin: 0">';
                 sinergi.forEach(data => {
                     data.gambar = data.gambar ? data.gambar.replace(/\/+img\//, 'img/') : '';
-                    const gambarPath = data.gambar ? (data.gambar.startsWith('http') ? data.gambar : '{{ asset("") }}' + data.gambar) : '';
+                    const gambarPath = data.gambar ? (data.gambar.startsWith('http') ? data.gambar : '{{ asset('') }}' + data.gambar) : '';
                     sinergiHtml += '<div class="col-md-6" style="padding: 4px;">' +
                         '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                         '<img src="' + gambarPath + '" class="logo-sinergi-program" alt="Sinergi Program Image">' +
@@ -338,7 +338,7 @@
                     '<div class="swiper-wrapper">';
 
                 pengurus.forEach(item => {
-                    const fotoPath = item.foto ? item.foto : '{{ asset("img/no-profile.png") }}';
+                    const fotoPath = item.foto ? item.foto : '{{ asset('img/no-profile.png') }}';
 
                     const jabatanNama = item.jabatan && typeof item.jabatan === 'object' ? item.jabatan.nama : (item.jabatan_nama || '');
 

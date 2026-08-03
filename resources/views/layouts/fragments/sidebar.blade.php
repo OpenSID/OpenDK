@@ -25,21 +25,8 @@
                     </a>
                 </li>
 
-                @canany([
-                    'access.informasi',
-                    'access.informasi.prosedur',
-                    'access.informasi.regulasi',
-                    'access.informasi.potensi',
-                    'access.informasi.event',
-                    'access.informasi.artikel',
-                    'access.informasi.artikel_kategori',
-                    'access.informasi.komentar_artikel',
-                    'access.informasi.faq',
-                    'access.informasi.form_dokumen',
-                    'access.informasi.media_sosial',
-                    'access.informasi.media_terkait',
-                    'access.informasi.sinergi_program',
-                ])
+                @canany(['access.informasi', 'access.informasi.prosedur', 'access.informasi.regulasi', 'access.informasi.potensi', 'access.informasi.event', 'access.informasi.artikel', 'access.informasi.artikel_kategori', 'access.informasi.komentar_artikel', 'access.informasi.faq',
+                    'access.informasi.form_dokumen', 'access.informasi.media_sosial', 'access.informasi.media_terkait', 'access.informasi.sinergi_program'])
                     <li class="treeview {{ Request::is(['informasi/*']) ? 'active' : '' }}">
                         <a href="#"><i class="fa fa-archive"></i> <span>Informasi</span>
                             <span class="pull-right-container">
@@ -151,14 +138,7 @@
                                 <i class="fa fa-angle-left pull-right"></i></span>
                         </a>
                         <ul class="treeview-menu">
-                            @canany([
-                                'access.data.profil',
-                                'access.data.data_umum',
-                                'access.data.data_desa',
-                                'access.data.data_sarana',
-                                'access.data.pengurus',
-                                'access.data.jabatan',
-                            ])
+                            @canany(['access.data.profil', 'access.data.data_umum', 'access.data.data_desa', 'access.data.data_sarana', 'access.data.pengurus', 'access.data.jabatan'])
                                 <li class="treeview {{ Request::is(['data/profil*', 'data/data-umum*', 'data/data-desa*', 'data/data-sarana*', 'data/jabatan*', 'data/pengurus*']) ? 'active' : '' }}">
                                     <a href="#"><i class="fa fa-circle-o"></i>{{ $sebutan_wilayah }}
                                         <span class="pull-right-container">
@@ -528,14 +508,14 @@
                 @endcan
             @endif
             <li class="header">VISITOR COUNTER</li>
-                <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
-                    <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
-                        <span class="pull-right-container">
-                            {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
-                            <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>
-                        </span>
-                    </a>
-                </li>
+            <li class="{{ Request::is(['counter']) ? 'active' : '' }}">
+                <a href="@if (isset($user)) {{ route('counter.index') }}@else {{ '#' }} @endif" title="Jumlah Pengunjung"><i class="fa fa-bullhorn"></i> <span>Total Pengunjung</span>
+                    <span class="pull-right-container">
+                        {{-- <small class="label pull-right bg-red">{{ Counter::allVisitors() }}</small> --}}
+                        <small class="label pull-right bg-red">{{ \App\Models\Visitor::countAllVisitors() }}</small>
+                    </span>
+                </a>
+            </li>
 
         </ul>
         <!-- /.sidebar-menu -->

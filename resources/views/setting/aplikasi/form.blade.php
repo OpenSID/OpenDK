@@ -11,30 +11,29 @@
     <label for="value" class="control-label col-md-4 col-sm-3 col-xs-12">Isi</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
         @if ($aplikasi->type == 'textarea')
-            @php
-                $attribute = ['class' => 'form-control', 'required' => true, 'id' => 'value', 'data-testid' => 'setting-value-input'];
-                $option = json_decode($aplikasi->option, 1);
-                if ($option) {
-                    $attribute = array_merge($attribute, $option);
-                }
-            @endphp
-            {!! html()->textarea('value')->value(old('value', $aplikasi->value))->attributes($attribute) !!}
-            @includeWhen($aplikasi->key == 'api_key_opendk', 'setting.aplikasi.generate_key')
+        @php
+        $attribute = ['class' => 'form-control', 'required' => true, 'id' => 'value', 'data-testid' => 'setting-value-input'];
+        $option = json_decode($aplikasi->option, 1);
+        if ($option) {
+        $attribute = array_merge($attribute, $option);
+        }
+        @endphp
+        {!! html()->textarea('value')->value(old('value', $aplikasi->value))->attributes($attribute) !!}
+        @includeWhen($aplikasi->key == 'api_key_opendk', 'setting.aplikasi.generate_key')
         @elseif ($aplikasi->type == 'number')
-            {!! html()->number('value')->value(old('value', $aplikasi->value))->class('form-control')->required()->id('value')->attribute('data-testid', 'setting-value-input') !!}
+        {!! html()->number('value')->value(old('value', $aplikasi->value))->class('form-control')->required()->id('value')->attribute('data-testid', 'setting-value-input') !!}
         @elseif ($aplikasi->type == 'boolean')
-            {!! html()->select('value', ['1' => 'Aktif', '0' => 'Tidak Aktif'])->value(old('value', $aplikasi->value))->class('form-control') !!}
+        {!! html()->select('value', ['1' => 'Aktif', '0' => 'Tidak Aktif'])->value(old('value', $aplikasi->value))->class('form-control') !!}
         @elseif ($aplikasi->type == 'boolean_peta')
-            {!! html()->select('value', [
-                    'OpenStreetMap' => 'OpenStreetMap',
-                    'OpenStreetMap H.O.T.' => 'OpenStreetMap
-                                                                                                                                                                                                                    H.O.T.',
-                    'Mapbox Streets' => 'Mapbox Streets',
-                    'Mapbox Satellite' => 'Mapbox Satellite',
-                    'Mapbox Satellite-Streets' => 'Mapbox Satellite-Streets',
-                ])->value(old('value', $aplikasi->value))->class('form-control') !!}
+        {!! html()->select('value', [
+        'OpenStreetMap' => 'OpenStreetMap',
+        'OpenStreetMap H.O.T.' => 'OpenStreetMap H.O.T.',
+        'Mapbox Streets' => 'Mapbox Streets',
+        'Mapbox Satellite' => 'Mapbox Satellite',
+        'Mapbox Satellite-Streets' => 'Mapbox Satellite-Streets',
+        ])->value(old('value', $aplikasi->value))->class('form-control') !!}
         @else
-            {!! html()->text('value')->value(old('value', $aplikasi->value))->class('form-control')->required()->id('value')->attribute('data-testid', 'setting-value-input') !!}
+        {!! html()->text('value')->value(old('value', $aplikasi->value))->class('form-control')->required()->id('value')->attribute('data-testid', 'setting-value-input') !!}
         @endif
         <small></small>
     </div>

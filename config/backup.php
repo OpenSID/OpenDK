@@ -26,6 +26,8 @@ return [
                     base_path('storage/debugbar'),
                     base_path('storage/framework'),
                     base_path('storage/logs'),
+                    base_path('storage/app/backup-storage'),
+                    base_path('storage/app/backup-temp'),
                 ],
 
                 /*
@@ -43,7 +45,7 @@ return [
                  * Set to `null` to include complete absolute path
                  * Example: base_path()
                  */
-                'relative_path' => null,
+                'relative_path' => base_path(),
             ],
 
             /*

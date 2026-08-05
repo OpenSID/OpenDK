@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>OpenDK API Documentation</title>
+    <title>OpenDK Kecamatan API Documentation</title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
 
@@ -28,20 +28,24 @@
         body .content .javascript-example code {
             display: none;
         }
+
+        body .content .php-example code {
+            display: none;
+        }
     </style>
 
     <script>
-        var tryItOutBaseUrl = "http://opendk.test/";
+        var tryItOutBaseUrl = "http://localhost:8000";
         var useCsrf = Boolean();
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="{{ asset('/vendor/scribe/js/tryitout-5.6.0.js') }}"></script>
+    <script src="{{ asset('/vendor/scribe/js/tryitout-5.11.0.js') }}"></script>
 
-    <script src="{{ asset('/vendor/scribe/js/theme-default-5.6.0.js') }}"></script>
+    <script src="{{ asset('/vendor/scribe/js/theme-default-5.11.0.js') }}"></script>
 
 </head>
 
-<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;]">
+<body data-languages="[&quot;bash&quot;,&quot;javascript&quot;,&quot;php&quot;]">
 
     <a href="#" id="nav-button">
         <span>
@@ -54,6 +58,7 @@
         <div class="lang-selector">
             <button type="button" class="lang-button" data-language-name="bash">bash</button>
             <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+            <button type="button" class="lang-button" data-language-name="php">php</button>
         </div>
 
         <div class="search">
@@ -71,187 +76,87 @@
                     <a href="#authenticating-requests">Authenticating requests</a>
                 </li>
             </ul>
+            <ul id="tocify-header-autentikasi" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="autentikasi">
+                    <a href="#autentikasi">Autentikasi</a>
+                </li>
+                <ul id="tocify-subheader-autentikasi" class="tocify-subheader">
+                    <li class="tocify-item level-2" data-unique="autentikasi-POSTapi-v1-auth-login">
+                        <a href="#autentikasi-POSTapi-v1-auth-login">Login</a>
+                    </li>
+                    <li class="tocify-item level-2" data-unique="autentikasi-POSTapi-v1-auth-logout">
+                        <a href="#autentikasi-POSTapi-v1-auth-logout">Log the user out (Invalidate the token).</a>
+                    </li>
+                    <li class="tocify-item level-2" data-unique="autentikasi-POSTapi-v1-auth-refresh">
+                        <a href="#autentikasi-POSTapi-v1-auth-refresh">Refresh a token.</a>
+                    </li>
+                    <li class="tocify-item level-2" data-unique="autentikasi-GETapi-v1-auth-me">
+                        <a href="#autentikasi-GETapi-v1-auth-me">Get the authenticated User.</a>
+                    </li>
+                </ul>
+            </ul>
             <ul id="tocify-header-endpoints" class="tocify-header">
                 <li class="tocify-item level-1" data-unique="endpoints">
                     <a href="#endpoints">Endpoints</a>
                 </li>
                 <ul id="tocify-subheader-endpoints" class="tocify-subheader">
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-auth-login">
-                        <a href="#endpoints-POSTapi-v1-auth-login">Get a JWT via given credentials.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-auth-logout">
-                        <a href="#endpoints-POSTapi-v1-auth-logout">Log the user out (Invalidate the token).</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-auth-refresh">
-                        <a href="#endpoints-POSTapi-v1-auth-refresh">Refresh a token.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-auth-me">
-                        <a href="#endpoints-GETapi-v1-auth-me">Get the authenticated User.</a>
-                    </li>
                     <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-test">
                         <a href="#endpoints-GETapi-v1-test">GET api/v1/test</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-penduduk">
-                        <a href="#endpoints-POSTapi-v1-penduduk">Hapus Data Penduduk Sesuai OpenSID</a>
+                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-penduduk-test">
+                        <a href="#endpoints-POSTapi-v1-penduduk-test">Test endpoint untuk verifikasi API berjalan.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-penduduk-storedata">
-                        <a href="#endpoints-POSTapi-v1-penduduk-storedata">Tambah dan Ubah Data dan Foto Penduduk Sesuai OpenSID</a>
+                </ul>
+            </ul>
+            <ul id="tocify-header-opensid-integration" class="tocify-header">
+                <li class="tocify-item level-1" data-unique="opensid-integration">
+                    <a href="#opensid-integration">OpenSID Integration</a>
+                </li>
+                <ul id="tocify-subheader-opensid-integration" class="tocify-subheader">
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-penduduk">
+                        <a href="#opensid-integration-POSTapi-v1-penduduk">Hapus data penduduk secara batch (via JSON).</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-laporan-apbdes">
-                        <a href="#endpoints-POSTapi-v1-laporan-apbdes">Tambah / Ubah Data Apbdes Sesuai OpenSID</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-penduduk-storedata">
+                        <a href="#opensid-integration-POSTapi-v1-penduduk-storedata">Sinkronisasi data dan foto penduduk via ZIP dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-laporan-penduduk">
-                        <a href="#endpoints-POSTapi-v1-laporan-penduduk">Tambah / Ubah Data Laporan Penduduk Dari OpenSID</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-laporan-apbdes">
+                        <a href="#opensid-integration-POSTapi-v1-laporan-apbdes">Sinkronisasi data APBDes dari OpenSID (JSON + base64 file).</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-pesan">
-                        <a href="#endpoints-POSTapi-v1-pesan">POST api/v1/pesan</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-laporan-penduduk">
+                        <a href="#opensid-integration-POSTapi-v1-laporan-penduduk">Sinkronisasi laporan penduduk dari OpenSID (JSON + base64 file).</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-pesan-getpesan">
-                        <a href="#endpoints-POSTapi-v1-pesan-getpesan">POST api/v1/pesan/getpesan</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-pesan">
+                        <a href="#opensid-integration-POSTapi-v1-pesan">Kirim pesan baru atau balas pesan dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-pesan-detail">
-                        <a href="#endpoints-GETapi-v1-pesan-detail">GET api/v1/pesan/detail</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-pesan-getpesan">
+                        <a href="#opensid-integration-POSTapi-v1-pesan-getpesan">Ambil daftar pesan untuk desa tertentu.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-pembangunan">
-                        <a href="#endpoints-POSTapi-v1-pembangunan">Tambah Data Pembangunan Sesuai OpenSID</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-GETapi-v1-pesan-detail">
+                        <a href="#opensid-integration-GETapi-v1-pesan-detail">Lihat detail percakapan pesan.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-pembangunan-dokumentasi">
-                        <a href="#endpoints-POSTapi-v1-pembangunan-dokumentasi">POST api/v1/pembangunan/dokumentasi</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-pembangunan">
+                        <a href="#opensid-integration-POSTapi-v1-pembangunan">Sinkronisasi data pembangunan via ZIP dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-identitas-desa">
-                        <a href="#endpoints-POSTapi-v1-identitas-desa">POST api/v1/identitas-desa</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-pembangunan-dokumentasi">
+                        <a href="#opensid-integration-POSTapi-v1-pembangunan-dokumentasi">Sinkronisasi dokumentasi pembangunan via ZIP dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-program-bantuan">
-                        <a href="#endpoints-POSTapi-v1-program-bantuan">POST api/v1/program-bantuan</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-identitas-desa">
+                        <a href="#opensid-integration-POSTapi-v1-identitas-desa">Sinkronisasi identitas desa dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-program-bantuan-peserta">
-                        <a href="#endpoints-POSTapi-v1-program-bantuan-peserta">POST api/v1/program-bantuan/peserta</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-program-bantuan">
+                        <a href="#opensid-integration-POSTapi-v1-program-bantuan">Sinkronisasi data program bantuan via ZIP dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-surat">
-                        <a href="#endpoints-GETapi-v1-surat">index</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-program-bantuan-peserta">
+                        <a href="#opensid-integration-POSTapi-v1-program-bantuan-peserta">Sinkronisasi data peserta program bantuan via ZIP dari OpenSID.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-v1-surat-kirim">
-                        <a href="#endpoints-POSTapi-v1-surat-kirim">store</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-GETapi-v1-surat">
+                        <a href="#opensid-integration-GETapi-v1-surat">Daftar surat untuk desa tertentu.</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-v1-surat-download">
-                        <a href="#endpoints-GETapi-v1-surat-download">index</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-POSTapi-v1-surat-kirim">
+                        <a href="#opensid-integration-POSTapi-v1-surat-kirim">Kirim surat dari OpenSID ke OpenDK (TTE).</a>
                     </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-artikel">
-                        <a href="#endpoints-GETapi-frontend-v1-artikel">Display a listing of articles with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-frontend-v1-artikel--id--comments">
-                        <a href="#endpoints-POSTapi-frontend-v1-artikel--id--comments">Store a new comment for an article.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-artikel-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-artikel-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-kategori">
-                        <a href="#endpoints-GETapi-frontend-v1-kategori">Display a listing of articles with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-kategori-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-kategori-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-website">
-                        <a href="#endpoints-GETapi-frontend-v1-website">GET api/frontend/v1/website</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-website-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-website-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-profil">
-                        <a href="#endpoints-GETapi-frontend-v1-profil">Display a listing of profiles with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-profil-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-profil-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-desa">
-                        <a href="#endpoints-GETapi-frontend-v1-desa">Display a listing of desa with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-desa-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-desa-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-penduduk">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-penduduk">Display statistik penduduk with dashboard and chart data.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-penduduk-listYear">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-penduduk-listYear">GET api/frontend/v1/statistik-penduduk/listYear</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-komplain">
-                        <a href="#endpoints-GETapi-frontend-v1-komplain">Display a listing of complaints.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-POSTapi-frontend-v1-komplain">
-                        <a href="#endpoints-POSTapi-frontend-v1-komplain">Store a newly created complaint.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-komplain-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-komplain-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-galeri">
-                        <a href="#endpoints-GETapi-frontend-v1-galeri">Display a listing of galeri with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-galeri-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-galeri-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-album">
-                        <a href="#endpoints-GETapi-frontend-v1-album">Display a listing of album with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-album-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-album-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-potensi">
-                        <a href="#endpoints-GETapi-frontend-v1-potensi">Display a listing of potensi with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-potensi-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-potensi-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-form-dokumen">
-                        <a href="#endpoints-GETapi-frontend-v1-form-dokumen">Display a listing of form dokumen with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-form-dokumen-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-form-dokumen-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-regulasi">
-                        <a href="#endpoints-GETapi-frontend-v1-regulasi">Display a listing of regulasi with advanced filtering and sorting.</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-DELETEapi-frontend-v1-regulasi-cache--prefix--">
-                        <a href="#endpoints-DELETEapi-frontend-v1-regulasi-cache--prefix--">Remove all cache entries with the specified prefix</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan">GET api/frontend/v1/statistik/chart-tingkat-pendidikan</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-putus-sekolah">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-putus-sekolah">GET api/frontend/v1/statistik/chart-putus-sekolah</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-fasilitas-paud">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-fasilitas-paud">GET api/frontend/v1/statistik/chart-fasilitas-paud</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-akiakb">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-akiakb">GET api/frontend/v1/statistik/chart-akiakb</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-imunisasi">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-imunisasi">GET api/frontend/v1/statistik/chart-imunisasi</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-penyakit">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-penyakit">GET api/frontend/v1/statistik/chart-penyakit</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-sanitasi">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-sanitasi">GET api/frontend/v1/statistik/chart-sanitasi</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-penduduk">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-penduduk">GET api/frontend/v1/statistik/chart-penduduk</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-keluarga">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-keluarga">GET api/frontend/v1/statistik/chart-keluarga</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-anggaran-realisasi">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-anggaran-realisasi">GET api/frontend/v1/statistik/chart-anggaran-realisasi</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-statistik-chart-anggaran-desa">
-                        <a href="#endpoints-GETapi-frontend-v1-statistik-chart-anggaran-desa">GET api/frontend/v1/statistik/chart-anggaran-desa</a>
-                    </li>
-                    <li class="tocify-item level-2" data-unique="endpoints-GETapi-frontend-v1-faq">
-                        <a href="#endpoints-GETapi-frontend-v1-faq">Display a listing of FAQ with advanced filtering and sorting.</a>
+                    <li class="tocify-item level-2" data-unique="opensid-integration-GETapi-v1-surat-download">
+                        <a href="#opensid-integration-GETapi-v1-surat-download">Download file surat dalam format PDF.</a>
                     </li>
                 </ul>
             </ul>
@@ -264,7 +169,7 @@
         </ul>
 
         <ul class="toc-footer" id="last-updated">
-            <li>Last updated: February 18, 2026</li>
+            <li>Last updated: July 20, 2026</li>
         </ul>
     </div>
 
@@ -281,33 +186,40 @@
 You can switch the language used with the tabs at the top right (or from the nav menu at the top left on mobile).&lt;/aside&gt;</code></pre>
 
             <h1 id="authenticating-requests">Authenticating requests</h1>
-            <p>This API is not authenticated.</p>
+            <p>To authenticate requests, include an <strong><code>Authorization</code></strong> header with the value <strong><code>"Bearer {YOUR_AUTH_KEY}"</code></strong>.</p>
+            <p>All authenticated endpoints are marked with a <code>requires authentication</code> badge in the documentation below.</p>
+            <p>Anda dapat memperoleh API key dari halaman pengaturan OpenDK. Key dikirim sebagai Bearer token di header Authorization.</p>
 
-            <h1 id="endpoints">Endpoints</h1>
+            <h1 id="autentikasi">Autentikasi</h1>
 
-            <h2 id="endpoints-POSTapi-v1-auth-login">Get a JWT via given credentials.</h2>
+            <p>Endpoint untuk login, logout, refresh token JWT, dan informasi user.</p>
+
+            <h2 id="autentikasi-POSTapi-v1-auth-login">Login</h2>
 
             <p>
             </p>
+
+            <p>Mendapatkan JWT token dengan credentials email dan password.
+                Hanya user dengan permission <code>access.data</code>, <code>access.api</code>, atau <code>access.setting</code> yang diizinkan.</p>
 
             <span id="example-requests-POSTapi-v1-auth-login">
                 <blockquote>Example request:</blockquote>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/auth/login" \
+    "http://localhost:8000/api/v1/auth/login" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"email\": \"gbailey@example.net\",
-    \"password\": \"architecto\"
+    \"email\": \"admin@mail.com\",
+    \"password\": \"password\"
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/auth/login"
+    "http://localhost:8000/api/v1/auth/login"
 );
 
 const headers = {
@@ -316,8 +228,8 @@ const headers = {
 };
 
 let body = {
-    "email": "gbailey@example.net",
-    "password": "architecto"
+    "email": "admin@mail.com",
+    "password": "password"
 };
 
 fetch(url, {
@@ -327,9 +239,49 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/auth/login';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'email' =&gt; 'admin@mail.com',
+            'password' =&gt; 'password',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-auth-login">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;access_token&quot;: &quot;eyJ0eXAiOiJKV1Qi...&quot;,
+    &quot;token_type&quot;: &quot;bearer&quot;,
+    &quot;expires_in&quot;: 3600
+}</code>
+ </pre>
+                <blockquote>
+                    <p>Example response (401):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Pengguna tidak dikenali&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-auth-login" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-auth-login"></span>:
@@ -393,24 +345,25 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="email" data-endpoint="POSTapi-v1-auth-login" value="gbailey@example.net" data-component="body">
+                    <input type="text" style="display: none" name="email" data-endpoint="POSTapi-v1-auth-login" value="admin@mail.com" data-component="body">
                     <br>
-                    <p>Isian value harus berupa alamat surel yang valid. Example: <code>gbailey@example.net</code></p>
+                    <p>Email pengguna. Example: <code>admin@mail.com</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>password</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="password" data-endpoint="POSTapi-v1-auth-login" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="password" data-endpoint="POSTapi-v1-auth-login" value="password" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Password pengguna. Example: <code>password</code></p>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-auth-logout">Log the user out (Invalidate the token).</h2>
+            <h2 id="autentikasi-POSTapi-v1-auth-logout">Log the user out (Invalidate the token).</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-auth-logout">
@@ -418,25 +371,45 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/auth/logout" \
+    "http://localhost:8000/api/v1/auth/logout" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/auth/logout"
+    "http://localhost:8000/api/v1/auth/logout"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "POST",
     headers,
 }).then(response =&gt; response.json());</code></pre>
+                </div>
+
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/auth/logout';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
                 </div>
 
             </span>
@@ -461,7 +434,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-auth-logout"
                 data-method="POST"
                 data-path="api/v1/auth/logout"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -482,6 +455,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-auth-logout"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -501,9 +491,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-auth-refresh">Refresh a token.</h2>
+            <h2 id="autentikasi-POSTapi-v1-auth-refresh">Refresh a token.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-auth-refresh">
@@ -511,25 +502,45 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/auth/refresh" \
+    "http://localhost:8000/api/v1/auth/refresh" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/auth/refresh"
+    "http://localhost:8000/api/v1/auth/refresh"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "POST",
     headers,
 }).then(response =&gt; response.json());</code></pre>
+                </div>
+
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/auth/refresh';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
                 </div>
 
             </span>
@@ -554,7 +565,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-auth-refresh"
                 data-method="POST"
                 data-path="api/v1/auth/refresh"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -575,6 +586,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-auth-refresh"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -594,9 +622,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-GETapi-v1-auth-me">Get the authenticated User.</h2>
+            <h2 id="autentikasi-GETapi-v1-auth-me">Get the authenticated User.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-GETapi-v1-auth-me">
@@ -604,20 +633,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/v1/auth/me" \
+    --get "http://localhost:8000/api/v1/auth/me" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/auth/me"
+    "http://localhost:8000/api/v1/auth/me"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -625,11 +657,28 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/auth/me';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-GETapi-v1-auth-me">
                 <blockquote>
-                    <p>Example response (404):</p>
+                    <p>Example response (401):</p>
                 </blockquote>
                 <details class="annotation">
                     <summary style="cursor: pointer;">
@@ -637,13 +686,15 @@ fetch(url, {
                     </summary>
                     <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 59
 access-control-allow-origin: *
  </code></pre>
                 </details>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/v1/auth/me could not be found.&quot;
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
 }</code>
  </pre>
             </span>
@@ -665,7 +716,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-GETapi-v1-auth-me"
                 data-method="GET"
                 data-path="api/v1/auth/me"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -686,6 +737,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="GETapi-v1-auth-me"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -705,9 +773,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
+            <h1 id="endpoints">Endpoints</h1>
+
             <h2 id="endpoints-GETapi-v1-test">GET api/v1/test</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-GETapi-v1-test">
@@ -715,20 +786,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/v1/test" \
+    --get "http://localhost:8000/api/v1/test" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/test"
+    "http://localhost:8000/api/v1/test"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -736,11 +810,28 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/test';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-GETapi-v1-test">
                 <blockquote>
-                    <p>Example response (404):</p>
+                    <p>Example response (401):</p>
                 </blockquote>
                 <details class="annotation">
                     <summary style="cursor: pointer;">
@@ -748,13 +839,15 @@ fetch(url, {
                     </summary>
                     <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 58
 access-control-allow-origin: *
  </code></pre>
                 </details>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/v1/test could not be found.&quot;
+    &quot;message&quot;: &quot;Unauthenticated.&quot;
 }</code>
  </pre>
             </span>
@@ -776,7 +869,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-GETapi-v1-test"
                 data-method="GET"
                 data-path="api/v1/test"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -797,6 +890,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="GETapi-v1-test"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -816,9 +926,153 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-penduduk">Hapus Data Penduduk Sesuai OpenSID</h2>
+            <h2 id="endpoints-POSTapi-v1-penduduk-test">Test endpoint untuk verifikasi API berjalan.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
+            </p>
+
+            <span id="example-requests-POSTapi-v1-penduduk-test">
+                <blockquote>Example request:</blockquote>
+
+                <div class="bash-example">
+                    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/api/v1/penduduk/test" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre>
+                </div>
+
+                <div class="javascript-example">
+                    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/v1/penduduk/test"
+);
+
+const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre>
+                </div>
+
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/penduduk/test';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
+            </span>
+
+            <span id="example-responses-POSTapi-v1-penduduk-test">
+            </span>
+            <span id="execution-results-POSTapi-v1-penduduk-test" hidden>
+                <blockquote>Received response<span id="execution-response-status-POSTapi-v1-penduduk-test"></span>:
+                </blockquote>
+                <pre class="json"><code id="execution-response-content-POSTapi-v1-penduduk-test"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+            </span>
+            <span id="execution-error-POSTapi-v1-penduduk-test" hidden>
+                <blockquote>Request failed with error:</blockquote>
+                <pre><code id="execution-error-message-POSTapi-v1-penduduk-test">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+            </span>
+            <form
+                id="form-POSTapi-v1-penduduk-test"
+                data-method="POST"
+                data-path="api/v1/penduduk/test"
+                data-authed="1"
+                data-hasfiles="0"
+                data-isarraybody="0"
+                autocomplete="off"
+                onsubmit="event.preventDefault(); executeTryOut('POSTapi-v1-penduduk-test', this);"
+            >
+                <h3>
+                    Request&nbsp;&nbsp;&nbsp;
+                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-v1-penduduk-test" onclick="tryItOut('POSTapi-v1-penduduk-test');">Try it out ⚡
+                    </button>
+                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-v1-penduduk-test" onclick="cancelTryOut('POSTapi-v1-penduduk-test');" hidden>Cancel 🛑
+                    </button>&nbsp;&nbsp;
+                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-v1-penduduk-test" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
+                    </button>
+                </h3>
+                <p>
+                    <small class="badge badge-black">POST</small>
+                    <b><code>api/v1/penduduk/test</code></b>
+                </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-penduduk-test"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="Content-Type" data-endpoint="POSTapi-v1-penduduk-test" value="application/json" data-component="header">
+                    <br>
+                    <p>Example: <code>application/json</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="Accept" data-endpoint="POSTapi-v1-penduduk-test" value="application/json" data-component="header">
+                    <br>
+                    <p>Example: <code>application/json</code></p>
+                </div>
+            </form>
+
+            <h1 id="opensid-integration">OpenSID Integration</h1>
+
+            <p>Kontrak ZIP:</p>
+            <ul>
+                <li>Berisi 1 file <code>*.xlsx</code> (data penduduk) dan file foto <code>*.jpg</code>/<code>*.png</code>.</li>
+                <li>Kolom XLSX: desa_id, id, nomor_nik, nama, nomor_kk, jenis_kelamin,
+                    tempat_lahir, tanggal_lahir, agama, pendidikan_dlm_kk, pekerjaan,
+                    kawin, hubungan_keluarga, kewarganegaraan, nama_ibu, nama_ayah,
+                    gol_darah, akta_lahir, nik_ayah, nik_ibu, foto, alamat, dusun,
+                    rw, rt, status_dasar, status_rekam.</li>
+            </ul>
+
+            <h2 id="opensid-integration-POSTapi-v1-penduduk">Hapus data penduduk secara batch (via JSON).</h2>
+
+            <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-penduduk">
@@ -826,37 +1080,35 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/penduduk" \
+    "http://localhost:8000/api/v1/penduduk" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
     \"hapus_penduduk\": [
-        {
-            \"id_pend_desa\": 16,
-            \"desa_id\": \"architecto\"
-        }
-    ]
+        \"architecto\"
+    ],
+    \"desa_id\": \"3201012001\"
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/penduduk"
+    "http://localhost:8000/api/v1/penduduk"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
 let body = {
     "hapus_penduduk": [
-        {
-            "id_pend_desa": 16,
-            "desa_id": "architecto"
-        }
-    ]
+        "architecto"
+    ],
+    "desa_id": "3201012001"
 };
 
 fetch(url, {
@@ -866,9 +1118,42 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/penduduk';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'hapus_penduduk' =&gt; [
+                'architecto',
+            ],
+            'desa_id' =&gt; '3201012001',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-penduduk">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;message&quot;: &quot;Proses sync Data Penduduk OpenSID sedang berjalan&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-penduduk" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-penduduk"></span>:
@@ -888,7 +1173,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-penduduk"
                 data-method="POST"
                 data-path="api/v1/penduduk"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -908,6 +1193,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/penduduk</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-penduduk"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -931,11 +1233,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <details>
                         <summary style="padding-bottom: 10px;">
                             <b style="line-height: 2;"><code>hapus_penduduk</code></b>&nbsp;&nbsp;
-                            <small>object[]</small>&nbsp;
-                            <i>optional</i> &nbsp;
+                            <small>string[]</small>&nbsp;
+                            &nbsp;
                             &nbsp;
                             <br>
-
+                            <p>Array objek penduduk yang akan dihapus. Setiap objek berisi: id_pend_desa (int), foto (string/null), desa_id (string).</p>
                         </summary>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>id_pend_desa</code></b>&nbsp;&nbsp;
@@ -970,15 +1272,25 @@ You can check the Dev Tools console for debugging information.</code></pre>
                             &nbsp;
                             <input type="text" style="display: none" name="hapus_penduduk.0.desa_id" data-endpoint="POSTapi-v1-penduduk" value="architecto" data-component="body">
                             <br>
-                            <p>The <code>desa_id</code> of an existing record in the das_data_desa table. Example: <code>architecto</code></p>
+                            <p>Must match an existing stored value. Example: <code>architecto</code></p>
                         </div>
                     </details>
                 </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+                    <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
+                    <small>string</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-penduduk" value="3201012001" data-component="body">
+                    <br>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
+                </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-penduduk-storedata">Tambah dan Ubah Data dan Foto Penduduk Sesuai OpenSID</h2>
+            <h2 id="opensid-integration-POSTapi-v1-penduduk-storedata">Sinkronisasi data dan foto penduduk via ZIP dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-penduduk-storedata">
@@ -986,18 +1298,20 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/penduduk/storedata" \
+    "http://localhost:8000/api/v1/penduduk/storedata" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "file=@C:\Users\habib\AppData\Local\Temp\php20E0.tmp" </code></pre>
+    --form "file=@/tmp/phpvptc7irt9vc6bZO4WPv" </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/penduduk/storedata"
+    "http://localhost:8000/api/v1/penduduk/storedata"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
@@ -1012,9 +1326,41 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/penduduk/storedata';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phpvptc7irt9vc6bZO4WPv', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-penduduk-storedata">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Data Foto Telah Berhasil di Sinkronkan&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-penduduk-storedata" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-penduduk-storedata"></span>:
@@ -1034,7 +1380,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-penduduk-storedata"
                 data-method="POST"
                 data-path="api/v1/penduduk/storedata"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="1"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1054,6 +1400,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/penduduk/storedata</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-penduduk-storedata"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -1076,17 +1439,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                     <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
+                    &nbsp;
                     &nbsp;
                     <input type="file" style="display: none" name="file" data-endpoint="POSTapi-v1-penduduk-storedata" value="" data-component="body">
                     <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php20E0.tmp</code></p>
+                    <p>File ZIP (max 5MB) berisi data penduduk + foto. Example: <code>/tmp/phpvptc7irt9vc6bZO4WPv</code></p>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-laporan-apbdes">Tambah / Ubah Data Apbdes Sesuai OpenSID</h2>
+            <h2 id="opensid-integration-POSTapi-v1-laporan-apbdes">Sinkronisasi data APBDes dari OpenSID (JSON + base64 file).</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-laporan-apbdes">
@@ -1094,47 +1458,61 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/laporan-apbdes" \
+    "http://localhost:8000/api/v1/laporan-apbdes" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"desa_id\": \"architecto\",
-    \"laporan_apbdes\": [
-        {
+    \"desa_id\": \"3201012001\",
+    \"laporan_apbdes\": {
+        \"0\": {
             \"id\": 16,
             \"judul\": \"architecto\",
             \"tahun\": 16,
             \"semester\": 16,
             \"nama_file\": \"architecto\",
             \"file\": \"architecto\"
-        }
-    ]
+        },
+        \"id\": 1,
+        \"judul\": \"Laporan APBDes 2024\",
+        \"tahun\": 2024,
+        \"semester\": 1,
+        \"nama_file\": \"apbdes_2024_s1.pdf\",
+        \"file\": \"architecto\"
+    }
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/laporan-apbdes"
+    "http://localhost:8000/api/v1/laporan-apbdes"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
 let body = {
-    "desa_id": "architecto",
-    "laporan_apbdes": [
-        {
+    "desa_id": "3201012001",
+    "laporan_apbdes": {
+        "0": {
             "id": 16,
             "judul": "architecto",
             "tahun": 16,
             "semester": 16,
             "nama_file": "architecto",
             "file": "architecto"
-        }
-    ]
+        },
+        "id": 1,
+        "judul": "Laporan APBDes 2024",
+        "tahun": 2024,
+        "semester": 1,
+        "nama_file": "apbdes_2024_s1.pdf",
+        "file": "architecto"
+    }
 };
 
 fetch(url, {
@@ -1144,9 +1522,55 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/laporan-apbdes';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'desa_id' =&gt; '3201012001',
+            'laporan_apbdes' =&gt; [
+                [
+                    'id' =&gt; 16,
+                    'judul' =&gt; 'architecto',
+                    'tahun' =&gt; 16,
+                    'semester' =&gt; 16,
+                    'nama_file' =&gt; 'architecto',
+                    'file' =&gt; 'architecto',
+                ],
+                'id' =&gt; 1,
+                'judul' =&gt; 'Laporan APBDes 2024',
+                'tahun' =&gt; 2024,
+                'semester' =&gt; 1,
+                'nama_file' =&gt; 'apbdes_2024_s1.pdf',
+                'file' =&gt; 'architecto',
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-laporan-apbdes">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;message&quot;: &quot;Proses sync data Laporan Apbdes OpenSID sedang berjalan&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-laporan-apbdes" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-laporan-apbdes"></span>:
@@ -1166,7 +1590,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-laporan-apbdes"
                 data-method="POST"
                 data-path="api/v1/laporan-apbdes"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1186,6 +1610,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/laporan-apbdes</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-laporan-apbdes"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -1210,19 +1651,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-laporan-apbdes" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-laporan-apbdes" value="3201012001" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <details>
                         <summary style="padding-bottom: 10px;">
                             <b style="line-height: 2;"><code>laporan_apbdes</code></b>&nbsp;&nbsp;
                             <small>object[]</small>&nbsp;
-                            <i>optional</i> &nbsp;
+                            &nbsp;
                             &nbsp;
                             <br>
-
+                            <p>Array objek laporan.</p>
                         </summary>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
@@ -1233,22 +1674,22 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 type="number"
                                 style="display: none"
                                 step="any"
-                                name="laporan_apbdes.0.id"
+                                name="laporan_apbdes.id"
                                 data-endpoint="POSTapi-v1-laporan-apbdes"
-                                value="16"
+                                value="1"
                                 data-component="body"
                             >
                             <br>
-                            <p>Example: <code>16</code></p>
+                            <p>ID laporan. Example: <code>1</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>judul</code></b>&nbsp;&nbsp;
                             <small>string</small>&nbsp;
                             &nbsp;
                             &nbsp;
-                            <input type="text" style="display: none" name="laporan_apbdes.0.judul" data-endpoint="POSTapi-v1-laporan-apbdes" value="architecto" data-component="body">
+                            <input type="text" style="display: none" name="laporan_apbdes.judul" data-endpoint="POSTapi-v1-laporan-apbdes" value="Laporan APBDes 2024" data-component="body">
                             <br>
-                            <p>Example: <code>architecto</code></p>
+                            <p>Judul laporan. Example: <code>Laporan APBDes 2024</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>tahun</code></b>&nbsp;&nbsp;
@@ -1259,13 +1700,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 type="number"
                                 style="display: none"
                                 step="any"
-                                name="laporan_apbdes.0.tahun"
+                                name="laporan_apbdes.tahun"
                                 data-endpoint="POSTapi-v1-laporan-apbdes"
-                                value="16"
+                                value="2024"
                                 data-component="body"
                             >
                             <br>
-                            <p>Example: <code>16</code></p>
+                            <p>Tahun anggaran. Example: <code>2024</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>semester</code></b>&nbsp;&nbsp;
@@ -1276,39 +1717,40 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 type="number"
                                 style="display: none"
                                 step="any"
-                                name="laporan_apbdes.0.semester"
+                                name="laporan_apbdes.semester"
                                 data-endpoint="POSTapi-v1-laporan-apbdes"
-                                value="16"
+                                value="1"
                                 data-component="body"
                             >
                             <br>
-                            <p>Example: <code>16</code></p>
+                            <p>Semester (1/2). Example: <code>1</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>nama_file</code></b>&nbsp;&nbsp;
                             <small>string</small>&nbsp;
                             &nbsp;
                             &nbsp;
-                            <input type="text" style="display: none" name="laporan_apbdes.0.nama_file" data-endpoint="POSTapi-v1-laporan-apbdes" value="architecto" data-component="body">
+                            <input type="text" style="display: none" name="laporan_apbdes.nama_file" data-endpoint="POSTapi-v1-laporan-apbdes" value="apbdes_2024_s1.pdf" data-component="body">
                             <br>
-                            <p>Example: <code>architecto</code></p>
+                            <p>Nama file. Example: <code>apbdes_2024_s1.pdf</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                             <small>string</small>&nbsp;
                             &nbsp;
                             &nbsp;
-                            <input type="text" style="display: none" name="laporan_apbdes.0.file" data-endpoint="POSTapi-v1-laporan-apbdes" value="architecto" data-component="body">
+                            <input type="text" style="display: none" name="laporan_apbdes.file" data-endpoint="POSTapi-v1-laporan-apbdes" value="architecto" data-component="body">
                             <br>
-                            <p>Example: <code>architecto</code></p>
+                            <p>File base64 encoded. Example: <code>architecto</code></p>
                         </div>
                     </details>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-laporan-penduduk">Tambah / Ubah Data Laporan Penduduk Dari OpenSID</h2>
+            <h2 id="opensid-integration-POSTapi-v1-laporan-penduduk">Sinkronisasi laporan penduduk dari OpenSID (JSON + base64 file).</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-laporan-penduduk">
@@ -1316,45 +1758,59 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/laporan-penduduk" \
+    "http://localhost:8000/api/v1/laporan-penduduk" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"desa_id\": \"architecto\",
-    \"laporan_penduduk\": [
-        {
+    \"desa_id\": \"3201012001\",
+    \"laporan_penduduk\": {
+        \"0\": {
             \"id\": 16,
             \"judul\": \"architecto\",
             \"bulan\": 16,
             \"tahun\": 16,
             \"file\": \"architecto\"
-        }
-    ]
+        },
+        \"id\": 1,
+        \"judul\": \"Laporan Penduduk Jan 2024\",
+        \"bulan\": 1,
+        \"tahun\": 2024,
+        \"nama_file\": \"penduduk_2024_01.pdf\",
+        \"file\": \"architecto\"
+    }
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/laporan-penduduk"
+    "http://localhost:8000/api/v1/laporan-penduduk"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
 let body = {
-    "desa_id": "architecto",
-    "laporan_penduduk": [
-        {
+    "desa_id": "3201012001",
+    "laporan_penduduk": {
+        "0": {
             "id": 16,
             "judul": "architecto",
             "bulan": 16,
             "tahun": 16,
             "file": "architecto"
-        }
-    ]
+        },
+        "id": 1,
+        "judul": "Laporan Penduduk Jan 2024",
+        "bulan": 1,
+        "tahun": 2024,
+        "nama_file": "penduduk_2024_01.pdf",
+        "file": "architecto"
+    }
 };
 
 fetch(url, {
@@ -1364,9 +1820,54 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/laporan-penduduk';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'desa_id' =&gt; '3201012001',
+            'laporan_penduduk' =&gt; [
+                [
+                    'id' =&gt; 16,
+                    'judul' =&gt; 'architecto',
+                    'bulan' =&gt; 16,
+                    'tahun' =&gt; 16,
+                    'file' =&gt; 'architecto',
+                ],
+                'id' =&gt; 1,
+                'judul' =&gt; 'Laporan Penduduk Jan 2024',
+                'bulan' =&gt; 1,
+                'tahun' =&gt; 2024,
+                'nama_file' =&gt; 'penduduk_2024_01.pdf',
+                'file' =&gt; 'architecto',
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-laporan-penduduk">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;message&quot;: &quot;Proses sync data Laporan Penduduk OpenSID sedang berjalan&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-laporan-penduduk" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-laporan-penduduk"></span>:
@@ -1386,7 +1887,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-laporan-penduduk"
                 data-method="POST"
                 data-path="api/v1/laporan-penduduk"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1406,6 +1907,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/laporan-penduduk</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-laporan-penduduk"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -1430,19 +1948,19 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-laporan-penduduk" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-laporan-penduduk" value="3201012001" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <details>
                         <summary style="padding-bottom: 10px;">
                             <b style="line-height: 2;"><code>laporan_penduduk</code></b>&nbsp;&nbsp;
                             <small>object[]</small>&nbsp;
-                            <i>optional</i> &nbsp;
+                            &nbsp;
                             &nbsp;
                             <br>
-
+                            <p>Array objek laporan.</p>
                         </summary>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
@@ -1453,22 +1971,22 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 type="number"
                                 style="display: none"
                                 step="any"
-                                name="laporan_penduduk.0.id"
+                                name="laporan_penduduk.id"
                                 data-endpoint="POSTapi-v1-laporan-penduduk"
-                                value="16"
+                                value="1"
                                 data-component="body"
                             >
                             <br>
-                            <p>Example: <code>16</code></p>
+                            <p>ID laporan. Example: <code>1</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>judul</code></b>&nbsp;&nbsp;
                             <small>string</small>&nbsp;
                             &nbsp;
                             &nbsp;
-                            <input type="text" style="display: none" name="laporan_penduduk.0.judul" data-endpoint="POSTapi-v1-laporan-penduduk" value="architecto" data-component="body">
+                            <input type="text" style="display: none" name="laporan_penduduk.judul" data-endpoint="POSTapi-v1-laporan-penduduk" value="Laporan Penduduk Jan 2024" data-component="body">
                             <br>
-                            <p>Example: <code>architecto</code></p>
+                            <p>Judul laporan. Example: <code>Laporan Penduduk Jan 2024</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>bulan</code></b>&nbsp;&nbsp;
@@ -1479,13 +1997,13 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 type="number"
                                 style="display: none"
                                 step="any"
-                                name="laporan_penduduk.0.bulan"
+                                name="laporan_penduduk.bulan"
                                 data-endpoint="POSTapi-v1-laporan-penduduk"
-                                value="16"
+                                value="1"
                                 data-component="body"
                             >
                             <br>
-                            <p>Example: <code>16</code></p>
+                            <p>Bulan (1-12). Example: <code>1</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>tahun</code></b>&nbsp;&nbsp;
@@ -1496,30 +2014,40 @@ You can check the Dev Tools console for debugging information.</code></pre>
                                 type="number"
                                 style="display: none"
                                 step="any"
-                                name="laporan_penduduk.0.tahun"
+                                name="laporan_penduduk.tahun"
                                 data-endpoint="POSTapi-v1-laporan-penduduk"
-                                value="16"
+                                value="2024"
                                 data-component="body"
                             >
                             <br>
-                            <p>Example: <code>16</code></p>
+                            <p>Tahun. Example: <code>2024</code></p>
                         </div>
                         <div style="margin-left: 14px; clear: unset;">
                             <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                             <small>string</small>&nbsp;
                             &nbsp;
                             &nbsp;
-                            <input type="text" style="display: none" name="laporan_penduduk.0.file" data-endpoint="POSTapi-v1-laporan-penduduk" value="architecto" data-component="body">
+                            <input type="text" style="display: none" name="laporan_penduduk.file" data-endpoint="POSTapi-v1-laporan-penduduk" value="architecto" data-component="body">
                             <br>
-                            <p>Example: <code>architecto</code></p>
+                            <p>File base64 encoded. Example: <code>architecto</code></p>
+                        </div>
+                        <div style="margin-left: 14px; clear: unset;">
+                            <b style="line-height: 2;"><code>nama_file</code></b>&nbsp;&nbsp;
+                            <small>string</small>&nbsp;
+                            &nbsp;
+                            &nbsp;
+                            <input type="text" style="display: none" name="laporan_penduduk.nama_file" data-endpoint="POSTapi-v1-laporan-penduduk" value="penduduk_2024_01.pdf" data-component="body">
+                            <br>
+                            <p>Nama file. Example: <code>penduduk_2024_01.pdf</code></p>
                         </div>
                     </details>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-pesan">POST api/v1/pesan</h2>
+            <h2 id="opensid-integration-POSTapi-v1-pesan">Kirim pesan baru atau balas pesan dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-pesan">
@@ -1527,31 +2055,39 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/pesan" \
+    "http://localhost:8000/api/v1/pesan" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"pesan\": \"architecto\",
-    \"judul\": \"architecto\",
-    \"kode_desa\": \"ng\"
+    \"pesan\": \"Berikut kami kirimkan laporan bulanan.\",
+    \"judul\": \"Laporan Bulanan\",
+    \"kode_desa\": \"3201012001\",
+    \"pengirim\": \"operator@desa.id\",
+    \"nama_pengirim\": \"Ahmad\",
+    \"pesan_id\": 5
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/pesan"
+    "http://localhost:8000/api/v1/pesan"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
 let body = {
-    "pesan": "architecto",
-    "judul": "architecto",
-    "kode_desa": "ng"
+    "pesan": "Berikut kami kirimkan laporan bulanan.",
+    "judul": "Laporan Bulanan",
+    "kode_desa": "3201012001",
+    "pengirim": "operator@desa.id",
+    "nama_pengirim": "Ahmad",
+    "pesan_id": 5
 };
 
 fetch(url, {
@@ -1561,9 +2097,44 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/pesan';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'pesan' =&gt; 'Berikut kami kirimkan laporan bulanan.',
+            'judul' =&gt; 'Laporan Bulanan',
+            'kode_desa' =&gt; '3201012001',
+            'pengirim' =&gt; 'operator@desa.id',
+            'nama_pengirim' =&gt; 'Ahmad',
+            'pesan_id' =&gt; 5,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-pesan">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: true,
+    &quot;message&quot;: &quot;Berhasil mengirim pesan&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-pesan" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-pesan"></span>:
@@ -1583,7 +2154,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-pesan"
                 data-method="POST"
                 data-path="api/v1/pesan"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1603,6 +2174,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/pesan</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-pesan"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -1627,33 +2215,69 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="pesan" data-endpoint="POSTapi-v1-pesan" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="pesan" data-endpoint="POSTapi-v1-pesan" value="Berikut kami kirimkan laporan bulanan." data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Isi pesan. Example: <code>Berikut kami kirimkan laporan bulanan.</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>judul</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
+                    <i>optional</i> &nbsp;
                     &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="judul" data-endpoint="POSTapi-v1-pesan" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="judul" data-endpoint="POSTapi-v1-pesan" value="Laporan Bulanan" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Judul pesan (wajib untuk pesan baru). Example: <code>Laporan Bulanan</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>kode_desa</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="kode_desa" data-endpoint="POSTapi-v1-pesan" value="ng" data-component="body">
+                    <input type="text" style="display: none" name="kode_desa" data-endpoint="POSTapi-v1-pesan" value="3201012001" data-component="body">
                     <br>
-                    <p>Isian value harus minimal 13 karakter. Isian value seharusnya tidak lebih dari 13 karakter. Example: <code>ng</code></p>
+                    <p>Kode desa pengirim. Example: <code>3201012001</code></p>
+                </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+                    <b style="line-height: 2;"><code>pengirim</code></b>&nbsp;&nbsp;
+                    <small>string</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="pengirim" data-endpoint="POSTapi-v1-pesan" value="operator@desa.id" data-component="body">
+                    <br>
+                    <p>Pengirim pesan. Example: <code>operator@desa.id</code></p>
+                </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+                    <b style="line-height: 2;"><code>nama_pengirim</code></b>&nbsp;&nbsp;
+                    <small>string</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="nama_pengirim" data-endpoint="POSTapi-v1-pesan" value="Ahmad" data-component="body">
+                    <br>
+                    <p>Nama pengirim. Example: <code>Ahmad</code></p>
+                </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+                    <b style="line-height: 2;"><code>pesan_id</code></b>&nbsp;&nbsp;
+                    <small>integer</small>&nbsp;
+                    <i>optional</i> &nbsp;
+                    &nbsp;
+                    <input
+                        type="number"
+                        style="display: none"
+                        step="any"
+                        name="pesan_id"
+                        data-endpoint="POSTapi-v1-pesan"
+                        value="5"
+                        data-component="body"
+                    >
+                    <br>
+                    <p>ID pesan untuk membalas percakapan yang sudah ada. Example: <code>5</code></p>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-pesan-getpesan">POST api/v1/pesan/getpesan</h2>
+            <h2 id="opensid-integration-POSTapi-v1-pesan-getpesan">Ambil daftar pesan untuk desa tertentu.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-pesan-getpesan">
@@ -1661,27 +2285,31 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/pesan/getpesan" \
+    "http://localhost:8000/api/v1/pesan/getpesan" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"kode_desa\": \"bn\"
+    \"kode_desa\": \"3201012001\",
+    \"id\": 0
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/pesan/getpesan"
+    "http://localhost:8000/api/v1/pesan/getpesan"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
 let body = {
-    "kode_desa": "bn"
+    "kode_desa": "3201012001",
+    "id": 0
 };
 
 fetch(url, {
@@ -1691,9 +2319,46 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/pesan/getpesan';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'kode_desa' =&gt; '3201012001',
+            'id' =&gt; 0,
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-pesan-getpesan">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: true,
+    &quot;data&quot;: [
+        {
+            &quot;id&quot;: 1,
+            &quot;judul&quot;: &quot;Laporan&quot;,
+            &quot;detailPesan&quot;: []
+        }
+    ]
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-pesan-getpesan" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-pesan-getpesan"></span>:
@@ -1713,7 +2378,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-pesan-getpesan"
                 data-method="POST"
                 data-path="api/v1/pesan/getpesan"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1733,6 +2398,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/pesan/getpesan</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-pesan-getpesan"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -1757,15 +2439,33 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="kode_desa" data-endpoint="POSTapi-v1-pesan-getpesan" value="bn" data-component="body">
+                    <input type="text" style="display: none" name="kode_desa" data-endpoint="POSTapi-v1-pesan-getpesan" value="3201012001" data-component="body">
                     <br>
-                    <p>Isian value harus minimal 13 karakter. Isian value seharusnya tidak lebih dari 13 karakter. Example: <code>bn</code></p>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
+                </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+                    <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+                    <small>integer</small>&nbsp;
+                    <i>optional</i> &nbsp;
+                    &nbsp;
+                    <input
+                        type="number"
+                        style="display: none"
+                        step="any"
+                        name="id"
+                        data-endpoint="POSTapi-v1-pesan-getpesan"
+                        value="0"
+                        data-component="body"
+                    >
+                    <br>
+                    <p>ID pesan terakhir yang diterima (untuk pagination). Example: <code>0</code></p>
                 </div>
             </form>
 
-            <h2 id="endpoints-GETapi-v1-pesan-detail">GET api/v1/pesan/detail</h2>
+            <h2 id="opensid-integration-GETapi-v1-pesan-detail">Lihat detail percakapan pesan.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-GETapi-v1-pesan-detail">
@@ -1773,20 +2473,29 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/v1/pesan/detail" \
+    --get "http://localhost:8000/api/v1/pesan/detail?id=1" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json"</code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/pesan/detail"
+    "http://localhost:8000/api/v1/pesan/detail"
 );
 
+const params = {
+    "id": "1",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
+
 
 fetch(url, {
     method: "GET",
@@ -1794,25 +2503,46 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/pesan/detail';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'id' =&gt; '1',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-GETapi-v1-pesan-detail">
                 <blockquote>
-                    <p>Example response (404):</p>
+                    <p>Example response (200):</p>
                 </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/v1/pesan/detail could not be found.&quot;
+    &quot;status&quot;: true,
+    &quot;data&quot;: {
+        &quot;id&quot;: 1,
+        &quot;judul&quot;: &quot;Laporan&quot;,
+        &quot;detailPesan&quot;: [
+            {
+                &quot;id&quot;: 1,
+                &quot;text&quot;: &quot;Isi pesan&quot;
+            }
+        ]
+    }
 }</code>
  </pre>
             </span>
@@ -1834,7 +2564,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-GETapi-v1-pesan-detail"
                 data-method="GET"
                 data-path="api/v1/pesan/detail"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1855,6 +2585,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="GETapi-v1-pesan-detail"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -1872,11 +2619,30 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <br>
                     <p>Example: <code>application/json</code></p>
                 </div>
+                <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+                    <small>integer</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="number"
+                        style="display: none"
+                        step="any"
+                        name="id"
+                        data-endpoint="GETapi-v1-pesan-detail"
+                        value="1"
+                        data-component="query"
+                    >
+                    <br>
+                    <p>ID pesan. Example: <code>1</code></p>
+                </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-pembangunan">Tambah Data Pembangunan Sesuai OpenSID</h2>
+            <h2 id="opensid-integration-POSTapi-v1-pembangunan">Sinkronisasi data pembangunan via ZIP dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-pembangunan">
@@ -1884,19 +2650,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/pembangunan" \
+    "http://localhost:8000/api/v1/pembangunan" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@C:\Users\habib\AppData\Local\Temp\php21CB.tmp" </code></pre>
+    --form "file=@/tmp/phpsh71433hgje8cT1iuj3" </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/pembangunan"
+    "http://localhost:8000/api/v1/pembangunan"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
@@ -1912,9 +2680,46 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/pembangunan';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'desa_id',
+                'contents' =&gt; 'architecto'
+            ],
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phpsh71433hgje8cT1iuj3', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-pembangunan">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan&quot;,
+    &quot;status&quot;: &quot;success&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-pembangunan" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-pembangunan"></span>:
@@ -1934,7 +2739,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-pembangunan"
                 data-method="POST"
                 data-path="api/v1/pembangunan"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="1"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -1954,6 +2759,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/pembangunan</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-pembangunan"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -1976,11 +2798,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                     <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
+                    &nbsp;
                     &nbsp;
                     <input type="file" style="display: none" name="file" data-endpoint="POSTapi-v1-pembangunan" value="" data-component="body">
                     <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php21CB.tmp</code></p>
+                    <p>File ZIP (max 50MB) berisi data pembangunan. Example: <code>/tmp/phpsh71433hgje8cT1iuj3</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -1993,9 +2815,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-pembangunan-dokumentasi">POST api/v1/pembangunan/dokumentasi</h2>
+            <h2 id="opensid-integration-POSTapi-v1-pembangunan-dokumentasi">Sinkronisasi dokumentasi pembangunan via ZIP dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-pembangunan-dokumentasi">
@@ -2003,19 +2826,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/pembangunan/dokumentasi" \
+    "http://localhost:8000/api/v1/pembangunan/dokumentasi" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@C:\Users\habib\AppData\Local\Temp\php21DC.tmp" </code></pre>
+    --form "file=@/tmp/phpdpkvteffdsbffpfNeA3" </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/pembangunan/dokumentasi"
+    "http://localhost:8000/api/v1/pembangunan/dokumentasi"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
@@ -2031,9 +2856,46 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/pembangunan/dokumentasi';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'desa_id',
+                'contents' =&gt; 'architecto'
+            ],
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phpdpkvteffdsbffpfNeA3', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-pembangunan-dokumentasi">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan&quot;,
+    &quot;status&quot;: &quot;success&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-pembangunan-dokumentasi" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-pembangunan-dokumentasi"></span>:
@@ -2053,7 +2915,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-pembangunan-dokumentasi"
                 data-method="POST"
                 data-path="api/v1/pembangunan/dokumentasi"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="1"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2073,6 +2935,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/pembangunan/dokumentasi</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-pembangunan-dokumentasi"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -2095,11 +2974,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                     <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
+                    &nbsp;
                     &nbsp;
                     <input type="file" style="display: none" name="file" data-endpoint="POSTapi-v1-pembangunan-dokumentasi" value="" data-component="body">
                     <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php21DC.tmp</code></p>
+                    <p>File ZIP (max 50MB) berisi data dokumentasi. Example: <code>/tmp/phpdpkvteffdsbffpfNeA3</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -2112,9 +2991,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-identitas-desa">POST api/v1/identitas-desa</h2>
+            <h2 id="opensid-integration-POSTapi-v1-identitas-desa">Sinkronisasi identitas desa dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-identitas-desa">
@@ -2122,33 +3002,35 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/identitas-desa" \
+    "http://localhost:8000/api/v1/identitas-desa" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"kode_desa\": \"architecto\",
-    \"sebutan_desa\": \"architecto\",
-    \"website\": \"http:\\/\\/bailey.com\\/\",
-    \"path\": \"architecto\"
+    \"kode_desa\": \"3201012001\",
+    \"sebutan_desa\": \"Kampung\",
+    \"website\": \"https:\\/\\/desa.example.com\",
+    \"path\": \"profil\\/desa\"
 }"
 </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/identitas-desa"
+    "http://localhost:8000/api/v1/identitas-desa"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
 
 let body = {
-    "kode_desa": "architecto",
-    "sebutan_desa": "architecto",
-    "website": "http:\/\/bailey.com\/",
-    "path": "architecto"
+    "kode_desa": "3201012001",
+    "sebutan_desa": "Kampung",
+    "website": "https:\/\/desa.example.com",
+    "path": "profil\/desa"
 };
 
 fetch(url, {
@@ -2158,9 +3040,42 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/identitas-desa';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'json' =&gt; [
+            'kode_desa' =&gt; '3201012001',
+            'sebutan_desa' =&gt; 'Kampung',
+            'website' =&gt; 'https://desa.example.com',
+            'path' =&gt; 'profil/desa',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-identitas-desa">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;message&quot;: &quot;Proses sinkronisasi identitas desa sudah selesai&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-identitas-desa" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-identitas-desa"></span>:
@@ -2180,7 +3095,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-identitas-desa"
                 data-method="POST"
                 data-path="api/v1/identitas-desa"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2200,6 +3115,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/identitas-desa</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-identitas-desa"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -2222,44 +3154,45 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>kode_desa</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="kode_desa" data-endpoint="POSTapi-v1-identitas-desa" value="architecto" data-component="body">
+                    &nbsp;
+                    <input type="text" style="display: none" name="kode_desa" data-endpoint="POSTapi-v1-identitas-desa" value="3201012001" data-component="body">
                     <br>
-                    <p>The <code>desa_id</code> of an existing record in the das_data_desa table. Example: <code>architecto</code></p>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>sebutan_desa</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
+                    <i>optional</i> &nbsp;
                     &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="sebutan_desa" data-endpoint="POSTapi-v1-identitas-desa" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="sebutan_desa" data-endpoint="POSTapi-v1-identitas-desa" value="Kampung" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Sebutan desa. Example: <code>Kampung</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>website</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     <i>optional</i> &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="website" data-endpoint="POSTapi-v1-identitas-desa" value="http://bailey.com/" data-component="body">
+                    <input type="text" style="display: none" name="website" data-endpoint="POSTapi-v1-identitas-desa" value="https://desa.example.com" data-component="body">
                     <br>
-                    <p>Must be a valid URL. Example: <code>http://bailey.com/</code></p>
+                    <p>URL website desa. Example: <code>https://desa.example.com</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>path</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
+                    <i>optional</i> &nbsp;
                     &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="path" data-endpoint="POSTapi-v1-identitas-desa" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="path" data-endpoint="POSTapi-v1-identitas-desa" value="profil/desa" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Path menu profil. Example: <code>profil/desa</code></p>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-program-bantuan">POST api/v1/program-bantuan</h2>
+            <h2 id="opensid-integration-POSTapi-v1-program-bantuan">Sinkronisasi data program bantuan via ZIP dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-program-bantuan">
@@ -2267,19 +3200,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/program-bantuan" \
+    "http://localhost:8000/api/v1/program-bantuan" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@C:\Users\habib\AppData\Local\Temp\php21ED.tmp" </code></pre>
+    --form "file=@/tmp/phplgiuovlnl39je33vchK" </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/program-bantuan"
+    "http://localhost:8000/api/v1/program-bantuan"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
@@ -2295,9 +3230,46 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/program-bantuan';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'desa_id',
+                'contents' =&gt; 'architecto'
+            ],
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phplgiuovlnl39je33vchK', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-program-bantuan">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Data Bantuan Sedang di Sinkronkan&quot;,
+    &quot;status&quot;: &quot;success&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-program-bantuan" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-program-bantuan"></span>:
@@ -2317,7 +3289,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-program-bantuan"
                 data-method="POST"
                 data-path="api/v1/program-bantuan"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="1"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2337,6 +3309,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/program-bantuan</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-program-bantuan"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -2359,11 +3348,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                     <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
+                    &nbsp;
                     &nbsp;
                     <input type="file" style="display: none" name="file" data-endpoint="POSTapi-v1-program-bantuan" value="" data-component="body">
                     <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php21ED.tmp</code></p>
+                    <p>File ZIP (max 50MB) berisi data program bantuan. Example: <code>/tmp/phplgiuovlnl39je33vchK</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -2376,9 +3365,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-program-bantuan-peserta">POST api/v1/program-bantuan/peserta</h2>
+            <h2 id="opensid-integration-POSTapi-v1-program-bantuan-peserta">Sinkronisasi data peserta program bantuan via ZIP dari OpenSID.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-program-bantuan-peserta">
@@ -2386,19 +3376,21 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/program-bantuan/peserta" \
+    "http://localhost:8000/api/v1/program-bantuan/peserta" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
     --form "desa_id=architecto"\
-    --form "file=@C:\Users\habib\AppData\Local\Temp\php21EE.tmp" </code></pre>
+    --form "file=@/tmp/phpm89k7fg41e0s0agsYJu" </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/program-bantuan/peserta"
+    "http://localhost:8000/api/v1/program-bantuan/peserta"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
@@ -2414,9 +3406,46 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/program-bantuan/peserta';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'desa_id',
+                'contents' =&gt; 'architecto'
+            ],
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phpm89k7fg41e0s0agsYJu', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-program-bantuan-peserta">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: &quot;success&quot;,
+    &quot;message&quot;: &quot;Data Bantuan Sedang di Sinkronkan&quot;
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-program-bantuan-peserta" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-program-bantuan-peserta"></span>:
@@ -2436,7 +3465,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-program-bantuan-peserta"
                 data-method="POST"
                 data-path="api/v1/program-bantuan/peserta"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="1"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2456,6 +3485,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/program-bantuan/peserta</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-program-bantuan-peserta"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -2478,11 +3524,11 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
                     <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
+                    &nbsp;
                     &nbsp;
                     <input type="file" style="display: none" name="file" data-endpoint="POSTapi-v1-program-bantuan-peserta" value="" data-component="body">
                     <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 5120 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php21EE.tmp</code></p>
+                    <p>File ZIP (max 50MB) berisi data peserta bantuan. Example: <code>/tmp/phpm89k7fg41e0s0agsYJu</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -2495,9 +3541,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-GETapi-v1-surat">index</h2>
+            <h2 id="opensid-integration-GETapi-v1-surat">Daftar surat untuk desa tertentu.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-GETapi-v1-surat">
@@ -2505,7 +3552,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/v1/surat" \
+    --get "http://localhost:8000/api/v1/surat?desa_id=3201012001" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -2516,10 +3564,17 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/surat"
+    "http://localhost:8000/api/v1/surat"
 );
 
+const params = {
+    "desa_id": "3201012001",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2535,25 +3590,47 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/surat';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'desa_id' =&gt; '3201012001',
+        ],
+        'json' =&gt; [
+            'desa_id' =&gt; 'architecto',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-GETapi-v1-surat">
                 <blockquote>
-                    <p>Example response (404):</p>
+                    <p>Example response (200):</p>
                 </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/v1/surat could not be found.&quot;
+    &quot;status&quot;: true,
+    &quot;message&quot;: &quot;Daftar Surat&quot;,
+    &quot;data&quot;: [
+        {
+            &quot;nomor&quot;: &quot;001/SK/2024&quot;,
+            &quot;file&quot;: &quot;surat.pdf&quot;,
+            &quot;nama&quot;: &quot;SK Kepala Desa&quot;
+        }
+    ]
 }</code>
  </pre>
             </span>
@@ -2575,7 +3652,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-GETapi-v1-surat"
                 data-method="GET"
                 data-path="api/v1/surat"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2596,6 +3673,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="GETapi-v1-surat"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -2613,6 +3707,16 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <br>
                     <p>Example: <code>application/json</code></p>
                 </div>
+                <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
+                    <small>string</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="desa_id" data-endpoint="GETapi-v1-surat" value="3201012001" data-component="query">
+                    <br>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
+                </div>
                 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
@@ -2625,9 +3729,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-POSTapi-v1-surat-kirim">store</h2>
+            <h2 id="opensid-integration-POSTapi-v1-surat-kirim">Kirim surat dari OpenSID ke OpenDK (TTE).</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-POSTapi-v1-surat-kirim">
@@ -2635,33 +3740,35 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/v1/surat/kirim" \
+    "http://localhost:8000/api/v1/surat/kirim" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: multipart/form-data" \
     --header "Accept: application/json" \
-    --form "desa_id=architecto"\
-    --form "nik=8225697757449171"\
-    --form "tanggal=2026-02-18T16:39:16"\
-    --form "nomor=architecto"\
-    --form "nama=architecto"\
-    --form "file=@C:\Users\habib\AppData\Local\Temp\php21FE.tmp" </code></pre>
+    --form "desa_id=3201012001"\
+    --form "nik=3201012001000001"\
+    --form "tanggal=2024-01-15"\
+    --form "nomor=001/SK/2024"\
+    --form "nama=SK Kepala Desa"\
+    --form "file=@/tmp/phpqq8i4qvbpj3g1JVffej" </code></pre>
                 </div>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/surat/kirim"
+    "http://localhost:8000/api/v1/surat/kirim"
 );
 
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "multipart/form-data",
     "Accept": "application/json",
 };
 
 const body = new FormData();
-body.append('desa_id', 'architecto');
-body.append('nik', '8225697757449171');
-body.append('tanggal', '2026-02-18T16:39:16');
-body.append('nomor', 'architecto');
-body.append('nama', 'architecto');
+body.append('desa_id', '3201012001');
+body.append('nik', '3201012001000001');
+body.append('tanggal', '2024-01-15');
+body.append('nomor', '001/SK/2024');
+body.append('nama', 'SK Kepala Desa');
 body.append('file', document.querySelector('input[name="file"]').files[0]);
 
 fetch(url, {
@@ -2671,9 +3778,65 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/surat/kirim';
+$response = $client-&gt;post(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'multipart/form-data',
+            'Accept' =&gt; 'application/json',
+        ],
+        'multipart' =&gt; [
+            [
+                'name' =&gt; 'desa_id',
+                'contents' =&gt; '3201012001'
+            ],
+            [
+                'name' =&gt; 'nik',
+                'contents' =&gt; '3201012001000001'
+            ],
+            [
+                'name' =&gt; 'tanggal',
+                'contents' =&gt; '2024-01-15'
+            ],
+            [
+                'name' =&gt; 'nomor',
+                'contents' =&gt; '001/SK/2024'
+            ],
+            [
+                'name' =&gt; 'nama',
+                'contents' =&gt; 'SK Kepala Desa'
+            ],
+            [
+                'name' =&gt; 'file',
+                'contents' =&gt; fopen('/tmp/phpqq8i4qvbpj3g1JVffej', 'r')
+            ],
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-POSTapi-v1-surat-kirim">
+                <blockquote>
+                    <p>Example response (200):</p>
+                </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;status&quot;: true,
+    &quot;message&quot;: &quot;Surat Berhasil Dikirim!&quot;,
+    &quot;data&quot;: {
+        &quot;nomor&quot;: &quot;001/SK/2024&quot;
+    }
+}</code>
+ </pre>
             </span>
             <span id="execution-results-POSTapi-v1-surat-kirim" hidden>
                 <blockquote>Received response<span id="execution-response-status-POSTapi-v1-surat-kirim"></span>:
@@ -2693,7 +3856,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-POSTapi-v1-surat-kirim"
                 data-method="POST"
                 data-path="api/v1/surat/kirim"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="1"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2713,6 +3876,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <b><code>api/v1/surat/kirim</code></b>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="POSTapi-v1-surat-kirim"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
                 <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
@@ -2737,45 +3917,45 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-surat-kirim" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="desa_id" data-endpoint="POSTapi-v1-surat-kirim" value="3201012001" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>nik</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="nik" data-endpoint="POSTapi-v1-surat-kirim" value="8225697757449171" data-component="body">
+                    <input type="text" style="display: none" name="nik" data-endpoint="POSTapi-v1-surat-kirim" value="3201012001000001" data-component="body">
                     <br>
-                    <p>Isian value harus berupa angka sebanyak 16 digit. Example: <code>8225697757449171</code></p>
+                    <p>NIK penduduk (16 digit). Example: <code>3201012001000001</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>tanggal</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="tanggal" data-endpoint="POSTapi-v1-surat-kirim" value="2026-02-18T16:39:16" data-component="body">
+                    <input type="text" style="display: none" name="tanggal" data-endpoint="POSTapi-v1-surat-kirim" value="2024-01-15" data-component="body">
                     <br>
-                    <p>Isian value bukan tanggal yang valid. Example: <code>2026-02-18T16:39:16</code></p>
+                    <p>Tanggal surat (Y-m-d). Example: <code>2024-01-15</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>nomor</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="nomor" data-endpoint="POSTapi-v1-surat-kirim" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="nomor" data-endpoint="POSTapi-v1-surat-kirim" value="001/SK/2024" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Nomor surat (unique). Example: <code>001/SK/2024</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>nama</code></b>&nbsp;&nbsp;
                     <small>string</small>&nbsp;
                     &nbsp;
                     &nbsp;
-                    <input type="text" style="display: none" name="nama" data-endpoint="POSTapi-v1-surat-kirim" value="architecto" data-component="body">
+                    <input type="text" style="display: none" name="nama" data-endpoint="POSTapi-v1-surat-kirim" value="SK Kepala Desa" data-component="body">
                     <br>
-                    <p>Example: <code>architecto</code></p>
+                    <p>Nama surat. Example: <code>SK Kepala Desa</code></p>
                 </div>
                 <div style=" padding-left: 28px;  clear: unset;">
                     <b style="line-height: 2;"><code>file</code></b>&nbsp;&nbsp;
@@ -2784,13 +3964,14 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     &nbsp;
                     <input type="file" style="display: none" name="file" data-endpoint="POSTapi-v1-surat-kirim" value="" data-component="body">
                     <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 2048 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php21FE.tmp</code></p>
+                    <p>File PDF surat (max 2MB). Example: <code>/tmp/phpqq8i4qvbpj3g1JVffej</code></p>
                 </div>
             </form>
 
-            <h2 id="endpoints-GETapi-v1-surat-download">index</h2>
+            <h2 id="opensid-integration-GETapi-v1-surat-download">Download file surat dalam format PDF.</h2>
 
             <p>
+                <small class="badge badge-darkred">requires authentication</small>
             </p>
 
             <span id="example-requests-GETapi-v1-surat-download">
@@ -2798,7 +3979,8 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="bash-example">
                     <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/v1/surat/download" \
+    --get "http://localhost:8000/api/v1/surat/download?desa_id=3201012001&amp;nomor=001%2FSK%2F2024" \
+    --header "Authorization: Bearer {YOUR_AUTH_KEY}" \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
@@ -2810,10 +3992,18 @@ You can check the Dev Tools console for debugging information.</code></pre>
 
                 <div class="javascript-example">
                     <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/v1/surat/download"
+    "http://localhost:8000/api/v1/surat/download"
 );
 
+const params = {
+    "desa_id": "3201012001",
+    "nomor": "001/SK/2024",
+};
+Object.keys(params)
+    .forEach(key =&gt; url.searchParams.append(key, params[key]));
+
 const headers = {
+    "Authorization": "Bearer {YOUR_AUTH_KEY}",
     "Content-Type": "application/json",
     "Accept": "application/json",
 };
@@ -2830,25 +4020,42 @@ fetch(url, {
 }).then(response =&gt; response.json());</code></pre>
                 </div>
 
+                <div class="php-example">
+                    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$url = 'http://localhost:8000/api/v1/surat/download';
+$response = $client-&gt;get(
+    $url,
+    [
+        'headers' =&gt; [
+            'Authorization' =&gt; 'Bearer {YOUR_AUTH_KEY}',
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+        'query' =&gt; [
+            'desa_id' =&gt; '3201012001',
+            'nomor' =&gt; '001/SK/2024',
+        ],
+        'json' =&gt; [
+            'desa_id' =&gt; 'architecto',
+            'nomor' =&gt; 'architecto',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre>
+                </div>
+
             </span>
 
             <span id="example-responses-GETapi-v1-surat-download">
                 <blockquote>
-                    <p>Example response (404):</p>
+                    <p>Example response (200):</p>
                 </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/v1/surat/download could not be found.&quot;
+    &quot;Content-Type&quot;: &quot;application/pdf&quot;,
+    &quot;Content-Disposition&quot;: &quot;inline; filename=\&quot;surat.pdf\&quot;&quot;
 }</code>
  </pre>
             </span>
@@ -2870,7 +4077,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 id="form-GETapi-v1-surat-download"
                 data-method="GET"
                 data-path="api/v1/surat/download"
-                data-authed="0"
+                data-authed="1"
                 data-hasfiles="0"
                 data-isarraybody="0"
                 autocomplete="off"
@@ -2891,6 +4098,23 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </p>
                 <h4 class="fancy-heading-panel"><b>Headers</b></h4>
                 <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>Authorization</code></b>&nbsp;&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input
+                        type="text"
+                        style="display: none"
+                        name="Authorization"
+                        class="auth-value"
+                        data-endpoint="GETapi-v1-surat-download"
+                        value="Bearer {YOUR_AUTH_KEY}"
+                        data-component="header"
+                    >
+                    <br>
+                    <p>Example: <code>Bearer {YOUR_AUTH_KEY}</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
                     <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
                     &nbsp;
                     &nbsp;
@@ -2907,6 +4131,25 @@ You can check the Dev Tools console for debugging information.</code></pre>
                     <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-v1-surat-download" value="application/json" data-component="header">
                     <br>
                     <p>Example: <code>application/json</code></p>
+                </div>
+                <h4 class="fancy-heading-panel"><b>Query Parameters</b></h4>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>desa_id</code></b>&nbsp;&nbsp;
+                    <small>string</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="desa_id" data-endpoint="GETapi-v1-surat-download" value="3201012001" data-component="query">
+                    <br>
+                    <p>Kode desa. Example: <code>3201012001</code></p>
+                </div>
+                <div style="padding-left: 28px; clear: unset;">
+                    <b style="line-height: 2;"><code>nomor</code></b>&nbsp;&nbsp;
+                    <small>string</small>&nbsp;
+                    &nbsp;
+                    &nbsp;
+                    <input type="text" style="display: none" name="nomor" data-endpoint="GETapi-v1-surat-download" value="001/SK/2024" data-component="query">
+                    <br>
+                    <p>Nomor surat. Example: <code>001/SK/2024</code></p>
                 </div>
                 <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
                 <div style=" padding-left: 28px;  clear: unset;">
@@ -2929,4462 +4172,12 @@ You can check the Dev Tools console for debugging information.</code></pre>
                 </div>
             </form>
 
-            <h2 id="endpoints-GETapi-frontend-v1-artikel">Display a listing of articles with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-artikel">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/artikel" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/artikel"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-artikel">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/artikel could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-artikel" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-artikel"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-artikel"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-artikel" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-artikel">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-artikel"
-                data-method="GET"
-                data-path="api/frontend/v1/artikel"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-artikel', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-artikel" onclick="tryItOut('GETapi-frontend-v1-artikel');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-artikel" onclick="cancelTryOut('GETapi-frontend-v1-artikel');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-artikel" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/artikel</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-artikel" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-artikel" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-POSTapi-frontend-v1-artikel--id--comments">Store a new comment for an article.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-POSTapi-frontend-v1-artikel--id--comments">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/frontend/v1/artikel/16/comments" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json" \
-    --data "{
-    \"nama\": \"b\",
-    \"email\": \"zbailey@example.net\",
-    \"body\": \"architecto\",
-    \"comment_id\": 16
-}"
-</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/artikel/16/comments"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-let body = {
-    "nama": "b",
-    "email": "zbailey@example.net",
-    "body": "architecto",
-    "comment_id": 16
-};
-
-fetch(url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-POSTapi-frontend-v1-artikel--id--comments">
-            </span>
-            <span id="execution-results-POSTapi-frontend-v1-artikel--id--comments" hidden>
-                <blockquote>Received response<span id="execution-response-status-POSTapi-frontend-v1-artikel--id--comments"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-POSTapi-frontend-v1-artikel--id--comments"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-POSTapi-frontend-v1-artikel--id--comments" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-POSTapi-frontend-v1-artikel--id--comments">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-POSTapi-frontend-v1-artikel--id--comments"
-                data-method="POST"
-                data-path="api/frontend/v1/artikel/{id}/comments"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('POSTapi-frontend-v1-artikel--id--comments', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-frontend-v1-artikel--id--comments" onclick="tryItOut('POSTapi-frontend-v1-artikel--id--comments');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-frontend-v1-artikel--id--comments" onclick="cancelTryOut('POSTapi-frontend-v1-artikel--id--comments');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-frontend-v1-artikel--id--comments" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request
-                        💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-black">POST</small>
-                    <b><code>api/frontend/v1/artikel/{id}/comments</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="POSTapi-frontend-v1-artikel--id--comments" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="POSTapi-frontend-v1-artikel--id--comments" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
-                    <small>integer</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input
-                        type="number"
-                        style="display: none"
-                        step="any"
-                        name="id"
-                        data-endpoint="POSTapi-frontend-v1-artikel--id--comments"
-                        value="16"
-                        data-component="url"
-                    >
-                    <br>
-                    <p>The ID of the artikel. Example: <code>16</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>nama</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="nama" data-endpoint="POSTapi-frontend-v1-artikel--id--comments" value="b" data-component="body">
-                    <br>
-                    <p>Isian value seharusnya tidak lebih dari 191 karakter. Example: <code>b</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>email</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="email" data-endpoint="POSTapi-frontend-v1-artikel--id--comments" value="zbailey@example.net" data-component="body">
-                    <br>
-                    <p>Isian value harus berupa alamat surel yang valid. Isian value seharusnya tidak lebih dari 191 karakter. Example: <code>zbailey@example.net</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>body</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="body" data-endpoint="POSTapi-frontend-v1-artikel--id--comments" value="architecto" data-component="body">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>comment_id</code></b>&nbsp;&nbsp;
-                    <small>integer</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input
-                        type="number"
-                        style="display: none"
-                        step="any"
-                        name="comment_id"
-                        data-endpoint="POSTapi-frontend-v1-artikel--id--comments"
-                        value="16"
-                        data-component="body"
-                    >
-                    <br>
-                    <p>The <code>id</code> of an existing record in the das_artikel_comment table. Example: <code>16</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-artikel-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-artikel-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/artikel/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/artikel/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-artikel-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-artikel-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-artikel-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-artikel-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-artikel-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-artikel-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-artikel-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/artikel/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-artikel-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-artikel-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-artikel-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-artikel-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-artikel-cache--prefix--');" hidden>Cancel
-                        🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-artikel-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/artikel/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-artikel-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-artikel-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-artikel-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-kategori">Display a listing of articles with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-kategori">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/kategori" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/kategori"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-kategori">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/kategori could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-kategori" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-kategori"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-kategori"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-kategori" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-kategori">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-kategori"
-                data-method="GET"
-                data-path="api/frontend/v1/kategori"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-kategori', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-kategori" onclick="tryItOut('GETapi-frontend-v1-kategori');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-kategori" onclick="cancelTryOut('GETapi-frontend-v1-kategori');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-kategori" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/kategori</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-kategori" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-kategori" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-kategori-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-kategori-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/kategori/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/kategori/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-kategori-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-kategori-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-kategori-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-kategori-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-kategori-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-kategori-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-kategori-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/kategori/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-kategori-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-kategori-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-kategori-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-kategori-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-kategori-cache--prefix--');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-kategori-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/kategori/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-kategori-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-kategori-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-kategori-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-website">GET api/frontend/v1/website</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-website">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/website" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/website"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-website">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/website could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-website" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-website"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-website"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-website" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-website">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-website"
-                data-method="GET"
-                data-path="api/frontend/v1/website"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-website', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-website" onclick="tryItOut('GETapi-frontend-v1-website');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-website" onclick="cancelTryOut('GETapi-frontend-v1-website');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-website" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/website</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-website" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-website" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-website-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-website-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/website/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/website/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-website-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-website-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-website-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-website-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-website-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-website-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-website-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/website/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-website-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-website-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-website-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-website-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-website-cache--prefix--');" hidden>Cancel
-                        🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-website-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/website/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-website-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-website-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-website-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-profil">Display a listing of profiles with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-profil">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/profil" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/profil"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-profil">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/profil could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-profil" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-profil"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-profil"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-profil" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-profil">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-profil"
-                data-method="GET"
-                data-path="api/frontend/v1/profil"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-profil', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-profil" onclick="tryItOut('GETapi-frontend-v1-profil');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-profil" onclick="cancelTryOut('GETapi-frontend-v1-profil');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-profil" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/profil</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-profil" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-profil" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-profil-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-profil-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/profil/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/profil/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-profil-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-profil-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-profil-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-profil-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-profil-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-profil-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-profil-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/profil/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-profil-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-profil-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-profil-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-profil-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-profil-cache--prefix--');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-profil-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/profil/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-profil-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-profil-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-profil-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-desa">Display a listing of desa with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-desa">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/desa" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/desa"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-desa">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/desa could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-desa" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-desa"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-desa"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-desa" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-desa">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-desa"
-                data-method="GET"
-                data-path="api/frontend/v1/desa"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-desa', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-desa" onclick="tryItOut('GETapi-frontend-v1-desa');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-desa" onclick="cancelTryOut('GETapi-frontend-v1-desa');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-desa" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/desa</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-desa" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-desa" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-desa-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-desa-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/desa/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/desa/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-desa-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-desa-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-desa-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-desa-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-desa-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-desa-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-desa-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/desa/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-desa-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-desa-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-desa-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-desa-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-desa-cache--prefix--');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-desa-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/desa/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-desa-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-desa-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-desa-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-penduduk">Display statistik penduduk with dashboard and chart data.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-penduduk">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik-penduduk" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik-penduduk"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-penduduk">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik-penduduk could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-penduduk" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-penduduk"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-penduduk"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-penduduk" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-penduduk">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-penduduk"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik-penduduk"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-penduduk', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-penduduk" onclick="tryItOut('GETapi-frontend-v1-statistik-penduduk');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-penduduk" onclick="cancelTryOut('GETapi-frontend-v1-statistik-penduduk');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-penduduk" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik-penduduk</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-penduduk" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-penduduk" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-penduduk-listYear">GET api/frontend/v1/statistik-penduduk/listYear</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-penduduk-listYear">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik-penduduk/listYear" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik-penduduk/listYear"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-penduduk-listYear">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik-penduduk/listYear could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-penduduk-listYear" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-penduduk-listYear"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-penduduk-listYear"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-penduduk-listYear" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-penduduk-listYear">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-penduduk-listYear"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik-penduduk/listYear"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-penduduk-listYear', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-penduduk-listYear" onclick="tryItOut('GETapi-frontend-v1-statistik-penduduk-listYear');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-penduduk-listYear" onclick="cancelTryOut('GETapi-frontend-v1-statistik-penduduk-listYear');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-penduduk-listYear" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik-penduduk/listYear</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-penduduk-listYear" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-penduduk-listYear" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/statistik-penduduk/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik-penduduk/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/statistik-penduduk/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--"
-                        onclick="tryItOut('DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--"
-                        onclick="cancelTryOut('DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--');" hidden
-                    >Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..."
-                        hidden
-                    >Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/statistik-penduduk/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-statistik-penduduk-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-komplain">Display a listing of complaints.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-komplain">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/komplain" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/komplain"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-komplain">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/komplain could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-komplain" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-komplain"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-komplain"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-komplain" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-komplain">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-komplain"
-                data-method="GET"
-                data-path="api/frontend/v1/komplain"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-komplain', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-komplain" onclick="tryItOut('GETapi-frontend-v1-komplain');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-komplain" onclick="cancelTryOut('GETapi-frontend-v1-komplain');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-komplain" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/komplain</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-komplain" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-komplain" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-POSTapi-frontend-v1-komplain">Store a newly created complaint.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-POSTapi-frontend-v1-komplain">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request POST \
-    "http://opendk.test/api/frontend/v1/komplain" \
-    --header "Content-Type: multipart/form-data" \
-    --header "Accept: application/json" \
-    --form "nik=4326.41688"\
-    --form "judul=m"\
-    --form "kategori=architecto"\
-    --form "laporan=architecto"\
-    --form "tanggal_lahir=2026-02-18T16:39:16"\
-    --form "anonim="\
-    --form "lampiran1=@C:\Users\habib\AppData\Local\Temp\php227C.tmp" \
-    --form "lampiran2=@C:\Users\habib\AppData\Local\Temp\php228D.tmp" \
-    --form "lampiran3=@C:\Users\habib\AppData\Local\Temp\php228E.tmp" \
-    --form "lampiran4=@C:\Users\habib\AppData\Local\Temp\php228F.tmp" </code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/komplain"
-);
-
-const headers = {
-    "Content-Type": "multipart/form-data",
-    "Accept": "application/json",
-};
-
-const body = new FormData();
-body.append('nik', '4326.41688');
-body.append('judul', 'm');
-body.append('kategori', 'architecto');
-body.append('laporan', 'architecto');
-body.append('tanggal_lahir', '2026-02-18T16:39:16');
-body.append('anonim', '');
-body.append('lampiran1', document.querySelector('input[name="lampiran1"]').files[0]);
-body.append('lampiran2', document.querySelector('input[name="lampiran2"]').files[0]);
-body.append('lampiran3', document.querySelector('input[name="lampiran3"]').files[0]);
-body.append('lampiran4', document.querySelector('input[name="lampiran4"]').files[0]);
-
-fetch(url, {
-    method: "POST",
-    headers,
-    body,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-POSTapi-frontend-v1-komplain">
-            </span>
-            <span id="execution-results-POSTapi-frontend-v1-komplain" hidden>
-                <blockquote>Received response<span id="execution-response-status-POSTapi-frontend-v1-komplain"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-POSTapi-frontend-v1-komplain"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-POSTapi-frontend-v1-komplain" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-POSTapi-frontend-v1-komplain">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-POSTapi-frontend-v1-komplain"
-                data-method="POST"
-                data-path="api/frontend/v1/komplain"
-                data-authed="0"
-                data-hasfiles="1"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('POSTapi-frontend-v1-komplain', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-POSTapi-frontend-v1-komplain" onclick="tryItOut('POSTapi-frontend-v1-komplain');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-POSTapi-frontend-v1-komplain" onclick="cancelTryOut('POSTapi-frontend-v1-komplain');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-POSTapi-frontend-v1-komplain" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-black">POST</small>
-                    <b><code>api/frontend/v1/komplain</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="POSTapi-frontend-v1-komplain" value="multipart/form-data" data-component="header">
-                    <br>
-                    <p>Example: <code>multipart/form-data</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="POSTapi-frontend-v1-komplain" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>nik</code></b>&nbsp;&nbsp;
-                    <small>number</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input
-                        type="number"
-                        style="display: none"
-                        step="any"
-                        name="nik"
-                        data-endpoint="POSTapi-frontend-v1-komplain"
-                        value="4326.41688"
-                        data-component="body"
-                    >
-                    <br>
-                    <p>Example: <code>4326.41688</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>judul</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="judul" data-endpoint="POSTapi-frontend-v1-komplain" value="m" data-component="body">
-                    <br>
-                    <p>Isian value seharusnya tidak lebih dari 255 karakter. Example: <code>m</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>kategori</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="kategori" data-endpoint="POSTapi-frontend-v1-komplain" value="architecto" data-component="body">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>laporan</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="laporan" data-endpoint="POSTapi-frontend-v1-komplain" value="architecto" data-component="body">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>tanggal_lahir</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="tanggal_lahir" data-endpoint="POSTapi-frontend-v1-komplain" value="2026-02-18T16:39:16" data-component="body">
-                    <br>
-                    <p>Isian value bukan tanggal yang valid. Example: <code>2026-02-18T16:39:16</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>anonim</code></b>&nbsp;&nbsp;
-                    <small>boolean</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <label data-endpoint="POSTapi-frontend-v1-komplain" style="display: none">
-                        <input type="radio" name="anonim" value="true" data-endpoint="POSTapi-frontend-v1-komplain" data-component="body">
-                        <code>true</code>
-                    </label>
-                    <label data-endpoint="POSTapi-frontend-v1-komplain" style="display: none">
-                        <input type="radio" name="anonim" value="false" data-endpoint="POSTapi-frontend-v1-komplain" data-component="body">
-                        <code>false</code>
-                    </label>
-                    <br>
-                    <p>Example: <code>false</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>lampiran1</code></b>&nbsp;&nbsp;
-                    <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="file" style="display: none" name="lampiran1" data-endpoint="POSTapi-frontend-v1-komplain" value="" data-component="body">
-                    <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 1024 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php227C.tmp</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>lampiran2</code></b>&nbsp;&nbsp;
-                    <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="file" style="display: none" name="lampiran2" data-endpoint="POSTapi-frontend-v1-komplain" value="" data-component="body">
-                    <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 1024 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php228D.tmp</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>lampiran3</code></b>&nbsp;&nbsp;
-                    <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="file" style="display: none" name="lampiran3" data-endpoint="POSTapi-frontend-v1-komplain" value="" data-component="body">
-                    <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 1024 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php228E.tmp</code></p>
-                </div>
-                <div style=" padding-left: 28px;  clear: unset;">
-                    <b style="line-height: 2;"><code>lampiran4</code></b>&nbsp;&nbsp;
-                    <small>file</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="file" style="display: none" name="lampiran4" data-endpoint="POSTapi-frontend-v1-komplain" value="" data-component="body">
-                    <br>
-                    <p>Must be a file. Isian value seharusnya tidak lebih dari 1024 kilobytes. Example: <code>C:\Users\habib\AppData\Local\Temp\php228F.tmp</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-komplain-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-komplain-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/komplain/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/komplain/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-komplain-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-komplain-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-komplain-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-komplain-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-komplain-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-komplain-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-komplain-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/komplain/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-komplain-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-komplain-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-komplain-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-komplain-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-komplain-cache--prefix--');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-komplain-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/komplain/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-komplain-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-komplain-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-komplain-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-galeri">Display a listing of galeri with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-galeri">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/galeri" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/galeri"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-galeri">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/galeri could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-galeri" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-galeri"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-galeri"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-galeri" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-galeri">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-galeri"
-                data-method="GET"
-                data-path="api/frontend/v1/galeri"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-galeri', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-galeri" onclick="tryItOut('GETapi-frontend-v1-galeri');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-galeri" onclick="cancelTryOut('GETapi-frontend-v1-galeri');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-galeri" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/galeri</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-galeri" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-galeri" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-galeri-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-galeri-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/galeri/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/galeri/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-galeri-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-galeri-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-galeri-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-galeri-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-galeri-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-galeri-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-galeri-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/galeri/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-galeri-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-galeri-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-galeri-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-galeri-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-galeri-cache--prefix--');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-galeri-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/galeri/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-galeri-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-galeri-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-galeri-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-album">Display a listing of album with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-album">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/album" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/album"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-album">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/album could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-album" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-album"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-album"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-album" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-album">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-album"
-                data-method="GET"
-                data-path="api/frontend/v1/album"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-album', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-album" onclick="tryItOut('GETapi-frontend-v1-album');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-album" onclick="cancelTryOut('GETapi-frontend-v1-album');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-album" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/album</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-album" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-album" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-album-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-album-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/album/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/album/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-album-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-album-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-album-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-album-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-album-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-album-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-album-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/album/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-album-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-album-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-album-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-album-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-album-cache--prefix--');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-album-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/album/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-album-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-album-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-album-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-potensi">Display a listing of potensi with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-potensi">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/potensi" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/potensi"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-potensi">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/potensi could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-potensi" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-potensi"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-potensi"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-potensi" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-potensi">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-potensi"
-                data-method="GET"
-                data-path="api/frontend/v1/potensi"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-potensi', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-potensi" onclick="tryItOut('GETapi-frontend-v1-potensi');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-potensi" onclick="cancelTryOut('GETapi-frontend-v1-potensi');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-potensi" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/potensi</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-potensi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-potensi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-potensi-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-potensi-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/potensi/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/potensi/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-potensi-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-potensi-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-potensi-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-potensi-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-potensi-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-potensi-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-potensi-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/potensi/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-potensi-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-potensi-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-potensi-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-potensi-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-potensi-cache--prefix--');" hidden>Cancel
-                        🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-potensi-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/potensi/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-potensi-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-potensi-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-potensi-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-form-dokumen">Display a listing of form dokumen with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-form-dokumen">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/form-dokumen" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/form-dokumen"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-form-dokumen">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/form-dokumen could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-form-dokumen" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-form-dokumen"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-form-dokumen"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-form-dokumen" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-form-dokumen">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-form-dokumen"
-                data-method="GET"
-                data-path="api/frontend/v1/form-dokumen"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-form-dokumen', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-form-dokumen" onclick="tryItOut('GETapi-frontend-v1-form-dokumen');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-form-dokumen" onclick="cancelTryOut('GETapi-frontend-v1-form-dokumen');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-form-dokumen" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/form-dokumen</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-form-dokumen" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-form-dokumen" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-form-dokumen-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-form-dokumen-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/form-dokumen/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/form-dokumen/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-form-dokumen-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-form-dokumen-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-form-dokumen-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-form-dokumen-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-form-dokumen-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-form-dokumen-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-form-dokumen-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/form-dokumen/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-form-dokumen-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-form-dokumen-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-form-dokumen-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-form-dokumen-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-form-dokumen-cache--prefix--');"
-                        hidden
-                    >Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-form-dokumen-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..."
-                        hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/form-dokumen/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-form-dokumen-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-form-dokumen-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-form-dokumen-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-regulasi">Display a listing of regulasi with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-regulasi">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/regulasi" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/regulasi"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-regulasi">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/regulasi could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-regulasi" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-regulasi"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-regulasi"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-regulasi" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-regulasi">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-regulasi"
-                data-method="GET"
-                data-path="api/frontend/v1/regulasi"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-regulasi', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-regulasi" onclick="tryItOut('GETapi-frontend-v1-regulasi');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-regulasi" onclick="cancelTryOut('GETapi-frontend-v1-regulasi');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-regulasi" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/regulasi</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-regulasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-regulasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-DELETEapi-frontend-v1-regulasi-cache--prefix--">Remove all cache entries with the specified prefix</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-DELETEapi-frontend-v1-regulasi-cache--prefix--">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request DELETE \
-    "http://opendk.test/api/frontend/v1/regulasi/cache/architecto" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/regulasi/cache/architecto"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-DELETEapi-frontend-v1-regulasi-cache--prefix--">
-            </span>
-            <span id="execution-results-DELETEapi-frontend-v1-regulasi-cache--prefix--" hidden>
-                <blockquote>Received response<span id="execution-response-status-DELETEapi-frontend-v1-regulasi-cache--prefix--"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-DELETEapi-frontend-v1-regulasi-cache--prefix--"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-DELETEapi-frontend-v1-regulasi-cache--prefix--" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-DELETEapi-frontend-v1-regulasi-cache--prefix--">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-DELETEapi-frontend-v1-regulasi-cache--prefix--"
-                data-method="DELETE"
-                data-path="api/frontend/v1/regulasi/cache/{prefix?}"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('DELETEapi-frontend-v1-regulasi-cache--prefix--', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-DELETEapi-frontend-v1-regulasi-cache--prefix--" onclick="tryItOut('DELETEapi-frontend-v1-regulasi-cache--prefix--');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-DELETEapi-frontend-v1-regulasi-cache--prefix--" onclick="cancelTryOut('DELETEapi-frontend-v1-regulasi-cache--prefix--');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-DELETEapi-frontend-v1-regulasi-cache--prefix--" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-red">DELETE</small>
-                    <b><code>api/frontend/v1/regulasi/cache/{prefix?}</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="DELETEapi-frontend-v1-regulasi-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="DELETEapi-frontend-v1-regulasi-cache--prefix--" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>prefix</code></b>&nbsp;&nbsp;
-                    <small>string</small>&nbsp;
-                    <i>optional</i> &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="prefix" data-endpoint="DELETEapi-frontend-v1-regulasi-cache--prefix--" value="architecto" data-component="url">
-                    <br>
-                    <p>Example: <code>architecto</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan">GET api/frontend/v1/statistik/chart-tingkat-pendidikan</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-tingkat-pendidikan" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-tingkat-pendidikan"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-tingkat-pendidikan could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-tingkat-pendidikan"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-tingkat-pendidikan', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-tingkat-pendidikan');">Try it
-                        out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan"
-                        onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-tingkat-pendidikan');" hidden
-                    >Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-tingkat-pendidikan" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..."
-                        hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-tingkat-pendidikan</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-tingkat-pendidikan" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-tingkat-pendidikan" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-putus-sekolah">GET api/frontend/v1/statistik/chart-putus-sekolah</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-putus-sekolah">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-putus-sekolah" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-putus-sekolah"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-putus-sekolah">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-putus-sekolah could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-putus-sekolah" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-putus-sekolah"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-putus-sekolah"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-putus-sekolah" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-putus-sekolah">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-putus-sekolah"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-putus-sekolah"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-putus-sekolah', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-putus-sekolah" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-putus-sekolah');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-putus-sekolah" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-putus-sekolah');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-putus-sekolah" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-putus-sekolah</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-putus-sekolah" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-putus-sekolah" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-fasilitas-paud">GET api/frontend/v1/statistik/chart-fasilitas-paud</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-fasilitas-paud">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-fasilitas-paud" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-fasilitas-paud"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-fasilitas-paud">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-fasilitas-paud could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-fasilitas-paud" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-fasilitas-paud"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-fasilitas-paud"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-fasilitas-paud" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-fasilitas-paud">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-fasilitas-paud"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-fasilitas-paud"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-fasilitas-paud', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-fasilitas-paud" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-fasilitas-paud');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-fasilitas-paud" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-fasilitas-paud');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-fasilitas-paud" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-fasilitas-paud</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-fasilitas-paud" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-fasilitas-paud" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-akiakb">GET api/frontend/v1/statistik/chart-akiakb</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-akiakb">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-akiakb" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-akiakb"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-akiakb">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-akiakb could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-akiakb" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-akiakb"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-akiakb"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-akiakb" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-akiakb">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-akiakb"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-akiakb"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-akiakb', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-akiakb" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-akiakb');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-akiakb" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-akiakb');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-akiakb" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request
-                        💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-akiakb</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-akiakb" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-akiakb" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-imunisasi">GET api/frontend/v1/statistik/chart-imunisasi</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-imunisasi">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-imunisasi" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-imunisasi"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-imunisasi">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-imunisasi could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-imunisasi" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-imunisasi"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-imunisasi"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-imunisasi" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-imunisasi">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-imunisasi"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-imunisasi"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-imunisasi', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-imunisasi" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-imunisasi');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-imunisasi" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-imunisasi');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-imunisasi" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-imunisasi</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-imunisasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-imunisasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-penyakit">GET api/frontend/v1/statistik/chart-penyakit</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-penyakit">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-penyakit" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-penyakit"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-penyakit">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-penyakit could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-penyakit" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-penyakit"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-penyakit"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-penyakit" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-penyakit">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-penyakit"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-penyakit"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-penyakit', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-penyakit" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-penyakit');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-penyakit" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-penyakit');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-penyakit" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-penyakit</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-penyakit" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-penyakit" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-sanitasi">GET api/frontend/v1/statistik/chart-sanitasi</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-sanitasi">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-sanitasi" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-sanitasi"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-sanitasi">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-sanitasi could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-sanitasi" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-sanitasi"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-sanitasi"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-sanitasi" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-sanitasi">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-sanitasi"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-sanitasi"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-sanitasi', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-sanitasi" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-sanitasi');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-sanitasi" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-sanitasi');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-sanitasi" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-sanitasi</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-sanitasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-sanitasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-penduduk">GET api/frontend/v1/statistik/chart-penduduk</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-penduduk">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-penduduk" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-penduduk"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-penduduk">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-penduduk could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-penduduk" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-penduduk"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-penduduk"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-penduduk" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-penduduk">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-penduduk"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-penduduk"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-penduduk', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-penduduk" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-penduduk');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-penduduk" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-penduduk');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-penduduk" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-penduduk</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-penduduk" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-penduduk" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-keluarga">GET api/frontend/v1/statistik/chart-keluarga</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-keluarga">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-keluarga" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-keluarga"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-keluarga">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-keluarga could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-keluarga" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-keluarga"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-keluarga"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-keluarga" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-keluarga">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-keluarga"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-keluarga"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-keluarga', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-keluarga" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-keluarga');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-keluarga" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-keluarga');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-keluarga" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-keluarga</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-keluarga" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-keluarga" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-anggaran-realisasi">GET api/frontend/v1/statistik/chart-anggaran-realisasi</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-anggaran-realisasi">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-anggaran-realisasi" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-anggaran-realisasi"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-anggaran-realisasi">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-anggaran-realisasi could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-anggaran-realisasi" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-anggaran-realisasi"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-anggaran-realisasi"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-anggaran-realisasi" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-anggaran-realisasi">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-anggaran-realisasi"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-anggaran-realisasi"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-anggaran-realisasi', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-anggaran-realisasi" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-anggaran-realisasi');">Try it
-                        out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-anggaran-realisasi"
-                        onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-anggaran-realisasi');" hidden
-                    >Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-anggaran-realisasi" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..."
-                        hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-anggaran-realisasi</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-anggaran-realisasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-anggaran-realisasi" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-statistik-chart-anggaran-desa">GET api/frontend/v1/statistik/chart-anggaran-desa</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-statistik-chart-anggaran-desa">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/statistik/chart-anggaran-desa" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/statistik/chart-anggaran-desa"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-statistik-chart-anggaran-desa">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/statistik/chart-anggaran-desa could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-statistik-chart-anggaran-desa" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-statistik-chart-anggaran-desa"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-statistik-chart-anggaran-desa"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-statistik-chart-anggaran-desa" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-statistik-chart-anggaran-desa">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-statistik-chart-anggaran-desa"
-                data-method="GET"
-                data-path="api/frontend/v1/statistik/chart-anggaran-desa"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-statistik-chart-anggaran-desa', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-statistik-chart-anggaran-desa" onclick="tryItOut('GETapi-frontend-v1-statistik-chart-anggaran-desa');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-statistik-chart-anggaran-desa" onclick="cancelTryOut('GETapi-frontend-v1-statistik-chart-anggaran-desa');"
-                        hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-statistik-chart-anggaran-desa" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send
-                        Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/statistik/chart-anggaran-desa</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-statistik-chart-anggaran-desa" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-statistik-chart-anggaran-desa" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
-            <h2 id="endpoints-GETapi-frontend-v1-faq">Display a listing of FAQ with advanced filtering and sorting.</h2>
-
-            <p>
-            </p>
-
-            <span id="example-requests-GETapi-frontend-v1-faq">
-                <blockquote>Example request:</blockquote>
-
-                <div class="bash-example">
-                    <pre><code class="language-bash">curl --request GET \
-    --get "http://opendk.test/api/frontend/v1/faq" \
-    --header "Content-Type: application/json" \
-    --header "Accept: application/json"</code></pre>
-                </div>
-
-                <div class="javascript-example">
-                    <pre><code class="language-javascript">const url = new URL(
-    "http://opendk.test/api/frontend/v1/faq"
-);
-
-const headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-};
-
-fetch(url, {
-    method: "GET",
-    headers,
-}).then(response =&gt; response.json());</code></pre>
-                </div>
-
-            </span>
-
-            <span id="example-responses-GETapi-frontend-v1-faq">
-                <blockquote>
-                    <p>Example response (404):</p>
-                </blockquote>
-                <details class="annotation">
-                    <summary style="cursor: pointer;">
-                        <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
-                    </summary>
-                    <pre><code class="language-http">cache-control: no-cache, private
-content-type: application/json
-access-control-allow-origin: *
- </code></pre>
-                </details>
-                <pre>
-
-<code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;The route api/frontend/v1/faq could not be found.&quot;
-}</code>
- </pre>
-            </span>
-            <span id="execution-results-GETapi-frontend-v1-faq" hidden>
-                <blockquote>Received response<span id="execution-response-status-GETapi-frontend-v1-faq"></span>:
-                </blockquote>
-                <pre class="json"><code id="execution-response-content-GETapi-frontend-v1-faq"
-      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
-            </span>
-            <span id="execution-error-GETapi-frontend-v1-faq" hidden>
-                <blockquote>Request failed with error:</blockquote>
-                <pre><code id="execution-error-message-GETapi-frontend-v1-faq">
-
-Tip: Check that you&#039;re properly connected to the network.
-If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
-You can check the Dev Tools console for debugging information.</code></pre>
-            </span>
-            <form
-                id="form-GETapi-frontend-v1-faq"
-                data-method="GET"
-                data-path="api/frontend/v1/faq"
-                data-authed="0"
-                data-hasfiles="0"
-                data-isarraybody="0"
-                autocomplete="off"
-                onsubmit="event.preventDefault(); executeTryOut('GETapi-frontend-v1-faq', this);"
-            >
-                <h3>
-                    Request&nbsp;&nbsp;&nbsp;
-                    <button type="button" style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-tryout-GETapi-frontend-v1-faq" onclick="tryItOut('GETapi-frontend-v1-faq');">Try it out ⚡
-                    </button>
-                    <button type="button" style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-canceltryout-GETapi-frontend-v1-faq" onclick="cancelTryOut('GETapi-frontend-v1-faq');" hidden>Cancel 🛑
-                    </button>&nbsp;&nbsp;
-                    <button type="submit" style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;" id="btn-executetryout-GETapi-frontend-v1-faq" data-initial-text="Send Request 💥" data-loading-text="⏱ Sending..." hidden>Send Request 💥
-                    </button>
-                </h3>
-                <p>
-                    <small class="badge badge-green">GET</small>
-                    <b><code>api/frontend/v1/faq</code></b>
-                </p>
-                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Content-Type" data-endpoint="GETapi-frontend-v1-faq" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-                <div style="padding-left: 28px; clear: unset;">
-                    <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <input type="text" style="display: none" name="Accept" data-endpoint="GETapi-frontend-v1-faq" value="application/json" data-component="header">
-                    <br>
-                    <p>Example: <code>application/json</code></p>
-                </div>
-            </form>
-
         </div>
         <div class="dark-box">
             <div class="lang-selector">
                 <button type="button" class="lang-button" data-language-name="bash">bash</button>
                 <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
+                <button type="button" class="lang-button" data-language-name="php">php</button>
             </div>
         </div>
     </div>

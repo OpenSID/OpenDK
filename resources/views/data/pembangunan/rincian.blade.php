@@ -41,6 +41,26 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td>Anggaran</td>
+                                <td> : </td>
+                                <td>Rp. {{ format_number_id($pembangunan->anggaran) ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Volume</td>
+                                <td> : </td>
+                                <td>{{ $pembangunan->volume ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tahun</td>
+                                <td> : </td>
+                                <td>{{ $pembangunan->tahun_anggaran ?? '-' }}</td>
+                            </tr>
+                            <tr>
+                                <td>Pelaksana</td>
+                                <td> : </td>
+                                <td>{{ $pembangunan->pelaksana_kegiatan ?? '-' }}</td>
+                            </tr>
+                            <tr>
                                 <td>Lokasi Pembangunan</td>
                                 <td> : </td>
                                 <td>{{ $pembangunan->lokasi }}</td>

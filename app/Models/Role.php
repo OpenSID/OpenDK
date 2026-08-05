@@ -36,6 +36,21 @@ use Spatie\Permission\Models\Role as ModelsRole;
 
 class Role extends ModelsRole
 {
+    /**
+     * Role sistem yang tidak boleh dihapus karena merupakan role bawaan aplikasi.
+     */
+    const PROTECTED_ROLES = [
+        'super-admin',
+        'admin-kecamatan',
+        'admin-komplain',
+        'administrator-website',
+    ];
+
+    public function scopeWeb($query)
+    {
+        return $query->where('guard_name', 'web');
+    }
+
     public static function datatables()
     {
         return static::select('roles.*');

@@ -33,6 +33,7 @@ namespace Database\Seeders\Demo;
 
 use App\Models\Prosedur;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DemoProsedurSeeder extends Seeder
 {
@@ -43,22 +44,30 @@ class DemoProsedurSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        Prosedur::truncate();
+        Schema::enableForeignKeyConstraints();
+
         $data = [
             [
-                'judul_prosedur' => 'Prosedur 1',
-                'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type' => 'pdf',
+                'judul_prosedur' => 'Prosedur Penerbitan Kartu Tanda Penduduk Elektronik (KTP-el)',
+                'file_prosedur'  => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type'      => 'pdf',
             ],
             [
-                'judul_prosedur' => 'Prosedur 2',
-                'file_prosedur' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type' => 'pdf',
+                'judul_prosedur' => 'Prosedur Pengurusan Kartu Keluarga (KK)',
+                'file_prosedur'  => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type'      => 'pdf',
+            ],
+            [
+                'judul_prosedur' => 'Prosedur Penerbitan Surat Keterangan Pindah Domisili',
+                'file_prosedur'  => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type'      => 'pdf',
             ],
         ];
 
         foreach ($data as $prosedur) {
             Prosedur::create($prosedur);
         }
-
     }
 }

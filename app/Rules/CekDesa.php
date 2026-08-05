@@ -37,19 +37,9 @@ use Illuminate\Contracts\Validation\Rule;
 
 class CekDesa implements Rule
 {
-    protected $nama_kecamatan;
+    protected ?string $nama_kecamatan = null;
 
-    protected $value;
-
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->nama_kecamatan = Profil::first()->nama_kecamatan;
-    }
+    protected ?string $value = null;
 
     /**
      * Determine if the validation rule passes.
@@ -58,11 +48,11 @@ class CekDesa implements Rule
      * @param  mixed  $value
      * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $value): bool
     {
         $this->value = $value;
 
-        return DataDesa::where($attribute, $value)->first();
+        return (bool) DataDesa::where($attribute, $value)->first();
     }
 
     /**
@@ -70,8 +60,12 @@ class CekDesa implements Rule
      *
      * @return string
      */
-    public function message()
+    public function message(): string
     {
+        if ($this->nama_kecamatan === null) {
+            $this->nama_kecamatan = optional(Profil::first())->nama_kecamatan ?? 'Unknown';
+        }
+
         return 'Kode desa '.$this->value.' tidak dikenal di OpenDK Kecamatan '.$this->nama_kecamatan;
     }
 }

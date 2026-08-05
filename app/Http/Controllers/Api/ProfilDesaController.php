@@ -37,6 +37,20 @@ use App\Models\DataDesa;
 
 class ProfilDesaController extends Controller
 {
+    /**
+     * Sinkronisasi identitas desa dari OpenSID.
+     *
+     * @group OpenSID Integration
+     *
+     * @bodyParam kode_desa string required Kode desa. Example: 3201012001
+     * @bodyParam website string URL website desa. Example: https://desa.example.com
+     * @bodyParam sebutan_desa string Sebutan desa. Example: Kampung
+     * @bodyParam path string Path menu profil. Example: profil/desa
+     * @response {
+     *   "status": "success",
+     *   "message": "Proses sinkronisasi identitas desa sudah selesai"
+     * }
+     */
     public function store(ProfilDesaRequest $request)
     {
         DataDesa::where('desa_id', $request->kode_desa)->update([

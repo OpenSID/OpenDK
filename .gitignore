@@ -41,6 +41,11 @@ public/error_log
 /playwright-report/
 .env.e2e
 
+# Performance Testing (k6)
+/tests/performance/report.json
+/tests/performance/rate-limit-report.json
+/tests/performance/k6-results.json
+
 # Pest Browser Testing
 /tests/Browser/screenshots
 /tests/Browser/console
@@ -59,4 +64,10 @@ mcp.json
 
 .env.testing
 nul
+
+# Agent
+/.qwen
 graphify-out
+
+# Scribe (auto-generated, contains auth tokens)
+.scribe/

@@ -29,6 +29,26 @@
                                 <td id="sumber-dana">Loading...</td>
                             </tr>
                             <tr>
+                                <td>Anggaran</td>
+                                <td>:</td>
+                                <td id="anggaran">Loading...</td>
+                            </tr>
+                            <tr>
+                                <td>Volume</td>
+                                <td>:</td>
+                                <td id="volume">Loading...</td>
+                            </tr>
+                            <tr>
+                                <td>Tahun</td>
+                                <td>:</td>
+                                <td id="tahun">Loading...</td>
+                            </tr>
+                            <tr>
+                                <td>Pelaksana</td>
+                                <td>:</td>
+                                <td id="pelaksana">Loading...</td>
+                            </tr>
+                            <tr>
                                 <td>Lokasi Pembangunan</td>
                                 <td>:</td>
                                 <td id="lokasi-pembangunan">Loading...</td>
@@ -104,10 +124,14 @@
 
                         $('#lokasi-pembangunan').text(response.data.attributes.lokasi);
                         $('#keterangan').text(response.data.attributes.keterangan);
+                        $('#anggaran').text('Rp. ' + Number(response.data.attributes.anggaran).toLocaleString('id-ID') ?? '-');
+                        $('#volume').text(response.data.attributes.volume ?? '-');
+                        $('#tahun').text(response.data.attributes.tahun_anggaran ?? '-');
+                        $('#pelaksana').text(response.data.attributes.pelaksana_kegiatan ?? '-');
                     }
                 },
                 error: function() {
-                    $('#nama-kegiatan, #sumber-dana, #lokasi-pembangunan, #keterangan').text(
+                    $('#nama-kegiatan, #sumber-dana, #anggaran, #volume, #tahun, #pelaksana, #lokasi-pembangunan, #keterangan').text(
                         "Error loading data");
                 }
             });

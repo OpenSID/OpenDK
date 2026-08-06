@@ -10,6 +10,26 @@ use App\Http\Requests\Installer\PerformInstallationRequest;
 use Illuminate\Http\Request;
 
 describe('Installer Controller', function () {
+    beforeEach(function () {
+        $installedFile = storage_path('installed');
+        $this->installedFile = $installedFile;
+        $this->existedBefore = file_exists($installedFile);
+        file_put_contents($installedFile, 'installed');
+    });
+
+    afterEach(function () {
+        $installedFile = $this->installedFile;
+        if ($this->existedBefore) {
+            if (! file_exists($installedFile)) {
+                file_put_contents($installedFile, 'installed');
+            }
+        } else {
+            if (file_exists($installedFile)) {
+                unlink($installedFile);
+            }
+        }
+    });
+
     test('middleware installer.check redirects to / when sudahInstal() is true', function () {
         $middleware = new InstallerCheck();
 
@@ -84,6 +104,21 @@ describe('Installer Controller', function () {
         );
 
         expect($validator->passes())->toBeTrue();
+    });
+
+    test('environmentSaveClassic redirects when already installed and does not modify .env', function () {
+        $envPath = base_path('.env');
+        $originalEnv = file_exists($envPath) ? file_get_contents($envPath) : null;
+
+        $response = $this->post(route('installer.environmentSaveClassic'), [
+            'envConfig' => 'APP_NAME="Hacked"',
+        ]);
+
+        $response->assertRedirect('/');
+
+        if ($originalEnv !== null && file_exists($envPath)) {
+            expect(file_get_contents($envPath))->toBe($originalEnv);
+        }
     });
 
     test('PerformInstallationRequest has empty rules', function () {

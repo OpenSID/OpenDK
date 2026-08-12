@@ -33,7 +33,9 @@ namespace App\Http\Controllers\Installer;
 
 use App\Http\Controllers\Controller;
 use App\Helpers\SystemRequirementsChecker;
-use Illuminate\Http\Request;
+use App\Http\Requests\Installer\EnvironmentClassicSaveRequest;
+use App\Http\Requests\Installer\EnvironmentWizardSaveRequest;
+use App\Http\Requests\Installer\PerformInstallationRequest;
 
 /**
  * Pengganti untuk installer controller dari package yang sudah abandoned
@@ -52,10 +54,6 @@ class InstallerController extends Controller
      */
     public function welcome()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         return view('vendor.installer.welcome');
     }
 
@@ -64,10 +62,6 @@ class InstallerController extends Controller
      */
     public function requirements()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         $phpSupportInfo = $this->requirements->checkPHPversion(
             config('installer.core.minPhpVersion')
         );
@@ -84,10 +78,6 @@ class InstallerController extends Controller
      */
     public function permissions()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         $permissions = $this->requirements->checkPermissions(
             config('installer.permissions')
         );
@@ -100,10 +90,6 @@ class InstallerController extends Controller
      */
     public function environment()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         return view('vendor.installer.environment');
     }
 
@@ -112,10 +98,6 @@ class InstallerController extends Controller
      */
     public function environmentWizard()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         return view('vendor.installer.environment-wizard');
     }
 
@@ -124,10 +106,6 @@ class InstallerController extends Controller
      */
     public function environmentClassic()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         $envConfig = file_exists(base_path('.env')) ? file_get_contents(base_path('.env')) : '';
 
         return view('vendor.installer.environment-classic', compact('envConfig'));
@@ -136,22 +114,8 @@ class InstallerController extends Controller
     /**
      * Save environment configuration from wizard.
      */
-    public function environmentSaveWizard(Request $request)
+    public function environmentSaveWizard(EnvironmentWizardSaveRequest $request)
     {
-        // Validasi input
-        $request->validate([
-            'app_name'            => 'required|string|max:255',
-            'app_environment'     => 'required|string',
-            'app_debug'           => 'required',
-            'app_url'             => 'required|url',
-            'database_connection' => 'required|string',
-            'database_hostname'   => 'required|string',
-            'database_port'       => 'required|numeric',
-            'database_name'       => 'required|string',
-            'database_username'   => 'required|string',
-            'database_password'   => 'nullable|string',
-        ]);
-
         // Cek writability file .env
         $envPath = base_path('.env');
         if (file_exists($envPath) && ! is_writable($envPath)) {
@@ -250,13 +214,8 @@ class InstallerController extends Controller
     /**
      * Save environment configuration from classic editor.
      */
-    public function environmentSaveClassic(Request $request)
+    public function environmentSaveClassic(EnvironmentClassicSaveRequest $request)
     {
-        // Validasi input
-        $request->validate([
-            'envConfig' => 'required|string',
-        ]);
-
         // Cek writability file .env
         $envPath = base_path('.env');
         if (file_exists($envPath) && ! is_writable($envPath)) {
@@ -284,10 +243,6 @@ class InstallerController extends Controller
      */
     public function database()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         // Test database connection
         $canConnect = false;
         $message    = '';
@@ -311,22 +266,14 @@ class InstallerController extends Controller
      */
     public function final()
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         return view('vendor.installer.finished');
     }
 
     /**
      * Perform the actual installation.
      */
-    public function performInstallation(Request $request)
+    public function performInstallation(PerformInstallationRequest $request)
     {
-        if (sudahInstal()) {
-            return redirect('/');
-        }
-
         try {
             // Generate APP_KEY jika belum ada atau masih kosong
             if (empty(config('app.key')) || config('app.key') === 'base64:') {

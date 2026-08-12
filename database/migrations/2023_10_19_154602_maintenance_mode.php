@@ -42,8 +42,7 @@ class MaintenanceMode extends Migration
      */
     public function up()
     {
-        SettingAplikasi::insert([
-            'id' => 11,
+        SettingAplikasi::insert([            
             'key' => 'mode_maintenance',
             'value' => Status::TidakAktif,
             'type' => 'boolean',

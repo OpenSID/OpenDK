@@ -79,7 +79,7 @@ Route::get('/docs', function () {
 })->name('swagger');
 // Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
 // Menggunakan sintaks modern Laravel 13 — namespace string sudah dihapus di L10+
-Route::prefix('install')->group(function () {
+Route::prefix('install')->middleware(['installer.check'])->group(function () {
     Route::get('/', [InstallerController::class, 'welcome'])->name('installer.welcome');
     Route::get('/requirements', [InstallerController::class, 'requirements'])->name('installer.requirements');
     Route::get('/permissions', [InstallerController::class, 'permissions'])->name('installer.permissions');

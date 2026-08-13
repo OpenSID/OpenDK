@@ -84,6 +84,7 @@ return Application::configure(basePath: dirname(__DIR__))
         */
         $middleware->alias([
             'installed'         => \App\Http\Middleware\KDInstalled::class,
+            'installer.check'   => \App\Http\Middleware\InstallerCheck::class,
             'maintenance'       => \App\Http\Middleware\MaintenanceMode::class,
             'action_permission' => \App\Http\Middleware\CheckActionPermission::class,
             'xss_sanitization'  => \App\Http\Middleware\XssSanitization::class,

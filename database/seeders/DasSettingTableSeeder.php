@@ -44,8 +44,7 @@ class DasSettingTableSeeder extends Seeder
     public function run()
     {
         $settings = [
-            [
-                'id' => 1,
+            [                
                 'key' => 'judul_aplikasi',
                 'value' => 'Kecamatan',
                 'type' => 'input',
@@ -53,8 +52,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'sistem',
                 'option' => '{}',
             ],
-            [
-                'id' => 2,
+            [            
                 'key' => 'artikel_kecamatan_perhalaman',
                 'value' => '10',
                 'type' => 'number',
@@ -62,8 +60,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'web',
                 'option' => '{}',
             ],
-            [
-                'id' => 3,
+            [            
                 'key' => 'artikel_desa_perhalaman',
                 'value' => '10',
                 'type' => 'number',
@@ -71,8 +68,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'web',
                 'option' => '{}',
             ],
-            [
-                'id' => 4,
+            [            
                 'key' => 'jumlah_artikel_desa',
                 'value' => '150',
                 'type' => 'number',
@@ -80,8 +76,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'web',
                 'option' => '{}',
             ],
-            [
-                'id' => 5,
+            [            
                 'key' => 'tte',
                 'value' => '0',
                 'type' => 'boolean',
@@ -89,8 +84,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            [
-                'id' => 6,
+            [            
                 'key' => 'tte_api',
                 'value' => '',
                 'type' => 'input',
@@ -98,8 +92,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            [
-                'id' => 7,
+            [            
                 'key' => 'tte_username',
                 'value' => '',
                 'type' => 'input',
@@ -107,8 +100,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            [
-                'id' => 8,
+            [            
                 'key' => 'tte_password',
                 'value' => '',
                 'type' => 'input',
@@ -116,8 +108,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            [
-                'id' => 9,
+            [            
                 'key' => 'pemeriksaan_camat',
                 'value' => '0',
                 'type' => 'boolean',
@@ -125,8 +116,7 @@ class DasSettingTableSeeder extends Seeder
                 'kategori' => 'surat',
                 'option' => '{}',
             ],
-            [
-                'id' => 10,
+            [            
                 'key' => 'pemeriksaan_sekretaris',
                 'value' => '0',
                 'type' => 'boolean',

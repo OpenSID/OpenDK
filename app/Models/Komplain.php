@@ -31,12 +31,14 @@
 
 namespace App\Models;
 
+use App\Observers\KomplainObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Komplain extends Model
 {
     use HasFactory;
+
     protected $table = 'das_komplain';
 
     protected $fillable = [
@@ -76,12 +78,17 @@ class Komplain extends Model
         $id = mt_rand(100000, 999999);
         $pid = '';
 
-        if (! Komplain::where('komplain_id', '=', $id)->exists()) {
+        if (! self::where('komplain_id', '=', $id)->exists()) {
             $pid = $id;
         } else {
-            self::generateID();
+            return self::generateID();
         }
 
         return $pid;
+    }
+
+    protected static function booted(): void
+    {
+        static::observe(KomplainObserver::class);
     }
 }

@@ -97,3 +97,51 @@ body.sidebar-collapse .sidebar-kabupaten {
 .box-body .table-responsive .dropdown-menu {
 	z-index: 1050;
 }
+
+/* Simple centered modal for activity detail */
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(0, 0, 0, 0.5);
+	z-index: 1040;
+}
+
+.modal-simple {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+	z-index: 1050;
+}
+
+.modal-simple-content {
+	background: #fff;
+	border-radius: 6px;
+	width: 100%;
+	max-width: 800px;
+	max-height: calc(100vh - 40px);
+	overflow: hidden;
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.modal-simple-header {
+	padding: 15px;
+	border-bottom: 1px solid #e5e5e5;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.modal-simple-body {
+	padding: 15px;
+	overflow-y: auto;
+	max-height: calc(100vh - 160px);
+}
+
+.modal-simple-footer {
+	padding: 15px;
+	border-top: 1px solid #e5e5e5;
+	text-align: right;
+}

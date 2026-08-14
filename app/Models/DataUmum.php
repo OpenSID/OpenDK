@@ -32,13 +32,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataUmum extends Model
 {
+    use HasFactory;
     // Attributes
     protected $table = 'das_data_umum';
 
     protected $fillable = [
+        'profil_id',
         'tipologi',
         'sejarah',
         'ketinggian',

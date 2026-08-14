@@ -12,7 +12,7 @@
     <div class="box-body">
         <div class="text-center">
             <center>
-                <img style="width:100%; max-height: 160px;" src="{{ url($screenshot) }}" class="img-responsive" alt="{{ $name }}">
+                <img style="width:100%; max-height: 160px;" src="{{ $screenshot ? url($screenshot) : url('img/no-image.png') }}" class="img-responsive" alt="{{ $name }}">
             </center>
         </div>
         <br>

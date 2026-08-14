@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('informasi.media-sosial.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.media-sosial.create') ? route('informasi.media-sosial.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

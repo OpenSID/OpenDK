@@ -40,15 +40,41 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class ExportAKIAKB implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
+    protected array $params;
+
+    public function __construct($params = [])
+    {
+        $this->params = $params;
+    }
+
     /**
      * Mengambil koleksi data AKI AKB untuk ekspor
-     * 
+     *
      * @return \Illuminate\Support\Collection
      */
     public function collection()
     {
-        // Mengambil semua data AKI AKB tanpa filter atau limit
-        return AkiAkb::with('desa')->get();
+        // Ambil data dari database lokal dengan filter jika ada
+        $desa_id = $this->params['desa_id'] ?? null;
+        $bulan = $this->params['bulan'] ?? null;
+        $tahun = $this->params['tahun'] ?? null;
+
+        $query = AkiAkb::with('desa');
+
+        // Hanya tambahkan filter jika ada parameter dan bukan 'Semua'
+        if ($desa_id && $desa_id !== 'Semua') {
+            $query->where('desa_id', $desa_id);
+        }
+
+        if ($bulan && $bulan !== 'Semua') {
+            $query->where('bulan', $bulan);
+        }
+
+        if ($tahun && $tahun !== 'Semua') {
+            $query->where('tahun', $tahun);
+        }
+
+        return $query->get();
     }
 
     /**

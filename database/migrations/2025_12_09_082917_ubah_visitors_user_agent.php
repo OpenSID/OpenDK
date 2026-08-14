@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('visitors', function(Blueprint $table){
             // change column user_agent to varchar 250
-            $table->string('user_agent', length: 250)->change();
+            $table->text('user_agent')->change();
         });
     }
 

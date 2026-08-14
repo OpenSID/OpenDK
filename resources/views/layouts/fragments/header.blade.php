@@ -48,14 +48,14 @@
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
-                    @if ($user->hasrole(['super-admin', 'admin-kecamatan']))
+                    @can('access.surat')
                         <li>
                             <a href={{ route('surat.permohonan') }}>
                                 <i class="fa fa-envelope-o fa-lg" title="Permohonan Surat"></i>&nbsp;
                                 <span class="badge badge-notif">{{ App\Models\Surat::permohonan()->count() > 0 ? App\Models\Surat::permohonan()->count() : '' }}</span>
                             </a>
                         </li>
-                    @endif
+                    @endcan
                     <!-- User Account Menu -->
                     <li class="dropdown user user-menu">
                         <!-- Menu Toggle Button -->
@@ -75,14 +75,26 @@
                                 </p>
                             </li>
 
+                            <!-- Menu Body-->
+                            <li class="user-body">
+                                <div class="row">
+                                    <div class="col-xs-6 text-center">
+                                        <a href="{{ route('setting.user.edit', Auth::id()) }}" class="link-black">
+                                            <i class="fa fa-user margin-r-5"></i> Profile
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-6 text-center">
+                                        <a href="{{ route('profile.password') }}" class="link-black">
+                                            <i class="fa fa-lock margin-r-5"></i> Ganti Password
+                                        </a>
+                                    </div>
+                                </div>
+                            </li>
+
                             <!-- Menu Footer-->
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="{{ route('setting.user.edit', Auth::id()) }}" class="btn btn-default btn-flat">Profile</a>
-                                </div>
                                 <div class="pull-right">
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
                                         {{ csrf_field() }}
                                         <button class="btn btn-default btn-flat" type="submit">
                                             Logout

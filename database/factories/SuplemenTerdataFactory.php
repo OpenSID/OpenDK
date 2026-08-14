@@ -24,8 +24,12 @@ class SuplemenTerdataFactory extends Factory
     public function definition()
     {
         return [
-            'suplemen_id' => Suplemen::factory(),
-            'penduduk_id' => Penduduk::factory(),
+            'suplemen_id' => function () {
+                return Suplemen::factory()->create()->id;
+            },
+            'penduduk_id' => function () {
+                return Penduduk::factory()->create()->id;
+            },
             'keterangan' => $this->faker->sentence(),
         ];
     }

@@ -73,7 +73,7 @@ class KeluargaController extends Controller
                 })
                 ->get())
                 ->addColumn('aksi', function ($row) {
-                    $data['show_url'] = route('data.keluarga.show', $row->id);
+                    $data['show_url'] = auth()->user()->can('access.data.keluarga.view') ? route('data.keluarga.show', $row->id) : null;
 
                     return view('forms.aksi', $data);
                 })

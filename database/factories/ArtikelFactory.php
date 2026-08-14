@@ -17,13 +17,14 @@ class ArtikelFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'judul' => $this->faker->sentence(),
             'gambar' => '/img/no-image.png',
             'isi' => $this->faker->paragraph(),
             'status' => $this->faker->randomElement([0, 1]),
+            'tanggal_terbit' => $this->faker->date('Y-m-d'),
             'created_at' => $this->faker->dateTimeThisYear(),
             'updated_at' => $this->faker->dateTimeThisYear(),
         ];

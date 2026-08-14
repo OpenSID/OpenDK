@@ -52,7 +52,9 @@ class FasilitasPAUDFactory extends Factory
         }
 
         return [
-            'desa_id' => DataDesa::inRandomOrder()->first()->desa_id,
+            'desa_id' => function () {
+                return DataDesa::factory()->create()->id;
+            },
             'jumlah_paud' => $this->faker->numberBetween(1, 20),
             'jumlah_guru_paud' => $this->faker->numberBetween(5, 50),
             'jumlah_siswa_paud' => $this->faker->numberBetween(20, 200),

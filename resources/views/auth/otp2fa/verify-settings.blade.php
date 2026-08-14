@@ -59,24 +59,12 @@
                             <div class="form-group text-center">
                                 <label>Masukkan 6 Digit Kode Verifikasi</label>
                                 <div style="display: flex; justify-content: center; gap: 10px; margin-top: 15px;">
-                                    <input type="text" class="form-control otp-input" maxlength="1"
-                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                        data-index="0">
-                                    <input type="text" class="form-control otp-input" maxlength="1"
-                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                        data-index="1">
-                                    <input type="text" class="form-control otp-input" maxlength="1"
-                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                        data-index="2">
-                                    <input type="text" class="form-control otp-input" maxlength="1"
-                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                        data-index="3">
-                                    <input type="text" class="form-control otp-input" maxlength="1"
-                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                        data-index="4">
-                                    <input type="text" class="form-control otp-input" maxlength="1"
-                                        style="width: 50px; height: 50px; text-align: center; font-size: 24px;"
-                                        data-index="5">
+                                    <input type="text" class="form-control otp-input" maxlength="1" style="width: 50px; height: 50px; text-align: center; font-size: 24px;" data-index="0">
+                                    <input type="text" class="form-control otp-input" maxlength="1" style="width: 50px; height: 50px; text-align: center; font-size: 24px;" data-index="1">
+                                    <input type="text" class="form-control otp-input" maxlength="1" style="width: 50px; height: 50px; text-align: center; font-size: 24px;" data-index="2">
+                                    <input type="text" class="form-control otp-input" maxlength="1" style="width: 50px; height: 50px; text-align: center; font-size: 24px;" data-index="3">
+                                    <input type="text" class="form-control otp-input" maxlength="1" style="width: 50px; height: 50px; text-align: center; font-size: 24px;" data-index="4">
+                                    <input type="text" class="form-control otp-input" maxlength="1" style="width: 50px; height: 50px; text-align: center; font-size: 24px;" data-index="5">
                                 </div>
                                 <input type="hidden" name="otp" id="otp-value">
                                 @if ($errors->has('otp'))

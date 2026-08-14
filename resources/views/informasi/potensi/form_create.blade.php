@@ -1,12 +1,7 @@
 <div class="form-group">
-    <label for="kategori_id" class="control-label col-md-4 col-sm-3 col-xs-12">Kategori<span
-            class="required">*</span></label>
+    <label for="kategori_id" class="control-label col-md-4 col-sm-3 col-xs-12">Kategori<span class="required">*</span></label>
     <div class="col-md-5 col-sm-5 col-xs-12">
-        {!! html()->select(
-                'kategori_id',
-                \App\Models\TipePotensi::pluck('nama_kategori', 'id'),
-                old('kategori_id', isset($potensi) ? $potensi->kategori_id : null),
-            )->placeholder('-Pilih')->class('form-control')->id('kategori_id')->required() !!}
+        {!! html()->select('kategori_id', \App\Models\TipePotensi::pluck('nama_kategori', 'id'), old('kategori_id', isset($potensi) ? $potensi->kategori_id : null))->placeholder('-Pilih')->class('form-control')->id('kategori_id')->required() !!}
     </div>
 </div>
 <div class="form-group">

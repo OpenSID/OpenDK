@@ -23,7 +23,7 @@
             <div class="box-header with-border">
                 <a href="#" id="export-excel-btn">
                     <button type="button" class="btn btn-primary btn-sm btn-social" title="Export Excel">
-                        <i class="fa fa-download"></i>Export Excel
+                        <i class="fa fa-upload"></i>Export Excel
                     </button>
                 </a>
             </div>
@@ -66,6 +66,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.keluarga.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

@@ -39,15 +39,10 @@
                             <div class="col-md-12">
                                 {{ csrf_field() }}
                                 <div class="form-group{{ $errors->has('nik') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">NIK <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!!
-        html()->text('nik')->class('form-control')->isReadonly()->placeholder('NIK')->value(old(
-            'nik',
-            isset($komplain) ? $komplain->nik : ''
-        )) !!}
+                                        {!! html()->text('nik')->class('form-control')->isReadonly()->placeholder('NIK')->value(old('nik', isset($komplain) ? $komplain->nik : '')) !!}
                                         @if ($errors->has('nik'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('nik') }}</strong>
@@ -56,15 +51,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group{{ $errors->has('nama') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Nama <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!!
-        html()->text('nama')->class('form-control')->isReadonly()->placeholder('Nama')->value(old(
-            'nama',
-            isset($komplain) ? $komplain->nama : ''
-        )) !!}
+                                        {!! html()->text('nama')->class('form-control')->isReadonly()->placeholder('Nama')->value(old('nama', isset($komplain) ? $komplain->nama : '')) !!}
                                         @if ($errors->has('nama'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('nama') }}</strong>
@@ -74,23 +64,14 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('kategori') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Kategori <span class="required">*</span></label>
 
                                     <div class="col-md-4 col-sm-4 col-xs-12">
-                                        {!! html()->select(
-        'kategori',
-        \App\Models\KategoriKomplain::pluck(
-            'nama',
-            'id'
-        )->value(old('kategori', isset($komplain) ? $komplain->kategori : '')),
-        null,
-        [
-            'class' => 'form-control',
-            'id' => 'kategori',
-            'required',
-        ]
-    ) !!}
+                                        {!! html()->select('kategori', \App\Models\KategoriKomplain::pluck('nama', 'id')->value(old('kategori', isset($komplain) ? $komplain->kategori : '')), null, [
+                                            'class' => 'form-control',
+                                            'id' => 'kategori',
+                                            'required',
+                                        ]) !!}
                                         @if ($errors->has('kategori'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('kategori') }}</strong>
@@ -100,15 +81,10 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('judul') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Judul <span class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        {!!
-        html()->text('judul')->class('form-control')->placeholder('Judul')->value(old(
-            'judul',
-            isset($komplain) ? $komplain->judul : ''
-        )) !!}
+                                        {!! html()->text('judul')->class('form-control')->placeholder('Judul')->value(old('judul', isset($komplain) ? $komplain->judul : '')) !!}
                                         @if ($errors->has('judul'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('judul') }}</strong>
@@ -118,15 +94,10 @@
                                 </div>
 
                                 <div class="form-group{{ $errors->has('laporan') ? ' has-error' : '' }}">
-                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span
-                                            class="required">*</span></label>
+                                    <label class="control-label col-md-2 col-sm-3 col-xs-12">Laporan <span class="required">*</span></label>
 
                                     <div class="col-md-8 col-sm-8 col-xs-12">
-                                        {!!
-        html()->textarea('laporan')->class('form-control')->placeholder('Laporan')->value(old(
-            'laporan',
-            isset($komplain) ? $komplain->laporan : ''
-        )) !!}
+                                        {!! html()->textarea('laporan')->class('form-control')->placeholder('Laporan')->value(old('laporan', isset($komplain) ? $komplain->laporan : '')) !!}
                                         @if ($errors->has('laporan'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('laporan') }}</strong>
@@ -141,52 +112,44 @@
                                     <div class="col-md-8 col-sm-8 col-xs-12">
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran1" name="lampiran1"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran1" name="lampiran1" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran1"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview1"
-                                                    style="background-image: url(@if (!$komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview1" style="background-image: url(@if (!$komplain->lampiran1 == '') {{ asset($komplain->lampiran1) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran2" name="lampiran2"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran2" name="lampiran2" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran2"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview2"
-                                                    style="background-image: url(@if (!$komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview2" style="background-image: url(@if (!$komplain->lampiran2 == '') {{ asset($komplain->lampiran2) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran3" name="lampiran3"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran3" name="lampiran3" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran3"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview3"
-                                                    style="background-image: url(@if (!$komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview3" style="background-image: url(@if (!$komplain->lampiran3 == '') {{ asset($komplain->lampiran3) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
 
                                         <div class="avatar-upload">
                                             <div class="avatar-edit">
-                                                <input type='file' id="lampiran4" name="lampiran4"
-                                                    accept=".png, .jpg, .jpeg" />
+                                                <input type='file' id="lampiran4" name="lampiran4" accept=".png, .jpg, .jpeg" />
                                                 <label for="lampiran4"></label>
                                             </div>
                                             <div class="avatar-preview">
-                                                <div id="lampiranPreview4"
-                                                    style="background-image: url(@if (!$komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
+                                                <div id="lampiranPreview4" style="background-image: url(@if (!$komplain->lampiran4 == '') {{ asset($komplain->lampiran4) }} @else {{ 'https://via.placeholder.com/80x100' }} @endif );">
                                                 </div>
                                             </div>
                                         </div>
@@ -198,12 +161,10 @@
 
                                     <div class="col-md-2 col-sm-2 col-xs-12">
                                         {!! html()->select('status', [
-        'BELUM' => 'Belum',
-        'PROSES' => 'Proses',
-        'SELESAI' =>
-            'Selesai'
-    ])->class('form-control')->value(old('status', isset($komplain) ?
-                $komplain->status : '')) !!}
+                                                'BELUM' => 'Belum',
+                                                'PROSES' => 'Proses',
+                                                'SELESAI' => 'Selesai',
+                                            ])->class('form-control')->value(old('status', isset($komplain) ? $komplain->status : '')) !!}
                                         @if ($errors->has('status'))
                                             <span class="help-block">
                                                 <strong>{{ $errors->first('status') }}</strong>
@@ -229,11 +190,11 @@
 
 @push('scripts')
     <script type="text/javascript">
-        $(".btn-refresh").click(function () {
+        $(".btn-refresh").click(function() {
             $.ajax({
                 type: 'GET',
                 url: '/refresh-captcha',
-                success: function (data) {
+                success: function(data) {
                     $(".captcha span").html(data.captcha);
                 }
             });

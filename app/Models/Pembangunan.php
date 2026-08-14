@@ -39,9 +39,70 @@ class Pembangunan extends Model
     use HasFactory;
     protected $table = 'das_pembangunan';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'id', // id didapatkan dari hasil sinkron opensid
+        'judul',
+        'tahun_anggaran',
+        'kelompok',
+        'sub_kelompok',
+        'jenis_kegiatan',
+        'lokasi',
+        'volume',
+        'satuan',
+        'biaya',
+        'sumber_biaya',
+        'pelaksana_kegiatan',
+        'keterangan',
+        'desa_id'
+    ];
 
-    protected $guarded = [];
+    /**
+     * Accessor untuk sumber_dana yang sudah diformat.
+     * Jika data berupa JSON array (contoh: ["Dana Desa","ADD"]),
+     * akan digabung menjadi string yang dipisah koma.
+     *
+     * @return string
+     */
+    public function getSumberDanaFormattedAttribute()
+    {
+        $sumberDana = $this->attributes['sumber_dana'] ?? '';
+
+        if (empty($sumberDana)) {
+            return '-';
+        }
+
+        // Coba decode JSON
+        $decoded = json_decode($sumberDana, true);
+
+        if (is_array($decoded)) {
+            return implode(', ', $decoded);
+        }
+
+        return $sumberDana;
+    }
+
+    /**
+     * Accessor untuk mendapatkan sumber_dana sebagai array.
+     * Berguna jika lebih dari satu sumber dana ingin ditampilkan sebagai daftar/badge.
+     *
+     * @return array
+     */
+    public function getSumberDanaListAttribute()
+    {
+        $sumberDana = $this->attributes['sumber_dana'] ?? '';
+
+        if (empty($sumberDana)) {
+            return [];
+        }
+
+        $decoded = json_decode($sumberDana, true);
+
+        if (is_array($decoded)) {
+            return $decoded;
+        }
+
+        return [$sumberDana];
+    }
 
     public function dokumentasi()
     {

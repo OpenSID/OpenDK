@@ -17,10 +17,12 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                <a href="{{ route('setting.role.create') }}">
-                    <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
-                        Tambah</button>
-                </a>
+                @can('access.setting.role.create')
+                    <a href="{{ route('setting.role.create') }}">
+                        <button type="button" class="btn btn-primary btn-sm" title="Tambah Data"><i class="fa fa-plus"></i>
+                            Tambah</button>
+                    </a>
+                @endcan
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -28,7 +30,7 @@
                         <thead>
                             <tr>
                                 <th>Nama</th>
-                                <th>Slug</th>
+                                <th>Jumlah User</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -45,14 +47,26 @@
             var data = $('#user-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('setting.role.getdata') !!}",
+                ajax: {
+                    url: "{!! route('setting.role.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'name',
                         name: 'name'
                     },
                     {
-                        data: 'slug',
-                        name: 'slug'
+                        data: 'users_count',
+                        name: 'users_count',
+                        class: 'text-center',
+                        render: function(data, type, row) {
+                            var count = parseInt(data) || 0;
+                            var url = '{{ route('setting.role.users', ['id' => 'REPLACE']) }}'.replace('REPLACE', row.id);
+                            if (count > 0) {
+                                return '<a href="' + url + '" class="btn btn-xs btn-primary" title="Lihat User">' + count + ' User</a>';
+                            }
+                            return count + ' User';
+                        }
                     },
                     {
                         data: 'aksi',

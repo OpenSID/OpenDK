@@ -33,11 +33,13 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportToiletSanitasi;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportToiletSanitasiRequest;
 use App\Imports\ImporToiletSanitasi;
 use App\Models\ToiletSanitasi;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -66,8 +68,8 @@ class ToiletSanitasiController extends Controller
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(ToiletSanitasi::with(['desa']))
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.toilet-sanitasi.edit', $row->id);
-                $data['delete_url'] = route('data.toilet-sanitasi.destroy', $row->id);
+                $data['edit_url'] = auth()->user()->can('access.data.toilet-sanitasi.edit') ? route('data.toilet-sanitasi.edit', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.toilet-sanitasi.delete') ? route('data.toilet-sanitasi.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })->addColumn('nama_desa', function ($row) use ($listDesa) {
@@ -98,19 +100,16 @@ class ToiletSanitasiController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportToiletSanitasiRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required|unique:das_toilet_sanitasi',
-            'tahun' => 'required|unique:das_toilet_sanitasi',
-        ]);
-
         try {
             (new ImporToiletSanitasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Toilet Sanitasi import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -149,7 +148,11 @@ class ToiletSanitasiController extends Controller
         try {
             ToiletSanitasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Toilet Sanitasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'toilet_sanitasi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah!');
         }
@@ -168,7 +171,11 @@ class ToiletSanitasiController extends Controller
         try {
             ToiletSanitasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Toilet Sanitasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'toilet_sanitasi_id' => $id,
+            ]);
 
             return redirect()->route('data.toilet-sanitasi.index')->with('error', 'Data gagal dihapus!');
         }

@@ -31,11 +31,14 @@
 
 namespace Tests;
 
+use App\Models\SettingAplikasi;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Tests\Traits\WithSettingAplikasi;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    use CreatesApplication, DatabaseTransactions, WithSettingAplikasi;    
 
     /**
      * Set up the test environment.
@@ -51,5 +54,6 @@ abstract class TestCase extends BaseTestCase
             $user = \App\Models\User::factory()->create();
         }
         $this->actingAs($user);
+        $this->setDefaultApplicationConfig();
     }
 }

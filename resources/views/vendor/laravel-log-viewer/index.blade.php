@@ -20,12 +20,12 @@
                 <li class="logs {{ $tab == 'log_viewer' ? 'active' : '' }}"><a data-toggle="tab" href="#log_viewer">Logs</a>
                 </li>
                 <li class="log_ekstensi {{ $tab == 'ekstensi' ? 'active' : '' }}"><a data-toggle="tab" href="#ekstensi">Kebutuhan Sistem</a></li>
-                @role('super-admin')
+                @can('access.setting.info_sistem')
                     <li class=" {{ $tab == 'info_sistem' ? 'active' : '' }}"><a data-toggle="tab" href="#info_sistem">Info
                             Sistem</a></li>
                     <li class=" {{ $tab == 'email_smtp' ? 'active' : '' }}"><a data-toggle="tab" href="#email_smtp">Email
                             SMTP</a></li>
-                @endrole
+                @endcan
             </ul>
             <div class="tab-content">
                 <div id="log_viewer" class="logs tab-pane fade in  {{ $tab == 'log_viewer' ? 'active' : '' }}">
@@ -34,14 +34,14 @@
                 <div id="ekstensi" class="log_ekstensi tab-pane fade in {{ $tab == 'ekstensi' ? 'active' : '' }}">
                     @include('vendor.laravel-log-viewer.kebutuhan-sistem')
                 </div>
-                @role('super-admin')
+                @can('access.setting.info_sistem')
                     <div id="info_sistem" class="tab-pane fade in {{ $tab == 'info_sistem' ? 'active' : '' }}">
                         @include('vendor.laravel-log-viewer.info-sistem')
                     </div>
                     <div id="email_smtp" class="tab-pane fade in {{ $tab == 'email_smtp' ? 'active' : '' }}">
                         @include('vendor.laravel-log-viewer.smtp.index')
                     </div>
-                @endrole
+                @endcan
             </div>
         </div>
     </section>

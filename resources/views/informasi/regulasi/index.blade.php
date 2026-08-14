@@ -17,7 +17,7 @@
         @if ($adaTipeRegulasi)
             <div class="box box-primary">
                 <div class="box-header with-border">
-                    @include('forms.btn-social', ['create_url' => route('informasi.regulasi.create')])
+                    @include('forms.btn-social', ['create_url' => auth()->user()->can('access.informasi.regulasi.create') ? route('informasi.regulasi.create') : null])
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">

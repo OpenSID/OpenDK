@@ -27,7 +27,7 @@
         @include('surat.permohonan.widget')
 
         <div class="box box-primary">
-            
+
             @include('partials.flash_message')
             <div class="box-body">
                 @include('layouts.fragments.list-desa')

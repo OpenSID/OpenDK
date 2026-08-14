@@ -139,9 +139,18 @@ class SuratController extends Controller
         }
 
         $file = $request->file('file');
-        $original_name = strtolower(trim($file->getClientOriginalName()));
-        $file_name = time().'_'.$original_name;
-        Storage::putFileAs('public/surat', $file, $file_name);
+        
+        // Use FileUploadService for secure file upload
+        $fileUploadService = new \App\Services\FileUploadService();
+        
+        // Define allowed MIME types for pdf files
+        $allowedMimes = ['application/pdf'];
+        
+        // Upload file securely to surat directory
+        $path = $fileUploadService->uploadSecure($file, 'surat', $allowedMimes, 2048); // 2MB max
+        
+        // Extract filename from path
+        $file_name = basename($path);
 
         $this->settings['pemeriksaan_camat'] ? StatusVerifikasiSurat::MenungguVerifikasi : StatusVerifikasiSurat::TidakAktif;
 
@@ -189,10 +198,13 @@ class SuratController extends Controller
 
         Log::debug("Kode desa {$request->desa_id} dan nomor surat {$request->nomor}");
 
-        // Model::whereRaw("REPLACE(kolom, ' ', '') = ?", ['227/IX/2025'])->get();
-
-        $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $request->nomor)->firstOrFail();
-        // $surat = Surat::where('desa_id', $request->desa_id)->whereRaw("REPLACE(nomor, ' ', '') = ?", [$request->nomor])->firstOrFail();
+        
+        
+        // Clean the nomor parameter to prevent SQL injection
+        $cleanNomor = preg_replace('/[^0-9A-Za-z\/\-\.]/', '', $request->nomor);
+        
+        $surat = Surat::where('desa_id', $request->desa_id)->where('nomor', $cleanNomor)->firstOrFail();
+        
 
         $file = public_path("storage/surat/{$surat->file}");
 

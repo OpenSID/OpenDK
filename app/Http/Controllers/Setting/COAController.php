@@ -37,6 +37,7 @@ use App\Models\SubCoa;
 use App\Models\SubSubCoa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class COAController extends Controller
 {
@@ -76,7 +77,11 @@ class COAController extends Controller
             ];
             DB::table('ref_coa')->insert($data);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('COA creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->all(),
+            ]);
 
             return back()->withInput()->with('error', 'Akun COA gagal disimpan!');
         }

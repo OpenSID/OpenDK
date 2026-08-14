@@ -19,19 +19,18 @@
             </button>
         </div>
 
-    @if (!isset($environment['errors']))
-        <div class="buttons-container">
-            <a class="button float-left" href="{{ route('installer.environmentWizard') }}">
-                <i class="fa fa-sliders fa-fw" aria-hidden="true"></i>
-                {!! trans('installer_messages.environment.classic.back') !!}
-            </a>
-            <button type="submit" class="button float-right" style="font-size: 12px">
-                <i class="fa fa-check fa-fw" aria-hidden="true"></i>
-                {!! trans('installer_messages.environment.classic.install') !!}
-                <i class="fa fa-angle-double-right fa-fw" aria-hidden="true"></i>
-            </button>
-        </div>
-    @endif
+        @if (!isset($environment['errors']))
+            <div class="buttons-container">
+                <a class="button float-left" href="{{ route('installer.environmentWizard') }}">
+                    <i class="fa fa-sliders fa-fw" aria-hidden="true"></i>
+                    {!! trans('installer_messages.environment.classic.back') !!}
+                </a>
+                <button type="submit" class="button float-right" style="font-size: 12px">
+                    <i class="fa fa-check fa-fw" aria-hidden="true"></i>
+                    {!! trans('installer_messages.environment.classic.install') !!}
+                    <i class="fa fa-angle-double-right fa-fw" aria-hidden="true"></i>
+                </button>
+            </div>
+        @endif
     </form>
-
 @endsection

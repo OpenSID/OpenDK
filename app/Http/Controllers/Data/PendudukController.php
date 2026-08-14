@@ -33,12 +33,15 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportPenduduk;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportPendudukRequest;
 use App\Imports\ImporPendudukKeluarga;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
+use App\Services\PendudukService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
@@ -56,7 +59,7 @@ class PendudukController extends Controller
         $page_description = 'Data Penduduk';
 
         $view = $this->isDatabaseGabungan() ? 'data.penduduk.gabungan.index' : 'data.penduduk.index';
-        
+
         return view($view, compact('page_title', 'page_description'));
     }
 
@@ -98,12 +101,12 @@ class PendudukController extends Controller
 
             return DataTables::of($query)
                 ->addColumn('aksi', function ($row) {
-                    $data['show_url'] = route('data.penduduk.show', $row->id);
+                    $data['show_url'] = auth()->user()->can('access.data.penduduk.view') ? route('data.penduduk.show', $row->id) : null;
 
                     return view('forms.aksi', $data);
                 })
                 ->addColumn('foto', function ($row) {
-                    return '<img src="'.is_user($row->foto, $row->sex).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="' . is_user($row->foto, $row->sex) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->addColumn('tanggal_lahir', function ($row) {
                     return convert_born_date_to_age($row->tanggal_lahir);
@@ -122,16 +125,62 @@ class PendudukController extends Controller
     {
         $penduduk = Penduduk::findOrFail($id);
         $page_title = 'Detail Penduduk';
-        $page_description = 'Detail Data Penduduk: '.ucwords(strtolower($penduduk->nama));
+        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
         return view('data.penduduk.show', compact('page_title', 'page_description', 'penduduk'));
     }
 
     public function detail(Request $request)
     {
-        $penduduk = json_decode($request->data);
+        abort_if(!$request->filled('id'), 404);
+
+        $data = (new PendudukService())->detailPenduduk($request->id);
+
+        abort_if(empty($data), 404);
+
+        $penduduk = (object) [
+            'id' => data_get($data, 'id'),
+            'nama' => data_get($data, 'attributes.nama'),
+            'nik' => data_get($data, 'attributes.nik'),
+            'no_kk_sebelumnya' => data_get($data, 'attributes.no_kk_sebelumnya'),
+            'hubungan_dalam_keluarga' => data_get($data, 'attributes.penduduk_hubungan.nama'),
+            'jenis_kelamin' => data_get($data, 'attributes.jenis_kelamin.nama'),
+            'agama' => data_get($data, 'attributes.agama.nama'),
+            'status_penduduk' => data_get($data, 'attributes.penduduk_status.nama'),
+            'akta_lahir' => data_get($data, 'attributes.akta_lahir'),
+            'tempat_lahir' => data_get($data, 'attributes.tempatlahir'),
+            'tanggal_lahir' => data_get($data, 'attributes.tanggallahir'),
+            'wajib_ktp' => data_get($data, 'attributes.wajibKTP'),
+            'status_rekam' => data_get($data, 'attributes.status_rekam_ktp.nama'),
+            'elktp' => data_get($data, 'attributes.elKTP'),
+            'pendidikan_dalam_kk' => data_get($data, 'attributes.pendidikan_k_k.nama'),
+            'pendidikan_sedang_ditempuh' => data_get($data, 'attributes.pendidikan.nama'),
+            'pekerjaan' => data_get($data, 'attributes.pekerjaan.nama'),
+            'warga_negara' => data_get($data, 'attributes.warga_negara.nama'),
+            'nomor_passport' => data_get($data, 'attributes.dokumen_pasport'),
+            'tanggal_akhir_passport' => data_get($data, 'attributes.tanggal_akhir_paspor'),
+            'nomor_kitas' => data_get($data, 'attributes.dokumen_kitas'),
+            'nik_ayah' => data_get($data, 'attributes.ayah_nik'),
+            'nama_ayah' => data_get($data, 'attributes.nama_ayah'),
+            'nik_ibu' => data_get($data, 'attributes.ibu_nik'),
+            'nama_ibu' => data_get($data, 'attributes.nama_ibu'),
+            'nomor_telepon' => data_get($data, 'attributes.telepon'),
+            'alamat_sebelumnya' => data_get($data, 'attributes.alamat_sebelumnya'),
+            'alamat_sekarang' => data_get($data, 'attributes.alamat_sekarang'),
+            'status_kawin' => data_get($data, 'attributes.status_kawin.nama'),
+            'no_akta_nikah' => data_get($data, 'attributes.akta_perkawinan'),
+            'tanggal_nikah' => data_get($data, 'attributes.tanggalperkawinan'),
+            'akta_perceraian' => data_get($data, 'attributes.akta_perceraian'),
+            'tanggal_perceraian' => data_get($data, 'attributes.tanggalperceraian'),
+            'golongan_darah' => data_get($data, 'attributes.golongan_darah.nama'),
+            'cacat' => data_get($data, 'attributes.cacat.nama'),
+            'sakit_menahun' => data_get($data, 'attributes.sakit_menahun.nama'),
+            'cara_kb' => data_get($data, 'attributes.kb.nama'),
+            'status_kehamilan' => data_get($data, 'attributes.statusHamil'),
+        ];
+
         $page_title = 'Detail Penduduk';
-        $page_description = 'Detail Data Penduduk: '.ucwords(strtolower($penduduk->nama));
+        $page_description = 'Detail Data Penduduk: ' . ucwords(strtolower($penduduk->nama));
 
         return view('data.penduduk.gabungan.show', compact('page_title', 'page_description', 'penduduk'));
     }
@@ -156,16 +205,23 @@ class PendudukController extends Controller
      *
      * @return Response
      */
-    public function importExcel(Request $request)
+    public function importExcel(ImportPendudukRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'file|mimes:zip|max:51200',
-        ]);
-
         try {
-            // Upload file zip temporary.
+            // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
+            
+            // Extract filename from path
+            $name = basename($path);
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
@@ -177,15 +233,18 @@ class PendudukController extends Controller
             $zip->extractTo($extract);
             $zip->close();
 
-            $fileExtracted = glob($extract.'*.xlsx');
+            $fileExtracted = glob($extract . '*.xlsx');
 
             // Proses impor excell
             (new ImporPendudukKeluarga())
-                ->queue($extract.basename($fileExtracted[0]));
+                ->queue($extract . basename($fileExtracted[0]));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Penduduk import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
-            return back()->with('error', 'Import data gagal. '.$e->getMessage());
+            return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
 
         return redirect()->route('data.penduduk.index')->with('success', 'Import data sukses.');
@@ -207,9 +266,12 @@ class PendudukController extends Controller
                 return Excel::download(new ExportPenduduk(false, $params), 'data-penduduk.xlsx');
             }
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Penduduk export failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
-            return back()->with('error', 'Ekspor data gagal. '.$e->getMessage());
+            return back()->with('error', 'Ekspor data gagal. ' . $e->getMessage());
         }
     }
 }

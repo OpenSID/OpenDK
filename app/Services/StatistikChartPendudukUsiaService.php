@@ -74,9 +74,12 @@ class StatistikChartPendudukUsiaService extends BaseApiService
         $data = [];
         $penduduk = new Penduduk();
         foreach ($categories as $umur) {
+            // Pastikan dari dan sampai bertipe integer dan konsisten
+            $umur->dari = max(0, (int) $umur->dari);
+            $umur->sampai = max($umur->dari, (int) $umur->sampai);
             $query_total = $penduduk->getPendudukAktif($did, $year)
-                ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(das_penduduk.tanggal_lahir)), \'%Y\')+0 >= ? ', $umur->dari)
-                ->whereRaw('DATE_FORMAT(FROM_DAYS(TO_DAYS(NOW())-TO_DAYS(tanggal_lahir)), \'%Y\')+0 <= ?', $umur->sampai);
+                ->whereRaw('TIMESTAMPDIFF(YEAR, das_penduduk.tanggal_lahir, CURDATE()) >= ?', [$umur->dari])
+                ->whereRaw('TIMESTAMPDIFF(YEAR, das_penduduk.tanggal_lahir, CURDATE()) <= ?', [$umur->sampai]);
 
             $total = $query_total->count();
             $data[] = ['umur' => ucfirst(strtolower($umur->nama)).' ('.$umur->dari.' - '.$umur->sampai.' tahun)', 'value' => $total, 'color' => $this->colors[$umur->id]];

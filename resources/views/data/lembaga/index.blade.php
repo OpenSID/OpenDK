@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.lembaga.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.lembaga.create') ? route('data.lembaga.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

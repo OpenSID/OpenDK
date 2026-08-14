@@ -32,8 +32,9 @@ class PendidikanChartFasilitasPAUDService
             $dataTabel = [];
             // Quartal
             foreach (semester() as $key => $kuartal) {
+                $semesterIds = explode(',', $this->getIdsSemester($key));
                 $queryPendidikan = DB::table('das_fasilitas_paud')
-                    ->whereRaw('semester in ('.$this->getIdsSemester($key).')')
+                    ->whereIn('semester', $semesterIds)
                     ->where('tahun', $year);
                 if ($did != 'Semua') {
                     $queryPendidikan->where('desa_id', '=', $did);

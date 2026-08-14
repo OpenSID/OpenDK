@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class BaseApiService
@@ -36,15 +37,22 @@ class BaseApiService
             // Buat permintaan API dengan Header dan Parameter
             $response = Http::withHeaders($this->header)->get($this->baseUrl . $endpoint, $params);            
             session()->forget('error_api');
+            $jsonResponse = $response->json();
+            
             if($this->isFullResponse()) {
                 // Jika full response, kembalikan seluruh response
-                return $response->json();
+                return $jsonResponse;
             }
-            // Return JSON hasil            
-            return $response->json('data') ?? [];
+            
+            // Return JSON hasil, cek apakah ada key 'data', jika tidak ada kembalikan seluruh response
+            if (isset($jsonResponse['data'])) {
+                return $jsonResponse['data'];
+            }
+            
+            return $jsonResponse;
         } catch (\Exception $e) {
             session()->flash('error_api', 'Gagal mendapatkan data'. $e->getMessage());
-            \Log::error('Failed get data in '.__FILE__.' function '.__METHOD__.' '. $e->getMessage());
+            Log::error('Failed get data in '.__FILE__.' function '.__METHOD__.' '. $e->getMessage());
         }
         return [];
     }    

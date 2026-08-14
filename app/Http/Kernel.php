@@ -85,7 +85,6 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        // 'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         // 'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
@@ -99,6 +98,7 @@ class Kernel extends HttpKernel
         'maintenance' => \App\Http\Middleware\MaintenanceMode::class,
         'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
         'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'action_permission' => \App\Http\Middleware\CheckActionPermission::class,
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'xss_sanitization' => \App\Http\Middleware\XssSanitization::class,
         'complete_profile' => \App\Http\Middleware\CompleteProfile::class,

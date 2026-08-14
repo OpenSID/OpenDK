@@ -46,7 +46,9 @@ class AnggaranRealisasiFactory extends Factory
     public function definition()
     {
         return [
-            'profil_id' => $this->faker->numberBetween(1, 10),
+            'profil_id' => function () {
+                return \App\Models\Profil::firstOrCreate(['nama_kecamatan' => 'Kecamatan Contoh'], ['nama_kecamatan' => 'Kecamatan Contoh', 'nama_kabupaten' => 'Kabupaten Contoh', 'nama_provinsi' => 'Provinsi Contoh'])->id;
+            },
             'total_anggaran' => $this->faker->numberBetween(100000000, 5000000000),
             'total_belanja' => $this->faker->numberBetween(50000000, 4000000000),
             'belanja_pegawai' => $this->faker->numberBetween(10000000, 1000000000),

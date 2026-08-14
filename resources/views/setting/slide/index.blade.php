@@ -17,7 +17,7 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('setting.slide.create')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.setting.slide.create') ? route('setting.slide.create') : null])
             </div>
             <div class="box-body">
                 <div class="table-responsive">

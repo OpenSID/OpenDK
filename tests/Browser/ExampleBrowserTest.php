@@ -1,12 +1,15 @@
 <?php
 
+use Tests\BrowserTestCase;
+
+uses(BrowserTestCase::class);
 test('homepage can be accessed', function () {
-    $this->visit('/')
+    visit('/')
         ->assertSee('OpenDK');
 })->group('browser');
 
 test('login page has correct elements', function () {
-    $this->visit('/login')
+    visit('/login')
         ->assertSee('Login')
         ->assertPresent('input[name="email"]')
         ->assertPresent('input[name="password"]');

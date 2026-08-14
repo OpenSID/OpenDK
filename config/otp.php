@@ -9,7 +9,7 @@ return [
     | Menentukan berapa lama kode OTP akan berlaku sebelum kadaluarsa.
     |
     */
-    'expiry_minutes' => env('OTP_EXPIRY_MINUTES', 5),
+    'expiry_minutes' => (int) env('OTP_EXPIRY_MINUTES', 5),
 
     /*
     |--------------------------------------------------------------------------

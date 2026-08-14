@@ -17,6 +17,7 @@ beforeEach(function () {
         ['value' => '0']
     );
     config(['setting.sebutan_desa' => 'Desa']);
+    DataDesa::query()->delete();
 });
 
 test('export excel data desa', function () {
@@ -123,4 +124,186 @@ test('export styles', function () {
     // Assert: Method ada dan mengembalikan array styles
     $styles = $export->styles($worksheet);
     expect($styles)->toBeArray();
+});
+
+// =============================================================================
+// EDGE CASES TESTS
+// =============================================================================
+
+test('export data desa with empty database', function () {
+    // Arrange: Pastikan tidak ada data    
+
+    // Act: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+
+    // Assert: Collection harus kosong
+    expect($collection)->toHaveCount(0)
+        ->and($collection)->toBeInstanceOf(\Illuminate\Support\Collection::class);
+});
+
+test('export data desa with special characters in nama', function () {
+    
+    
+    // Buat data dengan karakter khusus
+    DataDesa::factory()->create([
+        'nama' => 'Desa Test & Special <Characters> "Quotes"',
+        'desa_id' => 'special_123',
+    ]);
+
+    // Act: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+    $mappedData = $export->map($collection->first());
+
+    // Assert: Data harus tetap ter-export dengan benar
+    expect($collection)->toHaveCount(1)
+        ->and($mappedData[2])->toBe('Desa Test & Special <Characters> "Quotes"');
+});
+
+test('export data desa with null values', function () {
+    
+    
+    // Buat data dengan nilai null
+    DataDesa::factory()->create([
+        'website' => null,
+        'sebutan_desa' => 'desa',
+        'luas_wilayah' => null,        
+    ]);
+
+    // Act: Buat instance export dan map data
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+    $mappedData = $export->map($collection->first());
+
+    // Assert: Null values harus di-handle dengan benar
+    expect($mappedData[4])->toBe('') // website
+        ->and($mappedData[5])->toBe(0); // luas_wilayah default to 0
+});
+
+test('export data desa with very long nama', function () {
+    
+    
+    // Buat data dengan nama sangat panjang (max 255 chars untuk kolom nama)
+    $longName = str_repeat('Test ', 50); // 250 chars
+    DataDesa::factory()->create([
+        'nama' => substr($longName, 0, 250),
+    ]);
+
+    // Act: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+
+    // Assert: Data panjang harus tetap ter-export
+    expect($collection)->toHaveCount(1)
+        ->and($collection->first()->nama)->toBe(substr($longName, 0, 250));
+});
+
+test('export data desa with unicode characters', function () {
+    
+    
+    // Buat data dengan karakter unicode
+    DataDesa::factory()->create([
+        'nama' => 'Desa Cékér Ménténg',
+    ]);
+
+    // Act: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+    $mappedData = $export->map($collection->first());
+
+    // Assert: Unicode characters harus tetap terjaga
+    expect($mappedData[2])->toBe('Desa Cékér Ménténg');
+});
+
+test('export data desa with custom sebutan_desa config', function () {
+    // Arrange: Buat data dan set custom config
+    config(['setting.sebutan_desa' => 'Kelurahan']);
+    DataDesa::factory()->create();
+
+    // Act: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $headings = $export->headings();
+
+    // Assert: Headings harus menggunakan custom sebutan
+    expect($headings[2])->toBe('Nama Kelurahan')
+        ->and($headings[3])->toBe('Sebutan Kelurahan');
+});
+
+test('export data desa gabungan with empty api response', function () {
+    // Arrange: Aktifkan mode gabungan
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '1']
+    );
+
+    // Act: Buat instance export mode gabungan
+    $export = new ExportDataDesa(true, []);
+
+    // Assert: Instance harus bisa dibuat meskipun API kosong
+    expect($export)->toBeInstanceOf(ExportDataDesa::class);
+});
+
+test('export data desa with large dataset performance', function () {
+    
+    
+    // Buat data dalam jumlah besar
+    $startTime = microtime(true);
+    DataDesa::factory()->count(100)->create();
+
+    // Act: Export data
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+    $endTime = microtime(true);
+
+    // Assert: Export harus selesai dalam waktu yang wajar (< 2 detik)
+    $executionTime = $endTime - $startTime;
+    expect($collection->count())->toBe(100)
+        ->and($executionTime)->toBeLessThan(2);
+});
+
+test('export data desa mapping with dates', function () {
+    // Arrange: Buat data dengan tanggal spesifik
+    $dataDesa = DataDesa::factory()->create([
+        'created_at' => '2024-01-15 10:30:00',
+        'updated_at' => '2024-06-20 14:45:00',
+    ]);
+
+    // Act: Buat instance export dan map
+    $export = new ExportDataDesa(false, []);
+    $mappedData = $export->map($dataDesa);
+
+    // Assert: Format tanggal harus benar
+    expect($mappedData[6])->toBe('15/01/2024 10:30:00')
+        ->and($mappedData[7])->toBe('20/06/2024 14:45:00');
+});
+
+test('export data desa with zero luas_wilayah', function () {
+    // Arrange: Buat data dengan luas_wilayah = 0
+    DataDesa::factory()->create([
+        'luas_wilayah' => 0.0,
+    ]);
+
+    // Act: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $collection = $export->collection();
+    $mappedData = $export->map($collection->first());
+
+    // Assert: Luas wilayah 0 harus tetap ter-export
+    expect($mappedData[5])->toBe(0.0);
+});
+
+test('export data desa styles returns correct structure', function () {
+    // Arrange: Buat instance export
+    $export = new ExportDataDesa(false, []);
+    $worksheet = $this->createMock(\PhpOffice\PhpSpreadsheet\Worksheet\Worksheet::class);
+
+    // Act: Get styles
+    $styles = $export->styles($worksheet);
+
+    // Assert: Styles harus memiliki struktur yang benar
+    expect($styles)->toHaveKey(1)
+        ->and($styles[1])->toHaveKey('font')
+        ->and($styles[1]['font'])->toHaveKey('bold')
+        ->and($styles[1]['font']['bold'])->toBeTrue();
 });

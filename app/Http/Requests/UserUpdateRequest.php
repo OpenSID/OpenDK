@@ -31,7 +31,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserUpdateRequest extends FormRequest
@@ -54,9 +53,15 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         $id = ','.$this->segment(4);
-        
+
         return [
-            'password' => ['nullable', 'min:8', 'max:32', 'confirmed', new Password()],
+            'password' => [
+                'nullable',
+                'min:8',
+                'max:32',
+                'confirmed',
+                'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'
+            ],
         ];
     }
 }

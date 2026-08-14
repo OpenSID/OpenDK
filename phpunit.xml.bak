@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         cacheDirectory=".phpunit.cache"
+         backupGlobals="false"
+         beStrictAboutOutputDuringTests="true"
+         beStrictAboutTestsThatDoNotTestAnything="true"
+         failOnRisky="true"
+         failOnWarning="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+        <testsuite name="Architecture">
+            <directory suffix="Test.php">./tests/Arch</directory>
+        </testsuite>
+        <testsuite name="Browser">
+            <directory suffix="Test.php">./tests/Browser</directory>
+        </testsuite>
+    </testsuites>
+    
+    <coverage includeUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <report>
+            <html outputDirectory="build/coverage" lowUpperBound="50" highLowerBound="90"/>
+            <text outputFile="build/coverage.txt" showUncoveredFiles="true" showOnlySummary="false"/>
+            <clover outputFile="build/logs/clover.xml"/>
+            <crap4j outputFile="build/logs/crap4j.xml"/>
+        </report>
+    </coverage>
+    
+    <logging>
+        <junit outputFile="build/report.junit.xml"/>
+        <teamcity outputFile="build/teamcity.txt"/>
+    </logging>
+    
+    <php>
+        <server name="APP_ENV" value="testing"/>
+        <server name="APP_URL" value="http://opendk.test"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="MAIL_MAILER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="sync"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="PLAYWRIGHT_TIMEOUT" value="30000"/>
+        <server name="JWT_SECRET" value="test_secret_key_for_testing_only_do_not_use_in_production"/>
+        <!-- Database settings for testing -->
+        <server name="DB_CONNECTION" value="sqlite"/>
+        <server name="DB_DATABASE" value=":memory:"/>
+    </php>
+    
+</phpunit>

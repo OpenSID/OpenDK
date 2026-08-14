@@ -38,7 +38,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="kk_level" class="form-control" disabled id="kk_level">
-                    @foreach(\App\Models\HubunganKeluarga::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\HubunganKeluarga::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->kk_level == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -82,7 +82,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="agama_id" class="form-control" disabled id="agama_id">
-                    @foreach(\App\Models\Agama::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\Agama::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->agama_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -179,7 +179,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="status_rekam" class="form-control" disabled id="status_rekam">
-                    @foreach(status_rekam() as $id => $nama)
+                    @foreach (status_rekam() as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->status_rekam == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -226,7 +226,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="pendidikan_kk_id" class="form-control" disabled id="pendidikan_kk_id">
-                    @foreach(\App\Models\PendidikanKK::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\PendidikanKK::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->pendidikan_kk_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -238,7 +238,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="pendidikan_sedang_id" class="form-control" disabled id="pendidikan_sedang_id">
-                    @foreach(\App\Models\Pendidikan::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\Pendidikan::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->pendidikan_sedang_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -250,7 +250,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="pekerjaan_id" class="form-control" disabled id="pekerjaan_id">
-                    @foreach(\App\Models\Pekerjaan::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\Pekerjaan::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->pekerjaan_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -264,7 +264,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="warga_negara_id" class="form-control" disabled id="warga_negara_id">
-                    @foreach(\App\Models\Warganegara::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\Warganegara::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->warga_negara_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -365,7 +365,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="status_kawin" class="form-control" disabled id="status_kawin">
-                    @foreach(\App\Models\Kawin::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\Kawin::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->status_kawin == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -411,7 +411,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="golongan_darah_id" class="form-control" disabled id="golongan_darah_id">
-                    @foreach(\App\Models\GolonganDarah::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\GolonganDarah::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->golongan_darah_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -423,7 +423,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="cacat_id" class="form-control" disabled id="cacat_id">
-                    @foreach(\App\Models\Cacat::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\Cacat::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->cacat_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -435,7 +435,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="sakit_menahun_id" class="form-control" disabled id="sakit_menahun_id">
-                    @foreach(\App\Models\SakitMenahun::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\SakitMenahun::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->sakit_menahun_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>
@@ -447,7 +447,7 @@
 
             <div class="col-md-6 col-sm-6 col-xs-12">
                 <select name="cara_kb_id" class="form-control" disabled id="cara_kb_id">
-                    @foreach(\App\Models\CaraKB::pluck('nama', 'id') as $id => $nama)
+                    @foreach (\App\Models\CaraKB::pluck('nama', 'id') as $id => $nama)
                         <option value="{{ $id }}" {{ $penduduk->cara_kb_id == $id ? 'selected' : '' }}>{{ $nama }}</option>
                     @endforeach
                 </select>

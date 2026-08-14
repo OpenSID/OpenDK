@@ -49,7 +49,7 @@ class DesaService extends BaseApiService
             return $dataDesa;
         }
 
-        return DataDesa::nama($slug)->firstOrFail();
+        return DataDesa::whereNama($slug)->firstOrFail();
     }
 
     public function listDesa($all = false)

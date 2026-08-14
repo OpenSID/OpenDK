@@ -22,9 +22,13 @@ class SuratFactory extends Factory
     public function definition()
     {
         return [
-            'desa_id'             => DataDesa::inRandomOrder()->value('desa_id') ?? '51.02.02.2003',  // 13 digit char
+            'desa_id'             => function () {
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+            },
             'nik'                 => $this->faker->numerify('################'), // 16 digit char
-            'pengurus_id'         => User::inRandomOrder()->value('id') ?? 1,
+            'pengurus_id'         => function () {
+                return User::factory()->create()->id;
+            },
             'tanggal'             => $this->faker->date(),
             'nomor'               => strtoupper(Str::random(10)),
             'nama'                => $this->faker->name(),

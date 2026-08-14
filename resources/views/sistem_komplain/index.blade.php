@@ -44,7 +44,10 @@
             var data = $('#komplain-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('admin-komplain.getdata') !!}",
+                ajax: {
+                    url: "{!! route('admin-komplain.getdata') !!}",
+                    type: "POST"
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

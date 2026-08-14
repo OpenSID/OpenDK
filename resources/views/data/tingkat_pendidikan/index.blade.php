@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => route('data.tingkat-pendidikan.import')])
-                @include('forms.btn-social', ['export_url' => route('data.tingkat-pendidikan.export-excel')])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.tingkat-pendidikan.import') ? route('data.tingkat-pendidikan.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.tingkat-pendidikan.export') ? route('data.tingkat-pendidikan.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')
@@ -57,6 +57,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.tingkat-pendidikan.getdata') !!}",
+                    type: 'POST',
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

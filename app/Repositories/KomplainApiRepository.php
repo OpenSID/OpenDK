@@ -101,10 +101,17 @@ class KomplainApiRepository extends BaseApiRepository
             $attachmentKey = 'lampiran' . $i;
             if (isset($attachments[$attachmentKey]) && $attachments[$attachmentKey] instanceof \Illuminate\Http\UploadedFile) {
                 $lampiran = $attachments[$attachmentKey];
-                $fileName = $lampiran->getClientOriginalName();
-                $path = 'storage/komplain/'.$komplain->komplain_id.'/';
-                $lampiran->move($path, $fileName);
-                $komplain->{$attachmentKey} = $path.$fileName;
+                $directory = 'storage/komplain/'.$komplain->komplain_id.'/';
+                
+                // Use FileUploadService for secure file upload
+                $fileUploadService = new \App\Services\FileUploadService();
+                
+                // Define allowed MIME types for image uploads
+                $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('image');
+                
+                // Upload file securely
+                $path = $fileUploadService->uploadSecure($lampiran, $directory, $allowedMimes);
+                $komplain->{$attachmentKey} = $path;
             }
         }
         

@@ -14,8 +14,12 @@ class LembagaFactory extends Factory
     {
         $nama = $this->faker->company;
         return [
-            'lembaga_kategori_id' => 1, // sesuaikan jika ada factory kategori
-            'penduduk_id' => 1, // sesuaikan jika ada factory penduduk
+            'lembaga_kategori_id' => function () {
+                return \App\Models\KategoriLembaga::firstOrCreate(['nama' => 'Lembaga Swadaya Masyarakat'], ['nama' => 'Lembaga Swadaya Masyarakat'])->id;
+            },
+            'penduduk_id' => function () {
+                return \App\Models\Penduduk::factory()->create()->id;
+            },
             'kode' => $this->faker->unique()->numerify('LMBG###'),
             'nama' => $nama,
             'slug' => Str::slug($nama) . '-' . $this->faker->unique()->randomNumber(3),

@@ -10,7 +10,7 @@
 @endsection
 
 @section('container')
-    @if(isset($error))
+    @if (isset($error))
         <div class="alert alert-danger">
             <i class="fa fa-exclamation-triangle fa-fw" aria-hidden="true"></i>
             <strong>Error saat instalasi:</strong> {{ $error }}
@@ -27,7 +27,7 @@
             <strong>{{ trans('installer_messages.final.finished') }}</strong>
         </div>
 
-        @if(isset($migrationOutput) && $migrationOutput)
+        @if (isset($migrationOutput) && $migrationOutput)
             <p><strong><small>{{ trans('installer_messages.final.migration') }}</small></strong></p>
             <pre><code>{{ $migrationOutput }}</code></pre>
         @endif

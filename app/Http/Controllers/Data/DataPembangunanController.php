@@ -68,7 +68,14 @@ class DataPembangunanController extends Controller
                     $data['detail_url'] = route('data.pembangunan.rincian', ['id' => $row->id, 'desa_id' => $row->desa_id]);
 
                     return view('forms.aksi', $data);
-                })->make();
+                })
+                ->addColumn('sumber_dana_formatted', function ($row) {
+                    return $row->sumber_dana_formatted;
+                })
+                ->addColumn('sumber_dana_list', function ($row) {
+                    return $row->sumber_dana_list;
+                })
+                ->make();
         }
     }
 

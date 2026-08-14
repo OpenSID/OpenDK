@@ -33,11 +33,13 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportImunisasi;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportImunisasiRequest;
 use App\Imports\ImporImunisasi;
 use App\Models\Imunisasi;
 use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
@@ -66,8 +68,8 @@ class ImunisasiController extends Controller
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
         return DataTables::of(Imunisasi::with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
-                $data['edit_url'] = route('data.imunisasi.edit', $row->id);
-                $data['delete_url'] = route('data.imunisasi.destroy', $row->id);
+                $data['edit_url'] = auth()->user()->can('access.data.imunisasi.edit') ? route('data.imunisasi.edit', $row->id) : null;
+                $data['delete_url'] = auth()->user()->can('access.data.imunisasi.delete') ? route('data.imunisasi.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })->addColumn('nama_desa', function ($row) use ($listDesa) {
@@ -99,19 +101,16 @@ class ImunisasiController extends Controller
      *
      * @return Response
      */
-    public function do_import(Request $request)
+    public function do_import(ImportImunisasiRequest $request)
     {
-        $this->validate($request, [
-            'file' => 'required|file|mimes:xls,xlsx,csv|max:5120',
-            'bulan' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
             (new ImporImunisasi($request->only(['bulan', 'tahun'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Imunisasi import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }
@@ -149,7 +148,11 @@ class ImunisasiController extends Controller
         try {
             Imunisasi::findOrFail($id)->update($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Imunisasi update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'imunisasi_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Data gagal diubah! ' . $e->getMessage());
         }
@@ -168,7 +171,11 @@ class ImunisasiController extends Controller
         try {
             Imunisasi::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Imunisasi deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'imunisasi_id' => $id,
+            ]);
 
             return redirect()->route('data.imunisasi.index')->with('error', 'Data gagal dihapus!');
         }

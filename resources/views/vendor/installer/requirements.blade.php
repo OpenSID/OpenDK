@@ -25,8 +25,7 @@
                         <strong>
                             {{ $phpSupportInfo['current'] }}
                         </strong>
-                        <i class="fa fa-fw fa-{{ $phpSupportInfo['supported'] ? 'check-circle-o' : 'exclamation-circle' }} row-icon"
-                            aria-hidden="true"></i>
+                        <i class="fa fa-fw fa-{{ $phpSupportInfo['supported'] ? 'check-circle-o' : 'exclamation-circle' }} row-icon" aria-hidden="true"></i>
                     </span>
                 @endif
             </li>

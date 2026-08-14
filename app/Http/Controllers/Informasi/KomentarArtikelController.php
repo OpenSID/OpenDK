@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Informasi;
 use App\Models\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\DataTables;
 
 class KomentarArtikelController extends Controller
@@ -56,7 +57,7 @@ class KomentarArtikelController extends Controller
                 ->addColumn('aksi', function ($row) {
 
                     if (!auth()->guest()) {
-                        $data['delete_url'] = route('informasi.komentar-artikel.destroy', $row->id);
+                        $data['delete_url'] = auth()->user()->can('access.informasi.komentar-artikel.delete') ? route('informasi.komentar-artikel.destroy', $row->id) : null;
                     }
 
                     return view('forms.aksi', $data);
@@ -119,7 +120,11 @@ class KomentarArtikelController extends Controller
                 ->with('success', 'Komentar berhasil dihapus!');
         } catch (\Exception $e) {
             // Tangani pengecualian
-            report($e);
+            Log::error('Komentar Artikel deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'comment_id' => $id,
+            ]);
 
             // Kembalikan respon error
             return redirect()->route('informasi.komentar-artikel.index')

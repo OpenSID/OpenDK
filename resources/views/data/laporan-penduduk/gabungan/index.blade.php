@@ -18,7 +18,7 @@
         <div class="box box-primary">
 
             <div class="box-header with-border">
-                @include('forms.btn-social', ['export_url' => route('data.laporan-penduduk.export-excel')])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.laporan-penduduk.export') ? route('data.laporan-penduduk.export-excel') : null])
             </div>
 
             <div class="box-body">
@@ -55,16 +55,16 @@
                 processing: true,
                 serverSide: true,
                 ajax: {
-                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/laporan-penduduk?' .
+                    url: `{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/opendk/laporan-penduduk-datatable?' .
                         http_build_query([
                             'filter[kode_kecamatan]' => str_replace('.', '', $profil->kecamatan_id),
                         ]) }}`,
                     headers: {
                         "Accept": "application/ld+json",
                         "Content-Type": "text/json; charset=utf-8",
-                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                        "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
                     },
-                    method: 'get',
+                    method: 'POST',
                     data: function(row) {
                         var selectedDesa = $('#list_desa').val(); // Ambil nilai kode_desa yang dipilih
                         var searchValue = row.search.value; // Ambil nilai search dari DataTables

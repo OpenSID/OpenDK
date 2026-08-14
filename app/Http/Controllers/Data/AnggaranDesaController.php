@@ -38,6 +38,7 @@ use App\Imports\ImporAPBDesa;
 use App\Models\AnggaranDesa;
 use App\Models\DataDesa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -64,7 +65,7 @@ class AnggaranDesaController extends Controller
                     ->get()
             )
                 ->addColumn('aksi', function ($row) {
-                    $data['delete_url'] = route('data.anggaran-desa.destroy', $row->id);
+                    $data['delete_url'] = auth()->user()->can('access.data.anggaran-desa.delete') ? route('data.anggaran-desa.destroy', $row->id) : null;
 
                     return view('forms.aksi', $data);
                 })->editColumn('bulan', function ($row) {
@@ -95,7 +96,10 @@ class AnggaranDesaController extends Controller
             (new ImporAPBDesa($request->only(['bulan', 'tahun', 'desa'])))
                 ->queue($request->file('file'));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Anggaran Desa import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -108,7 +112,11 @@ class AnggaranDesaController extends Controller
         try {
             AnggaranDesa::findOrFail($id)->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Anggaran Desa deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'anggaran_desa_id' => $id,
+            ]);
 
             return redirect()->route('data.anggaran-desa.index')->with('error', 'Data gagal dihapus.');
         }

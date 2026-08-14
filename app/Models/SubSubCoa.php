@@ -37,9 +37,14 @@ class SubSubCoa extends Model
 {
     protected $table = 'ref_sub_sub_coa';
 
+    protected $primaryKey = 'id';
+
     public $incrementing = false;
 
+    public $timestamps = false;
+
     protected $fillable = [
+        'type_id',
         'sub_id',
         'sub_sub_name',
     ];

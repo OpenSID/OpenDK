@@ -3,20 +3,10 @@
 use App\Exports\ExportPembangunan;
 use App\Models\DataDesa;
 use App\Models\Pembangunan;
-use App\Models\SettingAplikasi;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Maatwebsite\Excel\Facades\Excel;
 
-uses(DatabaseTransactions::class);
-
-beforeEach(function () {
-    $this->withoutMiddleware();
-
-    // nonaktifkan database gabungan untuk testing
-    SettingAplikasi::updateOrCreate(
-        ['key' => 'sinkronisasi_database_gabungan'],
-        ['value' => '0']
-    );
+beforeEach(function(){
+    Pembangunan::query()->delete();
 });
 
 test('export excel pembangunan', function () {

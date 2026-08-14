@@ -37,10 +37,8 @@ class ArtikelRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
-     *
-     * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -48,16 +46,16 @@ class ArtikelRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array
+     * @return array<string, \Illuminate\Validation\Rule|string>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'judul' => 'required|string|max:191',
             'isi' => 'required',
-            //'kategori_id' => 'required',
             'status' => 'required',
             'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:1024|valid_file',
+            'tanggal_terbit' => 'required|date'
         ];
     }
 }

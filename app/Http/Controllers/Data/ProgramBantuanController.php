@@ -39,6 +39,7 @@ use App\Models\DataDesa;
 use App\Models\PesertaProgram;
 use App\Models\Program;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
@@ -59,7 +60,7 @@ class ProgramBantuanController extends Controller
     {
         return DataTables::of(Program::when(!empty($request->input('desa')), fn($q) => $q->where('desa_id', $request->desa))->with('desa'))
             ->addColumn('aksi', function ($row) {
-                $data['detail_url'] = route('data.program-bantuan.show', [$row->id, $row->desa_id]);
+                $data['detail_url'] = auth()->user()->can('access.data.program-bantuan.view') ? route('data.program-bantuan.show', [$row->id, $row->desa_id]) : null;
 
                 return view('forms.aksi', $data);
             })
@@ -106,9 +107,20 @@ class ProgramBantuanController extends Controller
         ]);
 
         try {
-            // Upload file zip temporary.
+            // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
+            
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+            
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+            
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 51200); // 50MB max
+            
+            // Extract filename from path
+            $name = basename($path);
 
             // Temporary path file
             $path = storage_path("app/temp/{$name}");
@@ -127,7 +139,10 @@ class ProgramBantuanController extends Controller
             (new SinkronPesertaBantuan())
                 ->queue($extract . Str::replaceLast('zip', 'csv', 'peserta_' . $name));
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Program Bantuan import failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->with('error', 'Import data gagal. ' . $e->getMessage());
         }

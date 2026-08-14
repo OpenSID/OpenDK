@@ -36,6 +36,7 @@ use App\Http\Requests\PendudukRequest;
 use App\Imports\SinkronPenduduk;
 use App\Jobs\PendudukQueueJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ZipArchive;
@@ -70,25 +71,51 @@ class PendudukController extends Controller
         ]);
 
         try {
-            // Upload file zip temporary.
+            // Upload file zip temporary using FileUploadService for security
             $file = $request->file('file');
-            $file->storeAs('temp', $name = $file->getClientOriginalName());
 
+            // Use FileUploadService for secure file upload
+            $fileUploadService = new \App\Services\FileUploadService();
+
+            // Define allowed MIME types for zip files
+            $allowedMimes = \App\Services\FileUploadService::getAllowedMimes('archive');
+
+            // Upload file securely to temp directory
+            $path = $fileUploadService->uploadSecure($file, 'temp', $allowedMimes, 5120); // 5MB max
+
+            // Extract filename from path
+            $name = basename($path);
+            
             // Temporary path file
-            $path = storage_path("app/temp/{$name}");
+            $path = storage_path("app/public/temp/{$name}");
             $extract = storage_path('app/public/penduduk/foto/');
-
+            $excellName = '';
             // Ekstrak file
             $zip = new ZipArchive();
-            $zip->open($path);
-            $zip->extractTo($extract);
-            $zip->close();
+            if ($zip->open($path) === TRUE) {
+
+                for ($i = 0; $i < $zip->numFiles; $i++) {
+
+                    $filename = $zip->getNameIndex($i);
+
+                    if (pathinfo($filename, PATHINFO_EXTENSION) === 'xlsx') {
+                        $excellName = $filename;
+                        break;
+                    }
+                }
+
+                $zip->extractTo($extract);
+                $zip->close();
+            }
+
 
             // Proses impor excell
             (new SinkronPenduduk())
-                ->queue($extract.$excellName = Str::replaceLast('zip', 'xlsx', $name));
+                ->queue($extract . $excellName);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Penduduk storedata failed', [
+                'error' => $e->getMessage(),
+            ]);
 
             return back()->with('error', 'Import data gagal.');
         }
@@ -96,7 +123,7 @@ class PendudukController extends Controller
         // Hapus folder temp ketika sudah selesai
         Storage::deleteDirectory('temp');
         // Hapus file excell temp ketika sudah selesai
-        Storage::disk('public')->delete('penduduk/foto/'.$excellName);
+        Storage::disk('public')->delete('penduduk/foto/' . $excellName);
 
         return response()->json([
             'message' => 'Data Foto Telah Berhasil di Sinkronkan',

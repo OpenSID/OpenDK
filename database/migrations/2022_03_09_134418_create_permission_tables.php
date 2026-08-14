@@ -124,10 +124,6 @@ return new class extends Migration
         });
 
         DB::statement('SET foreign_key_checks=1');
-        Artisan::call('db:seed', [
-            '--class' => 'RoleSpatieSeeder',
-            '--force' => true,
-        ]);
 
         app('cache')
             ->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)

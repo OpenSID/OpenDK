@@ -13,11 +13,11 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <select class="form-control" id="nik_kepala" disabled name="nik_kepala">
             @foreach ($penduduk as $kk)
-            @if ($kk->nik == $keluarga->nik_kepala)
-            <option value="{{ $kk->nik }}" selected="true">{{ $kk->nama }}</option>
-            @else
-            <option value="{{ $kk->nik }}">{{ $kk->nama }}</option>
-            @endif
+                @if ($kk->nik == $keluarga->nik_kepala)
+                    <option value="{{ $kk->nik }}" selected="true">{{ $kk->nama }}</option>
+                @else
+                    <option value="{{ $kk->nik }}">{{ $kk->nama }}</option>
+                @endif
             @endforeach
         </select>
     </div>
@@ -26,8 +26,7 @@
     <label for="tgl_daftar" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Daftar</label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->text('tgl_daftar',
-        format_date($keluarga->tgl_daftar))->class('form-control')->disabled()->id('tgl_daftar') !!}
+        {!! html()->text('tgl_daftar', format_date($keluarga->tgl_daftar))->class('form-control')->disabled()->id('tgl_daftar') !!}
     </div>
 </div>
 <div class="form-group">
@@ -62,20 +61,19 @@
     <label for="tgl_cetak_kk" class="control-label col-md-4 col-sm-3 col-xs-12">Tanggal Cetak KK </label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->text('tgl_cetak_kk',
-        format_datetime($keluarga->tgl_cetak_kk))->class('form-control')->disabled()->id('tgl_cetak_kk') !!}
+        {!! html()->text('tgl_cetak_kk', format_datetime($keluarga->tgl_cetak_kk))->class('form-control')->disabled()->id('tgl_cetak_kk') !!}
     </div>
 </div>
 
 <div class="ln_solid"></div>
 @include('partials.asset_select2')
 @push('scripts')
-<script>
-    $(function() {
+    <script>
+        $(function() {
 
             // Select 2 Kecamatan
             $('#nik_kepala').select2();
 
         });
-</script>
+    </script>
 @endpush

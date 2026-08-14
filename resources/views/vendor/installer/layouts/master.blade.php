@@ -18,8 +18,8 @@
     @yield('style')
     <script>
         window.Laravel = <?php echo json_encode([
-    'csrfToken' => csrf_token(),
-]); ?>
+            'csrfToken' => csrf_token(),
+        ]); ?>
     </script>
 </head>
 
@@ -35,8 +35,7 @@
                     <i class="step__icon fa fa-server" aria-hidden="true"></i>
                 </li>
                 <li class="step__divider"></li>
-                <li
-                    class="step__item {{ isActive('installer.environment') }} {{ isActive('installer.environmentWizard') }} {{ isActive('installer.environmentClassic') }}">
+                <li class="step__item {{ isActive('installer.environment') }} {{ isActive('installer.environmentWizard') }} {{ isActive('installer.environmentClassic') }}">
                     @if (Request::is('install/environment') || Request::is('install/environment/wizard') || Request::is('install/environment/classic'))
                         <a href="{{ route('installer.environment') }}">
                             <i class="step__icon fa fa-cog" aria-hidden="true"></i>
@@ -113,7 +112,7 @@
     <script type="text/javascript">
         var x = document.getElementById('error_alert');
         var y = document.getElementById('close_alert');
-        y.onclick = function () {
+        y.onclick = function() {
             x.style.display = "none";
         };
     </script>

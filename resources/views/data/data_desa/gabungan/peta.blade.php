@@ -88,11 +88,10 @@
                         overlayLayers['Peta Wilayah Kecamatan'] = wilayah_property(mark_kec, false);
                     }
                 }
-                fetch(`{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/desa' }}?filter[id]={{ $id }}&page[size]=1&fields[config]=id,path,nama_desa`, {
+                fetch(`{{ $settings['api_server_database_gabungan'] ?? '' }}{{ '/api/v1/desa-datatable' }}?filter[id]={{ $id }}&page[size]=1&fields[config]=id,path,nama_desa`, {
+                        method: 'POST',
                         headers: {
-                            "Accept": "application/ld+json",
-                            "Content-Type": "text/json; charset=utf-8",
-                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
+                            "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`,
                         }
                     }).then(response => response.json())
                     .then(data => {

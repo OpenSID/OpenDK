@@ -38,7 +38,16 @@ class Themes extends Model
 {
     protected $table = 'das_themes';
 
-    protected $guarded = [];
+    protected $fillable = [
+        'name',
+        'version',
+        'description',
+        'author',
+        'path',
+        'vendor',
+        'active',
+        'system'        
+    ];
 
     // append slug attribute
     protected $appends = [

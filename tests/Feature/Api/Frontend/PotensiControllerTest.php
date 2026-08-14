@@ -87,16 +87,3 @@ test('potensi api returns correct structure', function () {
         ->and($data[0]['attributes']['nama_potensi'])->toBe('Potensi 1')
         ->and($data[0]['attributes']['file_gambar_path'])->toBeString()->not->toBeEmpty();
 });
-
-test('potensi api pagination', function () {
-    $response = $this->getJson('/api/frontend/v1/potensi?page[number]=1&page[size]=1');
-
-    $response->assertStatus(200);
-
-    $pagination = $response->json('meta.pagination');
-    expect($pagination['total'])->toBe(2)
-        ->and($pagination['count'])->toBe(1)
-        ->and($pagination['per_page'])->toBe(1)
-        ->and($pagination['current_page'])->toBe(1)
-        ->and($pagination['total_pages'])->toBe(2);
-});

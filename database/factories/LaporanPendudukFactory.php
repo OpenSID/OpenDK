@@ -18,7 +18,9 @@ class LaporanPendudukFactory extends Factory
             'tahun' => $this->faker->year,
             'nama_file' => $this->faker->word . '.pdf',
             'id_laporan_penduduk' => $this->faker->unique()->numberBetween(1, 999999),
-            'desa_id' => DataDesa::factory(),
+            'desa_id' => function () {
+                return DataDesa::firstOrCreate(['nama' => 'Desa Contoh'], ['nama' => 'Desa Contoh', 'website' => 'https://example.com', 'luas_wilayah' => 10.5])->id;
+            },
             'imported_at' => $this->faker->dateTime,
         ];
     }

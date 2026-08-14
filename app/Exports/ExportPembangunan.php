@@ -100,7 +100,7 @@ class ExportPembangunan implements FromCollection, WithHeadings, WithMapping, Wi
         return [
             $row->id,
             $row->judul ?? '',
-            $row->sumber_dana ?? '',
+            $row->sumber_dana_formatted ?? '',
             $row->anggaran ? number_format($row->anggaran, 2) : '',
             $row->volume ?? '',
             $row->tahun_anggaran ?? '',

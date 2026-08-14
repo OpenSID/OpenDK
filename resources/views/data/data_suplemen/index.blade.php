@@ -21,8 +21,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['create_url' => route('data.data-suplemen.create')])
-                @include('forms.btn-social', ['export_url' => route('data.data-suplemen.export-excel')])
+                @include('forms.btn-social', ['create_url' => auth()->user()->can('access.data.data-suplemen.create') ? route('data.data-suplemen.create') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.data-suplemen.export') ? route('data.data-suplemen.export-excel') : null])
 
             </div>
             <div class="box-body">
@@ -52,7 +52,10 @@
             var data = $('#suplemen-table').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: "{!! route('data.data-suplemen.getdata') !!}",
+                ajax: {
+                    url: "{!! route('data.data-suplemen.getdata') !!}",
+                    type: "POST",
+                },
                 columns: [{
                         data: 'aksi',
                         name: 'aksi',

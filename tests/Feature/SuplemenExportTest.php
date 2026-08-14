@@ -80,7 +80,7 @@ test('export excel suplemen terdata', function () {
 
     $desa = DataDesa::factory()->create();
     $pendudukId = 999999;
-    Penduduk::create([
+    $penduduk = Penduduk::forceCreate([
         'id' => $pendudukId,
         'nama' => 'Test Penduduk',
         'nik' => '1234567890123456',
@@ -94,7 +94,7 @@ test('export excel suplemen terdata', function () {
 
     SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
-        'penduduk_id' => $pendudukId,
+        'penduduk_id' => $penduduk->id,
         'keterangan' => 'Test keterangan terdata'
     ]);
 
@@ -118,7 +118,7 @@ test('export suplemen terdata with desa filter', function () {
     $pendudukId1 = 999998;
     $pendudukId2 = 999997;
 
-    Penduduk::create([
+    $penduduk1 = Penduduk::forceCreate([
         'id' => $pendudukId1,
         'nama' => 'Test Penduduk 1',
         'nik' => '1111567890123456',
@@ -130,7 +130,7 @@ test('export suplemen terdata with desa filter', function () {
         'tanggal_lahir' => '1990-01-01',
     ]);
 
-    Penduduk::create([
+    $penduduk2 = Penduduk::forceCreate([
         'id' => $pendudukId2,
         'nama' => 'Test Penduduk 2',
         'nik' => '2222567890123456',
@@ -142,8 +142,8 @@ test('export suplemen terdata with desa filter', function () {
         'tanggal_lahir' => '1991-01-01',
     ]);
 
-    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $pendudukId1, 'keterangan' => 'Test terdata 1']);
-    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $pendudukId2, 'keterangan' => 'Test terdata 2']);
+    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $penduduk1->id, 'keterangan' => 'Test terdata 1']);
+    SuplemenTerdata::create(['suplemen_id' => $suplemen->id, 'penduduk_id' => $penduduk2->id, 'keterangan' => 'Test terdata 2']);
 
     Excel::fake();
     $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}?desa={$desa1->desa_id}");
@@ -217,4 +217,93 @@ test('export suplemen styles', function () {
     $styles = $export->styles($worksheet);
 
     expect($styles)->toBeArray();
+});
+
+// =============================================================================
+// EXPORT SUPLEMEN TERDATA BY ID TESTS
+// =============================================================================
+
+test('export suplemen terdata by id', function () {
+    // Arrange: Buat data suplemen dan terdata
+    Suplemen::query()->delete();
+    SuplemenTerdata::query()->delete();
+    
+    $desa = DataDesa::factory()->create();
+    $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
+    
+    $suplemen = Suplemen::create([
+        'nama' => 'Test Suplemen Terdata',
+        'slug' => 'test-suplemen-terdata',
+        'sasaran' => 1,
+        'keterangan' => 'Test Keterangan'
+    ]);
+    
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id' => $penduduk->id,
+        'keterangan' => 'Test Terdata'
+    ]);
+
+    // Act: Export terdata by suplemen ID
+    $export = new ExportSuplemenTerdata($suplemen->id);
+    $collection = $export->collection();
+
+    // Assert: Harus mengembalikan data yang sesuai
+    expect($collection)->toHaveCount(1)
+        ->and($collection->first()->suplemen_id)->toBe($suplemen->id)
+        ->and($collection->first()->penduduk_id)->toBe($penduduk->id);
+});
+
+test('export suplemen terdata by id with invalid id returns empty', function () {
+    // Arrange: ID yang tidak valid
+    $invalidId = 99999;
+
+    // Act: Export dengan ID tidak valid
+    $export = new ExportSuplemenTerdata($invalidId);
+    $collection = $export->collection();
+
+    // Assert: Harus mengembalikan collection kosong
+    expect($collection)->toHaveCount(0);
+});
+
+test('export suplemen terdata by id with multiple terdata', function () {
+    // Arrange: Buat data suplemen dengan multiple terdata
+    Suplemen::query()->delete();
+    SuplemenTerdata::query()->delete();
+    
+    $desa = DataDesa::factory()->create();
+    $penduduk1 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 1']);
+    $penduduk2 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 2']);
+    $penduduk3 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 3']);
+    
+    $suplemen = Suplemen::create([
+        'nama' => 'Test Suplemen Multiple',
+        'slug' => 'test-suplemen-multiple',
+        'sasaran' => 1,
+        'keterangan' => 'Test Keterangan'
+    ]);
+    
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id' => $penduduk1->id,
+        'keterangan' => 'Terdata 1'
+    ]);
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id' => $penduduk2->id,
+        'keterangan' => 'Terdata 2'
+    ]);
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id' => $penduduk3->id,
+        'keterangan' => 'Terdata 3'
+    ]);
+
+    // Act: Export terdata by suplemen ID
+    $export = new ExportSuplemenTerdata($suplemen->id);
+    $collection = $export->collection();
+
+    // Assert: Harus mengembalikan semua terdata
+    expect($collection)->toHaveCount(3)
+        ->and($collection->every(fn($item) => $item->suplemen_id === $suplemen->id))->toBeTrue();
 });

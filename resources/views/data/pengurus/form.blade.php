@@ -9,8 +9,7 @@
     <div class="col-md-6 col-sm-6 col-xs-12">
         <input type="file" name="foto" id="foto" class="form-control" accept="jpg, jpeg, png">
         <br>
-        <img src="{{ is_img($pengurus->foto ?? null) }}" id="showfoto"
-            style="max-width:400px;max-height:250px;float:left;" />
+        <img src="{{ is_img($pengurus->foto ?? null) }}" id="showfoto" style="max-width:400px;max-height:250px;float:left;" />
     </div>
 </div>
 <div class="form-group">
@@ -31,8 +30,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor Induk Kependudukan <span
-            class="required">*</span></label>
+    <label class="control-label col-md-3 col-sm-3 col-xs-12">Nomor Induk Kependudukan <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
         {!! html()->text('nik')->class('form-control')->required()->placeholder('Nomor Induk Kependudukan')->value(old('nik', isset($pengurus) && !empty($pengurus) ? $pengurus->nik : '')) !!}

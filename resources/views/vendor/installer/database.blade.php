@@ -15,7 +15,7 @@
 
         <div class="form-group">
             <label>Status Koneksi Database</label>
-            @if(isset($canConnect) && $canConnect)
+            @if (isset($canConnect) && $canConnect)
                 <div class="alert alert-success">
                     <i class="fa fa-check-circle fa-fw" aria-hidden="true"></i>
                     {{ $message }}
@@ -36,7 +36,7 @@
             </p>
         </div>
 
-        @if(isset($canConnect) && $canConnect)
+        @if (isset($canConnect) && $canConnect)
             <div class="buttons">
                 <button class="button" type="submit">
                     Lanjutkan Instalasi

@@ -74,8 +74,7 @@ class PendidikanChartPutusSekolahService
             $dataTabel = [];
             // Quartal
             foreach (semester() as $key => $kuartal) {
-                $queryPendidikan = DB::table('das_putus_sekolah')
-                    // ->whereRaw('bulan in ('.$this->getIdsSemester($key).')')
+                $queryPendidikan = DB::table('das_putus_sekolah')                    
                     ->where('tahun', $year)
                     ->where('desa_id', '=', $did);
 

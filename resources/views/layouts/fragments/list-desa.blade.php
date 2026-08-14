@@ -2,12 +2,7 @@
     <div class="col-sm-3">
         <div class="form-group">
             <label>{{ config('setting.sebutan_desa') }}</label>
-            <select class="form-control select2" id="list_desa">
-                <option value="Semua">Semua {{ config('setting.sebutan_desa') }}</option>
-                @foreach ((new App\Services\DesaService())->listDesa()->pluck('nama', 'desa_id') as $key => $value)
-                    <option value="{{ $key }}">{{ $value }}</option>
-                @endforeach
-            </select>
+            @include('layouts.fragments.select-desa')
         </div>
     </div>
 </div>

@@ -29,32 +29,15 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\CompleteProfile;
-use App\Http\Middleware\GlobalShareMiddleware;
 use App\Models\DataDesa;
 use App\Models\Pesan;
-use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Spatie\Permission\Middleware\PermissionMiddleware;
-use Spatie\Permission\Middleware\RoleMiddleware;
 
 uses(DatabaseTransactions::class);
 
 beforeEach(function () {
-    $this->withViewErrors([]);
-    $this->withoutMiddleware([
-        Authenticate::class,
-        RoleMiddleware::class,
-        PermissionMiddleware::class,
-        CompleteProfile::class,
-        GlobalShareMiddleware::class,
-    ]);
-    // disabled database gabungan for testing
-    SettingAplikasi::updateOrCreate(
-        ['key' => 'sinkronisasi_database_gabungan'],
-        ['value' => '0']
-    );
+    $this->withViewErrors([]);    
+    Pesan::query()->delete();    
 });
 
 test('index', function () {

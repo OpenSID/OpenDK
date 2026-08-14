@@ -31,12 +31,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\SystemRequirementsChecker;
 use App\Http\Requests\EmailSmtpRequest;
 use App\Mail\SmtpTestEmail;
 use App\Models\EmailSmtp;
-use App\Helpers\SystemRequirementsChecker;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Rap2hpoutre\LaravelLogViewer\LaravelLogViewer;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,7 +66,7 @@ class LogViewerController extends Controller
      */
     public function __construct(Controller $profil, SystemRequirementsChecker $checker)
     {
-        $this->log_viewer = new LaravelLogViewer();
+        $this->log_viewer = new LaravelLogViewer;
         $this->request = app('request');
         $this->profil = $profil;
         $this->requirements = $checker;
@@ -99,7 +101,6 @@ class LogViewerController extends Controller
             'files' => $this->log_viewer->getFiles(true),
             'current_file' => $this->log_viewer->getFileName(),
             'standardFormat' => true,
-            'structure' => $this->log_viewer->foldersAndFiles(),
             'storage_path' => $this->log_viewer->getStoragePath(),
 
         ];
@@ -110,7 +111,7 @@ class LogViewerController extends Controller
 
         if (is_array($data['logs']) && count($data['logs']) > 0) {
             $firstLog = reset($data['logs']);
-            if (!$firstLog['context'] && !$firstLog['level']) {
+            if (! $firstLog['context'] && ! $firstLog['level']) {
                 $data['standardFormat'] = false;
             }
         }
@@ -124,8 +125,8 @@ class LogViewerController extends Controller
 
         $page_title = 'Info Sistem';
 
-        //mengambil data smtp terakhir
-        $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp();
+        // mengambil data smtp terakhir
+        $email_smtp = EmailSmtp::getLatestEmailSmtp() ?? new EmailSmtp;
 
         return app('view')->make($this->view_log, $data)
             ->with('requirements', $requirements)
@@ -219,7 +220,10 @@ class LogViewerController extends Controller
         try {
             Artisan::call('queue:work', ['--stop-when-empty' => null]); // this will do the command line job
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Queue listen failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return response()->json([
                 'error' => $e->getMessage(),
@@ -248,7 +252,10 @@ class LogViewerController extends Controller
         try {
             EmailSmtp::create($request->all());
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Email SMTP store failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+            ]);
 
             return back()->withInput()->with('tab', 'email_smtp')->with('error', 'SMTP gagal diubah!');
         }
@@ -256,13 +263,17 @@ class LogViewerController extends Controller
         return back()->with('tab', 'email_smtp')->with('success', 'Berhasil memperbaruhi SMTP');
     }
 
-    //function for testing email smtp
+    // function for testing email smtp
     public function sendTestEmailSmtp($email)
     {
         try {
-            Mail::to($email)->send(new SmtpTestEmail());
+            Mail::to($email)->send(new SmtpTestEmail);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Test email SMTP failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'email' => $email,
+            ]);
 
             return response()->json([
                 'error' => $e->getMessage(),
@@ -272,5 +283,17 @@ class LogViewerController extends Controller
         return response()->json([
             'success' => true,
         ], Response::HTTP_OK);
+    }
+
+    public function phpinfo(): \Illuminate\Http\Response
+    {
+        $phpinfo = Cache::remember('system_phpinfo', 300, function () {
+            ob_start();
+            phpinfo(-1);
+
+            return ob_get_clean();
+        });
+
+        return response($phpinfo);
     }
 }

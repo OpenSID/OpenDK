@@ -17,8 +17,8 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-                @include('forms.btn-social', ['import_url' => route('data.anggaran-desa.import')])
-                @include('forms.btn-social', ['export_url' => route('data.anggaran-desa.export-excel')])
+                @include('forms.btn-social', ['import_url' => auth()->user()->can('access.data.anggaran-desa.import') ? route('data.anggaran-desa.import') : null])
+                @include('forms.btn-social', ['export_url' => auth()->user()->can('access.data.anggaran-desa.export') ? route('data.anggaran-desa.export-excel') : null])
             </div>
             <div class="box-body">
                 @include('layouts.fragments.list-desa')
@@ -53,6 +53,7 @@
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.anggaran-desa.getdata') !!}",
+                    type: "POST",
                     data: function(d) {
                         d.desa = $('#list_desa').val();
                     }

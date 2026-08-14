@@ -4,7 +4,7 @@
         "prettier-blade": "prettier resources/views/{**,**/**,**/**/**}.blade.php --write",
         "test": "php vendor/bin/pest",
         "test:parallel": "php vendor/bin/pest --parallel",
-        "test:browser": "php vendor/bin/pest --group=browser",
+        "test:browser": "./tests/browser-test.sh",
         "test:coverage": "php vendor/bin/pest --coverage",
         "test:e2e": "playwright test",
         "test:e2e:headed": "playwright test --headed",
@@ -18,6 +18,6 @@
         "prettier": "^3.6.0"
     },
     "dependencies": {
-        "playwright": "^1.55.1"
+        "playwright": "^1.58.2"
     }
 }

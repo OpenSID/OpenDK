@@ -52,7 +52,7 @@
 @include('partials.asset_datatables')
 @push('scripts')
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             var data = $('#pengurus-table').DataTable({
                 responsive: true,
                 processing: true,
@@ -65,7 +65,7 @@
                         "Authorization": `Bearer {{ $settings['api_key_database_gabungan'] ?? '' }}`
                     },
                     method: 'get',
-                    data: function (row) {
+                    data: function(row) {
                         var searchValue = row.search.value;
 
                         return {
@@ -75,15 +75,14 @@
                         };
 
                     },
-                    dataSrc: function (json) {
+                    dataSrc: function(json) {
                         json.recordsTotal = json.meta.pagination.total
                         json.recordsFiltered = json.meta.pagination.total
                         return json.data
                     },
                 },
-                columns: [
-                    {
-                        data: function (data) {
+                columns: [{
+                        data: function(data) {
 
                             const _url = `{{ url('data/keluarga/show') }}/${data.id}`
 

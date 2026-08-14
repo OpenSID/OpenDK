@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * File ini bagian dari:
  *
@@ -7,7 +9,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2026 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,36 +26,38 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2026 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
 namespace App\Http\Controllers\Data;
 
-use App\Enums\Status;
-use App\Models\Agama;
-use App\Models\Jabatan;
-use App\Models\Pengurus;
 use App\Enums\JenisJabatan;
-use App\Models\PendidikanKK;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
+use App\Enums\Status;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengurusRequest;
+use App\Models\Agama;
+use App\Models\Jabatan;
+use App\Models\PendidikanKK;
+use App\Models\Pengurus;
 use App\Traits\BaganTrait;
-use Exception;
+use App\Traits\HandlesFileUpload;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class PengurusController extends Controller
 {
-    use HandlesFileUpload, BaganTrait;
+    use BaganTrait;
+    use HandlesFileUpload;
 
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return mixed
      */
     public function index(Request $request)
     {
@@ -68,8 +72,8 @@ class PengurusController extends Controller
                 ->addColumn('aksi', function ($row) {
                     if (! auth()->guest()) {
                         $data['arsip_url'] = route('data.pengurus.arsip', ['pengurus_id' => $row->id]);
-                        $data['edit_url'] = route('data.pengurus.edit', $row->id);
-                        $data['delete_url'] = route('data.pengurus.destroy', $row->id);
+                        $data['edit_url'] = auth()->user()->can('access.data.pengurus.edit') ? route('data.pengurus.edit', $row->id) : null;
+                        $data['delete_url'] = auth()->user()->can('access.data.pengurus.delete') ? route('data.pengurus.destroy', $row->id) : null;
                         if ($row->status == Status::Aktif) {
                             $data['suspend_url'] = route('data.pengurus.lock', [$row->id, Status::TidakAktif]);
                         } else {
@@ -80,13 +84,13 @@ class PengurusController extends Controller
                     return view('forms.aksi', $data);
                 })
                 ->editColumn('foto', function ($row) {
-                    return '<img src="' . is_user($row->foto, $row->sex, true) . '" class="img-rounded" alt="Foto Penduduk" height="50"/>';
+                    return '<img src="'.is_user($row->foto, $row->sex, true).'" class="img-rounded" alt="Foto Penduduk" height="50"/>';
                 })
                 ->editColumn('identitas', function ($row) {
-                    return $row->namaGelar . ',<br> NIP: ' . $row->nip . ',<br> NIK: ' . $row->nik;
+                    return $row->namaGelar.',<br> NIP: '.$row->nip.',<br> NIK: '.$row->nik;
                 })
                 ->editColumn('ttl', function ($row) {
-                    return $row->tempat_lahir . ',' . format_date($row->tanggal_lahir);
+                    return $row->tempat_lahir.','.format_date($row->tanggal_lahir);
                 })
                 ->editColumn('sex', function ($row) {
                     $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
@@ -115,18 +119,16 @@ class PengurusController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return Response
      */
-    public function create()
+    public function create(): View
     {
         $page_title = 'Pengurus';
         $page_description = 'Tambah Pengurus';
         $pendidikan = PendidikanKK::pluck('nama', 'id');
         $agama = Agama::pluck('nama', 'id');
-        $pengurus = new Pengurus();
+        $pengurus = new Pengurus;
         $kecuali = $pengurus->cekPengurus();
-        $jabatan = Jabatan::whereNotIn('id', $kecuali)->pluck('nama', 'id');
+        $jabatan = Jabatan::whereNotIn('jenis', $kecuali)->pluck('nama', 'id');
         $atasan = Pengurus::ListAtasan()
             ->get()
             ->mapWithKeys(function ($item) {
@@ -140,17 +142,29 @@ class PengurusController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return Response
      */
-    public function store(PengurusRequest $request)
+    public function store(PengurusRequest $request): RedirectResponse
     {
         try {
-            $input = $request->all();
+            $input = $request->validated();
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
-            Pengurus::create($input);
+
+            $pengurus = new Pengurus;
+            $fillableFields = ['nama', 'nik', 'gelar_depan', 'gelar_belakang', 'nip', 'tempat_lahir', 'tanggal_lahir', 'sex', 'pendidikan_id', 'agama_id', 'pangkat', 'no_sk', 'tanggal_sk', 'no_henti', 'tanggal_henti', 'masa_jabatan', 'jabatan_id', 'atasan', 'bagan_tingkat', 'bagan_warna'];
+
+            foreach ($fillableFields as $field) {
+                if (isset($input[$field])) {
+                    $pengurus->$field = $input[$field];
+                }
+            }
+
+            $pengurus->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus creation failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'input' => $request->except(['foto']),
+            ]);
 
             return back()->withInput()->with('error', 'Pengurus gagal ditambah!');
         }
@@ -160,20 +174,17 @@ class PengurusController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $pengurus = Pengurus::findOrFail($id);
         $page_title = 'Pengurus';
-        $page_description = 'Ubah Pengurus : ' . $pengurus->nama;
+        $page_description = 'Ubah Pengurus : '.$pengurus->nama;
         $pendidikan = PendidikanKK::pluck('nama', 'id');
         $agama = Agama::pluck('nama', 'id');
         $kecuali = $pengurus->cekPengurus();
 
-        $jabatan = Jabatan::whereNotIn('id', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
+        $jabatan = Jabatan::whereNotIn('jenis', $kecuali)->orWhere('jenis', $pengurus->jabatan->jenis)
             ->pluck('nama', 'id');
 
         $atasan = Pengurus::ListAtasan($id)
@@ -187,20 +198,21 @@ class PengurusController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function update(PengurusRequest $request, $id)
+    public function update(PengurusRequest $request, int $id): RedirectResponse
     {
         $pengurus = Pengurus::findOrFail($id);
 
         try {
-            $input = $request->all();
+            $input = $request->validated();
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
             $pengurus->update($input);
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'pengurus_id' => $id,
+            ]);
 
             return back()->withInput()->with('error', 'Pengurus gagal diubah!');
         }
@@ -208,13 +220,16 @@ class PengurusController extends Controller
         return redirect()->route('data.pengurus.index')->with('success', 'Pengurus berhasil diubah!');
     }
 
-    public function destroy(Pengurus $penguru)
-    {
-        // dd($penguru);
+    public function destroy(Pengurus $penguru): RedirectResponse
+    {        
         try {
             $penguru->delete();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus deletion failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'pengurus_id' => $penguru->id,
+            ]);
 
             return redirect()->route('data.pengurus.index')->with('error', 'Pengurus gagal dihapus!');
         }
@@ -224,28 +239,31 @@ class PengurusController extends Controller
 
     /**
      * Update status resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
      */
-    public function lock($id, $status)
+    public function lock(int $id, int $status): RedirectResponse
     {
         try {
-            $pengurus = Pengurus::findOrFail($id);
+            $pengurus = Pengurus::with(['jabatan'])->findOrFail($id);
 
             if ($status == Status::Aktif) {
-                if ($pengurus->jabatan->id == JenisJabatan::Camat && Pengurus::where('jabatan_id', JenisJabatan::Camat)->where('status', Status::Aktif)->exists()) {
+                if ($pengurus->jabatan->jenis == JenisJabatan::Camat && Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->where('status', Status::Aktif)->exists()) {
                     return redirect()->route('data.pengurus.index')->with('error', 'Camat aktif sudah ditetapkan!');
                 }
 
-                if ($pengurus->jabatan->id == JenisJabatan::Sekretaris && Pengurus::where('jabatan_id', JenisJabatan::Sekretaris)->where('status', Status::Aktif)->exists()) {
+                if ($pengurus->jabatan->jenis == JenisJabatan::Sekretaris && Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Sekretaris))->where('status', Status::Aktif)->exists()) {
                     return redirect()->route('data.pengurus.index')->with('error', 'Sekretaris aktif sudah ditetapkan!');
                 }
             }
 
-            $pengurus->update(['status' => $status]);
+            $pengurus->status = $status;
+            $pengurus->save();
         } catch (\Exception $e) {
-            report($e);
+            Log::error('Pengurus status update failed', [
+                'error' => $e->getMessage(),
+                'user_id' => auth()->id(),
+                'pengurus_id' => $id,
+                'status' => $status,
+            ]);
 
             return redirect()->route('data.pengurus.index')->with('error', 'Status Pengurus gagal diubah!');
         }
@@ -253,7 +271,7 @@ class PengurusController extends Controller
         return redirect()->route('data.pengurus.index')->with('success', 'Status Pengurus berhasil diubah!');
     }
 
-    public function bagan()
+    public function bagan(): View
     {
         $page_title = 'Pengurus';
         $page_description = 'Bagan Pengurus';
@@ -261,7 +279,7 @@ class PengurusController extends Controller
         return view('data.pengurus.bagan', compact('page_title', 'page_description'));
     }
 
-    public function ajaxBagan()
+    public function ajaxBagan(): \Illuminate\Http\JsonResponse
     {
         return response()->json($this->getDataStrukturOrganisasi());
     }

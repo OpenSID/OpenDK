@@ -32,10 +32,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Cache;
 
 class Profil extends Model
 {
+    use HasFactory;
     // ID Kecamatan untuk default profil
 
     protected $table = 'das_profil';

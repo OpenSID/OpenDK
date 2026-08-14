@@ -239,6 +239,7 @@ class RoleSpatieSeeder extends Seeder
         $superAdmin        = Role::firstOrCreate(['name' => 'super-admin', 'guard_name' => 'web']);
         $adminKecamatan    = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
         $kontributorArtikel = Role::firstOrCreate(['name' => 'kontributor-artikel', 'guard_name' => 'web']);
+        $administratorWebsite = Role::firstOrCreate(['name' => 'administrator-website', 'guard_name' => 'web']);
 
         // Super-admin mendapat semua permission (level 1, 2, dan 3)
         $allPermissions = Permission::all()->pluck('name')->toArray();
@@ -267,6 +268,93 @@ class RoleSpatieSeeder extends Seeder
         ];
         $kontributorArtikel->syncPermissions(
             array_filter($kontributorArtikelPermissions, fn($p) => Permission::where('name', $p)->exists())
+        );
+
+        // Administrator Website: akses Informasi, Publikasi, dan Pengaturan Slide
+        $administratorWebsitePermissions = [
+            'access.dashboard',
+            'access.informasi',
+            'access.informasi.prosedur',
+            'access.informasi.prosedur.view',
+            'access.informasi.prosedur.create',
+            'access.informasi.prosedur.edit',
+            'access.informasi.prosedur.delete',
+            'access.informasi.prosedur.export',
+            'access.informasi.regulasi',
+            'access.informasi.regulasi.view',
+            'access.informasi.regulasi.create',
+            'access.informasi.regulasi.edit',
+            'access.informasi.regulasi.delete',
+            'access.informasi.regulasi.export',
+            'access.informasi.potensi',
+            'access.informasi.potensi.view',
+            'access.informasi.potensi.create',
+            'access.informasi.potensi.edit',
+            'access.informasi.potensi.delete',
+            'access.informasi.event',
+            'access.informasi.event.view',
+            'access.informasi.event.create',
+            'access.informasi.event.edit',
+            'access.informasi.event.delete',
+            'access.informasi.artikel',
+            'access.informasi.artikel.view',
+            'access.informasi.artikel.create',
+            'access.informasi.artikel.edit',
+            'access.informasi.artikel.delete',
+            'access.informasi.artikel_kategori',
+            'access.informasi.artikel_kategori.view',
+            'access.informasi.artikel_kategori.create',
+            'access.informasi.artikel_kategori.edit',
+            'access.informasi.artikel_kategori.delete',
+            'access.informasi.komentar_artikel',
+            'access.informasi.komentar_artikel.view',
+            'access.informasi.komentar_artikel.edit',
+            'access.informasi.komentar_artikel.delete',
+            'access.informasi.faq',
+            'access.informasi.faq.view',
+            'access.informasi.faq.create',
+            'access.informasi.faq.edit',
+            'access.informasi.faq.delete',
+            'access.informasi.form_dokumen',
+            'access.informasi.form_dokumen.view',
+            'access.informasi.form_dokumen.create',
+            'access.informasi.form_dokumen.edit',
+            'access.informasi.form_dokumen.delete',
+            'access.informasi.media_sosial',
+            'access.informasi.media_sosial.view',
+            'access.informasi.media_sosial.create',
+            'access.informasi.media_sosial.edit',
+            'access.informasi.media_sosial.delete',
+            'access.informasi.media_terkait',
+            'access.informasi.media_terkait.view',
+            'access.informasi.media_terkait.create',
+            'access.informasi.media_terkait.edit',
+            'access.informasi.media_terkait.delete',
+            'access.informasi.sinergi_program',
+            'access.informasi.sinergi_program.view',
+            'access.informasi.sinergi_program.create',
+            'access.informasi.sinergi_program.edit',
+            'access.informasi.sinergi_program.delete',
+            'access.publikasi',
+            'access.publikasi.album',
+            'access.publikasi.album.view',
+            'access.publikasi.album.create',
+            'access.publikasi.album.edit',
+            'access.publikasi.album.delete',
+            'access.publikasi.galeri',
+            'access.publikasi.galeri.view',
+            'access.publikasi.galeri.create',
+            'access.publikasi.galeri.edit',
+            'access.publikasi.galeri.delete',
+            'access.setting',
+            'access.setting.slide',
+            'access.setting.slide.view',
+            'access.setting.slide.create',
+            'access.setting.slide.edit',
+            'access.setting.slide.delete',
+        ];
+        $administratorWebsite->syncPermissions(
+            array_filter($administratorWebsitePermissions, fn($p) => Permission::where('name', $p)->exists())
         );
 
         // =====================================================================

@@ -352,7 +352,7 @@ class UserControllerTest extends CrudTestCase
     private function createTestRoles()
     {
         Role::firstOrCreate(['name' => 'super-admin']);
-        Role::firstOrCreate(['name' => 'administrator-website']);
+        Role::firstOrCreate(['name' => 'administrator-website', 'guard_name' => 'web']);
         Role::firstOrCreate(['name' => 'user']);
     }
 

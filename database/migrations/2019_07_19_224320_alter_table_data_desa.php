@@ -44,7 +44,7 @@ class AlterTableDataDesa extends Migration
     {
         Schema::table('das_data_desa', function (Blueprint $table) {
             $table->string('kecamatan_id', 8)->change();
-            $table->string('desa_id', 13)->change();
+            $table->string('desa_id', 13)->nullable()->change();
         });
     }
 

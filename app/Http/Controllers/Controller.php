@@ -89,8 +89,11 @@ class Controller extends BaseController
     public function __construct()
     {        
         if (sudahInstal()) {
-            $this->profil = Profil::first();
-            $this->umum = DataUmum::first();
+            // Profil/DataUmum semestinya selalu ada setelah instalasi, tapi
+            // fallback ke model kosong untuk mencegah crash jika data belum/tidak ada
+            // (mis. instalasi baru sebagian, restore DB parsial).
+            $this->profil = Profil::first() ?? new Profil();
+            $this->umum = DataUmum::first() ?? new DataUmum();
             $this->nama_camat = Pengurus::status()->camat()->first();
 
             // Pemeriksaan akun pengurus untuk alur pemeriksaan surat

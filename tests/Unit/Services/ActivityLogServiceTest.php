@@ -11,12 +11,14 @@ uses(\Illuminate\Foundation\Testing\DatabaseTransactions::class);
 beforeEach(function () {
     // Create a test user
     $this->user = User::factory()->create();
-    
+
     // Fake a request
     $request = \Illuminate\Http\Request::create('/test-url', 'GET');
     $request->headers->set('User-Agent', 'Test Agent');
     $request->server->set('REMOTE_ADDR', '127.0.0.1');
     $this->app->instance('request', $request);
+
+    Activity::query()->delete();
 });
 
 afterEach(function () {

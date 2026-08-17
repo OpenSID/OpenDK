@@ -2,10 +2,13 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Schema;
 use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogService
 {
+    private static ?bool $activityLogAvailable = null;
+
     public function getFilteredActivities(?string $dateFrom, ?string $dateTo, ?string $userId, ?string $event, ?string $keyword)
     {
         $query = Activity::query();
@@ -36,8 +39,12 @@ class ActivityLogService
         return $query;
     }
 
-    public static function log(string $event, ?string $description = null, ?array $properties = []): Activity
+    public static function log(string $event, ?string $description = null, ?array $properties = []): ?Activity
     {
+        if (! self::isActivityLogAvailable()) {
+            return null;
+        }
+
         $request = request();
         $properties = array_merge($properties ?? [], [
             'ip_address' => $request ? $request->ip() : null,
@@ -51,8 +58,12 @@ class ActivityLogService
             ->log($description ?? $event);
     }
 
-    public static function logFailed(string $event, ?string $description = null, ?array $properties = [], ?int $userId = null): Activity
+    public static function logFailed(string $event, ?string $description = null, ?array $properties = [], ?int $userId = null): ?Activity
     {
+        if (! self::isActivityLogAvailable()) {
+            return null;
+        }
+
         $request = request();
         $properties = array_merge($properties ?? [], [
             'ip_address' => $request ? $request->ip() : null,
@@ -60,7 +71,6 @@ class ActivityLogService
             'url_slug' => $request ? $request->path() : null,
         ]);
 
-        // Ensure userId is set if not provided
         if ($userId === null) {
             $userId = $request ? ($request->user() ? $request->user()->id : null) : null;
         }
@@ -73,8 +83,12 @@ class ActivityLogService
             ->log($description ?? $event);
     }
 
-    public static function logAttributeChange(string $event, string $action, ?int $userId = null, array $changedAttributes = []): Activity
+    public static function logAttributeChange(string $event, string $action, ?int $userId = null, array $changedAttributes = []): ?Activity
     {
+        if (! self::isActivityLogAvailable()) {
+            return null;
+        }
+
         $request = request();
         $properties = [
             'ip_address' => $request ? $request->ip() : null,
@@ -84,7 +98,6 @@ class ActivityLogService
             'changed_attributes' => $changedAttributes,
         ];
 
-        // Ensure userId is set if not provided
         if ($userId === null) {
             $userId = $request ? ($request->user() ? $request->user()->id : null) : null;
         }
@@ -95,5 +108,16 @@ class ActivityLogService
             ->event($event)
             ->withProperties($properties)
             ->log($event);
+    }
+
+    private static function isActivityLogAvailable(): bool
+    {
+        if (self::$activityLogAvailable !== null) {
+            return self::$activityLogAvailable;
+        }
+
+        self::$activityLogAvailable = Schema::hasTable('activity_log');
+
+        return self::$activityLogAvailable;
     }
 }

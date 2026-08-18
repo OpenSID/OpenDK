@@ -5,6 +5,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### FITUR
 
+1. [#1324](https://github.com/OpenSID/OpenDK/issues/1324) Penambahan fitur log aktivitas.
 
 #### BUG
 

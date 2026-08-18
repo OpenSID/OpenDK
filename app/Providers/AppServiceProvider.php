@@ -117,7 +117,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(Logout::class, function (Logout $event) {
             $user = $event->user;
             $userId = $user ? $user->id : null;
-            ActivityLogService::log('logout', "User: {$user->name} (ID: {$user->id})", [
+            ActivityLogService::log('logout', "User: {$user?->name} (ID: {$userId})", [
                 'user_name' => $user ? $user->name : 'Sistem',
                 'user_id' => $userId,
                 'event' => 'logout',

@@ -128,7 +128,7 @@ class AppServiceProvider extends ServiceProvider
         Event::listen(Failed::class, function (Failed $event) {
             $user = $event->user;
             $userId = $user ? $user->id : null;
-            ActivityLogService::logFailed('login gagal', "User: {$user->name} (ID: {$user->id}) login gagal", [
+            ActivityLogService::logFailed('login gagal', "User: {$user?->name} (ID: {$user?->id}) login gagal", [
                 'user_name' => $user ? $user->name : 'Sistem',
                 'user_id' => $userId,
                 'event' => 'login gagal',

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Activitylog\Models\Activity;
 
@@ -83,7 +84,7 @@ class ActivityLogService
             ->log($description ?? $event);
     }
 
-    public static function logAttributeChange(string $event, string $action, ?int $userId = null, array $changedAttributes = []): ?Activity
+    public static function logAttributeChange(string $event, string $action, ?int $userId = null, array $changedAttributes = [], ?Model $subject = null, ?Model $causer = null): ?Activity
     {
         if (! self::isActivityLogAvailable()) {
             return null;
@@ -104,10 +105,19 @@ class ActivityLogService
 
         $properties['user_id'] = $userId;
 
-        return activity()
+        $logger = activity()
             ->event($event)
-            ->withProperties($properties)
-            ->log($event);
+            ->withProperties($properties);
+
+        if ($subject) {
+            $logger->on($subject);
+        }
+
+        if ($causer) {
+            $logger->causedBy($causer);
+        }
+
+        return $logger->log($event);
     }
 
     private static function isActivityLogAvailable(): bool

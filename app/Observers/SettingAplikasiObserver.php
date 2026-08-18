@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\SettingAplikasi;
+use App\Models\User;
 use App\Services\ActivityLogService;
 
 class SettingAplikasiObserver
@@ -20,7 +21,9 @@ class SettingAplikasiObserver
                 'tambah pengaturan aplikasi',
                 'created',
                 auth()->id() ?? null,
-                $changed
+                $changed,
+                subject: $setting,
+                causer: auth()->user()
             );
         }
     }
@@ -38,7 +41,9 @@ class SettingAplikasiObserver
                 'ubah pengaturan aplikasi',
                 'updated',
                 auth()->id() ?? null,
-                $changed
+                $changed,
+                subject: $setting,
+                causer: auth()->user()
             );
         }
     }
@@ -54,7 +59,9 @@ class SettingAplikasiObserver
             'hapus pengaturan aplikasi',
             'deleted',
             auth()->id() ?? null,
-            $setting->getOriginal()
+            $setting->getOriginal(),
+            subject: $setting,
+            causer: auth()->user()
         );
     }
 }

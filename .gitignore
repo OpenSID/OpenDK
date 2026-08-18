@@ -71,3 +71,7 @@ graphify-out
 
 # Scribe (auto-generated, contains auth tokens)
 .scribe/
+specs/
+.specify/
+
+AGENTS.md

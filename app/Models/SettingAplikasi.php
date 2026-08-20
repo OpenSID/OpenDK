@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use App\Observers\SettingAplikasiObserver;
+use App\Observers\WebsiteCacheObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -56,6 +57,7 @@ class SettingAplikasi extends Model
     protected static function booted(): void
     {
         static::observe(SettingAplikasiObserver::class);
+        static::observe(WebsiteCacheObserver::class);
 
         static::saved(function () {
             Cache::forget('setting');

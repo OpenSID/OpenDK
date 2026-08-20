@@ -35,6 +35,7 @@ use App\Models\Profil;
 use App\Repositories\DesaApiRepository;
 use App\Repositories\ProfilApiRepository;
 use App\Repositories\WebsiteApiRepository;
+use App\Services\CacheService;
 use App\Transformers\ProfilTransformer;
 use App\Transformers\WebsiteTransformer;
 use Illuminate\Http\Request;
@@ -74,9 +75,10 @@ class WebsiteController extends BaseController
     public function index(Request $request): Fractal|JsonResponse
     {
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
-        $cacheKey = $this->getCacheKey('index', $params);
+        $prefix = config('theme-api.website.cache_prefix', 'website:api');
+        $cacheKey = $this->getCacheKey($prefix, $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        return app(CacheService::class)->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             $websiteData = $this->websiteApiRepository->getAllWebsiteData();              
             return $this->fractal([
                 ['id' => 'profile',  (new ProfilTransformer())->transform(Profil::with(['dataUmum'])->first())],
@@ -92,6 +94,6 @@ class WebsiteController extends BaseController
                 ['id' => 'counter',  $websiteData['counter']],
                 ['id' => 'config',  config('profil')],
             ], new WebsiteTransformer());
-        });
+        }, $prefix);
     }    
 }

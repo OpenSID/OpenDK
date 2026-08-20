@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use App\Observers\DataUmumObserver;
+use App\Observers\WebsiteCacheObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -120,5 +121,6 @@ class DataUmum extends Model
     protected static function booted(): void
     {
         static::observe(DataUmumObserver::class);
+        static::observe(WebsiteCacheObserver::class);
     }
 }

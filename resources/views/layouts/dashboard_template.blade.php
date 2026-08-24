@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="{{ asset('/bower_components/Ionicons/css/ionicons.min.css') }}">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/plugins/iCheck/all.css') }}">
+    @livewireStyles
     @stack('css')
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('/bower_components/admin-lte/dist/css/AdminLTE.min.css') }}">
@@ -102,6 +103,7 @@ desired effect
     <x-modal-alert />
     <x-modal-confirm />
     <script src="{{ asset('/js/modal-helper.js') }}"></script>
+    @livewireScripts
     @stack('scripts')
 
     <!-- Optionally, you can add Slimscroll and FastClick plugins.

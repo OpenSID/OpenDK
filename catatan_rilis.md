@@ -1,10 +1,12 @@
-Di rilis versi v2608.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2608.0.2 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
 
 #### FITUR
 
+1. [#1324](https://github.com/OpenSID/OpenDK/issues/1324) Penambahan fitur log aktivitas.
+2. [#1710](https://github.com/OpenSID/OpenDK/issues/1710) Data slide yang ditambahkan/dihapus tidak tampil sesuai di halaman web.
 
 #### BUG
 

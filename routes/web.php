@@ -1008,6 +1008,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::post('/store-email-smtp', 'storeEmailSmtp')->name('setting.info-sistem.store-email-smtp');
                 Route::post('/send-test-email-smtp/{email}', 'sendTestEmailSmtp')->name('setting.info-sistem.send-test-email-smtp');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
+                Route::get('/log-aktivitas', \App\Http\Controllers\Setting\LogAktivitasController::class)->middleware(['action_permission:access.setting.info_sistem'])->name('setting.info-sistem.log-aktivitas');
             });
 
             // Navigasi

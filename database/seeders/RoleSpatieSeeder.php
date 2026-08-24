@@ -102,7 +102,7 @@ class RoleSpatieSeeder extends Seeder
         'access.setting.aplikasi'           => ['view', 'edit'],
         'access.setting.info_sistem'        => ['view'],
         'access.setting.database'           => ['view', 'export', 'import'],
-        'access.setting.jenis_dokumen'      => ['view', 'create', 'edit', 'delete'],
+        'access.setting.jenis_dokumen'      => ['view', 'create', 'edit', 'delete'],        
     ];
 
     /**
@@ -180,7 +180,7 @@ class RoleSpatieSeeder extends Seeder
             'access.setting.coa',
             'access.setting.themes',
             'access.setting.aplikasi',
-            'access.setting.info_sistem',
+            'access.setting.info_sistem',            
             'access.setting.database',
             'access.setting.jenis_dokumen',
         ];

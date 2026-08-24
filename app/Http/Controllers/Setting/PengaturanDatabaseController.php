@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers\Setting;
 
+use App\Http\Controllers\Controller;
+use App\Services\ActivityLogService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Log;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Backup\Tasks\Backup\BackupJobFactory;
-
 use Illuminate\Support\Facades\Artisan;
-
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
-use Exception;
+use Illuminate\Support\Facades\Storage;
 
+use Yajra\DataTables\DataTables;
 
 class PengaturanDatabaseController extends Controller
 {
@@ -80,6 +77,10 @@ class PengaturanDatabaseController extends Controller
 
             if ($exitCode !== 0) {
                 Log::error('Backup process failed with exit code: ' . $exitCode);
+                ActivityLogService::log('backup database gagal', 'Proses backup database gagal.', [
+                    'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+                    'exit_code' => $exitCode,
+                ]);
 
                 return response()->json([
                     'success' => false,
@@ -88,10 +89,16 @@ class PengaturanDatabaseController extends Controller
             }
 
             Log::info('Ending backup process.');
+            ActivityLogService::log('backup database', 'Proses backup database berhasil.', [
+                'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+            ]);
 
             return response()->json(['success' => true, 'message' => 'Backup completed successfully']);
         } catch (\Exception $e) {
             Log::error('Backup process failed: ' . $e->getMessage(), ['exception' => $e]);
+            ActivityLogService::logFailed('backup database gagal', 'Proses backup database gagal: ' . $e->getMessage(), [
+                'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+            ]);
 
             return response()->json(['success' => false, 'message' => 'Backup process failed', 'error' => $e->getMessage()], 500);
         }
@@ -103,6 +110,11 @@ class PengaturanDatabaseController extends Controller
         $filePath = "{$this->destination}/{$file}";
 
         if ($disk->exists($filePath)) {
+            ActivityLogService::log('unduh backup database', "Mengunduh file backup: {$file}", [
+                'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+                'file' => $file,
+            ]);
+
             return $disk->download($filePath);
         }
 
@@ -116,30 +128,15 @@ class PengaturanDatabaseController extends Controller
 
         if ($disk->exists($filePath)) {
             $disk->delete($filePath);
+            ActivityLogService::log('hapus backup database', "Menghapus file backup: {$file}", [
+                'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+                'file' => $file,
+            ]);
+
             return redirect()->route('setting.pengaturan-database.backup')->with('success', 'Backup berhasil dihapus');
         }
 
         return redirect()->route('setting.pengaturan-database.backup')->with('error', 'Backup tidak ditemukan');
-    }
-
-    /**
-     * Fungsi untuk format ukuran file
-     */
-    private function formatSizeUnits($bytes)
-    {
-        if ($bytes >= 1073741824) {
-            return number_format($bytes / 1073741824, 2) . ' GB';
-        } elseif ($bytes >= 1048576) {
-            return number_format($bytes / 1048576, 2) . ' MB';
-        } elseif ($bytes >= 1024) {
-            return number_format($bytes / 1024, 2) . ' KB';
-        } elseif ($bytes > 1) {
-            return $bytes . ' bytes';
-        } elseif ($bytes == 1) {
-            return $bytes . ' byte';
-        } else {
-            return '0 bytes';
-        }
     }
 
     // RESTORE DATABASE
@@ -151,7 +148,6 @@ class PengaturanDatabaseController extends Controller
 
         return view('setting.pengaturan_database.table-restore', compact('page_title', 'page_description'));
     }
-
 
     public function restoreBackup(Request $request)
     {
@@ -179,7 +175,7 @@ class PengaturanDatabaseController extends Controller
         $filename = basename($path);
         $allowedChars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-';
 
-        if (! preg_match("/^[" . $allowedChars . "]+$/", $filename)) {
+        if (! preg_match('/^[' . $allowedChars . ']+$/', $filename)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Nama file tidak valid. Hanya boleh mengandung huruf (a-z/A-Z), angka (0-9), titik (.), dan garis bawah (_).',
@@ -209,12 +205,19 @@ class PengaturanDatabaseController extends Controller
             Log::info('Restore from ZIP: ' . $finalPath);
             $result = $this->restoreFromZip($finalPath);
 
+            ActivityLogService::log('restore database', "Restore database berhasil. {$result['files_restored']} file asset dipulihkan.", [
+                'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+            ]);
+
             return response()->json([
                 'success' => true,
                 'message' => "Restore berhasil. Database dan {$result['files_restored']} file asset telah dipulihkan.",
             ], 200);
         } catch (\Exception $e) {
             Log::error('Restore error: ' . $e->getMessage());
+            ActivityLogService::logFailed('restore database gagal', 'Restore database gagal: ' . $e->getMessage(), [
+                'user_name' => auth()->user() ? auth()->user()->name : 'Sistem',
+            ]);
 
             return response()->json([
                 'success' => false,
@@ -224,6 +227,30 @@ class PengaturanDatabaseController extends Controller
             $this->deleteTemporaryDirectory(Storage::disk('public')->path($setDir));
             Log::info('Direktori sementara berhasil dihapus.');
         }
+    }
+
+    /**
+     * Fungsi untuk format ukuran file.
+     */
+    private function formatSizeUnits($bytes)
+    {
+        if ($bytes >= 1073741824) {
+            return number_format($bytes / 1073741824, 2) . ' GB';
+        }
+        if ($bytes >= 1048576) {
+            return number_format($bytes / 1048576, 2) . ' MB';
+        }
+        if ($bytes >= 1024) {
+            return number_format($bytes / 1024, 2) . ' KB';
+        }
+        if ($bytes > 1) {
+            return $bytes . ' bytes';
+        }
+        if ($bytes == 1) {
+            return $bytes . ' byte';
+        }
+            return '0 bytes';
+
     }
 
     private function runRestoreDatabase($sqlFilePath)

@@ -31,12 +31,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Observers\DataUmumObserver;
+use App\Observers\WebsiteCacheObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class DataUmum extends Model
 {
     use HasFactory;
+
     // Attributes
     protected $table = 'das_data_umum';
 
@@ -113,5 +116,11 @@ class DataUmum extends Model
         }
 
         $this->attributes['path'] = $value;
+    }
+
+    protected static function booted(): void
+    {
+        static::observe(DataUmumObserver::class);
+        static::observe(WebsiteCacheObserver::class);
     }
 }

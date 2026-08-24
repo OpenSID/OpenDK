@@ -21,7 +21,7 @@
 
 @push('scripts')
     <script>
-        Livewire.on('openActivityDetailModal', function () {
+        Livewire.on('openActivityDetailModal', function() {
             var modal = document.getElementById('activityDetailModal');
             if (modal) {
                 modal.classList.remove('hidden');
@@ -34,7 +34,7 @@
             }
         });
 
-        Livewire.on('closeActivityDetailModal', function () {
+        Livewire.on('closeActivityDetailModal', function() {
             var modal = document.getElementById('activityDetailModal');
             if (modal) {
                 modal.classList.add('hidden');

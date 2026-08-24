@@ -32,6 +32,7 @@
 namespace App\Models;
 
 use App\Observers\ProfilObserver;
+use App\Observers\WebsiteCacheObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -97,6 +98,7 @@ class Profil extends Model
     protected static function booted(): void
     {
         static::observe(ProfilObserver::class);
+        static::observe(WebsiteCacheObserver::class);
 
         static::saved(function () {
             Cache::forget('profil');

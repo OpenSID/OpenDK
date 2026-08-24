@@ -31,17 +31,17 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
+use App\Observers\WebsiteCacheObserver;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    use HandlesResourceDeletion;
     use HasFactory;
     use Sluggable;
-    use HandlesResourceDeletion;
 
     protected $table = 'das_events';
 
@@ -90,5 +90,10 @@ class Event extends Model
     public static function getOpenEvents()
     {
         return self::open()->orderBy('start', 'desc')->get();
+    }
+
+    protected static function booted(): void
+    {
+        static::observe(WebsiteCacheObserver::class);
     }
 }

@@ -31,7 +31,7 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Log;
+use App\Observers\WebsiteCacheObserver;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 
@@ -55,4 +55,9 @@ class Slide extends Model
     protected $resources = [
         'gambar',
     ];
+
+    protected static function booted(): void
+    {
+        static::observe(WebsiteCacheObserver::class);
+    }
 }

@@ -95,67 +95,67 @@
         {{ $activities->links() }}
     </div>
 
-    @if($selectedActivity)
-    <div class="modal-overlay" wire:click="closeDetail"></div>
-    <div class="modal-simple">
-        <div class="modal-simple-content">
-            <div class="modal-simple-header">
-                <h5 class="modal-title">Detail Aktivitas</h5>
-                <button type="button" wire:click="closeDetail">&times;</button>
-            </div>
-            <div class="modal-simple-body">
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Waktu</th>
-                        <td>{{ $selectedActivity->created_at->format('d-m-Y H:i:s') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Pengguna</th>
-                        <td>{{ $selectedActivity->causer->name ?? 'Sistem' }} ({{ $selectedActivity->causer->email ?? '-' }})</td>
-                    </tr>
-                    <tr>
-                        <th>Aktivitas</th>
-                        <td>{{ $selectedActivity->event }}</td>
-                    </tr>
-                    <tr>
-                        <th>Deskripsi</th>
-                        <td>{{ $selectedActivity->description }}</td>
-                    </tr>
-                    <tr>
-                        <th>IP Address</th>
-                        <td>{{ $selectedActivity->properties['ip_address'] ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Status</th>
-                        <td>
-                            @if ($this->isActivityFailed($selectedActivity))
-                                <span class="label label-danger">Gagal</span>
-                            @else
-                                <span class="label label-success">Berhasil</span>
-                            @endif
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>User Agent</th>
-                        <td>{{ $selectedActivity->properties['user_agent'] ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <th>URL</th>
-                        <td>{{ $selectedActivity->properties['url_slug'] ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Properties</th>
-                        <td>
-                            <pre class="pre-scrollable">{{ $selectedActivity->properties ? json_encode($selectedActivity->properties, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '-' }}</pre>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="modal-simple-footer">
-                <button type="button" class="btn btn-danger" wire:click="closeDetail">Tutup</button>
+    @if ($selectedActivity)
+        <div class="modal-overlay" wire:click="closeDetail"></div>
+        <div class="modal-simple">
+            <div class="modal-simple-content">
+                <div class="modal-simple-header">
+                    <h5 class="modal-title">Detail Aktivitas</h5>
+                    <button type="button" wire:click="closeDetail">&times;</button>
+                </div>
+                <div class="modal-simple-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Waktu</th>
+                            <td>{{ $selectedActivity->created_at->format('d-m-Y H:i:s') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Pengguna</th>
+                            <td>{{ $selectedActivity->causer->name ?? 'Sistem' }} ({{ $selectedActivity->causer->email ?? '-' }})</td>
+                        </tr>
+                        <tr>
+                            <th>Aktivitas</th>
+                            <td>{{ $selectedActivity->event }}</td>
+                        </tr>
+                        <tr>
+                            <th>Deskripsi</th>
+                            <td>{{ $selectedActivity->description }}</td>
+                        </tr>
+                        <tr>
+                            <th>IP Address</th>
+                            <td>{{ $selectedActivity->properties['ip_address'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td>
+                                @if ($this->isActivityFailed($selectedActivity))
+                                    <span class="label label-danger">Gagal</span>
+                                @else
+                                    <span class="label label-success">Berhasil</span>
+                                @endif
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>User Agent</th>
+                            <td>{{ $selectedActivity->properties['user_agent'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>URL</th>
+                            <td>{{ $selectedActivity->properties['url_slug'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Properties</th>
+                            <td>
+                                <pre class="pre-scrollable">{{ $selectedActivity->properties ? json_encode($selectedActivity->properties, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '-' }}</pre>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-simple-footer">
+                    <button type="button" class="btn btn-danger" wire:click="closeDetail">Tutup</button>
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
 </div>

@@ -61,16 +61,23 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
-            'throw' => false,
+            'root'   => storage_path('app'),
+            'throw'  => false,
+            // Fix #1713: Flysystem v3 default directoryPrivate = 0700.
+            // Pada setup multi-tenant (OLS/Nginx + PHP-FPM), direktori 0700
+            // tidak dapat di-traverse oleh user web server (misal: nobody) → 404.
+            'directory_visibility' => 'public',
         ],
 
         'public' => [
-            'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'driver'     => 'local',
+            'root'       => storage_path('app/public'),
+            'url'        => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'throw' => false,
+            // Fix #1713: visibility hanya berlaku untuk file, bukan direktori.
+            // directory_visibility memastikan direktori baru dibuat 0755 (bukan 0700).
+            'directory_visibility' => 'public',
+            'throw'      => false,
         ],
 
         's3' => [

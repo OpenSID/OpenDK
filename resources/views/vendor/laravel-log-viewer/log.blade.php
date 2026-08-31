@@ -30,7 +30,7 @@
             <div class="box-body no-padding">
                 <ul class="nav nav-pills nav-stacked">
                     @foreach ($files as $file)
-                        <li @if ($current_file == $file) class="active" @endif><a href="?l={{ \Illuminate\Support\Facades\Crypt::encrypt($file) }}"> {{ $file }}
+                        <li @if ($current_file == $file) class="active" @endif><a href="?l={{ \Illuminate\Support\Facades\Crypt::encryptString($file) }}"> {{ $file }}
                             </a></li>
                     @endforeach
                 </ul>
@@ -43,22 +43,22 @@
                 <div class="p-3">
                     @if ($current_file)
                         <a class="btn btn-social btn-sm btn-success visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block"
-                            href="?dl={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}"
+                            href="?dl={{ \Illuminate\Support\Facades\Crypt::encryptString($current_file) }}{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encryptString($current_folder) : '' }}"
                         >
                             <span class="fa fa-download"></span> Unduh
                         </a>
                         <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="clean-log"
-                            href="?clean={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}"
+                            href="?clean={{ \Illuminate\Support\Facades\Crypt::encryptString($current_file) }}{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encryptString($current_folder) : '' }}"
                         >
                             <span class="fa fa-times-circle"></span> Bersihkan File
                         </a>
                         <a class="btn btn-social btn-sm btn-danger visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="delete-log"
-                            href="?del={{ \Illuminate\Support\Facades\Crypt::encrypt($current_file) }}{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}"
+                            href="?del={{ \Illuminate\Support\Facades\Crypt::encryptString($current_file) }}{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encryptString($current_folder) : '' }}"
                         >
                             <span class="fa fa-trash"></span> Hapus File
                         </a>
                         @if (count($files) > 1)
-                            <a id="delete-all-log" class="btn btn-social btn-sm btn-danger visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" href="?delall=true{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encrypt($current_folder) : '' }}">
+                            <a id="delete-all-log" class="btn btn-social btn-sm btn-danger visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" href="?delall=true{{ $current_folder ? '&f=' . \Illuminate\Support\Facades\Crypt::encryptString($current_folder) : '' }}">
                                 <span class="fa fa-trash"></span> Hapus Semua file
                             </a>
                         @endif

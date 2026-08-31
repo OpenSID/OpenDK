@@ -250,11 +250,30 @@ test('scanZipForPhp rejects blade template placed outside resources/views/', fun
     @unlink($zipPath);
 });
 
-test('scanZipForPhp rejects blade template containing backtick operator', function () {
+test('scanZipForPhp allows blade template with JavaScript ES6 template literals', function () {
     $zipPath = sys_get_temp_dir() . '/' . uniqid() . '.zip';
     $z = new ZipArchive();
     $z->open($zipPath, ZipArchive::CREATE);
-    $z->addFromString('resources/views/pages/evil.blade.php', '<div>`id`</div>');
+    $z->addFromString('theme.json', '{}');
+    $z->addFromString('resources/views/widgets/custom.blade.php', '<script>var str = `hello ${name}`;</script>');
+    $z->close();
+
+    $z = new ZipArchive();
+    $z->open($zipPath);
+
+    $this->validator->scanZipForPhp($z);
+
+    expect(true)->toBeTrue();
+
+    $z->close();
+    @unlink($zipPath);
+});
+
+test('scanZipForPhp rejects blade template containing backtick operator in PHP/Blade directive', function () {
+    $zipPath = sys_get_temp_dir() . '/' . uniqid() . '.zip';
+    $z = new ZipArchive();
+    $z->open($zipPath, ZipArchive::CREATE);
+    $z->addFromString('resources/views/pages/evil.blade.php', '<div>{{ `id` }}</div>');
     $z->close();
 
     $z = new ZipArchive();

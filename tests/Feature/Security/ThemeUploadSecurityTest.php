@@ -326,7 +326,7 @@ describe('Theme Upload Security (RCE Prevention)', function () {
         $zip->open($path, ZipArchive::CREATE);
         $zip->addFromString('evil-theme/composer.json', '{"name":"evil"}');
         $zip->addFromString('evil-theme/theme.json', '{"api_version":"v1"}');
-        $zip->addFromString('evil-theme/resources/views/layouts/evil.blade.php', '<div>`id`</div>');
+        $zip->addFromString('evil-theme/resources/views/layouts/evil.blade.php', '<div>{{ `id` }}</div>');
         $zip->close();
 
         return new UploadedFile($path, 'theme.zip', 'application/zip', null, true);

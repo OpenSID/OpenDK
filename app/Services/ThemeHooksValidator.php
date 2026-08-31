@@ -83,10 +83,10 @@ class ThemeHooksValidator
                     continue;
                 }
 
-                // Scan Blade content for backtick execution operators
+                // Scan Blade content for PHP/Blade execution blocks containing backtick operator
                 $bladeContent = $zip->getFromIndex($i);
-                if ($bladeContent !== false && str_contains($bladeContent, '`')) {
-                    $dangerousFiles[] = "{$filename} (Backtick execution operator detected in blade template)";
+                if ($bladeContent !== false && preg_match('/(<\?php|@php|\{\{|\{!!)[^>}]*`/', $bladeContent)) {
+                    $dangerousFiles[] = "{$filename} (Backtick execution operator detected in PHP/Blade directive)";
                     continue;
                 }
 

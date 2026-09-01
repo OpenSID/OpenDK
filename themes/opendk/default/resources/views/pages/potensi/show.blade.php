@@ -23,9 +23,9 @@
     $(function(){
         // Function to load potensi detail from API
         function loadPotensiDetail() {
-            // Make API call to get potensi by slug
+            // Make API call to get potensi by id
             $.ajax({
-                url: '{!! $urlApi !!}/potensi?filter[slug]={!! $slug !!}',
+                url: '{!! $urlApi !!}/potensi?filter[id]={!! $id !!}',
                 method: 'GET',
                 success: function(response) {
                     if (response.data && response.data.length > 0) {

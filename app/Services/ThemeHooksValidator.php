@@ -223,7 +223,7 @@ class ThemeHooksValidator
         for ($i = 0; $i < $count; $i++) {
             $token = $tokens[$i];
 
-            // Handle single-character literal tokens (e.g. '`', '$', '(', etc.)
+            // Handle single-character literal tokens (e.g. '`', '$', '(', '}', ']', etc.)
             if (! is_array($token)) {
                 if ($token === '`') {
                     $dangerousCalls[] = [
@@ -237,6 +237,17 @@ class ThemeHooksValidator
                         $dangerousCalls[] = [
                             'function' => 'variable_variable:' . $tokens[$nextIdx][1],
                             'line' => $tokens[$nextIdx][2],
+                        ];
+                    }
+                } elseif ($token === '}' || $token === ']') {
+                    // Detect: ${"system"}(), ${'system'}(), ${$a}() → '}('
+                    // Detect: $_GET["cmd"](), $a['fn']()       → ']('
+                    // This catches bypass payloads A, B, C, D from the security review.
+                    $nextIdx = $this->getNextMeaningfulTokenIndex($tokens, $i, $count);
+                    if ($nextIdx < $count && ! is_array($tokens[$nextIdx]) && $tokens[$nextIdx] === '(') {
+                        $dangerousCalls[] = [
+                            'function' => $token === '}' ? 'curly_expression_function_call' : 'array_subscript_function_call',
+                            'line' => 1,
                         ];
                     }
                 }

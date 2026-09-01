@@ -180,6 +180,32 @@ test('validateHooksSource rejects variable function call with comments and white
     expect($r['valid'])->toBeFalse();
 });
 
+// ── Exotic bypass tests (Security Review findings A–D) ──
+
+test('validateHooksSource rejects curly-string function call: ${"system"}()', function () {
+    $r = $this->validator->validateSource('<?php ${"system"}("id");', 'evil');
+    expect($r['valid'])->toBeFalse()
+        ->and($r['reason'])->toContain('curly_expression_function_call');
+});
+
+test('validateHooksSource rejects curly-variable function call: ${$a}()', function () {
+    $r = $this->validator->validateSource('<?php $a="system"; ${$a}("id");', 'evil');
+    expect($r['valid'])->toBeFalse()
+        ->and($r['reason'])->toContain('curly_expression_function_call');
+});
+
+test('validateHooksSource rejects array-subscript function call: $_GET["cmd"]()', function () {
+    $r = $this->validator->validateSource('<?php $_GET["cmd"]("id");', 'evil');
+    expect($r['valid'])->toBeFalse()
+        ->and($r['reason'])->toContain('array_subscript_function_call');
+});
+
+test("validateHooksSource rejects curly-string single-quote function call: \${'system'}()", function () {
+    $r = $this->validator->validateSource("<?php {\$a='system'; \${\$a}('id');}", 'evil');
+    expect($r['valid'])->toBeFalse()
+        ->and($r['reason'])->toContain('curly_expression_function_call');
+});
+
 // ── Expanded dangerous functions tests ──
 
 test('validateHooksSource rejects readfile() call', function () {

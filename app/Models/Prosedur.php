@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Events\ProsedurChanged;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -43,6 +44,16 @@ class Prosedur extends Model
     use HandlesResourceDeletion;
 
     protected $table = 'das_prosedur';
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(fn (Prosedur $prosedur) => ProsedurChanged::dispatch($prosedur));
+        static::updated(fn (Prosedur $prosedur) => ProsedurChanged::dispatch($prosedur));
+        static::deleted(fn (Prosedur $prosedur) => ProsedurChanged::dispatch($prosedur));
+    }
 
     protected $fillable = [
         'judul_prosedur',

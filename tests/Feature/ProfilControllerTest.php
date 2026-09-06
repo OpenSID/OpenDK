@@ -32,7 +32,9 @@
 use App\Models\DataDesa;
 use App\Models\DataUmum;
 use App\Models\Profil;
+use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 
 uses(DatabaseTransactions::class);
 
@@ -295,4 +297,55 @@ test('rate limiting configuration values', function () {
     $rateLimitHeader = $response->headers->get('X-RateLimit-Limit');
     expect($rateLimitHeader)->not->toBeNull()
         ->and(is_numeric($rateLimitHeader))->toBeTrue();
+});
+
+test('letak geografis page passes data_umum to the view', function () {
+    $response = $this->get(route('profil.letak-geografis'));
+
+    $response->assertStatus(200);
+    $response->assertViewHas('data_umum');
+});
+
+test('letak geografis gabungan page renders polygon path from data_umum', function () {
+    Http::fake([
+        '*' => Http::response(['data' => []], 200),
+    ]);
+
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '1']
+    );
+
+    $data_umum = DataUmum::first();
+
+    $response = $this->get(route('profil.letak-geografis'));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('pages.profil.gabungan.letakgeografis');
+    $response->assertViewHas('data_umum', function ($viewDataUmum) use ($data_umum) {
+        return $viewDataUmum !== null
+            && (int) $viewDataUmum->id === (int) $data_umum->id
+            && $viewDataUmum->path === $data_umum->path;
+    });
+});
+
+test('letak geografis gabungan page renders when polygon path is empty', function () {
+    Http::fake([
+        '*' => Http::response(['data' => []], 200),
+    ]);
+
+    SettingAplikasi::updateOrCreate(
+        ['key' => 'sinkronisasi_database_gabungan'],
+        ['value' => '1']
+    );
+
+    DataUmum::query()->update(['path' => null]);
+
+    $response = $this->get(route('profil.letak-geografis'));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('pages.profil.gabungan.letakgeografis');
+    $response->assertViewHas('data_umum', function ($viewDataUmum) {
+        return $viewDataUmum === null || $viewDataUmum->path === null;
+    });
 });

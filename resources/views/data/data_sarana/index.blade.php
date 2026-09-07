@@ -50,7 +50,7 @@
                     <table class="table table-bordered table-hover" id="datasarana-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 80px;">Aksi</th>
+                                <th class="text-center text-nowrap" style="width: 100px;">Aksi</th>
                                 <th>Nama Sarana</th>
                                 <th>Jumlah</th>
                                 <th>Kategori</th>
@@ -85,7 +85,7 @@
                         name: 'aksi',
                         orderable: false,
                         searchable: false,
-                        className: 'text-center'
+                        className: 'text-center text-nowrap'
                     },
                     {
                         data: 'nama',

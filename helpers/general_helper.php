@@ -753,3 +753,17 @@ function kembalikanSlug($str): ?string
     // Ganti '-' dengan spasi dan hilangkan titik '.'
     return str_replace(['-', '.'], [' ', ''], $str);
 }
+
+if (! function_exists('list_desa')) {
+    function list_desa(bool $all = false)
+    {
+        return (new \App\Services\DesaService)->listDesa($all)->pluck('nama', 'desa_id');
+    }
+}
+
+if (! function_exists('nama_desa')) {
+    function nama_desa(string $desaId): ?string
+    {
+        return list_desa()[$desaId] ?? null;
+    }
+}

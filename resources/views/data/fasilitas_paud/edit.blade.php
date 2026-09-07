@@ -29,7 +29,7 @@
                 @endif
 
                 <!-- form start -->
-                {!! html()->form()->open() !!}
+                {!! html()->form('PUT', route('data.fasilitas-paud.update', $fasilitas->id))->class('form-horizontal form-label-left')->open() !!}
 
                 <div class="box-body">
 

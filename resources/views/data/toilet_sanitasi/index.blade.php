@@ -54,7 +54,10 @@
                 ajax: {
                     url: "{!! route('data.toilet-sanitasi.getdata') !!}",
                     data: function(d) {
-                        d.desa = $('#list_desa').val();
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
                     }
                 },
                 columns: [{
@@ -91,7 +94,7 @@
             });
 
             $('#list_desa').on('select2:select', function(e) {
-                data.columns(1).search(this.value).draw();
+                data.ajax.reload();
             });
         });
     </script>

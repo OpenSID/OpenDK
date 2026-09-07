@@ -95,7 +95,7 @@
 @push('scripts')
     <script>
         $(function() {
-
+            $('#list_desa option[value="Semua"]').val('');  
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();

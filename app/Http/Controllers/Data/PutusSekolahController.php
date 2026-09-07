@@ -34,8 +34,10 @@ namespace App\Http\Controllers\Data;
 use App\Exports\ExportPutusSekolah;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImportPutusSekolahRequest;
+use App\Http\Requests\UpdatePutusSekolahRequest;
 use App\Imports\ImporPutusSekolah;
 use App\Models\PutusSekolah;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -59,12 +61,18 @@ class PutusSekolahController extends Controller
      */
     public function getDataPutusSekolah()
     {
-        return DataTables::of(PutusSekolah::with(['desa'])->get())
-            ->addColumn('aksi', function ($row) {
+        $desa = request()->input('desa');
+        $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
+        return DataTables::of(PutusSekolah::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                    return $query->where('desa_id', $desa);
+                })->with(['desa'])->get())
+            ->addColumn('aksi', function ($row) {                
                 $data['edit_url'] = auth()->user()->can('access.data.putus_sekolah.edit') ? route('data.putus-sekolah.edit', $row->id) : null;
                 $data['delete_url'] = auth()->user()->can('access.data.putus_sekolah.delete') ? route('data.putus-sekolah.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
+            })->addColumn('nama_desa', function ($row) use ($listDesa) {
+                return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })
             ->rawColumns(['aksi'])->make();
     }
@@ -116,7 +124,7 @@ class PutusSekolahController extends Controller
     {
         $siswa = PutusSekolah::with(['desa'])->findOrFail($id);
         $page_title = 'Siswa Putus Sekolah';
-        $page_description = 'Ubah Siswa Putus Sekolah : Desa ' . $siswa->desa->nama;
+        $page_description = 'Ubah Siswa Putus Sekolah : Desa ' . nama_desa($siswa->desa_id);
 
         return view('data.putus_sekolah.edit', compact('page_title', 'page_description', 'siswa'));
     }
@@ -127,23 +135,10 @@ class PutusSekolahController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePutusSekolahRequest $request, $id)
     {
-        request()->validate([
-            'siswa_paud' => 'required',
-            'anak_usia_paud' => 'required',
-            'siswa_sd' => 'required',
-            'anak_usia_sd' => 'required',
-            'siswa_smp' => 'required',
-            'anak_usia_smp' => 'required',
-            'siswa_sma' => 'required',
-            'anak_usia_sma' => 'required',
-            'semester' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
-            PutusSekolah::findOrFail($id)->update($request->all());
+            PutusSekolah::findOrFail($id)->update($request->validated());
         } catch (\Exception $e) {
             Log::error('Putus Sekolah update failed', [
                 'error' => $e->getMessage(),

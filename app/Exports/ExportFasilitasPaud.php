@@ -81,7 +81,7 @@ class ExportFasilitasPaud implements FromCollection, WithHeadings, WithMapping, 
     {
         return [
             $fasilitasPaud->id,
-            $fasilitasPaud->desa->nama ?? '',
+            nama_desa($fasilitasPaud->desa_id) ?? '',
             $fasilitasPaud->jumlah_paud,
             $fasilitasPaud->jumlah_guru_paud,
             $fasilitasPaud->jumlah_siswa_paud,

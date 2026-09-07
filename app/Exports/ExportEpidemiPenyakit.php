@@ -80,7 +80,7 @@ class ExportEpidemiPenyakit implements FromCollection, WithHeadings, WithMapping
     {
         return [
             $epidemiPenyakit->id,
-            $epidemiPenyakit->desa->nama ?? '',
+            nama_desa($epidemiPenyakit->desa_id) ?? '',
             $epidemiPenyakit->penyakit->nama ?? '',
             $epidemiPenyakit->jumlah_penderita,
             months_list()[$epidemiPenyakit->bulan] ?? $epidemiPenyakit->bulan,

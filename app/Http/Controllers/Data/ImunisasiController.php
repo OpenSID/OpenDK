@@ -65,8 +65,12 @@ class ImunisasiController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $desa = request()->input('desa');
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
-        return DataTables::of(Imunisasi::with(['desa'])->get())
+        return DataTables::of(Imunisasi::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+            return $query->where('desa_id', $desa);
+        })
+            ->with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url'] = auth()->user()->can('access.data.imunisasi.edit') ? route('data.imunisasi.edit', $row->id) : null;
                 $data['delete_url'] = auth()->user()->can('access.data.imunisasi.delete') ? route('data.imunisasi.destroy', $row->id) : null;

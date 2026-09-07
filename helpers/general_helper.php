@@ -748,6 +748,12 @@ function getBulan(int $bln)
     return $bulan[$bln];
 }
 
+function kembalikanSlug($str): ?string
+{
+    // Ganti '-' dengan spasi dan hilangkan titik '.'
+    return str_replace(['-', '.'], [' ', ''], $str);
+}
+
 if (! function_exists('list_desa')) {
     function list_desa(bool $all = false)
     {
@@ -760,8 +766,4 @@ if (! function_exists('nama_desa')) {
     {
         return list_desa()[$desaId] ?? null;
     }
-}
-{
-    // Ganti '-' dengan spasi dan hilangkan titik '.'
-    return str_replace(['-', '.'], [' ', ''], $str);
 }

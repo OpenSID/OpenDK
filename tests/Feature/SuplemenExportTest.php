@@ -2,11 +2,14 @@
 
 use App\Exports\ExportSuplemen;
 use App\Exports\ExportSuplemenTerdata;
+use App\Exports\ExportSuplemenTerdataGabungan;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
+use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 
 uses(DatabaseTransactions::class);
@@ -227,17 +230,17 @@ test('export suplemen terdata by id', function () {
     // Arrange: Buat data suplemen dan terdata
     Suplemen::query()->delete();
     SuplemenTerdata::query()->delete();
-    
+
     $desa = DataDesa::factory()->create();
     $penduduk = Penduduk::factory()->create(['desa_id' => $desa->desa_id]);
-    
+
     $suplemen = Suplemen::create([
         'nama' => 'Test Suplemen Terdata',
         'slug' => 'test-suplemen-terdata',
         'sasaran' => 1,
         'keterangan' => 'Test Keterangan'
     ]);
-    
+
     SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
         'penduduk_id' => $penduduk->id,
@@ -266,23 +269,118 @@ test('export suplemen terdata by id with invalid id returns empty', function () 
     expect($collection)->toHaveCount(0);
 });
 
+test('export suplemen terdata with gabungan resolver fills penduduk relation', function () {
+    Suplemen::query()->delete();
+    SuplemenTerdata::query()->delete();
+
+    Http::fake([
+        'https://api.example.com/api/v1/opendk/sync-penduduk-opendk*' => Http::response([
+            'data' => [
+                [
+                    'id' => 500,
+                    'attributes' => [
+                        'nama' => 'Penduduk Dari API',
+                        'nik' => '1234567890123456',
+                        'sex' => 1,
+                        'config' => ['kode_desa' => '3301010001', 'nama_desa' => 'Desa API'],
+                    ],
+                ],
+            ],
+            'meta' => ['pagination' => ['total' => 1]],
+        ], 200),
+    ]);
+
+    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
+    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-api-key']);
+
+    $suplemen = Suplemen::create([
+        'nama' => 'Suplemen Gabungan',
+        'slug' => 'suplemen-gabungan',
+        'sasaran' => 1,
+        'keterangan' => 'Test',
+    ]);
+
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id_gabungan' => 500,
+        'desa_id' => '3301010001',
+        'keterangan' => 'A1',
+    ]);
+
+    $export = new ExportSuplemenTerdataGabungan($suplemen->id, [], [500]);
+
+    $collection = $export->collection();
+
+    expect($collection)->toHaveCount(1)
+        ->and($collection->first()->penduduk_id_gabungan)->toBe(500)
+        ->and($collection->first()->desa_id)->toBe('3301010001')
+        ->and($collection->first()->penduduk)->not->toBeNull()
+        ->and($collection->first()->penduduk->nama)->toBe('Penduduk Dari API');
+});
+
+test('export suplemen terdata excel calls gabungan api when gabungan active', function () {
+    SettingAplikasi::updateOrCreate(['key' => 'sinkronisasi_database_gabungan'], ['value' => '1']);
+    SettingAplikasi::updateOrCreate(['key' => 'api_server_database_gabungan'], ['value' => 'https://api.example.com']);
+    SettingAplikasi::updateOrCreate(['key' => 'api_key_database_gabungan'], ['value' => 'test-api-key']);
+
+    Http::fake([
+        'https://api.example.com/api/v1/opendk/sync-penduduk-opendk*' => Http::response([
+            'data' => [
+                [
+                    'id' => 500,
+                    'attributes' => [
+                        'nama' => 'Penduduk API Export',
+                        'nik' => '1234567890123456',
+                        'sex' => 1,
+                        'config' => ['kode_desa' => '3301010001', 'nama_desa' => 'Desa API'],
+                    ],
+                ],
+            ],
+            'meta' => ['pagination' => ['total' => 1]],
+        ], 200),
+        '*' => Http::response([
+            'data' => [],
+            'meta' => ['pagination' => ['total' => 0]],
+        ], 200),
+    ]);
+
+    $suplemen = Suplemen::create([
+        'nama' => 'Suplemen Gabungan Export',
+        'slug' => 'suplemen-gabungan-export',
+        'sasaran' => 1,
+        'keterangan' => 'Test',
+    ]);
+
+    SuplemenTerdata::create([
+        'suplemen_id' => $suplemen->id,
+        'penduduk_id_gabungan' => 500,
+        'desa_id' => '3301010001',
+        'keterangan' => 'A1',
+    ]);
+
+    $response = $this->get("/data/data-suplemen/export-terdata-excel/{$suplemen->id}");
+
+    $response->assertSuccessful();
+    Http::assertSent(fn ($request) => str_contains($request->url(), 'api/v1/opendk/sync-penduduk-opendk'));
+});
+
 test('export suplemen terdata by id with multiple terdata', function () {
     // Arrange: Buat data suplemen dengan multiple terdata
     Suplemen::query()->delete();
     SuplemenTerdata::query()->delete();
-    
+
     $desa = DataDesa::factory()->create();
     $penduduk1 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 1']);
     $penduduk2 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 2']);
     $penduduk3 = Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'nama' => 'Penduduk 3']);
-    
+
     $suplemen = Suplemen::create([
         'nama' => 'Test Suplemen Multiple',
         'slug' => 'test-suplemen-multiple',
         'sasaran' => 1,
         'keterangan' => 'Test Keterangan'
     ]);
-    
+
     SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
         'penduduk_id' => $penduduk1->id,

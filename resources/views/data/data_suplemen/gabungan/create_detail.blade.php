@@ -60,7 +60,7 @@
                                 {{ config('setting.sebutan_desa') }}</label>
 
                             <div class="col-md-6 col-sm-6 col-xs-12">
-                                @include('layouts.fragments.select-desa', ['width' => '100%'])
+                                @include('layouts.fragments.select-desa', ['selectAttributes' => ['name' => 'desa_id', 'required' => 'required']])
                             </div>
                         </div>
 
@@ -97,9 +97,9 @@
 
 @push('scripts')
     <script>
-        $(function() {            
+        $(function() {
             var $penduduk = $('#penduduk_id_gabungan');
-            $('#list_desa').select2({                
+            $('#list_desa').select2({
                 width: '100%',
             })
 

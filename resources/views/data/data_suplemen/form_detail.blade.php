@@ -47,13 +47,14 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">{{ $suplemen->sasaran == 2
-            ? 'Nama Kepala
-                                                                                                                        Keluarga'
-            : 'Nama Penduduk' }}</label>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+            for="penduduk_id">{{ $suplemen->sasaran == 2
+                ? 'Nama Kepala
+                                                                                                                                                Keluarga'
+                : 'Nama Penduduk' }}</label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            <select name="{{ $pendudukField }}" id="penduduk" class="form-control" disabled>
+            <select name="{{ $pendudukField }}" id="penduduk" class="form-control">
                 <option class="form-control" value="">Pilih Penduduk</option>
                 @foreach ($data as $penduduk)
                     <option {{ $selectedPendudukId == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">

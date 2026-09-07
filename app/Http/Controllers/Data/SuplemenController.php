@@ -33,6 +33,7 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportSuplemen;
 use App\Exports\ExportSuplemenTerdata;
+use App\Exports\ExportSuplemenTerdataGabungan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SuplemenRequest;
 use App\Http\Requests\SuplemenTerdataRequest;
@@ -45,8 +46,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
@@ -210,7 +209,12 @@ class SuplemenController extends Controller
     public function getDataSuplemenTerdata(Request $request, int $id_terdata): ?JsonResponse
     {
         if ($request->ajax()) {
-            $terdata = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('suplemen_id', $id_terdata)->get();
+            $desa = $request->input('desa');
+
+            $terdata = SuplemenTerdata::with('penduduk', 'penduduk.desa')
+                ->where('suplemen_id', $id_terdata)
+                ->when($desa && $desa !== 'Semua', fn ($query) => $query->where('desa_id', $desa))
+                ->get();
 
             if ($this->isDatabaseGabungan()) {
                 $pendudukGabungan = $this->pendudukGabunganBatch(
@@ -227,7 +231,7 @@ class SuplemenController extends Controller
                     }
 
                     return $row;
-                })->concat($this->suplemenTerdataGabungan($id_terdata, $request->input('desa')));
+                });
             }
 
             return DataTables::of($terdata)
@@ -307,7 +311,7 @@ class SuplemenController extends Controller
      */
     public function storeDetail(SuplemenTerdataRequest $request): RedirectResponse
     {
-        $data = $this->normalizePendudukSumber($request->validated());
+        $data = $this->normalizePendudukSumber($this->resolveDesaId($request->validated()));
 
         try {
             SuplemenTerdata::create($data);
@@ -343,14 +347,14 @@ class SuplemenController extends Controller
                 $penduduk = $this->pendudukGabunganBatch([$anggota->penduduk_id_gabungan])[(int) $anggota->penduduk_id_gabungan] ?? null;
             }
 
-            $selectedDesaId = $penduduk ? $penduduk->desa->desa_id : null;
+            $selectedDesaId = $penduduk?->desa?->desa_id ?? $anggota->desa_id;
 
             return view('data.data_suplemen.gabungan.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'anggota', 'isDatabaseGabungan', 'penduduk', 'selectedDesaId'));
         }
 
         $desa = DataDesa::all();
         $data = $anggota->penduduk_id ? Penduduk::where('id', $anggota->penduduk_id)->get() : collect();
-        $selectedDesaId = optional($anggota->penduduk)->desa->desa_id;
+        $selectedDesaId = optional($anggota->penduduk)?->desa?->desa_id ?? $anggota->desa_id;
         $selectedPendudukId = optional($anggota->penduduk)->id;
 
         return view('data.data_suplemen.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota', 'isDatabaseGabungan', 'selectedDesaId', 'selectedPendudukId'));
@@ -361,7 +365,7 @@ class SuplemenController extends Controller
      */
     public function updateDetail(SuplemenTerdataRequest $request, int $id): RedirectResponse
     {
-        $data = $this->normalizePendudukSumber($request->validated());
+        $data = $this->normalizePendudukSumber($this->resolveDesaId($request->validated()));
 
         try {
             SuplemenTerdata::findOrFail($id)->update($data);
@@ -417,9 +421,29 @@ class SuplemenController extends Controller
     public function exportTerdataExcel(Request $request, int $id): BinaryFileResponse
     {
         $suplemen = Suplemen::findOrFail($id);
-        $filters = $request->only(['desa', 'nama_penduduk']);
+        $filters = $request->only(['desa', 'nama_penduduk']);        
         $timestamp = date('Y-m-d-H-i-s');
         $filename = "data-suplemen-terdata-{$suplemen->slug}-{$timestamp}.xlsx";
+
+        if ($this->isDatabaseGabungan()) {
+            $query = SuplemenTerdata::query()->where('suplemen_id', $id);
+
+            if (!empty($filters['desa'])) {
+                $query->where(function ($q) use ($filters) {
+                    $q->where('desa_id', $filters['desa']);
+                });
+            }
+
+            if (!empty($filters['nama_penduduk'])) {
+                $query->whereHas('penduduk', function ($q) use ($filters) {
+                    $q->where('nama', 'like', '%' . $filters['nama_penduduk'] . '%');
+                });
+            }
+
+            $pendudukGabunganIds = $query->whereNotNull('penduduk_id_gabungan')->pluck('penduduk_id_gabungan')->filter()->values()->all();            
+
+            return Excel::download(new ExportSuplemenTerdataGabungan($id, $filters, $pendudukGabunganIds), $filename);
+        }
 
         return Excel::download(new ExportSuplemenTerdata($id, $filters), $filename);
     }
@@ -442,6 +466,29 @@ class SuplemenController extends Controller
     }
 
     /**
+     * Resolusi desa_id untuk anggota suplemen.
+     *
+     * Nilai desa_id dari form diutamakan. Fallback diambil dari respons API
+     * database gabungan (config.kode_desa) atau kolom desa_id das_penduduk
+     * untuk penduduk lokal.
+     */
+    private function resolveDesaId(array $data): array
+    {
+        if (! empty($data['desa_id'])) {
+            return $data;
+        }
+
+        if (! empty($data['penduduk_id_gabungan'])) {
+            $penduduk = $this->pendudukGabunganBatch([(int) $data['penduduk_id_gabungan']])[(int) $data['penduduk_id_gabungan']] ?? null;
+            $data['desa_id'] = $penduduk?->desa?->desa_id;
+        } elseif (! empty($data['penduduk_id'])) {
+            $data['desa_id'] = Penduduk::where('id', $data['penduduk_id'])->value('desa_id');
+        }
+
+        return $data;
+    }
+
+    /**
      * Resolusi beberapa penduduk dari database gabungan sekaligus (batch)
      * menggunakan filter id_penduduk berupa array, agar tidak melakukan
      * request berulang per anggota.
@@ -460,6 +507,10 @@ class SuplemenController extends Controller
             $penduduk = [];
 
             foreach ((new PendudukService())->pendudukGabunganByIds($ids) as $item) {
+                if (! is_array($item)) {
+                    continue;
+                }
+
                 $penduduk[(int) ($item['id'] ?? 0)] = $this->mapGabunganPenduduk($item);
             }
 
@@ -471,49 +522,6 @@ class SuplemenController extends Controller
             ]);
 
             return [];
-        }
-    }
-
-    /**
-     * Ambil anggota suplemen (terdata) dari API database gabungan.
-     *
-     * @return \Illuminate\Support\Collection<int, object>
-     */
-    private function suplemenTerdataGabungan(int $id, ?string $desa = null): Collection
-    {
-        try {
-            $response = Http::withHeaders($this->gabunganHeaders())
-                ->post($this->gabunganUrl("/api/v1/opendk/suplemen-terdata-datatable/{$id}"), [
-                    'page[size]' => 5000,
-                    'page[number]' => 1,
-                    'filter[kode_kecamatan]' => str_replace('.', '', (string) $this->profil->kecamatan_id),
-                    'filter[kode_desa]' => ($desa && $desa !== 'Semua') ? $desa : '',
-                ]);
-
-            if ($response->failed()) {
-                return collect();
-            }
-
-            return collect($response->json('data') ?? [])->map(function (array $item) use ($id) {
-                $attributes = $item['attributes'] ?? [];
-                $penduduk = $this->mapGabunganPenduduk($item);
-
-                return (object) [
-                    'id' => $item['id'] ?? null,
-                    'suplemen_id' => $id,
-                    'penduduk_id' => null,
-                    'penduduk_id_gabungan' => $item['id'] ?? null,
-                    'keterangan' => $attributes['keterangan'] ?? null,
-                    'penduduk' => $penduduk,
-                ];
-            })->values();
-        } catch (\Exception $e) {
-            Log::error('Suplemen terdata fetch from gabungan failed', [
-                'error' => $e->getMessage(),
-                'suplemen_id' => $id,
-            ]);
-
-            return collect();
         }
     }
 
@@ -543,25 +551,5 @@ class SuplemenController extends Controller
         $penduduk->setRelation('desa', $desa);
 
         return $penduduk;
-    }
-
-    /**
-     * Header otorisasi untuk API database gabungan.
-     */
-    private function gabunganHeaders(): array
-    {
-        return [
-            'Accept' => 'application/ld+json',
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . ($this->getSettings()['api_key_database_gabungan'] ?? ''),
-        ];
-    }
-
-    /**
-     * URL endpoint API database gabungan.
-     */
-    private function gabunganUrl(string $path): string
-    {
-        return rtrim((string) ($this->getSettings()['api_server_database_gabungan'] ?? ''), '/') . $path;
     }
 }

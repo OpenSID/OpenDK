@@ -128,7 +128,7 @@ class PendudukService extends BaseApiService
             'page[size]' => count($ids),
         ]);
 
-        return collect($data);
+        return collect($data)->filter(fn (mixed $item): bool => is_array($item));
     }
 
     /**

@@ -50,6 +50,7 @@ class SuplemenTerdataRequest extends FormRequest
     {
         return [
             'suplemen_id' => ['required', 'exists:das_suplemen,id'],
+            'desa_id' => ['required', 'string', 'max:13', 'not_in:Semua'],
             'penduduk_id' => ['nullable', 'integer'],
             'penduduk_id_gabungan' => ['nullable', 'integer'],
             'keterangan' => ['nullable', 'string'],
@@ -81,8 +82,12 @@ class SuplemenTerdataRequest extends FormRequest
      */
     public function messages(): array
     {
+        $sebutanDesa = config('setting.sebutan_desa');
+
         return [
             'penduduk_id.required' => 'isian warga atau penduduk wajib diisi',
+            'desa_id.required' => "isian {$sebutanDesa} wajib diisi",
+            'desa_id.not_in' => "isian {$sebutanDesa} wajib diisi",
         ];
     }
 }

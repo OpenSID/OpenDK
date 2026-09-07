@@ -127,6 +127,7 @@ test('storeDetail membuat anggota suplemen saat data valid', function () {
 
     $response = $this->post(route('data.data-suplemen.storedetail'), [
         'suplemen_id' => $suplemen->id,
+        'desa_id' => $penduduk->desa_id,
         'penduduk_id' => $penduduk->id,
         'keterangan' => 'Anggota baru',
     ]);
@@ -170,6 +171,7 @@ test('updateDetail mengubah anggota suplemen saat data valid', function () {
 
     $response = $this->put(route('data.data-suplemen.updatedetail', $terdata->id), [
         'suplemen_id' => $suplemen->id,
+        'desa_id' => $penduduk->desa_id,
         'penduduk_id' => $penduduk->id,
         'keterangan' => 'Keterangan diubah',
     ]);

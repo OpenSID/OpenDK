@@ -21,6 +21,9 @@
                 <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data">
                     <i class="fa fa-plus"></i>&ensp;Tambah
                 </a>
+                @include('forms.btn-social', [
+                    'export_url' => route('data.data-suplemen.export-terdata-excel', $suplemen->id),
+                ])
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -138,6 +141,20 @@
             $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
             });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var exportUrl = $('#export-url');
+
+            if (exportUrl.length && $('#list_desa').length) {
+                $('#list_desa').on('change', function() {
+                    var url = new URL(exportUrl.attr('href'));
+                    url.searchParams.set('desa', $(this).val() || 'Semua');
+                    exportUrl.attr('href', url.toString());
+                });
+            }
         });
     </script>
     @include('forms.datatable-vertical')

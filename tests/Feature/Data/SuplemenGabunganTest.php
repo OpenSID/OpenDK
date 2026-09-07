@@ -32,6 +32,7 @@
 use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
+use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
 use App\Models\Suplemen;
@@ -147,6 +148,7 @@ test('storeDetail menyimpan penduduk dari database gabungan saat gabungan aktif'
 
     $response = $this->post(route('data.data-suplemen.storedetail'), [
         'suplemen_id' => $this->suplemen->id,
+        'desa_id' => '3301010001',
         'penduduk_id_gabungan' => 99,
         'keterangan' => 'Anggota dari gabungan',
     ]);
@@ -158,6 +160,7 @@ test('storeDetail menyimpan penduduk dari database gabungan saat gabungan aktif'
         'suplemen_id' => $this->suplemen->id,
         'penduduk_id' => null,
         'penduduk_id_gabungan' => 99,
+        'desa_id' => '3301010001',
         'keterangan' => 'Anggota dari gabungan',
     ]);
 });
@@ -167,6 +170,7 @@ test('storeDetail menyimpan penduduk lokal saat database gabungan tidak aktif', 
 
     $response = $this->post(route('data.data-suplemen.storedetail'), [
         'suplemen_id' => $this->suplemen->id,
+        'desa_id' => $penduduk->desa_id,
         'penduduk_id' => $penduduk->id,
         'keterangan' => 'Anggota lokal',
     ]);
@@ -178,6 +182,7 @@ test('storeDetail menyimpan penduduk lokal saat database gabungan tidak aktif', 
         'suplemen_id' => $this->suplemen->id,
         'penduduk_id' => $penduduk->id,
         'penduduk_id_gabungan' => null,
+        'desa_id' => $penduduk->desa_id,
     ]);
 });
 
@@ -186,6 +191,7 @@ test('storeDetail gagal ketika penduduk lokal dan gabungan keduanya diisi', func
 
     $response = $this->post(route('data.data-suplemen.storedetail'), [
         'suplemen_id' => $this->suplemen->id,
+        'desa_id' => $penduduk->desa_id,
         'penduduk_id' => $penduduk->id,
         'penduduk_id_gabungan' => 99,
     ]);
@@ -193,7 +199,18 @@ test('storeDetail gagal ketika penduduk lokal dan gabungan keduanya diisi', func
     $response->assertSessionHasErrors(['penduduk_id_gabungan']);
 });
 
-test('getDataSuplemenTerdata menggabungkan anggota lokal dan API database gabungan', function () {
+test('storeDetail gagal ketika desa_id tidak diisi', function () {
+    $penduduk = Penduduk::factory()->create();
+
+    $response = $this->post(route('data.data-suplemen.storedetail'), [
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id' => $penduduk->id,
+    ]);
+
+    $response->assertSessionHasErrors(['desa_id']);
+});
+
+test('getDataSuplemenTerdata tidak menggabungkan anggota dari API database gabungan', function () {
     aktifkanDatabaseGabungan(true);
     fakeGabunganApi([
         'https://api.example.com/api/v1/opendk/suplemen-terdata-datatable/*' => Http::response([
@@ -221,6 +238,7 @@ test('getDataSuplemenTerdata menggabungkan anggota lokal dan API database gabung
     SuplemenTerdata::create([
         'suplemen_id' => $this->suplemen->id,
         'penduduk_id' => $penduduk->id,
+        'desa_id' => $penduduk->desa_id,
         'keterangan' => 'Anggota lokal',
     ]);
 
@@ -234,9 +252,9 @@ test('getDataSuplemenTerdata menggabungkan anggota lokal dan API database gabung
     $data = collect($response->json('data'));
 
     expect($data->pluck('keterangan'))->toContain('Anggota lokal')
-        ->and($data->pluck('keterangan'))->toContain('Terdata desa')
+        ->not->toContain('Terdata desa')
         ->and($data->pluck('penduduk.nama'))->toContain('Anggota Lokal')
-        ->and($data->pluck('penduduk.nama'))->toContain('Anggota Dari API');
+        ->not->toContain('Anggota Dari API');
 });
 
 test('getDataSuplemenTerdata menyelesaikan penduduk gabungan lokal dalam satu request batch', function () {
@@ -294,6 +312,167 @@ test('getDataSuplemenTerdata menyelesaikan penduduk gabungan lokal dalam satu re
         ->and($sentIds)->toContain('501')
         ->and($data->pluck('penduduk.nama'))->toContain('Penduduk Gabungan 1')
         ->and($data->pluck('penduduk.nama'))->toContain('Penduduk Gabungan 2');
+});
+
+test('getDataSuplemenTerdata mengabaikan item non-array pada respons batch', function () {
+    aktifkanDatabaseGabungan(true);
+
+    Http::fake([
+        'https://api.example.com/api/v1/opendk/sync-penduduk-opendk*' => Http::response([
+            'data' => [
+                ['id' => 500, 'attributes' => ['nama' => 'Penduduk Gabungan 1', 'nik' => '123', 'sex' => 1]],
+                false,
+                null,
+            ],
+            'meta' => ['pagination' => ['total' => 3]],
+        ], 200),
+        'https://api.example.com/api/v1/opendk/suplemen-terdata-datatable/*' => Http::response([
+            'data' => [],
+            'meta' => ['pagination' => ['total' => 0]],
+        ], 200),
+        '*' => Http::response([
+            'data' => [],
+            'meta' => ['pagination' => ['total' => 0]],
+        ], 200),
+    ]);
+
+    SuplemenTerdata::create([
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id_gabungan' => 500,
+        'keterangan' => 'A1',
+    ]);
+
+    $response = $this->postJson(
+        route('data.data-suplemen.getsuplementerdata', $this->suplemen->id),
+        [],
+        ['X-Requested-With' => 'XMLHttpRequest']
+    );
+
+    $response->assertStatus(200);
+    $data = collect($response->json('data'));
+
+    expect($data->pluck('penduduk.nama'))->toContain('Penduduk Gabungan 1');
+});
+
+test('getDataSuplemenTerdata memfilter anggota lokal berdasarkan desa', function () {
+    aktifkanDatabaseGabungan(true);
+    fakeGabunganApi();
+
+    $desaA = DataDesa::create(['desa_id' => '3301010001', 'nama' => 'Desa A']);
+    $desaB = DataDesa::create(['desa_id' => '3301010002', 'nama' => 'Desa B']);
+
+    $pendudukA = Penduduk::factory()->create(['desa_id' => $desaA->desa_id, 'nama' => 'Warga Desa A']);
+    $pendudukB = Penduduk::factory()->create(['desa_id' => $desaB->desa_id, 'nama' => 'Warga Desa B']);
+
+    SuplemenTerdata::create([
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id' => $pendudukA->id,
+        'desa_id' => $pendudukA->desa_id,
+        'keterangan' => 'A',
+    ]);
+    SuplemenTerdata::create([
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id' => $pendudukB->id,
+        'desa_id' => $pendudukB->desa_id,
+        'keterangan' => 'B',
+    ]);
+
+    $response = $this->postJson(
+        route('data.data-suplemen.getsuplementerdata', $this->suplemen->id),
+        ['desa' => $desaA->desa_id],
+        ['X-Requested-With' => 'XMLHttpRequest']
+    );
+
+    $response->assertStatus(200);
+    $data = collect($response->json('data'));
+
+    expect($data->pluck('penduduk.nama'))->toContain('Warga Desa A')
+        ->not->toContain('Warga Desa B');
+});
+
+test('getDataSuplemenTerdata tanpa filter desa menampilkan semua anggota lokal', function () {
+    $desaA = DataDesa::create(['desa_id' => '3301010001', 'nama' => 'Desa A']);
+    $desaB = DataDesa::create(['desa_id' => '3301010002', 'nama' => 'Desa B']);
+
+    $pendudukA = Penduduk::factory()->create(['desa_id' => $desaA->desa_id, 'nama' => 'Warga Desa A']);
+    $pendudukB = Penduduk::factory()->create(['desa_id' => $desaB->desa_id, 'nama' => 'Warga Desa B']);
+
+    SuplemenTerdata::create([
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id' => $pendudukA->id,
+        'desa_id' => $pendudukA->desa_id,
+    ]);
+    SuplemenTerdata::create([
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id' => $pendudukB->id,
+        'desa_id' => $pendudukB->desa_id,
+    ]);
+
+    $response = $this->postJson(
+        route('data.data-suplemen.getsuplementerdata', $this->suplemen->id),
+        ['desa' => 'Semua'],
+        ['X-Requested-With' => 'XMLHttpRequest']
+    );
+
+    $response->assertStatus(200);
+    $data = collect($response->json('data'));
+
+    expect($data->pluck('penduduk.nama'))->toContain('Warga Desa A')
+        ->toContain('Warga Desa B');
+});
+
+test('storeDetail menyimpan desa_id dari penduduk database gabungan', function () {
+    aktifkanDatabaseGabungan(true);
+    fakeGabunganApi([
+        'https://api.example.com/api/v1/opendk/sync-penduduk-opendk*' => Http::response([
+            'data' => [
+                [
+                    'id' => 99,
+                    'attributes' => [
+                        'nama' => 'Penduduk Gabungan',
+                        'nik' => '123',
+                        'sex' => 1,
+                        'config' => ['kode_desa' => '3301010001', 'nama_desa' => 'Desa API'],
+                    ],
+                ],
+            ],
+            'meta' => ['pagination' => ['total' => 1]],
+        ], 200),
+    ]);
+
+    $response = $this->post(route('data.data-suplemen.storedetail'), [
+        'suplemen_id' => $this->suplemen->id,
+        'desa_id' => '3301010001',
+        'penduduk_id_gabungan' => 99,
+        'keterangan' => 'Anggota dari gabungan',
+    ]);
+
+    $response->assertRedirect(route('data.data-suplemen.show', $this->suplemen->id));
+
+    $this->assertDatabaseHas('das_suplemen_terdata', [
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id_gabungan' => 99,
+        'desa_id' => '3301010001',
+    ]);
+});
+
+test('storeDetail menyimpan desa_id dari penduduk lokal', function () {
+    $penduduk = Penduduk::factory()->create(['desa_id' => '3301010003', 'nama' => 'Warga Lokal']);
+
+    $response = $this->post(route('data.data-suplemen.storedetail'), [
+        'suplemen_id' => $this->suplemen->id,
+        'desa_id' => $penduduk->desa_id,
+        'penduduk_id' => $penduduk->id,
+        'keterangan' => 'Anggota lokal',
+    ]);
+
+    $response->assertRedirect(route('data.data-suplemen.show', $this->suplemen->id));
+
+    $this->assertDatabaseHas('das_suplemen_terdata', [
+        'suplemen_id' => $this->suplemen->id,
+        'penduduk_id' => $penduduk->id,
+        'desa_id' => '3301010003',
+    ]);
 });
 
 test('editDetail menampilkan view gabungan saat database gabungan aktif', function () {
@@ -358,6 +537,7 @@ test('updateDetail memperbarui anggota gabungan saat gabungan aktif', function (
 
     $response = $this->put(route('data.data-suplemen.updatedetail', $terdata->id), [
         'suplemen_id' => $this->suplemen->id,
+        'desa_id' => '3301010001',
         'penduduk_id_gabungan' => 100,
         'keterangan' => 'Keterangan diubah',
     ]);

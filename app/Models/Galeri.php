@@ -63,8 +63,21 @@ class Galeri extends Model
         return $this->belongsTo(Album::class);
     }
 
-    protected function getGambarPathAttribute(){
-        $gambar = $this->gambar[0];
-        return $this->attributes['jenis'] == 'file' ? isThumbnail("publikasi/galeri/".$gambar) : asset('/img/no-image.png');
+    public function getGambarPathAttribute(): string
+    {
+        if (($this->attributes['jenis'] ?? null) === 'file' && ! empty($this->gambar)) {
+            $gambar = is_array($this->gambar) ? ($this->gambar[0] ?? null) : $this->gambar;
+            if ($gambar) {
+                return isThumbnail('publikasi/galeri/' . $gambar);
+            }
+        }
+
+        if (($this->attributes['jenis'] ?? null) === 'url' && ! empty($this->link)) {
+            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/ ]{11})/', $this->link, $matches)) {
+                return 'https://img.youtube.com/vi/' . $matches[1] . '/hqdefault.jpg';
+            }
+        }
+
+        return asset('/img/no-image.png');
     }
 }

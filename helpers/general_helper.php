@@ -311,7 +311,9 @@ function is_wajib_ktp($umur, $status_kawin)
 
 function isThumbnail($url = null, $img = '/img/no-image.png')
 {
-    return ! empty($url) && Storage::disk('public')->exists($url) ? Storage::disk('public')->url($url) : asset($img);
+    $url = trim($url ?? '');
+
+    return ! empty($url) && Storage::disk('public')->exists($url) ? asset('storage/' . ltrim($url, '/')) : asset($img);
 }
 
 function is_img($url = null, $img = '/img/no-image.png')

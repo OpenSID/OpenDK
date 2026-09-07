@@ -21,11 +21,9 @@
                 <a href="{{ route('data.data-suplemen.createdetail', $suplemen->id) }}" class="btn btn-primary btn-sm" judul="Tambah Data">
                     <i class="fa fa-plus"></i>&ensp;Tambah
                 </a>
-
                 @include('forms.btn-social', [
                     'export_url' => route('data.data-suplemen.export-terdata-excel', $suplemen->id),
                 ])
-
             </div>
             <div class="box-body">
                 <div class="table-responsive">
@@ -47,6 +45,7 @@
                 <hr>
                 <legend>Daftar Anggota Suplemen</legend>
                 @include('layouts.fragments.list-desa')
+                <hr>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="suplemen-terdata-table">
                         <thead>
@@ -70,17 +69,25 @@
     </section>
 @endsection
 
+@include('partials.asset_select2')
 @include('partials.asset_datatables')
 
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function() {
+            $('#list_desa').select2();
+
             var data = $('#suplemen-terdata-table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: {
                     url: "{!! route('data.data-suplemen.getsuplementerdata', $suplemen->id) !!}",
                     type: "POST",
+                    data: function(row) {
+                        return {
+                            desa: $('#list_desa').val()
+                        };
+                    }
                 },
                 columns: [{
                         data: 'aksi',
@@ -129,6 +136,10 @@
                 order: [
                     [1, 'asc']
                 ]
+            });
+
+            $('#list_desa').on('select2:select', function(e) {
+                data.ajax.reload();
             });
         });
     </script>

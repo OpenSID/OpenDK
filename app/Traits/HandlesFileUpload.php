@@ -36,7 +36,7 @@ use Illuminate\Http\UploadedFile;
 trait HandlesFileUpload
 {
     /**
-     * Daftar MIME types default yang diizinkan
+     * Daftar MIME types default yang diizinkan.
      */
     protected array $defaultAllowedMimes = [
         'image' => ['jpeg', 'png', 'jpg', 'gif', 'svg', 'webp'],
@@ -53,7 +53,9 @@ trait HandlesFileUpload
      * @param string $directory
      * @param bool $withDirectory
      * @param array $allowedMimes Optional list of allowed mime extensions
+     *
      * @return void
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function handleFileUpload($request, &$input, $field = 'file', $directory = 'uploads', $withDirectory = true, array $allowedMimes = [])
@@ -79,11 +81,44 @@ trait HandlesFileUpload
     }
 
     /**
+     * Resolve file path secara aman dan pastikan berada dalam direktori yang diizinkan (mencegah Path Traversal).
+     */
+    public function resolveSecureFilePath(?string $path): ?string
+    {
+        if (empty($path)) {
+            return null;
+        }
+
+        $candidates = [
+            public_path($path),
+            base_path('public/' . $path),
+            storage_path('app/public/' . str_replace('storage/', '', $path)),
+        ];
+
+        $allowedPublic = realpath(public_path());
+        $allowedStorage = realpath(storage_path('app/public'));
+
+        foreach ($candidates as $candidate) {
+            if (file_exists($candidate)) {
+                $real = realpath($candidate);
+                if ($real) {
+                    $isAllowedPublic = $allowedPublic && str_starts_with($real, $allowedPublic);
+                    $isAllowedStorage = $allowedStorage && str_starts_with($real, $allowedStorage);
+                    if ($isAllowedPublic || $isAllowedStorage) {
+                        return $real;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Validasi MIME type file.
      *
-     * @param UploadedFile $file
      * @param array $allowedMimes List of allowed extensions (e.g., ['jpg', 'png', 'pdf'])
-     * @return void
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     protected function validateMimeType(UploadedFile $file, array $allowedMimes): void
@@ -92,7 +127,7 @@ trait HandlesFileUpload
 
         if (!in_array($extension, $allowedMimes)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
-                'file' => "Tipe file tidak diizinkan. Tipe yang diizinkan: " . implode(', ', $allowedMimes),
+                'file' => 'Tipe file tidak diizinkan. Tipe yang diizinkan: ' . implode(', ', $allowedMimes),
             ]);
         }
 
@@ -102,16 +137,13 @@ trait HandlesFileUpload
 
         if (!empty($allowedMimeTypes) && !in_array($mimeType, $allowedMimeTypes)) {
             throw \Illuminate\Validation\ValidationException::withMessages([
-                'file' => "MIME type file tidak valid. Pastikan file yang diupload sesuai dengan ekstensinya.",
+                'file' => 'MIME type file tidak valid. Pastikan file yang diupload sesuai dengan ekstensinya.',
             ]);
         }
     }
 
     /**
      * Generate nama file yang aman untuk penyimpanan.
-     *
-     * @param UploadedFile $file
-     * @return string
      */
     protected function generateSafeFileName(UploadedFile $file): string
     {
@@ -120,9 +152,6 @@ trait HandlesFileUpload
 
     /**
      * Convert extensions to MIME types.
-     *
-     * @param array $extensions
-     * @return array
      */
     protected function extensionsToMimeTypes(array $extensions): array
     {
@@ -158,7 +187,6 @@ trait HandlesFileUpload
      * Mendapatkan daftar MIME types berdasarkan kategori.
      *
      * @param string $category 'image', 'document', atau 'archive'
-     * @return array
      */
     protected function getAllowedMimesByCategory(string $category): array
     {

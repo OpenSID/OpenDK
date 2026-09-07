@@ -92,10 +92,16 @@ body.sidebar-collapse .sidebar-kabupaten {
 
 /* Prevent dropdown clipping inside DataTable responsive wrapper */
 .box-body .table-responsive {
-	overflow: visible !important;
+	overflow-x: auto;
 }
 .box-body .table-responsive .dropdown-menu {
 	z-index: 1050;
+}
+
+/* Ensure nowrap tables do not wrap cells and preserve header spacing */
+.table.nowrap th,
+.table.nowrap td {
+	white-space: nowrap;
 }
 
 /* Simple centered modal for activity detail */

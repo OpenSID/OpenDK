@@ -421,7 +421,7 @@ class SuplemenController extends Controller
     public function exportTerdataExcel(Request $request, int $id): BinaryFileResponse
     {
         $suplemen = Suplemen::findOrFail($id);
-        $filters = $request->only(['desa', 'nama_penduduk']);        
+        $filters = $request->only(['desa', 'nama_penduduk']);
         $timestamp = date('Y-m-d-H-i-s');
         $filename = "data-suplemen-terdata-{$suplemen->slug}-{$timestamp}.xlsx";
 
@@ -440,7 +440,7 @@ class SuplemenController extends Controller
                 });
             }
 
-            $pendudukGabunganIds = $query->whereNotNull('penduduk_id_gabungan')->pluck('penduduk_id_gabungan')->filter()->values()->all();            
+            $pendudukGabunganIds = $query->whereNotNull('penduduk_id_gabungan')->pluck('penduduk_id_gabungan')->filter()->values()->all();
 
             return Excel::download(new ExportSuplemenTerdataGabungan($id, $filters, $pendudukGabunganIds), $filename);
         }

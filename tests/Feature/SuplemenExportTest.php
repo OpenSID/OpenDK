@@ -5,9 +5,9 @@ use App\Exports\ExportSuplemenTerdata;
 use App\Exports\ExportSuplemenTerdataGabungan;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
+use App\Models\SettingAplikasi;
 use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
-use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
@@ -300,12 +300,15 @@ test('export suplemen terdata with gabungan resolver fills penduduk relation', f
         'keterangan' => 'Test',
     ]);
 
-    SuplemenTerdata::create([
+    $terdata = SuplemenTerdata::create([
         'suplemen_id' => $suplemen->id,
         'penduduk_id_gabungan' => 500,
         'desa_id' => '3301010001',
         'keterangan' => 'A1',
     ]);
+
+    expect(SuplemenTerdata::count())->toBe(1)
+        ->and(SuplemenTerdata::first()->penduduk_id_gabungan)->toBe(500);
 
     $export = new ExportSuplemenTerdataGabungan($suplemen->id, [], [500]);
 

@@ -41,6 +41,7 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class ExportSuplemenTerdata implements FromCollection, WithHeadings, WithMapping, WithStyles
 {
     protected $suplemenId;
+
     protected $filters;
 
     public function __construct($suplemenId = null, array $filters = [])
@@ -77,9 +78,6 @@ class ExportSuplemenTerdata implements FromCollection, WithHeadings, WithMapping
         return $query->get();
     }
 
-    /**
-     * @return array
-     */
     public function headings(): array
     {
         return [
@@ -99,10 +97,6 @@ class ExportSuplemenTerdata implements FromCollection, WithHeadings, WithMapping
         ];
     }
 
-    /**
-     * @param mixed $suplemenTerdata
-     * @return array
-     */
     public function map($suplemenTerdata): array
     {
         $penduduk = $suplemenTerdata->penduduk;
@@ -126,7 +120,6 @@ class ExportSuplemenTerdata implements FromCollection, WithHeadings, WithMapping
     }
 
     /**
-     * @param Worksheet $sheet
      * @return array
      */
     public function styles(Worksheet $sheet)

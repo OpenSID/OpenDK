@@ -35,25 +35,24 @@ use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\SuplemenTerdata;
 use App\Services\PendudukService;
-use App\Support\Collection;
+use Illuminate\Support\Collection;
 
 class ExportSuplemenTerdataGabungan extends ExportSuplemenTerdata
 {
     /**
      * @param  array<int, int|string>  $pendudukGabunganIds
      */
-    public function __construct($suplemenId =
-     null, array $filters = [], array $pendudukGabunganIds = [])
+    public function __construct($suplemenId = null, array $filters = [], array $pendudukGabunganIds = [])
     {
-        //parent::__construct($suplemenId, $filters);
+        parent::__construct($suplemenId, $filters);
         $this->pendudukGabunganIds = array_map('intval', $pendudukGabunganIds);
     }
 
-    public function collection()
+    public function collection(): Collection
     {
-        $collection = new Collection();
+        $collection = parent::collection();
 
-        if (empty($this->pendudukGabunganIds)) {
+        if ($collection->isEmpty() || empty($this->pendudukGabunganIds)) {
             return $collection;
         }
 
@@ -116,9 +115,14 @@ class ExportSuplemenTerdataGabungan extends ExportSuplemenTerdata
             'tanggal_lahir' => $attributes['tanggallahir'] ?? $attributes['tanggal_lahir'] ?? null,
             'umur' => $attributes['umur'] ?? null,
             'sex' => $attributes['sex'] ?? null,
-            'alamat' => $attributes['alamat_wilayah'] ?? $attributes['alamat_wilayah'] ?? null,            
-        ]);                
-        $penduduk->setRelation('desa', new DataDesa(['nama' => $attributes['config']['nama_desa']]));
+            'alamat' => $attributes['alamat_sekarang'] ?? $attributes['alamat'] ?? null,
+        ]);
+
+        $penduduk->setRelation('desa', new DataDesa([
+            'nama' => data_get($attributes, 'config.nama_desa') ?? $attributes['nama_desa'] ?? null,
+            'desa_id' => data_get($attributes, 'config.kode_desa') ?? $attributes['kode_desa'] ?? null,
+        ]));
+
         return $penduduk;
     }
 }

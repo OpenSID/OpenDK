@@ -111,7 +111,7 @@ class SistemKomplainRequest extends FormRequest
             }
 
             if (!$valid) {
-                $fail('NIK tidak ditemukan atau tidak sesuai dengan tanggal lahir lagi.');
+                $fail('NIK tidak ditemukan atau tidak sesuai dengan tanggal lahir.');
             }
         };
     }

@@ -109,11 +109,9 @@ class PesanController extends Controller
 
                 return  $q->where('judul', 'LIKE', "%{$request->get('q')}%");
             })
-            ->paginate(Pesan::PER_PAGE);
-
-        $list_desa = (new DesaService())->listDesa();
+            ->paginate(Pesan::PER_PAGE);        
         $data->put('list_pesan', $pesan);
-        $data->put('list_desa', $list_desa);
+        
 
         return view('pesan.keluar.index', $data->all());
     }

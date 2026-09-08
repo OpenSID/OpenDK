@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Models\SettingAplikasi;
 use Carbon\Carbon;
 use App\Models\Lembaga;
 use App\Models\Penduduk;
 use Illuminate\Http\Request;
 use App\Models\LembagaAnggota;
+use App\Services\PendudukService;
 use Yajra\DataTables\DataTables;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLembagaAnggotaRequest;
@@ -38,17 +40,23 @@ class LembagaAnggotaController extends Controller
         if ($request->ajax()) {
             $lembaga = Lembaga::where('slug', $slug)->firstOrFail();
 
-            // Ambil data anggota lembaga dengan informasi lembaga dan penduduk terkait
             $anggotaList = LembagaAnggota::with(['lembaga', 'penduduk'])
                 ->where('lembaga_id', $lembaga->id)
                 ->get();
 
+            $pendudukGabunganIds = $anggotaList->pluck('penduduk_id_gabungan')->filter()->unique()->values()->all();
+
+            $pendudukGabungan = collect();
+            if ($this->isDatabaseGabungan() && !empty($pendudukGabunganIds)) {
+                $pendudukGabungan = (new PendudukService())->pendudukGabunganByIds($pendudukGabunganIds);
+            }
+            
             return DataTables::of($anggotaList)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) use ($slug) {
                     if (!auth()->guest()) {
-                        $data['edit_url'] = auth()->user()->can('access.data.lembaga_anggota.edit') ? route('data.lembaga_anggota.edit', ['slug' => $slug, 'id' => $row->id]) : null;
-                        $data['delete_url'] = auth()->user()->can('access.data.lembaga_anggota.delete') ? route('data.lembaga_anggota.destroy', ['slug' => $slug, 'id' => $row->id]) : null;
+                        $data['edit_url'] = auth()->user()->can('access.data.lembaga.edit') ? route('data.lembaga_anggota.edit', ['slug' => $slug, 'id' => $row->id]) : null;
+                        $data['delete_url'] = auth()->user()->can('access.data.lembaga.delete') ? route('data.lembaga_anggota.destroy', ['slug' => $slug, 'id' => $row->id]) : null;
                     }
 
                     return view('forms.aksi', $data);
@@ -56,31 +64,80 @@ class LembagaAnggotaController extends Controller
                 ->addColumn('no_anggota', function ($row) {
                     return $row->no_anggota ?: '-';
                 })
-                ->addColumn('nik', function ($row) {
+                ->addColumn('nik', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+
+                        return $penduduk ? ($penduduk['attributes']['nik'] ?? '-') : '-';
+                    }
+
                     return $row->penduduk->nik ?? '-';
                 })
-                ->addColumn('nama', function ($row) {
+                ->addColumn('nama', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+
+                        return $penduduk ? ($penduduk['attributes']['nama'] ?? '-') : '-';
+                    }
+
                     return $row->penduduk->nama ?? '-';
                 })
-                ->addColumn('tempat_tgl_lahir', function ($row) {
+                ->addColumn('tempat_tgl_lahir', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+
+                        $tempat = $penduduk ? ($penduduk['attributes']['tempatlahir'] ?? '-') : '-';
+                        $tanggalLahir = $penduduk && ($penduduk['attributes']['tanggallahir'] ?? false)
+                            ? Carbon::parse($penduduk['attributes']['tanggallahir'])->translatedFormat('d F Y')
+                            : '-';
+
+                        return "$tempat / $tanggalLahir";
+                    }
+
                     $tempat = $row->penduduk->tempat_lahir ?? '-';
                     $tanggalLahir = $row->penduduk->tanggal_lahir
                         ? Carbon::parse($row->penduduk->tanggal_lahir)->translatedFormat('d F Y')
                         : '-';
+
                     return "$tempat / $tanggalLahir";
                 })
-                ->addColumn('umur', function ($row) {
+                ->addColumn('umur', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+
+                        return $penduduk['attributes']['umur'] ?? '-';
+                    }
+
                     return $row->penduduk && $row->penduduk->tanggal_lahir
-                        ? \Carbon\Carbon::parse($row->penduduk->tanggal_lahir)->age
+                        ? Carbon::parse($row->penduduk->tanggal_lahir)->age
                         : '-';
                 })
-                ->addColumn('sex', function ($row) {
+                ->addColumn('sex', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+                        $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
+                        return $penduduk ? ($sex[$penduduk['attributes']['sex']] ?? '-') : '-';
+                    }
+
                     return $row->penduduk && $row->penduduk->pendudukSex ? $row->penduduk->pendudukSex->nama : '-';
                 })
-                ->addColumn('alamat', function ($row) {
+                ->addColumn('alamat', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+
+                        if (!$penduduk) {
+                            return '-';
+                        }
+
+                        $alamat = $penduduk['attributes']['alamat_wilayah'] ?? '-';
+
+                        return $alamat;
+                    }
+
                     $rt = $row->penduduk->rt ?? '-';
                     $rw = $row->penduduk->rw ?? '-';
                     $alamat = $row->penduduk->dusun ?? '-';
+
                     return "RT $rt / RW $rw $alamat";
                 })
                 ->addColumn('jabatan', function ($row) {
@@ -136,15 +193,18 @@ class LembagaAnggotaController extends Controller
      */
     public function create($slug)
     {
-        // Cari lembaga berdasarkan slug
         $lembaga = Lembaga::where('slug', $slug)->firstOrFail();
 
-        // Ambil anggota yang sudah ada di lembaga ini
+        if ($this->isDatabaseGabungan()) {
+            $page_title = 'Tambah Anggota Lembaga ' . $lembaga->nama;
+            $page_description = 'Tambah Anggota Lembaga ' . $lembaga->nama;
+
+            return view('data.lembaga_anggota.gabungan.create', compact('page_title', 'page_description', 'lembaga'));
+        }
+
         $existingAnggotaIds = $lembaga->lembagaAnggota->pluck('penduduk_id')->toArray();
 
-        // Ambil semua penduduk yang belum menjadi anggota
         $pendudukList = Penduduk::whereNotIn('id', $existingAnggotaIds)->get()->mapWithKeys(function ($penduduk) {
-            // Membuat string yang menggabungkan NIK, nama, dan alamat
             $optionText = "NIK: {$penduduk->nik} - {$penduduk->nama} - Dusun {$penduduk->dusun} RT {$penduduk->rt} / RW {$penduduk->rw}";
 
             return [$penduduk->id => $optionText];
@@ -165,24 +225,25 @@ class LembagaAnggotaController extends Controller
      */
     public function store(StoreLembagaAnggotaRequest $request, $slug)
     {
-        // Cari lembaga berdasarkan slug
         $lembaga = Lembaga::where('slug', $slug)->firstOrFail();
 
-        // Cek apakah jabatan yang dipilih adalah Ketua (jabatan_id = 1)
         if ($request->jabatan_id == 1) {
-            // Cek apakah sudah ada Ketua di lembaga ini
             $existingKetua = $lembaga->lembagaAnggota()->where('jabatan', 1)->first();
 
-            // Jika ada, ubah jabatan ketua yang sudah ada menjadi Anggota (jabatan_id = 5)
             if ($existingKetua) {
                 $existingKetua->update(['jabatan' => 5]);
             }
         }
 
-        try {
+        $data = $request->validated();
 
-            $lembaga->lembagaAnggota()->create([
-                'penduduk_id' => $request->penduduk_id,
+        if (SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->value('value') === '1') {
+            $data['penduduk_id'] = null;
+            $data['penduduk_id_gabungan'] = $data['penduduk_id_gabungan'] ?? null;
+        }
+
+        try {
+            $lembaga->lembagaAnggota()->create($data + [
                 'no_anggota' => $request->no_anggota,
                 'jabatan' => $request->jabatan_id,
                 'no_sk_jabatan' => $request->no_sk_jabatan,
@@ -193,7 +254,6 @@ class LembagaAnggotaController extends Controller
                 'periode' => $request->periode,
                 'keterangan' => $request->keterangan,
             ]);
-
         } catch (\Exception $e) {
             Log::error('Lembaga Anggota creation failed', [
                 'error' => $e->getMessage(),
@@ -216,13 +276,24 @@ class LembagaAnggotaController extends Controller
      */
     public function edit($slug, $id)
     {
-        // Cari lembaga berdasarkan slug
         $lembaga = Lembaga::where('slug', $slug)->firstOrFail();
-
-        // Cari anggota lembaga berdasarkan ID
         $anggota = LembagaAnggota::with('penduduk')->where('lembaga_id', $lembaga->id)->findOrFail($id);
 
-        // Ambil semua penduduk yang belum menjadi anggota kecuali yang sedang diedit
+        if ($this->isDatabaseGabungan()) {
+            $page_title = 'Ubah Anggota Lembaga ' . $lembaga->nama;
+            $page_description = 'Ubah Anggota Lembaga ' . $lembaga->nama;
+
+            $pendudukGabungan = (new PendudukService())->pendudukGabunganByIds([$anggota->penduduk_id_gabungan]);
+            $penduduk = new Penduduk();
+            if($pendudukGabungan[0]){                
+                $penduduk->nama = $pendudukGabungan[0]['attributes']['nama'];
+                $penduduk->nik = $pendudukGabungan[0]['attributes']['nik'];
+            }
+            $anggota->setRelation('penduduk', $penduduk);  
+
+            return view('data.lembaga_anggota.gabungan.edit', compact('page_title', 'page_description', 'lembaga', 'anggota'));
+        }
+
         $existingAnggotaIds = $lembaga->lembagaAnggota()
             ->where('id', '!=', $anggota->id)
             ->pluck('penduduk_id')
@@ -233,7 +304,6 @@ class LembagaAnggotaController extends Controller
             return [$penduduk->id => $optionText];
         });
 
-        // Tambahkan penduduk saat ini (yang sedang diedit) ke daftar pendudukList
         $pendudukList->prepend("NIK: {$anggota->penduduk->nik} - {$anggota->penduduk->nama} - Dusun {$anggota->penduduk->dusun} RT {$anggota->penduduk->rt} / RW {$anggota->penduduk->rw}", $anggota->penduduk->id);
 
         $page_title = 'Ubah Anggota Lembaga ' . $lembaga->nama;
@@ -252,28 +322,28 @@ class LembagaAnggotaController extends Controller
     public function update(UpdateLembagaAnggotaRequest $request, $slug, $id)
     {
         try {
-
-            // Cari lembaga berdasarkan slug
             $lembaga = Lembaga::where('slug', $slug)->firstOrFail();
 
-            // Cari anggota berdasarkan id dan pastikan anggota tersebut milik lembaga yang sesuai
             $anggota = LembagaAnggota::where('id', $id)
                 ->where('lembaga_id', $lembaga->id)
                 ->firstOrFail();
 
-            // Cek apakah jabatan yang dipilih adalah Ketua (jabatan_id = 1)
             if ($request->jabatan_id == 1) {
-                // Cek apakah sudah ada Ketua di lembaga ini
                 $existingKetua = $lembaga->lembagaAnggota()->where('jabatan', 1)->first();
 
-                // Jika ada Ketua lain, ubah jabatan Ketua yang sudah ada menjadi Anggota (jabatan_id = 5)
                 if ($existingKetua && $existingKetua->id !== $anggota->id) {
                     $existingKetua->update(['jabatan' => 5]);
                 }
             }
 
-            // Update data anggota
-            $anggota->update([
+            $data = $request->validated();
+
+            if (SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->value('value') === '1') {
+                $data['penduduk_id'] = null;
+                $data['penduduk_id_gabungan'] = $data['penduduk_id_gabungan'] ?? null;
+            }
+
+            $anggota->update($data + [
                 'no_anggota' => $request->no_anggota,
                 'jabatan' => $request->jabatan_id,
                 'no_sk_jabatan' => $request->no_sk_jabatan,
@@ -284,7 +354,6 @@ class LembagaAnggotaController extends Controller
                 'periode' => $request->periode,
                 'keterangan' => $request->keterangan,
             ]);
-
         } catch (\Exception $e) {
             Log::error('Lembaga Anggota update failed', [
                 'error' => $e->getMessage(),

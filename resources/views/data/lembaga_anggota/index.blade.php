@@ -26,7 +26,7 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @include('forms.btn-social', [
-                    'create_url' => auth()->user()->can('access.data.lembaga_anggota.create') ? route('data.lembaga_anggota.create', $lembaga->slug) : null,
+                    'create_url' => auth()->user()->can('access.data.lembaga.create') ? route('data.lembaga_anggota.create', $lembaga->slug) : null,
                 ])
             </div>
             <div class="box-body">
@@ -47,7 +47,7 @@
                         <tr>
                             <td>Ketua Lembaga</td>
                             <td>:</td>
-                            <td>{{ $lembaga->penduduk->nama }}</td>
+                            <td>{{ $lembaga->penduduk?->nama ?? $lembaga->pendudukGabungan?->nama ?? '-' }}</td>
                         </tr>
                         <tr>
                             <td>Kategori Lembaga</td>
@@ -102,7 +102,6 @@
                 processing: true,
                 serverSide: false,
                 ordering: false,
-                scrollX: true,
                 ajax: "{!! route('data.lembaga_anggota.getdata', $lembaga->slug) !!}",
                 columns: [{
                         data: 'aksi',

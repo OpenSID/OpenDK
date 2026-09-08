@@ -32,16 +32,23 @@
 namespace App\Http\Controllers\Pesan;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterPesanRequest;
+use App\Http\Requests\ReplyPesanRequest;
+use App\Http\Requests\SetArsipPesanRequest;
+use App\Http\Requests\SetMultipleArsipPesanStatusRequest;
+use App\Http\Requests\SetMultipleReadPesanStatusRequest;
+use App\Http\Requests\StoreComposePesanRequest;
 use App\Models\Pesan;
 use App\Models\PesanDetail;
 use App\Services\DesaService;
-use Illuminate\Http\Request;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
 {
-    public function index(Request $request)
+    public function index(FilterPesanRequest $request): View
     {
         $data = collect([]);
         $data->put('page_title', 'Pesan');
@@ -72,31 +79,14 @@ class PesanController extends Controller
             })
             ->paginate(Pesan::PER_PAGE);
 
-        $list_desa = (new DesaService())->listDesa();        
+        $list_desa = (new DesaService())->listDesa();
         $data->put('list_pesan', $pesan);
         $data->put('list_desa', $list_desa);
 
         return view('pesan.masuk.index', $data->all());
     }
 
-    protected function loadCounter()
-    {
-        $counter_unread = Pesan::where([
-            'jenis' => Pesan::PESAN_MASUK,
-            'diarsipkan' => Pesan::NON_ARSIP,
-            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
-        $counter_unread_keluar = Pesan::where([
-            'jenis' => Pesan::PESAN_KELUAR,
-            'diarsipkan' => Pesan::NON_ARSIP,
-            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
-
-        return [
-            'counter_unread' => $counter_unread,
-            'counter_unread_keluar' => $counter_unread_keluar,
-        ];
-    }
-
-    public function loadPesanKeluar(Request $request)
+    public function loadPesanKeluar(FilterPesanRequest $request): View
     {
         $data = collect([]);
         $data->put('desa_id', null);
@@ -128,7 +118,7 @@ class PesanController extends Controller
         return view('pesan.keluar.index', $data->all());
     }
 
-    public function loadPesanArsip(Request $request)
+    public function loadPesanArsip(FilterPesanRequest $request): View
     {
         $data = collect([]);
         $data->put('desa_id', null);
@@ -159,7 +149,7 @@ class PesanController extends Controller
         return view('pesan.arsip.index', $data->all());
     }
 
-    public function readPesan($id_pesan)
+    public function readPesan(int $id_pesan): View
     {
         $pesan = Pesan::findOrFail($id_pesan);
         if ($pesan->sudah_dibaca == Pesan::BELUM_DIBACA) {
@@ -176,7 +166,7 @@ class PesanController extends Controller
         return view('pesan.read_pesan', $data->all());
     }
 
-    public function composePesan()
+    public function composePesan(): View
     {
         $data = collect([]);
         $data->put('page_title', 'Buat Pesan');
@@ -188,18 +178,9 @@ class PesanController extends Controller
         return view('pesan.compose_pesan', $data->all());
     }
 
-    /**
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function storeComposePesan(Request $request)
+    public function storeComposePesan(StoreComposePesanRequest $request): RedirectResponse
     {
         try {
-            $this->validate($request, [
-                'judul' => 'required',
-                'das_data_desa_id' => 'required|'.(!$this->isDatabaseGabungan() ? 'exists:das_data_desa,desa_id' : ''),
-                'text' => 'required',
-            ]);
-
             DB::transaction(function () use ($request) {
                 $desa = (new DesaService())->getDesaByKode($request->get('das_data_desa_id'));
                 $id = Pesan::create([
@@ -224,7 +205,7 @@ class PesanController extends Controller
         }
     }
 
-    public function setArsipPesan(Request $request)
+    public function setArsipPesan(SetArsipPesanRequest $request): RedirectResponse
     {
         $pesan = Pesan::findOrFail($request->get('id'));
         $pesan->diarsipkan = Pesan::MASUK_ARSIP;
@@ -235,7 +216,7 @@ class PesanController extends Controller
         return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
     }
 
-    public function setMultipleReadPesanStatus(Request $request)
+    public function setMultipleReadPesanStatus(SetMultipleReadPesanStatusRequest $request): RedirectResponse
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
@@ -249,7 +230,7 @@ class PesanController extends Controller
         return back()->withInput()->with('error', 'Pesan gagal ditandai!');
     }
 
-    public function setMultipleArsipPesanStatus(Request $request)
+    public function setMultipleArsipPesanStatus(SetMultipleArsipPesanStatusRequest $request): RedirectResponse
     {
         $array = json_decode($request->get('array_id'));
         $pesan = Pesan::whereIn('id', $array)->update([
@@ -263,7 +244,7 @@ class PesanController extends Controller
         return back()->withInput()->with('error', 'Pesan gagal diarsipkan!');
     }
 
-    public function replyPesan(Request $request)
+    public function replyPesan(ReplyPesanRequest $request): RedirectResponse
     {
         $pesan = PesanDetail::create([
             'pesan_id' => $request->get('id'),
@@ -277,5 +258,22 @@ class PesanController extends Controller
         }
 
         return back()->withInput()->with('error', 'Pesan gagal dikirim!');
+    }
+
+    protected function loadCounter(): array
+    {
+        $counter_unread = Pesan::where([
+            'jenis' => Pesan::PESAN_MASUK,
+            'diarsipkan' => Pesan::NON_ARSIP,
+            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
+        $counter_unread_keluar = Pesan::where([
+            'jenis' => Pesan::PESAN_KELUAR,
+            'diarsipkan' => Pesan::NON_ARSIP,
+            'sudah_dibaca' => Pesan::BELUM_DIBACA])->count();
+
+        return [
+            'counter_unread' => $counter_unread,
+            'counter_unread_keluar' => $counter_unread_keluar,
+        ];
     }
 }

@@ -54,6 +54,12 @@ class BaseApiService
             // Buat permintaan API dengan Header dan Parameter
             $response = Http::withHeaders($this->header)->{$this->resolveMethod($method)}($this->baseUrl . $endpoint, $params);
             session()->forget('error_api');
+
+            // Jika response gagal (non-2xx), kembalikan array kosong
+            if (!$response->successful()) {
+                return [];
+            }
+
             $jsonResponse = $response->json();
 
             if($this->isFullResponse()) {
@@ -62,7 +68,7 @@ class BaseApiService
             }
 
             // Return JSON hasil, cek apakah ada key 'data', jika tidak ada kembalikan seluruh response
-            if (isset($jsonResponse['data'])) {
+            if (array_key_exists('data', $jsonResponse)) {
                 return $jsonResponse['data'];
             }
 

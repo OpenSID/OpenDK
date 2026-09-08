@@ -34,6 +34,7 @@ use App\Models\Lembaga;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Http;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -122,6 +123,20 @@ test('it can show edit lembaga page (gabungan mode)', function () {
         ['key' => 'api_key_database_gabungan'],
         ['value' => 'test-key']
     );
+
+    Http::fake([
+        'http://localhost:8000/*' => Http::response([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'nama' => 'John Doe',
+                        'nik' => '1234567890123456',
+                    ],
+                ],
+            ],
+        ], 200),
+    ]);
 
     $penduduk = getLembagaPenduduk();
     $kategori = getLembagaKategori();

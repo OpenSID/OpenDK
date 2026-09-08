@@ -103,6 +103,23 @@ test('it can show create lembaga page (gabungan mode)', function () {
         ['value' => 'test-key']
     );
 
+    Http::fake([
+        'http://localhost:8000/api/v1/wilayah/desa*' => Http::response([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'kode_desa' => '5102060001',
+                        'nama_desa' => 'Desa Test',
+                        'sebutan_desa' => 'Desa',
+                        'path' => null,
+                    ],
+                ],
+            ],
+        ], 200),
+        'http://localhost:8000/*' => Http::response(['data' => []], 200),
+    ]);
+
     $response = get(route('data.lembaga.create'));
 
     $response->assertStatus(200);
@@ -125,7 +142,20 @@ test('it can show edit lembaga page (gabungan mode)', function () {
     );
 
     Http::fake([
-        'http://localhost:8000/*' => Http::response([
+        'http://localhost:8000/api/v1/wilayah/desa*' => Http::response([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'kode_desa' => '5102060001',
+                        'nama_desa' => 'Desa Test',
+                        'sebutan_desa' => 'Desa',
+                        'path' => null,
+                    ],
+                ],
+            ],
+        ], 200),
+        'http://localhost:8000/api/v1/opendk/sync-penduduk-opendk*' => Http::response([
             'data' => [
                 [
                     'id' => 1,
@@ -136,6 +166,7 @@ test('it can show edit lembaga page (gabungan mode)', function () {
                 ],
             ],
         ], 200),
+        'http://localhost:8000/*' => Http::response(['data' => []], 200),
     ]);
 
     $penduduk = getLembagaPenduduk();

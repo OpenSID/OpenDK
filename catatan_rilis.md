@@ -8,6 +8,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### BUG
 
+1. [#1718](https://github.com/OpenSID/OpenDK/issues/1718) Bug pada Modul Potensi – OpenDK v2608.0.2.
 
 #### TEKNIS
 

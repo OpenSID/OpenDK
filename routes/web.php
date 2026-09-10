@@ -235,7 +235,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'potensi'], function () {
                 Route::permanentRedirect('/', '/');
                 Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
-                Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+                Route::get('{kategori}/{id}', 'PageController@PotensiShow')->name('potensi.kategori.show');
             });
 
             Route::any('refresh-captcha', 'PageController@refresh_captcha')->name('refresh-captcha');

@@ -109,7 +109,7 @@
         zoom: 13
       });
 
-      var path_kec = {!! $data_umum->path ?? '[]' !!};
+      var path_kec = {!! ($data_umum->path ?? null) ?: '[]' !!};
       // Geolocation IP Route/GPS
       geoLocation(peta_wilayah);
       showPolygon(path_kec, peta_wilayah);

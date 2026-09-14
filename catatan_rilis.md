@@ -1,4 +1,4 @@
-Di rilis versi v2608.0.2 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2609.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
@@ -8,6 +8,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### BUG
 
+1. [#1718](https://github.com/OpenSID/OpenDK/issues/1718) Bug pada Modul Potensi – OpenDK v2608.0.2.
+2. [#1724](https://github.com/OpenSID/OpenDK/issues/1724) eta Letak Geografis kosong (Bounds are not valid) karena $data_umum tidak dikirim ke view gabungan.
 
 #### TEKNIS
 

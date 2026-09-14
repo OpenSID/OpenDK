@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Penduduk;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class PendudukService extends BaseApiService
@@ -134,21 +133,18 @@ class PendudukService extends BaseApiService
     /**
      * Export Data Penduduk.
      */
-    public function cekPendudukNikTanggalLahir($nik, $tgl_lhr = null)
+    public function cekPendudukNikTanggalLahir(string $nik, $tgl_lhr = null)
     {
         try {
-            $baseUrl = $this->settings['api_server_database_gabungan'];
-
-            $response = Http::post($baseUrl . '/api/v1/opendk/penduduk-nik-tanggalahir', [
-                'kode_kecamatan' => str_replace('.', '', config('profil.kecamatan_id')),
+            $data = $this->apiRequestPost('/api/v1/opendk/penduduk-nik-tanggalahir', [
+                'kode_kecamatan' => $this->kodeKecamatan,
                 'nik' => $nik,
                 'tanggallahir' => $tgl_lhr,
             ]);
 
-            if ($response->successful() && $response->json('data')) {
-                $pendudukData = $response->json('data');
+            if ($data) {
                 $penduduk = new Penduduk();
-                $penduduk->forceFill($pendudukData);
+                $penduduk->forceFill($data);
                 return $penduduk;
             }
 

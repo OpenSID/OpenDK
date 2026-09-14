@@ -5,6 +5,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### FITUR
 
+1. [#1725](https://github.com/OpenSID/OpenDK/issues/1725) Penambahan fungsi pratinjau file pdf untuk kebutuhan OpenDK tidak di dukung.
 
 #### BUG
 

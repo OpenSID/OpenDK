@@ -108,6 +108,29 @@ class PendudukService extends BaseApiService
     }
 
     /**
+     * Ambil beberapa data penduduk dari database gabungan sekaligus
+     * menggunakan filter id_penduduk berupa array.
+     *
+     * @param  array<int, int|string>  $ids
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function pendudukGabunganByIds(array $ids)
+    {
+        if (empty($ids)) {
+            return collect();
+        }
+
+        $data = $this->apiRequest('/api/v1/opendk/sync-penduduk-opendk', [
+            'filter[kode_kecamatan]' => str_replace('.', '', config('profil.kecamatan_id')),
+            'filter[id_penduduk]' => $ids,
+            'page[size]' => count($ids),
+        ]);
+
+        return collect($data)->filter(fn (mixed $item): bool => is_array($item));
+    }
+
+    /**
      * Export Data Penduduk.
      */
     public function cekPendudukNikTanggalLahir(string $nik, $tgl_lhr = null)

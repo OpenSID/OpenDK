@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\Regulasi;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegulasiRequest;
 use App\Http\Requests\RegulasiUpdateRequest;
+use App\Models\Regulasi;
 use App\Models\TipeRegulasi;
+use App\Traits\HandlesFileUpload;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -124,7 +124,6 @@ class RegulasiController extends Controller
             $input['profil_id'] = $this->profil->id;
             $this->handleFileUpload($request, $input, 'file_regulasi', 'regulasi');
 
-
             if ($request->hasFile('file_regulasi')) {
                 $input['mime_type'] = $request->file('file_regulasi')->getMimeType();
             }
@@ -167,7 +166,13 @@ class RegulasiController extends Controller
     public function download(Regulasi $regulasi)
     {
         try {
-            return response()->download($regulasi->file_regulasi);
+            $filePath = $this->resolveSecureFilePath($regulasi->file_regulasi);
+
+            if (!$filePath) {
+                return back()->with('error', 'Dokumen regulasi tidak ditemukan');
+            }
+
+            return response()->download($filePath);
         } catch (\Exception $e) {
             Log::error('Regulasi download failed', [
                 'error' => $e->getMessage(),

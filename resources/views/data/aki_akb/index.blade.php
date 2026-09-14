@@ -55,7 +55,10 @@
                     url: "{!! route('data.aki-akb.getdata') !!}",
                     type: 'POST',
                     data: function(d) {
-                        d.desa_id = $('#list_desa').val();
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
                     }
                 },
                 columns: [{
@@ -92,10 +95,11 @@
                     [1, 'desc']
                 ]
             });
-
+            
             $('#list_desa').on('select2:select', function(e) {
-                data.columns(1).search(this.value).draw();
+                data.ajax.reload();
             });
+            
         });
     </script>
     @include('forms.datatable-vertical')

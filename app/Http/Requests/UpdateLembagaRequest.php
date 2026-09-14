@@ -3,41 +3,35 @@
 namespace App\Http\Requests;
 
 use App\Models\Lembaga;
+use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateLembagaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         $rules = [
             'nama' => 'required|string|max:255',
             'lembaga_kategori_id' => 'required|exists:das_lembaga_kategori,id',
-            'penduduk_id' => 'required|exists:das_penduduk,id',
         ];
 
-        // Dapatkan id lembaga dari route
         $id = $this->route('id');
-
-        // Cek apakah field kode mengalami perubahan
         $lembaga = Lembaga::findOrFail($id);
-        
+
         if ($this->input('kode') !== $lembaga->kode) {
             $rules['kode'] = 'required|string|max:255|unique:das_lembaga,kode';
+        }
+
+        if (SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->value('value') === '1') {
+            $rules['penduduk_id'] = 'nullable|integer';
+            $rules['penduduk_id_gabungan'] = 'required|integer';
+        } else {
+            $rules['penduduk_id'] = 'required|exists:das_penduduk,id';
         }
 
         return $rules;
@@ -55,6 +49,7 @@ class UpdateLembagaRequest extends FormRequest
             'kode' => 'Kode Lembaga',
             'lembaga_kategori_id' => 'Kategori Lembaga',
             'penduduk_id' => 'Ketua Lembaga',
+            'penduduk_id_gabungan' => 'Ketua Lembaga',
         ];
     }
 }

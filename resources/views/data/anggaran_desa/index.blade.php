@@ -55,7 +55,10 @@
                     url: "{!! route('data.anggaran-desa.getdata') !!}",
                     type: "POST",
                     data: function(d) {
-                        d.desa = $('#list_desa').val();
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
                     }
                 },
                 columns: [{

@@ -1,3 +1,9 @@
+@php
+    $isDatabaseGabungan = $isDatabaseGabungan ?? false;
+    $pendudukField = $isDatabaseGabungan ? 'penduduk_id_gabungan' : 'penduduk_id';
+    $selectedDesaId = $selectedDesaId ?? null;
+    $selectedPendudukId = $selectedPendudukId ?? null;
+@endphp
 {{ html()->hidden('suplemen_id', $suplemen->id) }}
 @if ($suplemen->sasaran == 3)
     <div class="form-group">
@@ -7,11 +13,7 @@
             <select name="desa_id" id="desa" class="form-control">
                 <option class="form-control" value="">Pilih {{ config('setting.sebutan_desa') }}</option>
                 @foreach ($desa as $item)
-                    @if ($anggota == null)
-                        <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
-                    @else
-                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
-                    @endif
+                    <option {{ $selectedDesaId == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                 @endforeach
             </select>
         </div>
@@ -20,16 +22,12 @@
         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">Nama Penduduk</label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            <select name="penduduk_id" id="penduduk" class="form-control" disabled>
+            <select name="{{ $pendudukField }}" id="penduduk" class="form-control" disabled>
                 <option class="form-control" value="">Pilih penduduk</option>
                 @foreach ($data as $penduduk)
-                    @if ($anggota == null)
-                        <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
-                    @else
-                        <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">
-                            {{ $penduduk['nama'] }}
-                        </option>
-                    @endif
+                    <option {{ $selectedPendudukId == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">
+                        {{ $penduduk['nama'] }}
+                    </option>
                 @endforeach
             </select>
         </div>
@@ -43,32 +41,25 @@
             <select name="desa_id" id="desa" class="form-control">
                 <option class="form-control" value="">Pilih {{ config('setting.sebutan_desa') }}</option>
                 @foreach ($desa as $item)
-                    @if ($anggota == null)
-                        <option value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
-                    @else
-                        <option {{ $anggota->penduduk->desa->desa_id == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
-                    @endif
+                    <option {{ $selectedDesaId == $item['desa_id'] ? 'selected' : '' }} value="{{ $item['desa_id'] }}">{{ $item['nama'] }}</option>
                 @endforeach
             </select>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="penduduk_id">{{ $suplemen->sasaran == 2
-            ? 'Nama Kepala
-                                                                                                                Keluarga'
-            : 'Nama Penduduk' }}</label>
+        <label class="control-label col-md-3 col-sm-3 col-xs-12"
+            for="penduduk_id">{{ $suplemen->sasaran == 2
+                ? 'Nama Kepala
+                                                                                                                                                Keluarga'
+                : 'Nama Penduduk' }}</label>
 
         <div class="col-md-6 col-sm-6 col-xs-12">
-            <select name="penduduk_id" id="penduduk" class="form-control" disabled>
+            <select name="{{ $pendudukField }}" id="penduduk" class="form-control">
                 <option class="form-control" value="">Pilih Penduduk</option>
                 @foreach ($data as $penduduk)
-                    @if ($anggota == null)
-                        <option value="{{ $penduduk['id'] }}">{{ $penduduk['nama'] }}</option>
-                    @else
-                        <option {{ $anggota->penduduk->id == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">
-                            {{ $penduduk['nama'] }}
-                        </option>
-                    @endif
+                    <option {{ $selectedPendudukId == $penduduk['id'] ? 'selected' : '' }} value="{{ $penduduk['id'] }}">
+                        {{ $penduduk['nama'] }}
+                    </option>
                 @endforeach
             </select>
         </div>

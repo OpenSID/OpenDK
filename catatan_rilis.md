@@ -18,7 +18,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 7. [#1733](https://github.com/OpenSID/OpenDK/issues/1733) perbaikan filter kesehatan.
 8. [#1729](https://github.com/OpenSID/OpenDK/issues/1729) perbaikan tombol sarana ui.
 9. [#1730](https://github.com/OpenSID/OpenDK/issues/1730) data yang tampil pada datatable overlaping tidak di handle dengan scroll.
-
+10. [#1735](https://github.com/OpenSID/OpenDK/issues/1735) Periksa bagian tambah ketua lembaga ketika menggunakan API satu data.
 
 #### TEKNIS
 

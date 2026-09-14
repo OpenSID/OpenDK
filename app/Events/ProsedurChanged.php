@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,37 +24,32 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Events;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Prosedur;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class SuplemenTerdata extends Model
+class ProsedurChanged
 {
-    use HasFactory;
+    use Dispatchable;
+    use SerializesModels;
 
-    protected $table = 'das_suplemen_terdata';
+    public Prosedur $prosedur;
 
-    protected $fillable = [
-        'suplemen_id',
-        'desa_id',
-        'penduduk_id',
-        'penduduk_id_gabungan',
-        'keterangan',
-    ];
-
-    public function suplemen()
+    /**
+     * Create a new event instance.
+     *
+     * @param  Prosedur  $prosedur
+     * @return void
+     */
+    public function __construct(Prosedur $prosedur)
     {
-        return $this->belongsTo(Suplemen::class);
-    }
-
-    public function penduduk()
-    {
-        return $this->belongsTo(Penduduk::class);
+        $this->prosedur = $prosedur;
     }
 }

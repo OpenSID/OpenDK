@@ -51,24 +51,39 @@
 @push('scripts')
     <script>
         $(function() {
-
-            var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'gif'];
+            var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'pdf'];
+            var currentBlobUrl = null;
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase();
+                    var file = input.files[0];
+                    var extension = file.name.split('.').pop().toLowerCase();
                     var isSuccess = fileTypes.indexOf(extension) > -1;
 
                     if (isSuccess) {
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-                            $('#showgambar').attr('src', e.target.result);
-                            $('#showgambar').removeClass('hide');
-                        };
-                        reader.readAsDataURL(input.files[0]);
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
+                        }
+
+                        currentBlobUrl = URL.createObjectURL(file);
+
+                        if (extension !== 'pdf') {
+                            $('#showgambar').attr('src', currentBlobUrl).removeClass('hide');
+                            $('#showpdf').addClass('hide').attr('src', '');
+                        } else {
+                            $('#showpdf').attr('src', currentBlobUrl + '#toolbar=1').removeClass('hide');
+                            $('#showgambar').addClass('hide').attr('src', '');
+                        }
                     } else {
                         $("#file_gambar").val('');
-                        alert('File tersebut tidak diperbolehkan.');
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
+                        }
+                        $('#showgambar').addClass('hide').attr('src', '');
+                        $('#showpdf').addClass('hide').attr('src', '');
+                        openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }
             }

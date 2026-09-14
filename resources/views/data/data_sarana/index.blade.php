@@ -76,8 +76,11 @@
                     url: "{{ route('data.data-sarana.getdata') }}",
                     type: "POST",
                     data: function(d) {
-                        d.desa_id = $('#list_desa').val(),
-                            d.kategori = $('#kategori').val()
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
+                        d.kategori = $('#kategori').val()
                     }
                 },
                 columns: [{

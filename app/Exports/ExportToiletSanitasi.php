@@ -83,7 +83,7 @@ class ExportToiletSanitasi implements FromCollection, WithHeadings, WithMapping,
 
         return [
             $toiletSanitasi->id,
-            $toiletSanitasi->desa->nama ?? 'Tidak Diketahui',
+            nama_desa($toiletSanitasi->desa_id) ?? 'Tidak Diketahui',
             $toiletSanitasi->desa_id,
             $toiletSanitasi->toilet,
             $toiletSanitasi->sanitasi,

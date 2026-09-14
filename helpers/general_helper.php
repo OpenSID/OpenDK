@@ -759,6 +759,20 @@ function kembalikanSlug($str): ?string
     return str_replace(['-', '.'], [' ', ''], $str);
 }
 
+if (! function_exists('list_desa')) {
+    function list_desa(bool $all = false)
+    {
+        return (new \App\Services\DesaService)->listDesa($all)->pluck('nama', 'desa_id');
+    }
+}
+
+if (! function_exists('nama_desa')) {
+    function nama_desa(string $desaId): ?string
+    {
+        return list_desa()[$desaId] ?? null;
+    }
+}
+
 if (! function_exists('is_pdf')) {
     function is_pdf($path = null, $mime = null): bool
     {

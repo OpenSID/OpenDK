@@ -28,7 +28,7 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Unggah Dokumen</label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->file('file_dokumen')->class('form-control')->id('file_prosedur')->attribute('accept', '.jpeg,.png,.jpg,.gif,.svg,.xlsx,.xls,.doc,.docx,.pdf,.ppt,.pptx') !!}
+        {!! html()->file('file_dokumen')->class('form-control')->id('file_dokumen')->attribute('accept', '.jpeg,.png,.jpg,.gif,.svg,.xlsx,.xls,.doc,.docx,.pdf,.ppt,.pptx') !!}
         <br>
         @if (!empty($dokumen->file_dokumen))
             <a class="btn btn-sm btn-primary" href="{{ asset($dokumen->file_dokumen) }}">Download File</a>

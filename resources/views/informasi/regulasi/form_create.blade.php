@@ -19,20 +19,12 @@
 <div class="form-group">
     <label class="control-label col-md-3 col-sm-3 col-xs-12">File Regulasi <span class="required">*</span></label>
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <input accept="image/*, application/pdf" type="file" id="file_regulasi" name="file_regulasi" class="form-control" required>
+        <input accept=".jpg,.jpeg,.png,.gif,.pdf" type="file" id="file_regulasi" name="file_regulasi" class="form-control" required>
+        <x-upload-hint formats="JPG, JPEG, PNG, GIF, PDF" />
+        <div class="clearfix"></div>
         <br>
-
-        @if (isset($regulasi->file_regulasi) && $regulasi->mime_type != 'pdf')
-            <img class="" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
-        @endif
-
-        @if (isset($regulasi->file_regulasi) && $regulasi->mime_type == 'pdf')
-            <object data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
-        @endif
-
-        <img class="hide" src="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi) }} @else {{ 'http://placehold.co/1000x600' }} @endif" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
-
-        <object data="@if (isset($regulasi->file_regulasi)) {{ asset($regulasi->file_regulasi . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf hide" id="showpdf"> </object>
+        <img class="hide" id="showgambar" style="max-width:400px;max-height:250px;float:left;" />
+        <iframe src="" class="showpdf hide" id="showpdf" style="width: 100%; height: 400px; border: none;"></iframe>
     </div>
 </div>
 
@@ -45,34 +37,38 @@
 
     <script>
         $(function() {
-
-            var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'pdf']; //acceptable file types
+            var fileTypes = ['jpg', 'jpeg', 'png', 'gif', 'pdf'];
+            var currentBlobUrl = null;
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop().toLowerCase(), //file extension from input file
-                        isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
+                    var file = input.files[0];
+                    var extension = file.name.split('.').pop().toLowerCase();
+                    var isSuccess = fileTypes.indexOf(extension) > -1;
 
-                    if (isSuccess) { //yes
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-
-                            if (extension != 'pdf') {
-                                $('#showgambar').attr('src', e.target.result);
-                                $('#showgambar').removeClass('hide');
-                                $('#showpdf').addClass('hide');
-                            } else {
-                                $('#showpdf').attr('data', e.target.result + '#toolbar=1');
-                                $('#showpdf').removeClass('hide');
-                                $('#showgambar').addClass('hide');
-                            }
-
+                    if (isSuccess) {
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
                         }
 
-                        reader.readAsDataURL(input.files[0]);
-                    } else { //no
-                        //warning
+                        currentBlobUrl = URL.createObjectURL(file);
+
+                        if (extension !== 'pdf') {
+                            $('#showgambar').attr('src', currentBlobUrl).removeClass('hide');
+                            $('#showpdf').addClass('hide').attr('src', '');
+                        } else {
+                            $('#showpdf').attr('src', currentBlobUrl + '#toolbar=1').removeClass('hide');
+                            $('#showgambar').addClass('hide').attr('src', '');
+                        }
+                    } else {
                         $("#file_regulasi").val('');
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
+                        }
+                        $('#showgambar').addClass('hide').attr('src', '');
+                        $('#showpdf').addClass('hide').attr('src', '');
                         openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }

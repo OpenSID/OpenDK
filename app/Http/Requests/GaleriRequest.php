@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Services\FileUploadService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class GaleriRequest extends FormRequest
@@ -23,11 +24,15 @@ class GaleriRequest extends FormRequest
      */
     public function rules()
     {
+        $isUrl = $this->input('jenis') === 'url';
+        $maxRule = FileUploadService::isLimitEnabled() ? '|max:1024' : '';
+
         return [
             'judul' => 'required|string|max:191',
-            'jenis' => 'required',
-            'link' => $this->input('jenis') == 'url' ? 'required|max:255' : 'nullable',
-            'gambar.*' => $this->input('jenis') == 'url' ? 'nullable' : 'required|image|mimes:jpg,jpeg,png|max:1024',
+            'jenis' => 'required|in:file,url',
+            'link' => $isUrl ? 'required|string|max:255' : 'nullable',
+            'gambar' => (! $isUrl && $this->isMethod('post')) ? 'required|array' : 'nullable|array',
+            'gambar.*' => $isUrl ? 'nullable' : 'required|image|mimes:jpg,jpeg,png' . $maxRule . '|valid_file',
             'status' => 'required',
         ];
     }

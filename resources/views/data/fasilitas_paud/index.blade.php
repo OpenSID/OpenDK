@@ -56,7 +56,10 @@
                     url: "{!! route('data.fasilitas-paud.getdata') !!}",
                     type: 'POST',
                     data: function(d) {
-                        d.desa = $('#list_desa').val();
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
                     }
                 },
                 columns: [{
@@ -67,7 +70,7 @@
                         orderable: false
                     },
                     {
-                        data: 'desa.nama',
+                        data: 'nama_desa',
                         name: 'desa.nama'
                     },
                     {

@@ -44,11 +44,11 @@
                         '<div id="caption">' + (potensi.nama_potensi || '') + '</div>' +
                     '</div>' +
                     '<div class="attachment-pushed">' +
-                        '<h4 class="attachment-heading"><a href="{{ url("/potensi") }}/' + (potensi.tipe ? potensi.tipe.slug : '') + '/' + (potensi.slug || '') + '"><i class="fa fa-industry" aria-hidden="true"></i> ' + (potensi.nama_potensi || '') + '</a></h4>' +
+                        '<h4 class="attachment-heading"><a href="{{ url("/potensi") }}/' + (potensi.tipe ? potensi.tipe.slug : '') + '/' + (item.id || '') + '"><i class="fa fa-industry" aria-hidden="true"></i> ' + (potensi.nama_potensi || '') + '</a></h4>' +
                         '<div class="attachment-text">' +
                             (potensi.deskripsi ? (potensi.deskripsi.length > 300 ? potensi.deskripsi.substring(0, 300) + ' ...' : potensi.deskripsi) : '') +
                             '<div class="pull-right button-group" style="position:relative; bottom:0px; margin-bottom: 0px;">' +
-                                '<a href="{{ url("/potensi") }}/' + (potensi.tipe ? potensi.tipe.slug : '') + '/' + (potensi.slug || '') + '" class="btn btn-xs btn-primary"><i class="fa fa-angle-double-right"></i> Baca Selengkapnya</a>' +
+                                '<a href="{{ url("/potensi") }}/' + (potensi.tipe ? potensi.tipe.slug : '') + '/' + (item.id || '') + '" class="btn btn-xs btn-primary"><i class="fa fa-angle-double-right"></i> Baca Selengkapnya</a>' +
                             '</div>' +
                         '</div>' +
                     '</div>' +

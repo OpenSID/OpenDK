@@ -109,7 +109,7 @@ class ExportAKIAKB implements FromCollection, WithHeadings, WithMapping, WithSty
 
         return [
             $akiAkb->id,
-            $akiAkb->desa->nama ?? 'Tidak Diketahui',
+            nama_desa($akiAkb->desa_id) ?? 'Tidak Diketahui',
             $akiAkb->desa_id,
             $akiAkb->aki,
             $akiAkb->akb,

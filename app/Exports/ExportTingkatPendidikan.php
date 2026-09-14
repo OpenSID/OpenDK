@@ -83,7 +83,7 @@ class ExportTingkatPendidikan implements FromCollection, WithHeadings, WithMappi
     {
         return [
             $tingkatPendidikan->id,
-            $tingkatPendidikan->desa->nama ?? '',
+            nama_desa($tingkatPendidikan->desa_id) ?? '',
             $tingkatPendidikan->tidak_tamat_sekolah,
             $tingkatPendidikan->tamat_sd,
             $tingkatPendidikan->tamat_smp,

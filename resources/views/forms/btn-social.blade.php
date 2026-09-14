@@ -15,7 +15,7 @@
 @endif
 
 @if (isset($export_url))
-    <a href="{{ $export_url }}">
+    <a href="{{ $export_url }}" id="export-url">
         <button type="button" class="btn btn-primary btn-sm btn-social" title="{{ $export_text ?? 'Ekspor' }}">
             <i class="fa fa-upload"></i>{{ $export_text ?? 'Ekspor' }}
         </button>

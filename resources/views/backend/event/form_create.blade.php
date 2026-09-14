@@ -40,32 +40,41 @@
     <script type="application/javascript">
     var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'svg'];
     var imageTypes = ['jpg', 'jpeg', 'png', 'bmp', 'gif', 'svg'];
+    var currentAttachmentBlobUrl = null;
 
     function readAttachmentURL(input) {
         if (input.files && input.files[0]) {
-            var extension = input.files[0].name.split('.').pop().toLowerCase();
+            var file = input.files[0];
+            var extension = file.name.split('.').pop().toLowerCase();
             var isSuccess = fileTypes.indexOf(extension) > -1;
 
             if (isSuccess) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    if (imageTypes.indexOf(extension) > -1) {
-                        $('#showgambar-attachment').attr('src', e.target.result);
-                        $('#showgambar-attachment').removeClass('hide');
-                        $('#showpdf-attachment').addClass('hide');
-                    } else if (extension === 'pdf') {
-                        $('#showpdf-attachment').attr('src', e.target.result + '#toolbar=1');
-                        $('#showpdf-attachment').removeClass('hide');
-                        $('#showgambar-attachment').addClass('hide');
-                    } else {
-                        $('#showgambar-attachment').addClass('hide');
-                        $('#showpdf-attachment').addClass('hide');
-                    }
-                };
-                reader.readAsDataURL(input.files[0]);
+                if (currentAttachmentBlobUrl) {
+                    URL.revokeObjectURL(currentAttachmentBlobUrl);
+                    currentAttachmentBlobUrl = null;
+                }
+
+                currentAttachmentBlobUrl = URL.createObjectURL(file);
+
+                if (imageTypes.indexOf(extension) > -1) {
+                    $('#showgambar-attachment').attr('src', currentAttachmentBlobUrl).removeClass('hide');
+                    $('#showpdf-attachment').addClass('hide').attr('src', '');
+                } else if (extension === 'pdf') {
+                    $('#showpdf-attachment').attr('src', currentAttachmentBlobUrl + '#toolbar=1').removeClass('hide');
+                    $('#showgambar-attachment').addClass('hide').attr('src', '');
+                } else {
+                    $('#showgambar-attachment').addClass('hide').attr('src', '');
+                    $('#showpdf-attachment').addClass('hide').attr('src', '');
+                }
             } else {
                 $('#attachment').val('');
-                alert('File tersebut tidak diperbolehkan.');
+                if (currentAttachmentBlobUrl) {
+                    URL.revokeObjectURL(currentAttachmentBlobUrl);
+                    currentAttachmentBlobUrl = null;
+                }
+                $('#showgambar-attachment').addClass('hide').attr('src', '');
+                $('#showpdf-attachment').addClass('hide').attr('src', '');
+                openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
             }
         }
     }

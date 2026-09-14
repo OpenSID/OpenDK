@@ -30,15 +30,18 @@
         $(document).ready(function() {
             var table = $('#dokumen-table').DataTable({
                 processing: true,
-                serverSide: false,
+                serverSide: true,
                 ajax: {
                     url: '{!! $urlApi !!}/form-dokumen',
                     cache: false,
-                    dataSrc: 'data',
+                    dataSrc: function(json) {
+                        json.recordsTotal = json.meta?.pagination?.total ?? 0;
+                        json.recordsFiltered = json.meta?.pagination?.total ?? 0;
+                        return json.data;
+                    },
                     data: function(d) {
-                        // Convert DataTables parameters to API format (use safe defaults to avoid NaN)
                         var start = (typeof d.start !== 'undefined' && d.start !== null) ? d.start : 0;
-                        var length = (typeof d.length !== 'undefined' && d.length) ? d.length : (typeof d.pageLength !== 'undefined' ? d.pageLength : 10);
+                        var length = (typeof d.length !== 'undefined' && d.length) ? d.length : 10;
                         var pageNumber = 1;
                         if (length && !isNaN(length)) {
                             pageNumber = Math.floor(start / length) + 1;
@@ -52,6 +55,8 @@
                         };
                     }
                 },
+                pageLength: 10,
+                lengthMenu: [5, 10, 25, 50, 100],
                 columns: [{
                         data: null,
                         name: 'aksi',

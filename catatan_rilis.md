@@ -27,3 +27,4 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 1. [#1713](https://github.com/OpenSID/OpenDK/issues/1713) File di storage/app/public 404 karena direktori upload dibuat permission 0700 (Flysystem directory visibility).
 2. [#58](https://github.com/OpenSID/wiki-keamanan/issues/58) Insecure deserialization via Crypt::decrypt() (unserialize=true) on LogViewer user params.
 3. [#57](https://github.com/OpenSID/wiki-keamanan/issues/57) CRITICAL: RCE via Theme Hook include_once — backtick execution operator bypasses ThemeHooksValidator (theme.php).
+4. [#1759](https://github.com/OpenSID/OpenDK/issues/1759) Pastikan perubahan Known security vulnerabilities detected masuk rilis.

@@ -14,6 +14,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1721](https://github.com/OpenSID/OpenDK/issues/1721) Halaman Unduhan Dokumen hanya menampilkan data sesuai default pagination API (10 data).
 4. [#1731](https://github.com/OpenSID/OpenDK/issues/1731) Perbaikan menambah anggota penduduk untuk data suplemen tidak menampilkan list penduduk & keluarga.
 5. [#1732](https://github.com/OpenSID/OpenDK/issues/1732) Berkas download dokumen laporan-penduduk pada data tidak sikron dari OpenSID.
+6. [#1727](https://github.com/OpenSID/OpenDK/issues/1727) Perbaikan Tampilan Thumbnail Galeri dan Pratinjau Gambar Dinamis.
 
 #### TEKNIS
 

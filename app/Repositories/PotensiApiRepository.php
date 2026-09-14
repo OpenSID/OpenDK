@@ -20,6 +20,7 @@ class PotensiApiRepository extends BaseApiRepository
             AllowedFilter::exact('kategori_id'),
             AllowedFilter::exact('id'),
             AllowedFilter::exact('tipe.id'),
+            AllowedFilter::exact('tipe.slug'),
         ];
         $this->allowedSorts = [
             'id',

@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,37 +24,34 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+namespace App\Listeners;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\Events\ProsedurChanged;
+use App\Services\CacheService;
+use Illuminate\Support\Facades\Log;
 
-class SuplemenTerdata extends Model
+class ClearProsedurCacheListener
 {
-    use HasFactory;
-
-    protected $table = 'das_suplemen_terdata';
-
-    protected $fillable = [
-        'suplemen_id',
-        'desa_id',
-        'penduduk_id',
-        'penduduk_id_gabungan',
-        'keterangan',
-    ];
-
-    public function suplemen()
+    /**
+     * Handle the event.
+     *
+     * @return void
+     */
+    public function handle(ProsedurChanged $event)
     {
-        return $this->belongsTo(Suplemen::class);
-    }
-
-    public function penduduk()
-    {
-        return $this->belongsTo(Penduduk::class);
+        try {
+            $cacheService = app(CacheService::class);
+            $prefix = config('theme-api.prosedur.cache_prefix', 'prosedur:api');
+            $cacheService->removeCachePrefix($prefix);
+        } catch (\Exception $e) {
+            Log::error('Exception occurred while clearing prosedur cache', [
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

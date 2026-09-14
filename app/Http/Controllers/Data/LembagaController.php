@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Models\Lembaga;
-use App\Models\Penduduk;
-use Illuminate\Http\Request;
-use App\Models\LembagaAnggota;
-use App\Models\KategoriLembaga;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreLembagaRequest;
 use App\Http\Requests\UpdateLembagaRequest;
+use App\Models\KategoriLembaga;
+use App\Models\Lembaga;
+use App\Models\LembagaAnggota;
+use App\Models\Penduduk;
+use App\Services\PendudukService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class LembagaController extends Controller
 {
@@ -35,14 +36,22 @@ class LembagaController extends Controller
     public function getData(Request $request)
     {
         if ($request->ajax()) {
-            $lembagaList = Lembaga::with(['lembagaKategori', 'penduduk', 'lembagaAnggota'])
+            $lembagaList = Lembaga::with(['lembagaKategori', 'penduduk', 'pendudukGabungan', 'lembagaAnggota'])
                 ->withCount('lembagaAnggota as jml_anggota')
                 ->get();
+
+            $pendudukGabunganIds = $lembagaList->pluck('penduduk_id_gabungan')->filter()->unique()->values()->all();
+
+            $pendudukGabungan = collect();
+            if ($this->isDatabaseGabungan() && !empty($pendudukGabunganIds)) {
+                $pendudukGabungan = (new PendudukService())->pendudukGabunganByIds($pendudukGabunganIds);
+            }
+
             return DataTables::of($lembagaList)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
-                        $data['detail_url'] = auth()->user()->can('access.data.lembaga_anggota.view') ? route('data.lembaga_anggota.index', $row->slug) : null;
+                        $data['detail_url'] = auth()->user()->can('access.data.lembaga.view') ? route('data.lembaga_anggota.index', $row->slug) : null;
                         $data['edit_url'] = auth()->user()->can('access.data.lembaga.edit') ? route('data.lembaga.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.data.lembaga.delete') ? route('data.lembaga.destroy', $row->id) : null;
                     }
@@ -52,7 +61,13 @@ class LembagaController extends Controller
                 ->addColumn('kategori', function ($row) {
                     return $row->lembagaKategori ? $row->lembagaKategori->nama : '-';
                 })
-                ->addColumn('ketua', function ($row) {
+                ->addColumn('ketua', function ($row) use ($pendudukGabungan) {
+                    if ($this->isDatabaseGabungan()) {
+                        $penduduk = $pendudukGabungan->firstWhere('id', $row->penduduk_id_gabungan);
+
+                        return $penduduk ? ($penduduk['attributes']['nama'] ?? '-') : '-';
+                    }
+
                     return $row->penduduk ? $row->penduduk->nama : '-';
                 })
                 ->rawColumns(['aksi'])
@@ -69,12 +84,15 @@ class LembagaController extends Controller
     {
         $page_title = $this->title;
         $page_description = 'Tambah ' . $this->title;
+
+        if ($this->isDatabaseGabungan()) {
+            $view = 'data.lembaga.gabungan.create';
+            return view($view, compact('page_title', 'page_description'));
+        }
+
         $kategoriLembagaList = KategoriLembaga::pluck('nama', 'id');
         $pendudukList = Penduduk::all()->mapWithKeys(function ($penduduk) {
-            // Membuat string yang menggabungkan NIK, nama, dan alamat
             $optionText = "NIK: {$penduduk->nik} - {$penduduk->nama} - Dusun {$penduduk->dusun} RT {$penduduk->rt} / RW {$penduduk->rw}";
-
-            // Menambahkan ke array dengan 'id' sebagai key dan $optionText sebagai value
             return [$penduduk->id => $optionText];
         });
 
@@ -85,24 +103,28 @@ class LembagaController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(StoreLembagaRequest $request)
     {
         $data = $request->all();
 
-        // Menggunakan scope untuk menghasilkan slug yang unik
+        if ($this->isDatabaseGabungan()) {
+            $data['penduduk_id'] = null;
+            $data['penduduk_id_gabungan'] = $data['penduduk_id_gabungan'] ?? null;
+        }
+
         $data['slug'] = Lembaga::generateUniqueSlug($request->nama);
 
         try {
             DB::transaction(function () use ($data) {
-                // Insert ke table 'lembaga'
                 $lembaga = Lembaga::create($data);
 
-                // Insert ke tabel 'lembagaanggota' dengan id penduduk yang diambil dari input
                 LembagaAnggota::create([
                     'lembaga_id' => $lembaga->id,
                     'penduduk_id' => $data['penduduk_id'],
+                    'penduduk_id_gabungan' => $data['penduduk_id_gabungan'] ?? null,
                     'no_anggota' => 1,
                     'jabatan' => 1,
                     'keterangan' => 'Ketua lembaga'
@@ -125,6 +147,7 @@ class LembagaController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -136,6 +159,7 @@ class LembagaController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -143,12 +167,22 @@ class LembagaController extends Controller
         $lembaga = Lembaga::findOrFail($id);
         $page_title = $this->title;
         $page_description = 'Ubah ' . $this->title;
+
+        if ($this->isDatabaseGabungan()) {
+            $view = 'data.lembaga.gabungan.edit';
+            $pendudukGabungan = (new PendudukService())->pendudukGabunganByIds([$lembaga->penduduk_id_gabungan]);
+            $penduduk = new Penduduk();
+            if($pendudukGabungan[0]){                
+                $penduduk->nama = $pendudukGabungan[0]['attributes']['nama'];
+                $penduduk->nik = $pendudukGabungan[0]['attributes']['nik'];
+            }
+            $lembaga->setRelation('penduduk', $penduduk);  
+            return view($view, compact('page_title', 'page_description', 'lembaga'));
+        }
+
         $kategoriLembagaList = KategoriLembaga::pluck('nama', 'id');
         $pendudukList = Penduduk::all()->mapWithKeys(function ($penduduk) {
-            // Membuat string yang menggabungkan NIK, nama, dan alamat
             $optionText = "NIK: {$penduduk->nik} - {$penduduk->nama} - Dusun {$penduduk->dusun} RT {$penduduk->rt} / RW {$penduduk->rw}";
-
-            // Menambahkan ke array dengan 'id' sebagai key dan $optionText sebagai value
             return [$penduduk->id => $optionText];
         });
 
@@ -160,6 +194,7 @@ class LembagaController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateLembagaRequest $request, $id)
@@ -168,24 +203,25 @@ class LembagaController extends Controller
 
         try {
             DB::transaction(function () use ($data, $request, $id) {
-                // Temukan lembaga yang akan diupdate
                 $lembaga = Lembaga::findOrFail($id);
 
-                // Hanya buat slug baru jika nama lembaga berubah
                 if ($request->nama !== $lembaga->nama) {
                     $data['slug'] = Lembaga::generateUniqueSlug($request->nama);
                 }
 
-                // Update data lembaga
+                if ($this->isDatabaseGabungan()) {
+                    $data['penduduk_id'] = null;
+                    $data['penduduk_id_gabungan'] = $data['penduduk_id_gabungan'] ?? null;
+                }
+
                 $lembaga->update($data);
 
-                // Cek apakah anggota terkait sudah ada
                 $anggota = LembagaAnggota::where('lembaga_id', $lembaga->id)->first();
 
                 if ($anggota) {
-                    // Update penduduk_id pada anggota jika anggota sudah ada
                     $anggota->update([
                         'penduduk_id' => $data['penduduk_id'] ?? $lembaga->penduduk_id,
+                        'penduduk_id_gabungan' => $data['penduduk_id_gabungan'] ?? $lembaga->penduduk_id_gabungan,
                     ]);
                 }
             });
@@ -202,11 +238,11 @@ class LembagaController extends Controller
         return redirect()->route('data.lembaga.index')->with('success', 'Lembaga berhasil diubah!');
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)

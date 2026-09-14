@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Data;
 use App\Exports\ExportToiletSanitasi;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImportToiletSanitasiRequest;
+use App\Http\Requests\UpdateToiletSanitasiRequest;
 use App\Imports\ImporToiletSanitasi;
 use App\Models\ToiletSanitasi;
 use App\Services\DesaService;
@@ -65,8 +66,12 @@ class ToiletSanitasiController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $desa = request()->input('desa');
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
-        return DataTables::of(ToiletSanitasi::with(['desa']))
+        return DataTables::of(ToiletSanitasi::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+            return $query->where('desa_id', $desa);
+        })
+            ->with(['desa']))
             ->addColumn('aksi', function ($row) {
                 $data['edit_url'] = auth()->user()->can('access.data.toilet_sanitasi.edit') ? route('data.toilet-sanitasi.edit', $row->id) : null;
                 $data['delete_url'] = auth()->user()->can('access.data.toilet_sanitasi.delete') ? route('data.toilet-sanitasi.destroy', $row->id) : null;
@@ -114,7 +119,7 @@ class ToiletSanitasiController extends Controller
             return back()->with('error', 'Import data gagal.');
         }
 
-        return back()->with('success', 'Import data sukses.');
+        return redirect()->route('data.toilet_sanitasi.index')->with('success', 'Data berhasil diimpor!');        
     }
 
     /**
@@ -127,7 +132,7 @@ class ToiletSanitasiController extends Controller
     {
         $toilet = ToiletSanitasi::with(['desa'])->findOrFail($id);
         $page_title = 'Toilet & Sanitasi';
-        $page_description = 'Ubah Toilet & Sanitasi : ' . $toilet->desa->nama;
+        $page_description = 'Ubah Toilet & Sanitasi : ' . nama_desa($toilet->desa_id);
 
         return view('data.toilet_sanitasi.edit', compact('page_title', 'page_description', 'toilet'));
     }
@@ -138,15 +143,10 @@ class ToiletSanitasiController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateToiletSanitasiRequest $request, $id)
     {
-        request()->validate([
-            'toilet' => 'required',
-            'sanitasi' => 'required',
-        ]);
-
         try {
-            ToiletSanitasi::findOrFail($id)->update($request->all());
+            ToiletSanitasi::findOrFail($id)->update($request->validated());
         } catch (\Exception $e) {
             Log::error('Toilet Sanitasi update failed', [
                 'error' => $e->getMessage(),

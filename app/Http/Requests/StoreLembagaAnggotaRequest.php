@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\Lembaga;
+use App\Models\SettingAplikasi;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -25,9 +26,22 @@ class StoreLembagaAnggotaRequest extends FormRequest
      */
     public function rules()
     {
-        $slug = $this->route('slug'); 
+        $slug = $this->route('slug');
         $lembaga = Lembaga::where('slug', $slug)->first();
-        
+
+        if (SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->value('value') === '1') {
+            return [
+                'penduduk_id' => 'nullable|integer',
+                'penduduk_id_gabungan' => 'required|integer',
+                'no_anggota' => [
+                    'required',
+                    Rule::unique('das_lembaga_anggota', 'no_anggota')
+                        ->where('lembaga_id', $lembaga->id),
+                ],
+                'jabatan_id' => 'required|in:1,2,3,4,5',
+            ];
+        }
+
         return [
             'penduduk_id' => 'required|exists:das_penduduk,id',
             'no_anggota' => [
@@ -35,7 +49,7 @@ class StoreLembagaAnggotaRequest extends FormRequest
                 Rule::unique('das_lembaga_anggota', 'no_anggota')
                     ->where('lembaga_id', $lembaga->id),
             ],
-            'jabatan_id' => 'required|in:1,2,3,4,5', // Kode jabatan harus 1-5
+            'jabatan_id' => 'required|in:1,2,3,4,5',
         ];
     }
 
@@ -48,6 +62,7 @@ class StoreLembagaAnggotaRequest extends FormRequest
     {
         return [
             'penduduk_id' => 'Nama Anggota',
+            'penduduk_id_gabungan' => 'Nama Anggota',
             'no_anggota' => 'Nomor Anggota',
             'jabatan_id' => 'Jabatan',
         ];

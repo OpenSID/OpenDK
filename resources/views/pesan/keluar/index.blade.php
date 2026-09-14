@@ -26,7 +26,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     {!! html()->form()->route('pesan.keluar')->method('get')->id('form-search-desa')->open() !!}
-                                    {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'id'), $desa_id)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required() !!}
+                                    @include('layouts.fragments.select-desa', ['selectAttributes' => ['name' => 'das_data_desa_id'], 'selectedOption' => $desa_id])
                                     {!! html()->form()->close() !!}
                                 </div>
                                 <div class="col-md-6">

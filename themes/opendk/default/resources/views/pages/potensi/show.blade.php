@@ -30,10 +30,14 @@
                 success: function(response) {
                     if (response.data && response.data.length > 0) {
                         var potensi = response.data[0].attributes;                                                
+                        let isPdf = (potensi.mime_type === 'application/pdf' || (potensi.file_gambar && potensi.file_gambar.toLowerCase().endsWith('.pdf')) || (potensi.file_gambar_path && potensi.file_gambar_path.toLowerCase().endsWith('.pdf')));
+                        let mediaHtml = isPdf
+                            ? '<iframe src="' + (potensi.file_gambar_path || '') + '#toolbar=1" width="100%" height="550" style="border: 1px solid #e0e0e0; border-radius: 4px;" frameborder="0"></iframe>'
+                            : '<img src="' + (potensi.file_gambar_path || "{{ asset('/img/no-image.png') }}") + '" width="100%">';
                         
                         // Generate potensi detail HTML
-                        var potensiHtml = '<div class="col-md-12">' +
-                            '<img src="' + (potensi.file_gambar_path || "{{ asset('/img/no-image.png') }}") + '" width="100%">' +
+                        var potensiHtml = '<div class="col-md-12 text-center" style="margin-bottom: 20px;">' +
+                            mediaHtml +
                             '</div>' +
                             '<div class="col-md-12">' +
                             '<h3>' + (potensi.nama_potensi || '') + '</h3>' +

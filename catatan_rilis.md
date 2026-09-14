@@ -16,6 +16,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 5. [#1732](https://github.com/OpenSID/OpenDK/issues/1732) Berkas download dokumen laporan-penduduk pada data tidak sikron dari OpenSID.
 6. [#1727](https://github.com/OpenSID/OpenDK/issues/1727) Perbaikan Tampilan Thumbnail Galeri dan Pratinjau Gambar Dinamis.
 7. [#1733](https://github.com/OpenSID/OpenDK/issues/1733) perbaikan filter kesehatan.
+8. [#1729](https://github.com/OpenSID/OpenDK/issues/1729) perbaikan tombol sarana ui.
+
 
 
 #### TEKNIS

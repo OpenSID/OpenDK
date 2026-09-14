@@ -31,11 +31,11 @@
 
 namespace App\Http\Controllers\Informasi;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\PotensiRequest;
 use App\Models\Potensi;
 use App\Models\TipePotensi;
 use App\Traits\HandlesFileUpload;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PotensiRequest;
 use Illuminate\Support\Facades\Log;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -103,6 +103,10 @@ class PotensiController extends Controller
 
             $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan');
 
+            if ($request->hasFile('file_gambar')) {
+                $input['mime_type'] = $request->file('file_gambar')->getClientMimeType();
+            }
+
             Potensi::create($input);
         } catch (\Exception $e) {
             Log::error('Potensi creation failed', [
@@ -138,6 +142,10 @@ class PotensiController extends Controller
             $input = $request->all();
 
             $this->handleFileUpload($request, $input, 'file_gambar', 'potensi_kecamatan');
+
+            if ($request->hasFile('file_gambar')) {
+                $input['mime_type'] = $request->file('file_gambar')->getClientMimeType();
+            }
 
             $potensi->update($input);
         } catch (\Exception $e) {
@@ -175,25 +183,13 @@ class PotensiController extends Controller
     public function download(Potensi $potensi)
     {
         try {
-            $path = $potensi->file_gambar;
-            if (empty($path)) {
+            $filePath = $this->resolveSecureFilePath($potensi->file_gambar);
+
+            if (!$filePath) {
                 return back()->with('error', 'Dokumen potensi tidak ditemukan');
             }
 
-            if (file_exists(public_path($path))) {
-                return response()->download(public_path($path));
-            }
-
-            if (file_exists(base_path('public/' . $path))) {
-                return response()->download(base_path('public/' . $path));
-            }
-
-            $storagePath = storage_path('app/public/' . str_replace('storage/', '', $path));
-            if (file_exists($storagePath)) {
-                return response()->download($storagePath);
-            }
-            
-            return back()->with('error', 'Dokumen potensi tidak ditemukan');
+            return response()->download($filePath);
         } catch (\Exception $e) {
             Log::error('Potensi download failed', [
                 'error' => $e->getMessage(),

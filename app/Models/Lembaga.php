@@ -31,6 +31,11 @@ class Lembaga extends Model
         return $this->belongsTo(Penduduk::class, 'penduduk_id', 'id');
     }
 
+    public function pendudukGabungan()
+    {
+        return $this->belongsTo(Penduduk::class, 'penduduk_id_gabungan', 'id');
+    }
+
     // Scope untuk membuat slug yang unik
     public static function generateUniqueSlug($nama)
     {

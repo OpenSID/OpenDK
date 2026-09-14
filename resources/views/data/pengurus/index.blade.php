@@ -4,6 +4,14 @@
     Data Pengurus
 @endsection
 
+@push('css')
+    <style>
+        .nowrap {
+            white-space: nowrap;
+        }
+    </style>
+@endpush
+
 @section('content')
     <section class="content-header block-breadcrumb">
         <h1>
@@ -44,18 +52,18 @@
                 </div>
                 <hr>
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="pengurus-table">
+                    <table class="table nowrap table-striped table-bordered" id="pengurus-table" style="width: 100%">
                         <thead>
                             <tr>
-                                <th style="min-width: 170px;">Aksi</th>
-                                <th>Foto</th>
-                                <th style="min-width: 150px;">Nama, NIP, NIK</th>
-                                <th style="min-width: 150px;">Tempat, Tanggal Lahir</th>
+                                <th style="width: 80px;" class="text-center">Aksi</th>
+                                <th style="width: 60px;" class="text-center">Foto</th>
+                                <th style="min-width: 160px;">Nama, NIP, NIK</th>
+                                <th style="min-width: 160px;">Tempat, Tanggal Lahir</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Agama</th>
                                 <th>Pangkat/Golongan</th>
                                 <th>Jabatan</th>
-                                <th>Status</th>
+                                <th style="width: 80px;" class="text-center">Status</th>
                                 <th>Pendidikan Terakhir</th>
                                 <th>No SK Pengangkatan</th>
                                 <th>Tanggal SK Pengangkatan</th>
@@ -79,6 +87,8 @@
             var data = $('#pengurus-table').DataTable({
                 processing: true,
                 serverSide: true,
+                scrollX: true,
+                autoWidth: false,
                 ajax: {
                     url: "{!! route('data.pengurus.getdata.post') !!}",
                     type: "POST",
@@ -130,7 +140,8 @@
                     },
                     {
                         data: 'status',
-                        name: 'status'
+                        name: 'status',
+                        class: 'text-center'
                     },
                     {
                         data: 'pendidikan.nama',
@@ -162,6 +173,10 @@
 
             $('#status').on('change', function(e) {
                 data.ajax.reload();
+            });
+
+            $(window).on('resize', function() {
+                data.columns.adjust();
             });
         });
     </script>

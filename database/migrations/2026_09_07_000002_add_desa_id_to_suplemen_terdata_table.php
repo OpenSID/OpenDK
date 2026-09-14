@@ -7,7 +7,7 @@
  *
  * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
  *
- * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * Hak Cipta 2017 - 2026 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  *
  * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
  * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
@@ -24,37 +24,37 @@
  *
  * @package    OpenDK
  * @author     Tim Pengembang OpenDesa
- * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @copyright  Hak Cipta 2017 - 2026 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
  * @link       https://github.com/OpenSID/opendk
  */
 
-namespace App\Models;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class SuplemenTerdata extends Model
+class AddDesaIdToSuplemenTerdataTable extends Migration
 {
-    use HasFactory;
-
-    protected $table = 'das_suplemen_terdata';
-
-    protected $fillable = [
-        'suplemen_id',
-        'desa_id',
-        'penduduk_id',
-        'penduduk_id_gabungan',
-        'keterangan',
-    ];
-
-    public function suplemen()
+    /**
+     * Run the migrations.
+     */
+    public function up()
     {
-        return $this->belongsTo(Suplemen::class);
+        Schema::table('das_suplemen_terdata', function (Blueprint $table) {
+            $table->string('desa_id', 13)->nullable()->after('suplemen_id');
+        });
+
+        DB::statement('UPDATE das_suplemen_terdata st JOIN das_penduduk p ON p.id = st.penduduk_id SET st.desa_id = p.desa_id WHERE st.desa_id IS NULL');
     }
 
-    public function penduduk()
+    /**
+     * Reverse the migrations.
+     */
+    public function down()
     {
-        return $this->belongsTo(Penduduk::class);
+        Schema::table('das_suplemen_terdata', function (Blueprint $table) {
+            $table->dropColumn('desa_id');
+        });
     }
 }

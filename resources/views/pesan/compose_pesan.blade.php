@@ -28,7 +28,7 @@
                     <div class="box-body">
                         <div class="form-group">
                             <label>Kirim ke {{ config('setting.sebutan_desa') }}</label>
-                            {!! html()->select('das_data_desa_id', $list_desa->pluck('nama', 'desa_id'), null)->placeholder('pilih desa')->class('form-control')->id('list_desa')->required() !!}
+                            @include('layouts.fragments.select-desa', ['selectAttributes' => ['required' => 'required', 'name' => 'das_data_desa_id']])
                         </div>
                         <div class="form-group">
                             <label>Subject</label>
@@ -57,13 +57,6 @@
 @include('partials.asset_select2')
 @push('scripts')
     <script type="text/javascript">
-        $(document).ready(function() {
-            $('#list_desa').select2({
-                placeholder: "Pilih {{ config('setting.sebutan_desa') }}",
-                allowClear: true
-            });
-        });
-
         tinymce.init({
             selector: 'textarea',
             height: 500,

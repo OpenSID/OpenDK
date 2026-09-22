@@ -33,7 +33,7 @@
                 <!-- form start -->
                 {!! html()->form('POST', route('data.toilet-sanitasi.do_import'))->id('form-import')->class(
                         'form-horizontal
-                                                                                                                                            form-label-left',
+                                                                                                                                                            form-label-left',
                     )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
@@ -95,6 +95,7 @@
 @push('scripts')
     <script>
         $(function() {
+            $('#list_desa option[value="Semua"]').val('');
 
             function readURL(input) {
                 if (input.files && input.files[0]) {

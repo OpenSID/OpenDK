@@ -31,15 +31,14 @@
 
 namespace App\Http\Controllers\FrontEnd;
 
+use App\Http\Controllers\FrontEndController;
+use App\Http\Requests\FrontEnd\SistemKomplainRequest;
+use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
-use Illuminate\Http\Request;
-use App\Models\JawabKomplain;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Controllers\FrontEndController;
-use App\Rules\ValidasiNikRule;
 use App\Services\PendudukService;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
 
 class SistemKomplainController extends FrontEndController
@@ -100,34 +99,15 @@ class SistemKomplainController extends FrontEndController
         }
     }
 
-    public function store(Request $request)
+    public function store(SistemKomplainRequest $request)
     {
         try {
-            $maxRule = \App\Services\FileUploadService::isLimitEnabled() ? '|max:1024' : '';
-            $validator = Validator::make($request->all(), [
-                'nik' => ['required', 'numeric', new ValidasiNikRule($request->input('tanggal_lahir'))],
-                'judul' => 'required|string|max:255',
-                'kategori' => 'required',
-                'laporan' => 'required|string',
-                'captcha' => 'required|captcha',
-                'tanggal_lahir' => 'required|date',
-                'lampiran1' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
-                'lampiran2' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
-                'lampiran3' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
-                'lampiran4' => 'file|mimes:jpeg,png,jpg,gif,svg' . $maxRule . '|valid_file',
-            ], [
-                'captcha.captcha' => 'Invalid captcha code.',
-            ]);
-
-            if ($validator->fails()) {
-                return back()->withInput()->with('error', 'Komplain gagal dikirim!')->withErrors($validator);
-            }
             $komplain = new Komplain($request->all());
 
             $penduduk = $this->isDatabaseGabungan()
                 ? (new PendudukService)->cekPendudukNikTanggalLahir($request->input('nik'), $request->input('tanggal_lahir'))
                 : Penduduk::where('nik', $komplain->nik)->first();
-
+    
             $komplain->komplain_id = Komplain::generateID();
             $komplain->slug = str_slug($komplain->judul) . '-' . $komplain->komplain_id;
             $komplain->status = 'REVIEW';
@@ -211,6 +191,7 @@ class SistemKomplainController extends FrontEndController
      * Display the specified resource.
      *
      * @param  int  slug
+     *
      * @return Response
      */
     public function show($slug)
@@ -292,5 +273,4 @@ class SistemKomplainController extends FrontEndController
 
         return view('pages.komplain.jawabans', compact('jawabans', 'komplain'))->render();
     }
-
 }

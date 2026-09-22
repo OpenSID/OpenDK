@@ -82,7 +82,7 @@ class ExportImunisasi implements FromCollection, WithHeadings, WithMapping, With
 
         return [
             $imunisasi->id,
-            $imunisasi->desa->nama ?? 'Tidak Diketahui',
+            nama_desa($imunisasi->desa_id) ?? 'Tidak Diketahui',
             $imunisasi->desa_id,
             $imunisasi->cakupan_imunisasi, // Format dengan persen
             $bulanList[$imunisasi->bulan] ?? 'Tidak Diketahui',

@@ -21,7 +21,7 @@
                         <!-- form start -->
                         {!! html()->form('POST', route('informasi.prosedur.store'))->acceptsFiles()->id('form-prosedur')->class(
                                 'form-horizontal
-                                                                                                                                                                                                                                            form-label-left',
+                                                                                                                                                                                                                                                                    form-label-left',
                             )->open() !!}
 
                         @if (count($errors) > 0)
@@ -52,35 +52,38 @@
 @push('scripts')
     <script>
         $(function() {
-
-            var fileTypes = ['jpg', 'jpeg', 'png', 'bmp', 'pdf']; //acceptable file types
+            var fileTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'pdf'];
+            var currentBlobUrl = null;
 
             function readURL(input) {
                 if (input.files && input.files[0]) {
-                    var extension = input.files[0].name.split('.').pop()
-                        .toLowerCase(), //file extension from input file
-                        isSuccess = fileTypes.indexOf(extension) > -1; //is extension in acceptable types
+                    var file = input.files[0];
+                    var extension = file.name.split('.').pop().toLowerCase();
+                    var isSuccess = fileTypes.indexOf(extension) > -1;
 
-                    if (isSuccess) { //yes
-                        var reader = new FileReader();
-                        reader.onload = function(e) {
-
-                            if (extension != 'pdf') {
-                                $('#showgambar').attr('src', e.target.result);
-                                $('#showgambar').removeClass('hide');
-                                $('#showpdf').addClass('hide');
-                            } else {
-                                $('#showpdf').attr('src', e.target.result + '#toolbar=1');
-                                $('#showpdf').removeClass('hide');
-                                $('#showgambar').addClass('hide');
-                            }
-
+                    if (isSuccess) {
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
                         }
 
-                        reader.readAsDataURL(input.files[0]);
-                    } else { //no
-                        //warning
+                        currentBlobUrl = URL.createObjectURL(file);
+
+                        if (extension !== 'pdf') {
+                            $('#showgambar').attr('src', currentBlobUrl).removeClass('hide');
+                            $('#showpdf').addClass('hide').attr('src', '');
+                        } else {
+                            $('#showpdf').attr('src', currentBlobUrl + '#toolbar=1').removeClass('hide');
+                            $('#showgambar').addClass('hide').attr('src', '');
+                        }
+                    } else {
                         $("#file_prosedur").val('');
+                        if (currentBlobUrl) {
+                            URL.revokeObjectURL(currentBlobUrl);
+                            currentBlobUrl = null;
+                        }
+                        $('#showgambar').addClass('hide').attr('src', '');
+                        $('#showpdf').addClass('hide').attr('src', '');
                         openAlert('File tersebut tidak diperbolehkan.', 'Peringatan', 'warning');
                     }
                 }

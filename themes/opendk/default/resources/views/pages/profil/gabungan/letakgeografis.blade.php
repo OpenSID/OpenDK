@@ -13,8 +13,7 @@
                             <label for="{{ $sebutan_wilayah }}" class="col-sm-2 control-label">{{ $sebutan_wilayah }}</label>
                             <div class="col-sm-4">
                                 <input type="hidden" id="profil_id" value="{{ $profil->id }}">
-                                <select class="form-control" id="{{ $sebutan_wilayah }}" name="{{ $sebutan_wilayah }}"
-                                    onchange=""></select>
+                                <select class="form-control" id="{{ $sebutan_wilayah }}" name="{{ $sebutan_wilayah }}" onchange=""></select>
                             </div>
                         </div>
                     </form>

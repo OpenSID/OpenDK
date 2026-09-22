@@ -47,7 +47,7 @@
                         <tr>
                             <td>Ketua Lembaga</td>
                             <td>:</td>
-                            <td>{{ $lembaga->penduduk?->nama ?? $lembaga->pendudukGabungan?->nama ?? '-' }}</td>
+                            <td>{{ $lembaga->penduduk?->nama ?? ($lembaga->pendudukGabungan?->nama ?? '-') }}</td>
                         </tr>
                         <tr>
                             <td>Kategori Lembaga</td>

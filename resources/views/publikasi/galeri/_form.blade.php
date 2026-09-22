@@ -31,7 +31,10 @@
                     @endif
                 </div>
                 <div class="form-group" id="image">
-                    <label class="control-label" for="file-galeri">Thumbnail @if(!isset($galeri) || empty($galeri->gambar))<span class="required text-danger">*</span>@endif</label>
+                    <label class="control-label" for="file-galeri">Thumbnail @if (!isset($galeri) || empty($galeri->gambar))
+                            <span class="required text-danger">*</span>
+                        @endif
+                    </label>
 
                     <input type="file" name="gambar[]" id="file-galeri" class="form-control" accept=".jpg,.jpeg,.png" multiple>
                     <x-upload-hint formats="JPG, JPEG, PNG" :limit-kb="1024" />

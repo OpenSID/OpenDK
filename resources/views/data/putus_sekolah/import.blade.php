@@ -20,7 +20,7 @@
 
                 {!! html()->form()->route('data.putus-sekolah.do_import')->method('POST')->id('form-import')->class(
                         'form-horizontal
-                                                                                                                                            form-label-left',
+                                                                                                                                                            form-label-left',
                     )->acceptsFiles()->open() !!}
 
                 <div class="box-body">
@@ -43,7 +43,7 @@
                                 <label for="list_desa" class="control-label col-md-4 col-sm-3 col-xs-12">{{ config('setting.sebutan_desa') }}</label>
 
                                 <div class="col-md-8">
-                                    @include('layouts.fragments.select-desa', ['selectAttributes' => ['name' => 'desa_id','data-width' => '100%', 'required' => 'required']])
+                                    @include('layouts.fragments.select-desa', ['selectAttributes' => ['name' => 'desa_id', 'data-width' => '100%', 'required' => 'required']])
                                 </div>
                             </div>
 
@@ -105,6 +105,7 @@
     <script>
         $(function() {
             $('#list_desa option[value="Semua"]').val('');
+
             function readURL(input) {
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();

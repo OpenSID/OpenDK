@@ -17,13 +17,9 @@
 @endphp
 
 <div style="display: flex; flex-direction: column;">
-    <select
-        name="{{ $name }}"
-        id="{{ $id }}"
-        class="form-control select2"
-        {{ $required ? 'required' : '' }}>
+    <select name="{{ $name }}" id="{{ $id }}" class="form-control select2" {{ $required ? 'required' : '' }}>
         <option value="">{{ $placeholder }}</option>
-        @if($selected)
+        @if ($selected)
             <option value="{{ $selected }}" selected>{{ $selectedText }}</option>
         @endif
     </select>

@@ -6,6 +6,7 @@ use App\Models\Album;
 use App\Models\Galeri;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Middleware\PermissionMiddleware;
@@ -124,6 +125,213 @@ test('create a galeri with url link', function () {
     expect($galeri->jenis)->toBe('url');
     expect($galeri->link)->toBe('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
     expect($galeri->gambar)->toBeNull();
+});
+
+test('create a galeri with google drive video link', function () {
+    Http::fake(['*' => Http::response('', 200, ['Content-Type' => 'video/mp4'])]);
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $data = [
+        'judul' => 'Video Kegiatan Google Drive',
+        'jenis' => 'url',
+        'link' => 'https://drive.google.com/file/d/1AbCdEf123/view?usp=sharing',
+        'status' => '1',
+    ];
+
+    $response = $this->post(route('publikasi.galeri.store'), $data);
+
+    $response->assertRedirect(route('publikasi.galeri.index', $album->id));
+    $response->assertSessionHas('success', 'Galeri berhasil disimpan!');
+
+    $galeri = Galeri::where('judul', 'Video Kegiatan Google Drive')->first();
+    expect($galeri)->not->toBeNull()
+        ->and($galeri->media_type)->toBe('video')
+        ->and($galeri->media_embed_url)->toBe('https://drive.google.com/file/d/1AbCdEf123/preview')
+        ->and($galeri->media_url)->toBe('https://drive.google.com/uc?export=download&id=1AbCdEf123');
+});
+
+test('create a galeri with google drive photo link', function () {
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $data = [
+        'judul' => 'Foto Kegiatan Google Drive',
+        'jenis' => 'url',
+        'link' => 'https://drive.google.com/file/d/1AbCdEf123/view',
+        'status' => '1',
+    ];
+
+    $this->post(route('publikasi.galeri.store'), $data)
+        ->assertSessionHas('success', 'Galeri berhasil disimpan!');
+
+    $galeri = Galeri::where('judul', 'Foto Kegiatan Google Drive')->first();
+    expect($galeri)->not->toBeNull()
+        ->and($galeri->media_type)->toBe('image')
+        ->and($galeri->media_url)->toBe('https://drive.google.com/uc?export=view&id=1AbCdEf123');
+});
+
+test('manual media type overrides the automatic detection', function () {
+    Http::preventStrayRequests();
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $data = [
+        'judul' => 'Video Pilihan Manual',
+        'jenis' => 'url',
+        'link' => 'https://drive.google.com/file/d/1AbCdEf123/view',
+        'media_type' => 'video',
+        'status' => '1',
+    ];
+
+    $this->post(route('publikasi.galeri.store'), $data)
+        ->assertSessionHas('success', 'Galeri berhasil disimpan!');
+
+    expect(Galeri::where('judul', 'Video Pilihan Manual')->first()->media_type)->toBe('video');
+});
+
+test('rejects a link that is not a valid url', function () {
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $data = [
+        'judul' => 'Link Tidak Valid',
+        'jenis' => 'url',
+        'link' => 'bukan sebuah url',
+        'status' => '1',
+    ];
+
+    $response = $this->post(route('publikasi.galeri.store'), $data);
+
+    $response->assertSessionHasErrors('link');
+    $this->assertDatabaseMissing('galeris', ['judul' => 'Link Tidak Valid']);
+});
+
+test('rejects an unsupported manual media type', function () {
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $data = [
+        'judul' => 'Tipe Media Ngawur',
+        'jenis' => 'url',
+        'link' => 'https://youtu.be/dQw4w9WgXcQ',
+        'media_type' => 'audio',
+        'status' => '1',
+    ];
+
+    $this->post(route('publikasi.galeri.store'), $data)
+        ->assertSessionHasErrors('media_type');
+
+    $this->assertDatabaseMissing('galeris', ['judul' => 'Tipe Media Ngawur']);
+});
+
+test('switching a galeri from file to link clears the stored image', function () {
+    Storage::fake('public');
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    Storage::disk('public')->put('publikasi/galeri/lama.jpg', 'lama');
+    $galeri = Galeri::create([
+        'album_id' => $album->id,
+        'judul' => 'Galeri Awal File',
+        'gambar' => ['lama.jpg'],
+        'jenis' => 'file',
+        'status' => true,
+    ]);
+
+    $data = [
+        'judul' => 'Galeri Jadi Link',
+        'jenis' => 'url',
+        'link' => 'https://youtu.be/dQw4w9WgXcQ',
+        'status' => '1',
+    ];
+
+    $this->put(route('publikasi.galeri.update', $galeri->id), $data)
+        ->assertSessionHas('success', 'Galeri berhasil diubah!');
+
+    $galeri->refresh();
+    expect($galeri->jenis)->toBe('url')
+        ->and($galeri->gambar)->toBeNull()
+        ->and($galeri->media_type)->toBe('youtube');
+
+    Storage::disk('public')->assertMissing('publikasi/galeri/lama.jpg');
+});
+
+test('switching a galeri from link to file clears the stored media type', function () {
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $galeri = Galeri::create([
+        'album_id' => $album->id,
+        'judul' => 'Galeri Awal Link',
+        'jenis' => 'url',
+        'link' => 'https://youtu.be/dQw4w9WgXcQ',
+        'media_type' => 'youtube',
+        'status' => true,
+    ]);
+
+    $data = [
+        'judul' => 'Galeri Jadi File',
+        'jenis' => 'file',
+        'status' => '1',
+        'gambar' => [UploadedFile::fake()->image('baru.jpg', 600, 400)],
+    ];
+
+    $this->put(route('publikasi.galeri.update', $galeri->id), $data)
+        ->assertSessionHas('success', 'Galeri berhasil diubah!');
+
+    $galeri->refresh();
+    expect($galeri->jenis)->toBe('file')
+        ->and($galeri->link)->toBeNull()
+        ->and($galeri->media_type)->toBe('image');
+});
+
+test('display the galeri edit page with a link media preview', function () {
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    $galeri = Galeri::create([
+        'album_id' => $album->id,
+        'judul' => 'Galeri Link Video',
+        'jenis' => 'url',
+        'link' => 'https://drive.google.com/file/d/1AbCdEf123/view',
+        'media_type' => 'video',
+        'status' => true,
+    ]);
+
+    $response = $this->get(route('publikasi.galeri.edit', $galeri->id));
+
+    $response->assertStatus(200);
+    $response->assertViewIs('publikasi.galeri.edit');
+    $response->assertSee('id="media-link-preview"', false);
+    $response->assertSee('https://drive.google.com/file/d/1AbCdEf123/preview', false);
+    $response->assertSee('id="media_type"', false);
+});
+
+test('galeri datatable exposes a media column that renders link media', function () {
+    $album = Album::factory()->create();
+    Session::put('album_id', $album->id);
+
+    Galeri::create([
+        'album_id' => $album->id,
+        'judul' => 'Galeri DataTable',
+        'jenis' => 'url',
+        'link' => 'https://youtu.be/dQw4w9WgXcQ',
+        'status' => true,
+    ]);
+
+    $response = $this->getJson(route('publikasi.galeri.getdata', $album->id), [
+        'X-Requested-With' => 'XMLHttpRequest',
+    ]);
+
+    $response->assertStatus(200);
+    $row = collect($response->json('data'))->firstWhere('judul', 'Galeri DataTable');
+
+    expect($row)->not->toBeNull()
+        ->and(data_get($row, 'media_type'))->toBe('youtube')
+        ->and(data_get($row, 'media_embed_url'))->toBe('https://www.youtube.com/embed/dQw4w9WgXcQ')
+        ->and(data_get($row, 'gambar_path'))->toBe('https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg')
+        ->and(data_get($row, 'media'))->toContain('data-media-type="youtube"');
 });
 
 test('update a galeri without changing image preserves existing image', function () {

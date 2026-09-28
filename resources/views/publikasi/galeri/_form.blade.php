@@ -1,3 +1,5 @@
+@use(App\Enums\TipeMedia)
+
 <div class="row">
     <div class="col-md-9">
         <div class="box box-primary">
@@ -24,16 +26,54 @@
                 <div class="form-group" id="view-url">
                     <label for="url" class="control-label">URL <span class="required text-danger">*</span></label>
 
-                    {!! html()->text('link')->class('form-control')->value(old('link', isset($galeri) ? $galeri->link : '')) !!}
+                    {!! html()->text('link')->class('form-control')->placeholder('https://drive.google.com/file/d/... atau https://youtube.com/watch?v=...')->value(old('link', isset($galeri) ? $galeri->link : '')) !!}
+
+                    <small class="help-block text-muted">
+                        Mendukung tautan Google Drive, YouTube, Vimeo, serta berkas foto/video yang dihosting langsung.
+                    </small>
 
                     @if ($errors->has('link'))
                         <span class="help-block" style="color:red">{{ $errors->first('link') }}</span>
                     @endif
                 </div>
-                <div class="form-group" id="image">
-                    <label class="control-label" for="file-galeri">Thumbnail @if(!isset($galeri) || empty($galeri->gambar))<span class="required text-danger">*</span>@endif</label>
+                <div class="form-group" id="view-media-type">
+                    <label for="media_type" class="control-label">Tipe Media</label>
 
-                    <input type="file" name="gambar[]" id="file-galeri" class="form-control" accept=".jpg,.jpeg,.png" multiple>
+                    {!! html()->select('media_type', array_merge(['' => 'Otomatis (deteksi sendiri)'], TipeMedia::selectable()))->class('form-control')->value(old('media_type', isset($galeri) ? $galeri->media_type : '')) !!}
+
+                    <small class="help-block text-muted">
+                        Pilih <b>Video</b> bila berkas Google Drive berisi video, karena jenis media
+                        tidak dapat dibaca langsung dari alamat tautannya.
+                    </small>
+
+                    @if ($errors->has('media_type'))
+                        <span class="help-block" style="color:red">{{ $errors->first('media_type') }}</span>
+                    @endif
+                </div>
+                <div class="form-group" id="media-link-preview">
+                    @if (isset($galeri) && $galeri->jenis === 'url' && $galeri->link)
+                        <label class="control-label">Pratinjau Media</label>
+                        <x-galeri-media :galeri="$galeri" variant="full" />
+                        <small class="help-block text-muted">
+                            Tautan asli: <a href="{{ $galeri->link }}" target="_blank" rel="noopener">{{ $galeri->link }}</a>
+                        </small>
+                    @endif
+                </div>
+                <div class="form-group" id="image">
+                    <label class="control-label" for="file-galeri">Thumbnail @if (!isset($galeri) || empty($galeri->gambar))
+                            <span class="required text-danger">*</span>
+                        @endif
+                    </label>
+
+                    <input
+                        type="file"
+                        name="gambar[]"
+                        id="file-galeri"
+                        class="form-control"
+                        accept=".jpg,.jpeg,.png"
+                        multiple
+                        data-testid="file-galeri"
+                    >
                     <x-upload-hint formats="JPG, JPEG, PNG" :limit-kb="1024" />
                     <br />
 
@@ -105,13 +145,19 @@
 
             function toggleUrlFields(type) {
                 var viewUrl = $('#view-url');
+                var viewMediaType = $('#view-media-type');
+                var mediaPreview = $('#media-link-preview');
                 var image = $('#image');
 
                 if (type == 'file') {
                     viewUrl.hide();
+                    viewMediaType.hide();
+                    mediaPreview.hide();
                     image.show();
                 } else {
                     viewUrl.show();
+                    viewMediaType.show();
+                    mediaPreview.show();
                     image.hide();
                 }
             }

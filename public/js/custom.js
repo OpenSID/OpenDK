@@ -121,6 +121,81 @@ function generateDropdownYear(element) {
   }  
 }
 
+/**
+ * Render media galeri (foto, video, atau YouTube) menjadi HTML.
+ *
+ * Data galeri berasal dari API frontend dan sudah membawa:
+ * - media_type     : "image" | "video" | "youtube" | "unknown"
+ * - media_url      : URL yang bisa dimuat langsung (src)
+ * - media_embed_url: URL untuk <iframe> bila <video> tidak mendukung
+ * - gambar_path    : thumbnail/pratinjau
+ *
+ * Opsi:
+ * - className  : kelas CSS untuk elemen pembungkus
+ * - imageStyle : gaya inline untuk elemen <img>
+ * - controls   : tampilkan kontrol pemutar video (default true)
+ * - autoplay   : mulai putar otomatis (default false)
+ * - preferNativeVideo : pakai <video> walau tersedia embed
+ */
+function renderGaleriMedia(galeri, options) {
+  var opts = options || {};
+  var type = galeri && galeri.media_type ? galeri.media_type : "unknown";
+  var url = galeri ? galeri.media_url : null;
+  var embed = galeri ? galeri.media_embed_url : null;
+  var poster = (galeri && galeri.gambar_path) || "/img/no-image.png";
+  var label = galeri ? galeri.judul || "Media" : "Media";
+  var wrapperClass = opts.className ? " " + opts.className : "";
+  var imageStyle = opts.imageStyle || "width:100%;height:100%;object-fit:cover;";
+  var allowFullscreen =
+    ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"';
+
+  function escapeAttr(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  var html = "";
+
+  if (type === "youtube" && embed) {
+    // YouTube hanya mengizinkan pemutaran lewat iframe.
+    html =
+      '<div class="embed-responsive embed-responsive-16by9' + wrapperClass + '">' +
+      '<iframe class="embed-responsive-item" src="' + escapeAttr(embed) + '" title="' + escapeAttr(label) + '"' + allowFullscreen + "></iframe>" +
+      "</div>";
+  } else if (type === "video" && embed && !opts.preferNativeVideo) {
+    // Google Drive dan Vimeo tidak mendukung Range Request, jadi pakai preview resmi.
+    html =
+      '<div class="embed-responsive embed-responsive-16by9' + wrapperClass + '">' +
+      '<iframe class="embed-responsive-item" src="' + escapeAttr(embed) + '" title="' + escapeAttr(label) + '"' + allowFullscreen + "></iframe>" +
+      "</div>";
+  } else if (type === "video" && url) {
+    html =
+      '<video src="' + escapeAttr(url) + '"' + (opts.controls === false ? "" : " controls") + ' preload="metadata"' + (opts.autoplay ? " autoplay" : "") + ' playsinline style="width:100%;height:100%;object-fit:contain;background:#000;"' + wrapperClass + "></video>";
+  } else if (type === "image" && url) {
+    html =
+      '<img src="' + escapeAttr(url) + '" alt="' + escapeAttr(label) + '" loading="lazy" style="' + imageStyle + '"' + wrapperClass +
+      ' onerror="this.onerror=null;this.src=\'/img/no-image.png\';">';
+  } else {
+    html =
+      '<div class="' + (opts.className || "") + '">' +
+      '<img src="' + escapeAttr(poster) + '" alt="' + escapeAttr(label) + '" loading="lazy" style="' + imageStyle + '">' +
+      "</div>";
+  }
+
+  return html;
+}
+
+/**
+ * Tandai galeri yang berupa video/YouTube agar tema bisa menampilkan ikon putar.
+ */
+function isGaleriPlayable(galeri) {
+  var type = galeri && galeri.media_type ? galeri.media_type : "unknown";
+  return type === "video" || type === "youtube";
+}
+
 //drop down menu
 $(".drop-down").hover(function () {
   $(".dropdown-menu").addClass("display-on");

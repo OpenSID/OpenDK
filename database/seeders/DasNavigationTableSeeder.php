@@ -77,8 +77,8 @@ class DasNavigationTableSeeder extends Seeder
             [
                 'name' => 'Potensi',
                 'slug' => Str::slug('Potensi'),
-                'type' => MenuTipe::EKSTERNAL,
-                'url' => '#',
+                'type' => MenuTipe::POTENSI,
+                'url' => 'potensi',
                 'order' => 4,
                 'status' => 1,
             ],

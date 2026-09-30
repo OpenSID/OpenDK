@@ -233,7 +233,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             Route::group(['prefix' => 'potensi'], function () {
-                Route::permanentRedirect('/', '/');
+                Route::get('/', 'PageController@PotensiIndex')->name('potensi.index');
                 Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
                 Route::get('{kategori}/{id}', 'PageController@PotensiShow')->name('potensi.kategori.show');
             });

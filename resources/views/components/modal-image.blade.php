@@ -24,58 +24,58 @@
 </div>
 
 @once
-@push('scripts')
-<script>
-    function openImageModal(imageUrl, title, downloadUrl, targetModal) {
-        var modalSelector = targetModal || '#{{ $id }}';
-        var $modal = $(modalSelector);
-        if (!$modal.length) {
-            $modal = $('#{{ $id }}');
-        }
+    @push('scripts')
+        <script>
+            function openImageModal(imageUrl, title, downloadUrl, targetModal) {
+                var modalSelector = targetModal || '#{{ $id }}';
+                var $modal = $(modalSelector);
+                if (!$modal.length) {
+                    $modal = $('#{{ $id }}');
+                }
 
-        var $img = $modal.find('.modal-body img');
-        var $download = $modal.find('.modal-footer a[download]');
-        var $title = $modal.find('.modal-title');
+                var $img = $modal.find('.modal-body img');
+                var $download = $modal.find('.modal-footer a[download]');
+                var $title = $modal.find('.modal-title');
 
-        if (title) {
-            $title.text(title);
-        } else {
-            $title.text('Pratinjau Gambar');
-        }
+                if (title) {
+                    $title.text(title);
+                } else {
+                    $title.text('Pratinjau Gambar');
+                }
 
-        $img.attr('src', imageUrl);
+                $img.attr('src', imageUrl);
 
-        var dl = downloadUrl || imageUrl;
-        $download.attr('href', dl);
+                var dl = downloadUrl || imageUrl;
+                $download.attr('href', dl);
 
-        var filename = '';
-        try {
-            var raw = dl.split('?')[0].split('#')[0];
-            filename = raw.substring(raw.lastIndexOf('/') + 1);
-        } catch (e) {
-            filename = '';
-        }
+                var filename = '';
+                try {
+                    var raw = dl.split('?')[0].split('#')[0];
+                    filename = raw.substring(raw.lastIndexOf('/') + 1);
+                } catch (e) {
+                    filename = '';
+                }
 
-        if (!filename || filename.indexOf('.') === -1) {
-            filename = (title ? title.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'gambar') + '.jpg';
-        }
-        $download.attr('download', filename);
+                if (!filename || filename.indexOf('.') === -1) {
+                    filename = (title ? title.replace(/[^a-z0-9]/gi, '_').toLowerCase() : 'gambar') + '.jpg';
+                }
+                $download.attr('download', filename);
 
-        $modal.modal('show');
-    }
+                $modal.modal('show');
+            }
 
-    $(document).on('click', '[data-toggle="modal-image"], .preview-image-trigger', function(e) {
-        e.preventDefault();
-        var $this = $(this);
-        var targetModal = $this.attr('data-target');
-        var url = $this.attr('data-url') || $this.attr('data-src') || $this.attr('src') || $this.attr('href');
-        var title = $this.attr('data-title') || $this.attr('alt') || $this.attr('title') || 'Pratinjau Gambar';
-        var downloadUrl = $this.attr('data-download') || url;
+            $(document).on('click', '[data-toggle="modal-image"], .preview-image-trigger', function(e) {
+                e.preventDefault();
+                var $this = $(this);
+                var targetModal = $this.attr('data-target');
+                var url = $this.attr('data-url') || $this.attr('data-src') || $this.attr('src') || $this.attr('href');
+                var title = $this.attr('data-title') || $this.attr('alt') || $this.attr('title') || 'Pratinjau Gambar';
+                var downloadUrl = $this.attr('data-download') || url;
 
-        if (url && url !== '#' && url !== 'javascript:void(0)') {
-            openImageModal(url, title, downloadUrl, targetModal);
-        }
-    });
-</script>
-@endpush
+                if (url && url !== '#' && url !== 'javascript:void(0)') {
+                    openImageModal(url, title, downloadUrl, targetModal);
+                }
+            });
+        </script>
+    @endpush
 @endonce

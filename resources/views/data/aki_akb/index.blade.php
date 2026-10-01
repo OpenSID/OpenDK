@@ -95,11 +95,11 @@
                     [1, 'desc']
                 ]
             });
-            
+
             $('#list_desa').on('select2:select', function(e) {
                 data.ajax.reload();
             });
-            
+
         });
     </script>
     @include('forms.datatable-vertical')

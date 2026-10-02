@@ -48,6 +48,17 @@ class SecurityHeaders
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
+        foreach ($this->unwantedHeaders as $header) {
+            $response->headers->remove($header);
+        }
+
+        /*
+         * Cegah browser menebak-nebak Content-Type dari isi file. Tanpa header ini
+         * file markup seperti SVG dapat dieksekusi sebagai script meskipun
+         * header dan nama ekstensinya tidak menyerupai HTML.
+         */
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+
         if (app()->environment('production')) {
             $response->headers->set('Content-Security-Policy', (new CspPolicy())->toHeader());
         }

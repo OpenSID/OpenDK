@@ -1,8 +1,8 @@
 <?php
 
-use App\Services\PendudukService;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
+use App\Services\PendudukService;
 use Illuminate\Support\Facades\Http;
 
 // Seed required settings for BaseApiService constructor
@@ -258,6 +258,37 @@ it('returns null when API returns empty', function () {
     $result = $service->detailPenduduk(1);
 
     expect($result)->toBeNull();
+});
+
+it('can fetch multiple penduduk from gabungan by ids', function () {
+    $sentParams = null;
+
+    Http::fake([
+        '*/api/v1/opendk/sync-penduduk-opendk*' => function (\Illuminate\Http\Client\Request $request) use (&$sentParams) {
+            parse_str((string) parse_url($request->url(), PHP_URL_QUERY), $sentParams);
+
+            return Http::response([
+                'data' => [
+                    ['id' => 500, 'attributes' => ['nama' => 'John Doe', 'nik' => '1234567890123456']],
+                    ['id' => 501, 'attributes' => ['nama' => 'Jane Doe', 'nik' => '1234567890123457']],
+                ],
+            ], 200);
+        },
+    ]);
+
+    $service = new PendudukService();
+    $result = $service->pendudukGabunganByIds([500, 501]);
+
+    expect($result)->toHaveCount(2);
+    expect($result->pluck('id'))->toContain(500);
+    expect($result->pluck('id'))->toContain(501);
+    expect($sentParams['filter']['id_penduduk'])->toBe(['500', '501']);
+});
+
+it('returns empty collection when gabungan ids empty', function () {
+    $service = new PendudukService();
+
+    expect($service->pendudukGabunganByIds([]))->toHaveCount(0);
 });
 
 it('can apply filters to jumlah penduduk', function () {

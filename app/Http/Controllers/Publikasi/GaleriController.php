@@ -35,6 +35,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\GaleriRequest;
 use App\Models\Album;
 use App\Models\Galeri;
+use App\Services\MediaLinkService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -43,7 +44,6 @@ use Yajra\DataTables\DataTables;
 
 class GaleriController extends Controller
 {
-
     public function index(Album $album)
     {
         $page_title = 'Album';
@@ -61,7 +61,7 @@ class GaleriController extends Controller
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
                     // $data['show_web'] = route('berita.detail', $row->slug);
-    
+
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.publikasi.galeri.edit') ? route('publikasi.galeri.edit', $row->id) : null;
                         $data['delete_url'] = auth()->user()->can('access.publikasi.galeri.delete') ? route('publikasi.galeri.destroy', $row->id) : null;
@@ -74,17 +74,22 @@ class GaleriController extends Controller
 
                     return view('forms.aksi', $data);
                 })
+                ->addColumn('media', function (Galeri $row) {
+                    return view('publikasi.galeri.parts.media-cell', [
+                        'galeri' => $row,
+                    ]);
+                })
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->editColumn('dibuat', function ($row) {
                     return format_datetime($row->created_at);
                 })
-                ->rawColumns(['aksi', 'status', 'dibuat'])
+                ->rawColumns(['aksi', 'media', 'status', 'dibuat'])
                 ->make(true);
         }
     }
@@ -105,25 +110,29 @@ class GaleriController extends Controller
             $imageNames = [];
             if ($request->hasFile('gambar')) {
                 foreach ($request->file('gambar') as $file) {
-                    $path = Storage::putFile('public/publikasi/galeri', $file);
+                    $path = Storage::disk('public')->putFile('publikasi/galeri', $file);
 
                     $imageNames[] = basename($path);
                 }
                 $input['gambar'] = $imageNames;
+            } else {
+                $input['gambar'] = null;
             }
 
+            $input['link'] = $input['jenis'] == 'file' ? null : ($input['link'] ?? null);
+            $input['media_type'] = $input['jenis'] == 'file' ? null : $this->detectMediaType($request);
             $input['album_id'] = Session::get('album_id');
 
             Galeri::create($input);
 
-            return redirect()->route('publikasi.galeri.index', Session::get('album_id'))->with('success', 'Album berhasil disimpan!');
+            return redirect()->route('publikasi.galeri.index', Session::get('album_id'))->with('success', 'Galeri berhasil disimpan!');
         } catch (\Exception $e) {
             Log::error('Galeri creation failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
             ]);
 
-            return back()->withInput()->with('error', 'Simpan album gagal!');
+            return back()->withInput()->with('error', 'Simpan galeri gagal!');
         }
     }
 
@@ -166,14 +175,19 @@ class GaleriController extends Controller
             $imageNames = [];
             if ($request->hasFile('gambar')) {
                 foreach ($request->file('gambar') as $file) {
-                    $path = Storage::putFile('public/publikasi/galeri', $file);
+                    $path = Storage::disk('public')->putFile('publikasi/galeri', $file);
 
                     $imageNames[] = basename($path);
                 }
                 $input['gambar'] = $imageNames;
+            } elseif (($input['jenis'] ?? null) == 'file') {
+                unset($input['gambar']);
+            } else {
+                $input['gambar'] = null;
             }
 
-            $input['link'] = $input['jenis'] == 'file' ? null : $input['link'];
+            $input['link'] = ($input['jenis'] ?? null) == 'file' ? null : ($input['link'] ?? null);
+            $input['media_type'] = ($input['jenis'] ?? null) == 'file' ? null : $this->detectMediaType($request);
 
             $galeri->update($input);
         } catch (\Exception $e) {
@@ -183,7 +197,7 @@ class GaleriController extends Controller
                 'galeri_id' => $galeri->id,
             ]);
 
-            return back()->withInput()->with('error', 'Galeri gagal dihapus!');
+            return back()->withInput()->with('error', 'Galeri gagal diubah!');
         }
 
         return redirect()->route('publikasi.galeri.index', Session::get('album_id'))->with('success', 'Galeri berhasil diubah!');
@@ -204,5 +218,20 @@ class GaleriController extends Controller
         }
 
         return redirect()->route('publikasi.galeri.index', Session::get('album_id'))->with('success', 'Galeri sukses dihapus!');
+    }
+
+    /**
+     * Tentukan tipe media untuk galeri berbasis link.
+     *
+     * Pilihan manual pengguna selalu dipakai apa adanya. Bila tidak ada pilihan,
+     * tipe dideteksi dari link, dan hanya melakukan permintaan jaringan bila
+     * link-nya memang tidak memberi petunjuk (misalnya Google Drive).
+     */
+    protected function detectMediaType(GaleriRequest $request): string
+    {
+        return app(MediaLinkService::class)->detectType(
+            $request->input('link'),
+            $request->selectedMediaType()
+        );
     }
 }

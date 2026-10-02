@@ -34,22 +34,28 @@ namespace App\Http\Controllers\FrontEnd;
 use App\Enums\SurveiEnum;
 use App\Facades\Counter;
 use App\Http\Controllers\FrontEndController;
+use App\Http\Requests\KirimBalasanRequest;
+use App\Http\Requests\KirimKomentarRequest;
 use App\Http\Requests\SurveiRequest;
 use App\Models\Artikel;
 use App\Models\Comment;
 use App\Models\Event;
 use App\Models\Kategori;
 use App\Models\Survei;
+use App\Models\TipePotensi;
 use App\Services\DesaService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\View\View;
 use Jenssegers\Agent\Agent;
 
 class PageController extends FrontEndController
 {
     protected $data = [];
 
-    public function index()
+    public function index(): View
     {
         Counter::count('beranda');
 
@@ -65,7 +71,7 @@ class PageController extends FrontEndController
         ]);
     }
 
-    public function beritaDesa()
+    public function beritaDesa(): View
     {
         if ($this->isDatabaseGabungan()) {
             $apiServer = $this->settings['api_server_database_gabungan'] ?? '';
@@ -94,13 +100,7 @@ class PageController extends FrontEndController
         ]);
     }
 
-    private function getFeeds()
-    {        
-        $feeds = (new DesaService())->getFeeds();
-        return $feeds ?? null;
-    }
-
-    public function filterFeeds(Request $request)
+    public function filterFeeds(Request $request): JsonResponse
     {
         $this->data = $this->getFeeds();
         $feeds = collect($this->data);
@@ -141,23 +141,34 @@ class PageController extends FrontEndController
         return response()->json(compact('html'));
     }
 
-    public function PotensiByKategory($slug)
+    public function PotensiIndex(): View
     {
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi';
+        $page_description = 'Potensi-Potensi Kecamatan';
+        $kategori_potensi = TipePotensi::all();
 
-        return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug']));
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'kategori_potensi']));
     }
 
-    public function PotensiShow($kategori, $slug)
+    public function PotensiByKategory(string $slug): View
+    {
+        $kategori = TipePotensi::where('slug', $slug)->first();
+        $page_title = 'Potensi' . ($kategori ? ' - ' . $kategori->nama_kategori : '');
+        $page_description = 'Potensi-Potensi Kecamatan' . ($kategori ? ' Kategori ' . $kategori->nama_kategori : '');
+        $kategori_potensi = TipePotensi::all();
+
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug', 'kategori', 'kategori_potensi']));
+    }
+
+    public function PotensiShow(string $kategori, string $id): View
     {
         $page_title = 'Potensi';
         $page_description = 'Potensi-Potensi Kecamatan';
 
-        return view('pages.potensi.show', compact(['page_title', 'page_description', 'slug']));
+        return view('pages.potensi.show', compact(['page_title', 'page_description', 'id']));
     }
 
-    public function DesaShow($slug)
+    public function DesaShow(string $slug): View
     {
         $desa = (new DesaService)->dataDesa($slug);
         $page_title = 'Desa '.$desa->nama;
@@ -166,12 +177,12 @@ class PageController extends FrontEndController
         return view('pages.desa.desa_show', compact('page_title', 'page_description', 'desa'));
     }
 
-    public function refresh_captcha()
+    public function refresh_captcha(): JsonResponse
     {
         return response()->json(['captcha' => captcha_img('mini')]);
     }
 
-    public function kategoriBerita($slug)
+    public function kategoriBerita(string $slug): View
     {
         $kategori = Kategori::where('slug', $slug)->firstOrFail();
         $artikel = Artikel::whereRelation('kategori', 'slug', $slug)->paginate(9);
@@ -179,7 +190,7 @@ class PageController extends FrontEndController
         return view('pages.berita.kategori', compact('artikel', 'kategori'));
     }
 
-    public function detailBerita($slug, Request $request)
+    public function detailBerita(string $slug, Request $request): View
     {
         // Temukan artikel berdasarkan slug
         $artikel = Artikel::with(['kategori', 'comments' => function ($query) use ($request) {
@@ -214,18 +225,8 @@ class PageController extends FrontEndController
         return view('pages.berita.detail', compact('page_title', 'page_description', 'page_image', 'artikel', 'comments'));
     }
 
-    public function kirimKomentar(Request $request)
+    public function kirimKomentar(KirimKomentarRequest $request): RedirectResponse
     {
-
-        // Validasi input
-        $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'body' => 'required|string',
-            'das_artikel_id' => 'required|exists:das_artikel,id',
-            'captcha_main' => 'required|captcha',
-        ]);
-
         try {
             // Mendeteksi IP address
             $ipAddress = $request->ip();
@@ -241,11 +242,11 @@ class PageController extends FrontEndController
 
             // Simpan komentar baru
             $comment = Comment::create([
-                'nama' => $validated['nama'],
-                'email' => $validated['email'],
-                'body' => $validated['body'],
+                'nama' => $request->nama,
+                'email' => $request->email,
+                'body' => $request->body,
                 'status' => 'disable', // Set status default ke 'disable' untuk moderasi
-                'das_artikel_id' => $validated['das_artikel_id'],
+                'das_artikel_id' => $request->das_artikel_id,
                 'comment_id' => $request->input('comment_id', null), // Jika ini adalah balasan
                 'ip_address' => $ipAddress,
                 'device' => $deviceInfo,
@@ -262,7 +263,7 @@ class PageController extends FrontEndController
         }
     }
 
-    public function modalKirimBalasan(Request $request)
+    public function modalKirimBalasan(Request $request): View
     {
         $commentId = $request->input('comment_id');
         $artikelId = $request->input('artikel_id');
@@ -270,17 +271,8 @@ class PageController extends FrontEndController
         return view('pages.berita.comment', compact('commentId', 'artikelId'));
     }
 
-    public function kirimBalasan(Request $request)
+    public function kirimBalasan(KirimBalasanRequest $request): RedirectResponse
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'body' => 'required|string',
-            'captcha_main' => 'required|captcha',
-            'das_artikel_id' => 'required|exists:das_artikel,id', // Pastikan artikel terkait ada
-            'comment_id' => 'required|exists:das_artikel_comment,id', // Pastikan comment_id ada
-        ]);
-
         try {
             // Mendeteksi IP address
             $ipAddress = $request->ip();
@@ -314,7 +306,7 @@ class PageController extends FrontEndController
         }
     }
 
-    public function eventDetail($slug)
+    public function eventDetail(string $slug): View
     {
         $event = Event::slug($slug)->firstOrFail();
         $page_title = $event->event_name;
@@ -323,7 +315,7 @@ class PageController extends FrontEndController
         return view('pages.event.event_detail', compact('page_title', 'page_description', 'event'));
     }
 
-    public function kategori($slug)
+    public function kategori(string $slug): View
     {
         return view('pages.berita.kategori', [
             'apiBaseKategori' => url($this->urlApi.'/kategori?'.http_build_query([
@@ -341,7 +333,7 @@ class PageController extends FrontEndController
     }
 
     // fitur survey indeks kepuasan pengguna terhadap penyajian informasi yang tersedia di website
-    public function survei()
+    public function survei(): View
     {
         $page_title = 'Index Kepuasan Masyarakat';
 
@@ -360,7 +352,7 @@ class PageController extends FrontEndController
         return view('pages.ikm.index', compact('page_title', 'results'));
     }
 
-    public function surveiSubmit(SurveiRequest $request)
+    public function surveiSubmit(SurveiRequest $request): RedirectResponse
     {
         // Cek ulang session untuk keamanan
         if (Session::has('survey_submitted')) {
@@ -380,5 +372,11 @@ class PageController extends FrontEndController
         Session::put('survey_submitted', true);
 
         return redirect()->back()->with('success', 'Terima kasih atas tanggapan Anda!');
+    }
+
+    private function getFeeds(): ?array
+    {
+        $feeds = (new DesaService())->getFeeds();
+        return $feeds ?? null;
     }
 }

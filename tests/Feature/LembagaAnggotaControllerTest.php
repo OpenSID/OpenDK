@@ -60,7 +60,7 @@ beforeEach(function () {
     );
 });
 
-function getLembagaPenduduk()
+function getLembagaPendudukAnggota()
 {
     $penduduk = Penduduk::inRandomOrder()->first();
     if (!$penduduk) {
@@ -70,7 +70,7 @@ function getLembagaPenduduk()
     return $penduduk;
 }
 
-function getLembagaKategori()
+function getLembagaKategoriAnggota()
 {
     $kategori = KategoriLembaga::inRandomOrder()->first();
     if (!$kategori) {
@@ -81,8 +81,8 @@ function getLembagaKategori()
 }
 
 test('it can create lembaga anggota', function () {
-    $penduduk = getLembagaPenduduk();
-    $kategori = getLembagaKategori();
+    $penduduk = getLembagaPendudukAnggota();
+    $kategori = getLembagaKategoriAnggota();
     $lembaga = Lembaga::factory()->create([
         'lembaga_kategori_id' => $kategori->id,
         'penduduk_id' => $penduduk->id,
@@ -110,8 +110,8 @@ test('it can create lembaga anggota', function () {
 });
 
 test('it can update lembaga anggota', function () {
-    $penduduk = getLembagaPenduduk();
-    $kategori = getLembagaKategori();
+    $penduduk = getLembagaPendudukAnggota();
+    $kategori = getLembagaKategoriAnggota();
     $lembaga = Lembaga::factory()->create([
         'lembaga_kategori_id' => $kategori->id,
         'penduduk_id' => $penduduk->id,
@@ -136,8 +136,8 @@ test('it can update lembaga anggota', function () {
 });
 
 test('it can delete lembaga anggota', function () {
-    $penduduk = getLembagaPenduduk();
-    $kategori = getLembagaKategori();
+    $penduduk = getLembagaPendudukAnggota();
+    $kategori = getLembagaKategoriAnggota();
     $lembaga = Lembaga::factory()->create([
         'lembaga_kategori_id' => $kategori->id,
         'penduduk_id' => $penduduk->id,

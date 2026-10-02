@@ -18,10 +18,14 @@ class LembagaAnggota extends Model
         return $this->belongsTo(Lembaga::class, 'lembaga_id');
     }
 
-    // Relasi ke model Penduduk (Many-to-One)
     public function penduduk()
     {
         return $this->belongsTo(Penduduk::class, 'penduduk_id');
+    }
+
+    public function pendudukGabungan()
+    {
+        return $this->belongsTo(Penduduk::class, 'penduduk_id_gabungan');
     }
 
     // Menentukan kolom slug yang digunakan untuk pencarian di rute

@@ -200,9 +200,9 @@ class DesaService extends BaseApiService
      * Dapatkan object desa berdasarkan kode_desa tertentu
      *
      * @param string $kodeDesa
-     * @return collection|DataDesa|stdClass|null
+     * @return collection|DataDesa|\stdClass|null
      */
-    public function getDesaByKode(string $kodeDesa): Collection|DataDesa|stdClass|null
+    public function getDesaByKode(string $kodeDesa): Collection|DataDesa|\stdClass|null
     {
         $listDesa = $this->listDesa();
         return $listDesa->where('desa_id', $kodeDesa)->first();

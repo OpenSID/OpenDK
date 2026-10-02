@@ -2,33 +2,31 @@
 
 namespace App\Http\Requests;
 
+use App\Models\SettingAplikasi;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreLembagaRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
-        return [
+        $rules = [
             'nama' => 'required|string|max:255',
             'kode' => 'required|string|max:255|unique:das_lembaga,kode',
             'lembaga_kategori_id' => 'required|exists:das_lembaga_kategori,id',
-            'penduduk_id' => 'required|exists:das_penduduk,id',
         ];
+
+        if (SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->value('value') === '1') {
+            $rules['penduduk_id_gabungan'] = 'required|integer';
+        } else {
+            $rules['penduduk_id'] = 'required|exists:das_penduduk,id';
+        }
+
+        return $rules;
     }
 
     /**
@@ -43,6 +41,7 @@ class StoreLembagaRequest extends FormRequest
             'kode' => 'Kode Lembaga',
             'lembaga_kategori_id' => 'Kategori Lembaga',
             'penduduk_id' => 'Ketua Lembaga',
+            'penduduk_id_gabungan' => 'Ketua Lembaga',
         ];
     }
 }

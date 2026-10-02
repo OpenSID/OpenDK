@@ -2,12 +2,11 @@
 
 namespace Tests\Feature\Security;
 
-use App\Models\User;
 use App\Models\Themes;
+use App\Models\User;
 use Database\Seeders\RoleSpatieSeeder;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Tests\TestCase;
 use ZipArchive;
 
 describe('Theme Upload Security (RCE Prevention)', function () {
@@ -218,6 +217,90 @@ describe('Theme Upload Security (RCE Prevention)', function () {
         @unlink($hooksFile);
     });
 
+    // ── Issue #57 FIX: Backtick Execution Operator Bypass ──
+
+    test('hooks_with_backtick_execution_is_rejected', function () {
+        $hooksDir = base_path('themes/default');
+        if (! is_dir($hooksDir)) {
+            mkdir($hooksDir, 0755, true);
+        }
+
+        $hooksFile = $hooksDir . '/hooks.php';
+        $proofFile = $hooksDir . '/rce_proof.txt';
+        @unlink($proofFile);
+
+        // PoC payload from Issue #57
+        file_put_contents($hooksFile, '<?php `id > ' . $proofFile . ' 2>&1`;');
+
+        $theme = Themes::firstOrCreate(
+            ['name' => 'default'],
+            [
+                'vendor'      => 'opendk',
+                'version'     => '1.0',
+                'description' => 'Default',
+                'path'        => $hooksDir,
+                'system'      => true,
+                'active'      => 0,
+            ]
+        );
+
+        $r = $this->actingAs($this->superAdmin)
+            ->get(route('setting.themes.activate', $theme));
+
+        $r->assertStatus(302);
+        $r->assertSessionHas('error');
+
+        // Verify that command was NOT executed and proof file was NOT created
+        expect(file_exists($proofFile))->toBeFalse();
+
+        @unlink($hooksFile);
+        @unlink($proofFile);
+    });
+
+    test('hooks_with_include_construct_is_rejected', function () {
+        $hooksDir = base_path('themes/default');
+        if (! is_dir($hooksDir)) {
+            mkdir($hooksDir, 0755, true);
+        }
+
+        $hooksFile = $hooksDir . '/hooks.php';
+        file_put_contents($hooksFile, '<?php include "payload.php";');
+
+        $theme = Themes::firstOrCreate(
+            ['name' => 'default'],
+            [
+                'vendor'      => 'opendk',
+                'version'     => '1.0',
+                'description' => 'Default',
+                'path'        => $hooksDir,
+                'system'      => true,
+                'active'      => 0,
+            ]
+        );
+
+        $r = $this->actingAs($this->superAdmin)
+            ->get(route('setting.themes.activate', $theme));
+
+        $r->assertStatus(302);
+        $r->assertSessionHas('error');
+
+        @unlink($hooksFile);
+    });
+
+    test('upload_with_backtick_in_blade_template_is_rejected', function () {
+        $file = makeZipWithBacktickBlade();
+        $r = $this->actingAs($this->superAdmin)
+            ->post(route('setting.themes.upload'), ['file' => $file]);
+        $r->assertJson(['status' => 'error']);
+    });
+
+    test('upload_with_misplaced_blade_template_is_rejected', function () {
+        $file = makeZipWithMisplacedBlade();
+        $r = $this->actingAs($this->superAdmin)
+            ->post(route('setting.themes.upload'), ['file' => $file]);
+        $r->assertJson(['status' => 'error']);
+    });
+
     // ── Helpers ──
 
     function makeZipWithPhp(): UploadedFile
@@ -228,6 +311,38 @@ describe('Theme Upload Security (RCE Prevention)', function () {
         $zip->addFromString('evil-theme/composer.json', '{"name":"evil"}');
         $zip->addFromString('evil-theme/theme.json', '{"api_version":"v1"}');
         $zip->addFromString('evil-theme/hooks.php', '<?php file_put_contents("test.txt","ok");');
+        $zip->close();
+
+        return new UploadedFile($path, 'theme.zip', 'application/zip', null, true);
+    }
+
+    /**
+     * Helper — creates a ZIP with backtick in a Blade template.
+     */
+    function makeZipWithBacktickBlade(): UploadedFile
+    {
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid() . '.zip';
+        $zip  = new ZipArchive();
+        $zip->open($path, ZipArchive::CREATE);
+        $zip->addFromString('evil-theme/composer.json', '{"name":"evil"}');
+        $zip->addFromString('evil-theme/theme.json', '{"api_version":"v1"}');
+        $zip->addFromString('evil-theme/resources/views/layouts/evil.blade.php', '<div>{{ `id` }}</div>');
+        $zip->close();
+
+        return new UploadedFile($path, 'theme.zip', 'application/zip', null, true);
+    }
+
+    /**
+     * Helper — creates a ZIP with a Blade template outside resources/views/.
+     */
+    function makeZipWithMisplacedBlade(): UploadedFile
+    {
+        $path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid() . '.zip';
+        $zip  = new ZipArchive();
+        $zip->open($path, ZipArchive::CREATE);
+        $zip->addFromString('evil-theme/composer.json', '{"name":"evil"}');
+        $zip->addFromString('evil-theme/theme.json', '{"api_version":"v1"}');
+        $zip->addFromString('evil-theme/misplaced.blade.php', '<div>Bad</div>');
         $zip->close();
 
         return new UploadedFile($path, 'theme.zip', 'application/zip', null, true);

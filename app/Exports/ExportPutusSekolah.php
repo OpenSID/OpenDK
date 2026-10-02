@@ -86,7 +86,7 @@ class ExportPutusSekolah implements FromCollection, WithHeadings, WithMapping, W
     {
         return [
             $putusSekolah->id,
-            $putusSekolah->desa->nama ?? '',
+            nama_desa($putusSekolah->desa_id) ?? '',
             $putusSekolah->siswa_paud,
             $putusSekolah->anak_usia_paud,
             $putusSekolah->siswa_sd,

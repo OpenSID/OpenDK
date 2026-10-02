@@ -31,18 +31,29 @@
 
 namespace App\Models;
 
+use App\Events\ProsedurChanged;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Prosedur extends Model
 {
+    use HandlesResourceDeletion;
     use HasFactory;
     use Sluggable;
-    use HandlesResourceDeletion;
 
     protected $table = 'das_prosedur';
+
+    /**
+     * Register model lifecycle hooks.
+     */
+    protected static function booted(): void
+    {
+        static::created(fn (Prosedur $prosedur) => ProsedurChanged::dispatch($prosedur));
+        static::updated(fn (Prosedur $prosedur) => ProsedurChanged::dispatch($prosedur));
+        static::deleted(fn (Prosedur $prosedur) => ProsedurChanged::dispatch($prosedur));
+    }
 
     protected $fillable = [
         'judul_prosedur',
@@ -72,5 +83,9 @@ class Prosedur extends Model
         ];
     }
 
+    public function getIsPdfAttribute(): bool
+    {
+        return str_contains(strtolower($this->mime_type ?? ''), 'pdf')
+            || str_ends_with(strtolower($this->file_prosedur ?? ''), '.pdf');
+    }
 }
-

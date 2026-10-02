@@ -50,7 +50,7 @@
                     <table class="table table-bordered table-hover" id="datasarana-table">
                         <thead>
                             <tr>
-                                <th style="max-width: 80px;">Aksi</th>
+                                <th class="text-center text-nowrap" style="width: 100px;">Aksi</th>
                                 <th>Nama Sarana</th>
                                 <th>Jumlah</th>
                                 <th>Kategori</th>
@@ -76,8 +76,11 @@
                     url: "{{ route('data.data-sarana.getdata') }}",
                     type: "POST",
                     data: function(d) {
-                        d.desa_id = $('#list_desa').val(),
-                            d.kategori = $('#kategori').val()
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
+                        d.kategori = $('#kategori').val()
                     }
                 },
                 columns: [{
@@ -85,7 +88,7 @@
                         name: 'aksi',
                         orderable: false,
                         searchable: false,
-                        className: 'text-center'
+                        className: 'text-center text-nowrap'
                     },
                     {
                         data: 'nama',

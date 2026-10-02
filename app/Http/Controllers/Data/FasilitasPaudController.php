@@ -34,8 +34,10 @@ namespace App\Http\Controllers\Data;
 use App\Exports\ExportFasilitasPaud;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImportFasilitasPaudRequest;
+use App\Http\Requests\UpdateFasilitasPaudRequest;
 use App\Imports\ImporFasilitasPaud;
 use App\Models\FasilitasPAUD;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -59,12 +61,18 @@ class FasilitasPaudController extends Controller
      */
     public function getDataFasilitasPAUD()
     {
-        return DataTables::of(FasilitasPAUD::with(['desa'])->get())
+        $desa = request()->input('desa');
+        $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
+        return DataTables::of(FasilitasPAUD::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+                    return $query->where('desa_id', $desa);
+                })->with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url'] = auth()->user()->can('access.data.fasilitas_paud.edit') ? route('data.fasilitas-paud.edit', $row->id) : null;
                 $data['delete_url'] = auth()->user()->can('access.data.fasilitas_paud.delete') ? route('data.fasilitas-paud.destroy', $row->id) : null;
 
                 return view('forms.aksi', $data);
+            })->addColumn('nama_desa', function ($row) use ($listDesa) {
+                return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
             })
             ->rawColumns(['aksi'])->make();
     }
@@ -116,7 +124,7 @@ class FasilitasPaudController extends Controller
     {
         $fasilitas = FasilitasPAUD::with(['desa'])->findOrFail($id);
         $page_title = 'Fasilitas PAUD';
-        $page_description = 'Ubah Fasilitas PAUD : Desa ' . $fasilitas->desa->nama;
+        $page_description = 'Ubah Fasilitas PAUD : Desa ' . nama_desa($fasilitas->desa_id);
 
         return view('data.fasilitas_paud.edit', compact('page_title', 'page_description', 'fasilitas'));
     }
@@ -127,18 +135,10 @@ class FasilitasPaudController extends Controller
      * @param  int  $id
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateFasilitasPaudRequest $request, $id)
     {
-        request()->validate([
-            'jumlaah_paud' => 'required',
-            'jumlah_guru_paud' => 'required',
-            'jumlah_siswa_paud' => 'required',
-            'semester' => 'required',
-            'tahun' => 'required',
-        ]);
-
         try {
-            FasilitasPAUD::findOrFail($id)->update($request->all());
+            FasilitasPAUD::findOrFail($id)->update($request->validated());
         } catch (\Exception $e) {
             Log::error('Fasilitas PAUD update failed', [
                 'error' => $e->getMessage(),

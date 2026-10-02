@@ -36,6 +36,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\TingkatPendidikanRequest;
 use App\Imports\ImporTingkatPendidikan;
 use App\Models\TingkatPendidikan;
+use App\Services\DesaService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -61,7 +62,7 @@ class TingkatPendidikanController extends Controller
     {
         if (request()->ajax()) {
             $desa = request()->input('desa');
-
+            $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
             return DataTables::of(
                 TingkatPendidikan::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
                     return $query->where('desa_id', $desa);
@@ -73,6 +74,9 @@ class TingkatPendidikanController extends Controller
                     $data['delete_url'] = auth()->user()->can('access.data.tingkat_pendidikan.delete') ? route('data.tingkat-pendidikan.destroy', $row->id) : null;
 
                     return view('forms.aksi', $data);
+                })
+                ->addColumn('nama_desa', function ($row) use ($listDesa) {
+                    return $row->desa->nama ?? $listDesa[$row->desa_id] ?? '-';
                 })
                 ->rawColumns(['aksi'])
                 ->make();

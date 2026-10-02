@@ -70,7 +70,10 @@
                     url: "{!! route('data.pembangunan.getdata') !!}",
                     type: "POST",
                     data: function(d) {
-                        d.desa = $('#list_desa').val();
+                        var desaId = $('#list_desa').val();
+                        if (desaId && desaId != 'Semua') {
+                            d.desa = desaId;
+                        }
                     }
                 },
                 columns: [{

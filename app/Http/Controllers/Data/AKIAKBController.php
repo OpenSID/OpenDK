@@ -34,6 +34,7 @@ namespace App\Http\Controllers\Data;
 use App\Exports\ExportAKIAKB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ImportAKIAKBRequest;
+use App\Http\Requests\UpdateAKIAKBRequest;
 use App\Imports\ImporAKIAKB;
 use App\Models\AkiAkb;
 use App\Services\DesaService;
@@ -65,8 +66,12 @@ class AKIAKBController extends Controller
      */
     public function getDataAKIAKB()
     {
+        $desa = request()->input('desa');
         $listDesa = (new DesaService)->listDesa()->pluck('nama', 'desa_id');
-        return DataTables::of(AkiAkb::with(['desa'])->get())
+        return DataTables::of(AkiAkb::when($desa && $desa !== 'Semua', function ($query) use ($desa) {
+            return $query->where('desa_id', $desa);
+        })
+            ->with(['desa'])->get())
             ->addColumn('aksi', function ($row) {
                 $data['edit_url'] = auth()->user()->can('access.data.aki_akb.edit') ? route('data.aki-akb.edit', $row->id) : null;
                 $data['delete_url'] = auth()->user()->can('access.data.aki_akb.delete') ? route('data.aki-akb.destroy', $row->id) : null;

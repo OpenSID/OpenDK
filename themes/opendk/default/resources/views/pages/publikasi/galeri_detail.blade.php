@@ -21,6 +21,10 @@
         object-fit: cover;
         /* Menjaga proporsi gambar dengan crop jika perlu */
     }
+
+    .media-container {
+        margin-bottom: 15px;
+    }
 </style>
 @endpush
 
@@ -50,6 +54,10 @@
 @push('scripts')
 <script>
     $(function(){
+        // asset() membuang garis miring di akhir path, sehingga pemisah ke nama
+        // berkas ditambahkan eksplisit di JavaScript.
+        var storageBaseUrl = @json(asset('storage/publikasi/galeri'));
+
         // Function to load galeri detail from API
         function loadGaleriDetail() {
             // Make API call to get galeri by slug
@@ -63,11 +71,28 @@
                         // Update the title
                         $('#galeri-judul').text(galeri.judul ? galeri.judul.toUpperCase() : '');
                         
+                        // Galeri berbasis link (Google Drive, YouTube, dll) tidak punya
+                        // array gambar, jadi media-nya dirender sesuai tipenya.
+                        if (galeri.jenis === 'url' && galeri.link) {
+                            var media = renderGaleriMedia(galeri, {
+                                imageStyle: 'width:100%;height:auto;border-radius:4px;'
+                            });
+
+                            $('#galeri-images-container').html(
+                                '<div class="col-12 media-container">' + media + '</div>' +
+                                '<div class="col-12"><p style="font-size:12px;">' +
+                                    'Sumber: <a href="' + galeri.link + '" target="_blank" rel="noopener">' + galeri.link + '</a>' +
+                                '</p></div>'
+                            );
+
+                            return;
+                        }
+
                         // Generate images HTML
                         var imagesHtml = '';
                         if (galeri.gambar && Array.isArray(galeri.gambar)) {
                             galeri.gambar.forEach(function(item) {
-                                var imagePath = '{{ asset("") }}storage/publikasi/galeri/' + item;
+                                var imagePath = storageBaseUrl + '/' + item;
                                 imagesHtml += '<div class="col-md-6 mt-2">' +
                                     '<div class="image-container">' +
                                         '<img id="myImg" class="img-fluid" src="' + imagePath + '" alt="Image">' +
@@ -75,7 +100,7 @@
                                 '</div>';
                             });
                         } else {
-                            imagesHtml = '<div class="col-12"><p>Tidak ada gambar yang ditampilkan!</p></div>';
+                            imagesHtml = '<div class="col-12"><p>Tidak ada media yang ditampilkan!</p></div>';
                         }
                         
                         // Update the container with images

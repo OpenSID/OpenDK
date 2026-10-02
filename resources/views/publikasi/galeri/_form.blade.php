@@ -65,6 +65,32 @@
                         @endif
                     </label>
 
+                    {!! html()->select('media_type', array_merge(['' => 'Otomatis (deteksi sendiri)'], TipeMedia::selectable()))->class('form-control')->value(old('media_type', isset($galeri) ? $galeri->media_type : '')) !!}
+
+                    <small class="help-block text-muted">
+                        Pilih <b>Video</b> bila berkas Google Drive berisi video, karena jenis media
+                        tidak dapat dibaca langsung dari alamat tautannya.
+                    </small>
+
+                    @if ($errors->has('media_type'))
+                        <span class="help-block" style="color:red">{{ $errors->first('media_type') }}</span>
+                    @endif
+                </div>
+                <div class="form-group" id="media-link-preview">
+                    @if (isset($galeri) && $galeri->jenis === 'url' && $galeri->link)
+                        <label class="control-label">Pratinjau Media</label>
+                        <x-galeri-media :galeri="$galeri" variant="full" />
+                        <small class="help-block text-muted">
+                            Tautan asli: <a href="{{ $galeri->link }}" target="_blank" rel="noopener">{{ $galeri->link }}</a>
+                        </small>
+                    @endif
+                </div>
+                <div class="form-group" id="image">
+                    <label class="control-label" for="file-galeri">Thumbnail @if (!isset($galeri) || empty($galeri->gambar))
+                            <span class="required text-danger">*</span>
+                        @endif
+                    </label>
+
                     <input
                         type="file"
                         name="gambar[]"

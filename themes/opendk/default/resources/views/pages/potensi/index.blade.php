@@ -8,10 +8,10 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                @if(isset($kategori_potensi) && $kategori_potensi->count() > 0)
+                @if (isset($kategori_potensi) && $kategori_potensi->count() > 0)
                     <div style="margin-bottom: 20px;">
                         <a href="{{ route('potensi.index') }}" class="btn btn-sm {{ empty($slug) ? 'btn-primary' : 'btn-default' }}" style="margin-right: 5px; margin-bottom: 5px;">Semua</a>
-                        @foreach($kategori_potensi as $kat)
+                        @foreach ($kategori_potensi as $kat)
                             <a href="{{ route('potensi.kategori', $kat->slug) }}" class="btn btn-sm {{ ($slug ?? '') === $kat->slug ? 'btn-primary' : 'btn-default' }}" style="margin-right: 5px; margin-bottom: 5px;">{{ $kat->nama_kategori }}</a>
                         @endforeach
                     </div>
@@ -32,88 +32,74 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(function(){
-        var slug = '{!! $slug ?? "" !!}';
+    <script>
+        $(function() {
+            function renderPotensi(items) {
+                if (!items || items.length === 0) {
+                    return '<h4 class="text-center"><span class="fa fa-times"></span> Data tidak ditemukan.</h4>';
+                }
 
-        function renderPotensi(items) {
-            if (!items || items.length === 0) {
-                return '<h4 class="text-center"><span class="fa fa-times"></span> Data tidak ditemukan.</h4>';
-            }
+                return items.map(function(item) {
+                    var potensi = item.attributes;
+                    var potensiImage = potensi.file_gambar_path || '{{ asset('/img/no-image.png') }}';
 
-            return items.map(function(item) {
-                var potensi = item.attributes;
-                var potensiImage = potensi.file_gambar_path || '{{ asset("/img/no-image.png") }}';
-                var kategoriSlug = (potensi.tipe && potensi.tipe.slug) ? potensi.tipe.slug : (slug || 'kategori');
-                var detailUrl = '{{ url("/potensi") }}/' + kategoriSlug + '/' + (item.id || '');
-                
-                return '<div class="attachment-block clearfix">' +
-                    '<img id="myImg" class="attachment-img responsive" src="' + potensiImage + '" alt="' + (potensi.nama_potensi || '') + '">' +
-                    '<!-- The Modal -->' +
-                    '<div id="myModal" class="modal">' +
+                    return '<div class="attachment-block clearfix">' +
+                        '<img id="myImg" class="attachment-img responsive" src="' + potensiImage + '" alt="' + (potensi.nama_potensi || '') + '">' +
+                        '<!-- The Modal -->' +
+                        '<div id="myModal" class="modal">' +
                         '<span class="close">&times;</span>' +
                         '<img class="modal-content" id="img01">' +
                         '<div id="caption">' + (potensi.nama_potensi || '') + '</div>' +
-                    '</div>' +
-                    '<div class="attachment-pushed">' +
-                        '<h4 class="attachment-heading"><a href="' + detailUrl + '"><i class="fa fa-industry" aria-hidden="true"></i> ' + (potensi.nama_potensi || '') + '</a></h4>' +
-                        '<div class="attachment-text">' +
-                            (potensi.deskripsi ? (potensi.deskripsi.length > 300 ? potensi.deskripsi.substring(0, 300) + ' ...' : potensi.deskripsi) : '') +
-                            '<div class="pull-right button-group" style="position:relative; bottom:0px; margin-bottom: 0px;">' +
-                                '<a href="' + detailUrl + '" class="btn btn-xs btn-primary"><i class="fa fa-angle-double-right"></i> Baca Selengkapnya</a>' +
-                            '</div>' +
                         '</div>' +
-                    '</div>' +
-                '</div>';
-            }).join('');
-        }
-
-        // Function to load potensi from API
-        function loadPotensi(page = 1) {
-            var $container = $('#potensi-container .post.clearfix');
-            $container.html(`@include('components.placeholder')`);
-            
-            var apiUrl = '{!! $urlApi !!}/potensi?include=tipe&page[number]=' + page;
-            if (slug) {
-                apiUrl += '&filter[tipe.slug]=' + encodeURIComponent(slug);
+                        '<div class="attachment-pushed">' +
+                        '<h4 class="attachment-heading"><a href="{{ url('/potensi') }}/' + (potensi.tipe ? potensi.tipe.slug : '') + '/' + (item.id || '') + '"><i class="fa fa-industry" aria-hidden="true"></i> ' + (potensi.nama_potensi || '') + '</a></h4>' +
+                        '<div class="attachment-text">' +
+                        (potensi.deskripsi ? (potensi.deskripsi.length > 300 ? potensi.deskripsi.substring(0, 300) + ' ...' : potensi.deskripsi) : '') +
+                        '<div class="pull-right button-group" style="position:relative; bottom:0px; margin-bottom: 0px;">' +
+                        '<a href="{{ url('/potensi') }}/' + (potensi.tipe ? potensi.tipe.slug : '') + '/' + (item.id || '') + '" class="btn btn-xs btn-primary"><i class="fa fa-angle-double-right"></i> Baca Selengkapnya</a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
+                }).join('');
             }
 
-            // Make API call to get potensi
-            $.ajax({
-                url: apiUrl,
-                method: 'GET',
-                success: function(response) {
-                    var items = response.data || response;
-                    
-                    var html = renderPotensi(items);                    
-                    if (items && items.length > 0 && items[0].attributes && items[0].attributes.tipe && slug) {
-                        $('#title-container').text(items[0].attributes.tipe.nama_kategori);
-                    } else if (slug) {
-                        $('#title-container').text('{{ $page_title ?? "Potensi" }}');
-                    } else {
-                        $('#title-container').text('Semua Potensi');
-                    }
-                    var $container = $('#potensi-container .post.clearfix');
+            // Function to load potensi from API
+            function loadPotensi(page = 1) {
+                var $container = $('#potensi-container .post.clearfix');
+                $container.html(`@include('components.placeholder')`);
 
-                    $container.html(html);
-                    initPagination(response, function() {
-                        $('.pagination').on('click', '.btn-page', function() {
-                            var page = $(this).data('page');
-                            loadPotensi(page);
+                // Make API call to get potensi
+                $.ajax({
+                    url: '{!! $urlApi !!}/potensi?filter[tipe.slug]={!! $slug !!}&include=tipe&page[number]=' + page,
+                    method: 'GET',
+                    success: function(response) {
+                        var items = response.data || response;
+
+                        var html = renderPotensi(items);
+                        $('#title-container').text(items[0].attributes.tipe.nama_kategori)
+                        var $container = $('#potensi-container .post.clearfix');
+
+                        $container.html(html);
+                        initPagination(response, function() {
+                            $('.pagination').on('click', '.btn-page', function() {
+                                var params = {};
+                                var page = $(this).data('page');
+                                loadPotensi(page);
+                            });
+                            $('.pagination').find('.btn-page').attr('href', '#potensi-container')
                         });
-                        $('.pagination').find('.btn-page').attr('href','#potensi-container')
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error loading potensi:', error);
-                    var $container = $('#potensi-container .post.clearfix');
-                    $container.html('<div class="callout callout-danger"><p class="text-bold">Gagal memuat potensi. Silakan coba lagi nanti.</p></div>');
-                }
-            });
-        }
-        
-        // Load potensi on page load
-        loadPotensi();
-    });
-</script>
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error loading potensi:', error);
+                        var $container = $('#potensi-container .post.clearfix');
+                        $container.html('<div class="callout callout-danger"><p class="text-bold">Gagal memuat potensi. Silakan coba lagi nanti.</p></div>');
+                    }
+                });
+            }
+
+            // Load potensi on page load
+            loadPotensi();
+        });
+    </script>
 @endpush

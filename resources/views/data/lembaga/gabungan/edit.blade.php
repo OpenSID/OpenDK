@@ -18,7 +18,7 @@
 
                     {!! html()->form('PUT', route('data.lembaga.update', $lembaga->id))->id('form-lembaga')->class('form-horizontal form-label-left')->open() !!}
                     @include('layouts.fragments.error_message')
-                    <div class="box-body">                        
+                    <div class="box-body">
 
                         @include('flash::message')
                         @include('data.lembaga.gabungan.form_edit')

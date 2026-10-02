@@ -56,8 +56,7 @@
 @include('partials.asset_tinymce')
 @include('partials.asset_select2')
 @push('scripts')
-    <script type="text/javascript">        
-
+    <script type="text/javascript">
         tinymce.init({
             selector: 'textarea',
             height: 500,

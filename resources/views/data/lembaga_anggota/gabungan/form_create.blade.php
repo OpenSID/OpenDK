@@ -3,10 +3,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Nama Anggota <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        <x-penduduk-gabungan-select
-            name="penduduk_id_gabungan"
-            placeholder="Pilih Anggota"
-            required />
+        <x-penduduk-gabungan-select name="penduduk_id_gabungan" placeholder="Pilih Anggota" required />
     </div>
 </div>
 <div class="form-group">

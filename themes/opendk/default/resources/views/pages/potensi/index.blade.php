@@ -8,10 +8,10 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-                @if(isset($kategori_potensi) && $kategori_potensi->count() > 0)
+                @if (isset($kategori_potensi) && $kategori_potensi->count() > 0)
                     <div style="margin-bottom: 20px;">
                         <a href="{{ route('potensi.index') }}" class="btn btn-sm {{ empty($slug) ? 'btn-primary' : 'btn-default' }}" style="margin-right: 5px; margin-bottom: 5px;">Semua</a>
-                        @foreach($kategori_potensi as $kat)
+                        @foreach ($kategori_potensi as $kat)
                             <a href="{{ route('potensi.kategori', $kat->slug) }}" class="btn btn-sm {{ ($slug ?? '') === $kat->slug ? 'btn-primary' : 'btn-default' }}" style="margin-right: 5px; margin-bottom: 5px;">{{ $kat->nama_kategori }}</a>
                         @endforeach
                     </div>

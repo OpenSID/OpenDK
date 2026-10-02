@@ -42,6 +42,7 @@ use App\Models\Comment;
 use App\Models\Event;
 use App\Models\Kategori;
 use App\Models\Survei;
+use App\Models\TipePotensi;
 use App\Services\DesaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -140,12 +141,23 @@ class PageController extends FrontEndController
         return response()->json(compact('html'));
     }
 
-    public function PotensiByKategory(string $slug): View
+    public function PotensiIndex(): View
     {
         $page_title = 'Potensi';
-        $page_description = 'Potensi-Potensi';
+        $page_description = 'Potensi-Potensi Kecamatan';
+        $kategori_potensi = TipePotensi::all();
 
-        return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug']));
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'kategori_potensi']));
+    }
+
+    public function PotensiByKategory(string $slug): View
+    {
+        $kategori = TipePotensi::where('slug', $slug)->first();
+        $page_title = 'Potensi' . ($kategori ? ' - ' . $kategori->nama_kategori : '');
+        $page_description = 'Potensi-Potensi Kecamatan' . ($kategori ? ' Kategori ' . $kategori->nama_kategori : '');
+        $kategori_potensi = TipePotensi::all();
+
+        return view('pages.potensi.index', compact(['page_title', 'page_description', 'slug', 'kategori', 'kategori_potensi']));
     }
 
     public function PotensiShow(string $kategori, string $id): View

@@ -157,6 +157,7 @@
                 let sourceKategori = $('#sourceKategori');
                 let sourceModul = $('#sourceModul');
                 let sourceDokumen = $('#sourceDokumen');
+                let sourcePotensi = $('#sourcePotensi');
 
                 let source = '';
                 if (sourceLink.is(':checked')) source = sourceLink.val();
@@ -164,6 +165,7 @@
                 else if (sourceKategori.is(':checked')) source = sourceKategori.val();
                 else if (sourceModul.is(':checked')) source = sourceModul.val();
                 else if (sourceDokumen.is(':checked')) source = sourceDokumen.val();
+                else if (sourcePotensi.is(':checked')) source = 'modul';
 
                 editor.add(source);
             });

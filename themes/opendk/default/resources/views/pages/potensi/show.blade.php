@@ -3,6 +3,9 @@
 @section('content')
     <div class="col-md-8">
         <div class="box box-widget">                 
+            <div class="box-header with-border">
+                <a href="{{ route('potensi.index') }}" class="btn btn-sm btn-default"><i class="fa fa-arrow-left"></i> Kembali ke Daftar Potensi</a>
+            </div>
             <!-- /.box-header -->
             <div class="box-body">
                 <div id="potensi-detail-container">

@@ -18,16 +18,17 @@
         <div class="box box-primary">
             <div class="box-header with-border">
                 @can('access.publikasi.galeri.create')
-                    <a href="{{ route('publikasi.galeri.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data"><i class="fa fa-plus"></i>&ensp;Tambah</a>
+                    <a href="{{ route('publikasi.galeri.create') }}" class="btn btn-primary btn-sm" judul="Tambah Data" data-testid="btn-tambah"><i class="fa fa-plus"></i>&ensp;Tambah</a>
                 @endcan
-                <a href="{{ route('publikasi.album.index') }}" class="btn btn-info btn-sm" judul="Tambah Data"><i class="fa fa-arrow-left"></i>&ensp;Kembali ke Daftar Album</a>
+                <a href="{{ route('publikasi.album.index') }}" class="btn btn-info btn-sm" judul="Kembali ke Daftar Album" data-testid="btn-kembali"><i class="fa fa-arrow-left"></i>&ensp;Kembali ke Daftar Album</a>
             </div>
             <div class="box-body">
                 <div class="table-responsive">
-                    <table class="table table-striped table-bordered" id="galeri-table">
+                    <table class="table table-striped table-bordered" id="galeri-table" data-testid="table-galeri">
                         <thead>
                             <tr>
                                 <th style="max-width: 80px;">Aksi</th>
+                                <th style="max-width: 100px;">Media</th>
                                 <th>Nama Album</th>
                                 <th style="max-width: 100px;">Aktif</th>
                                 <th>Dimuat pada</th>
@@ -55,6 +56,12 @@
                         class: 'text-center',
                         searchable: false,
                         orderable: false
+                    },
+                    {
+                        data: 'media',
+                        name: 'media',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'judul',

@@ -20,35 +20,25 @@
 
             return items.map(function(item) {
                 var galeri = item.attributes;
-                var galeriImage = galeri.gambar_path || '{{ asset("/img/no-image.png") }}';
-                
-                if (galeri.jenis === 'file') {
-                    return '<div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">' +
-                        '<div class="row">' +
-                            '<div class="col-sm-4">' +
-                                '<img class="img-responsive" src="' + galeriImage + '" alt="' + (galeri.slug || '') + '">' +
-                            '</div>' +
-                            '<div class="col-sm-8">' +
-                                '<h5 style="margin-top: 5px; text-align: justify;"><b><a href="{{ url("/publikasi/galeri/detail") }}/' + (galeri.slug || '') + '">' + (galeri.judul || '') + '</a></b></h5>' +
-                                '<p style="font-size:11px;"><i class="fa fa-calendar"></i>&ensp;' + formatDate(galeri.created_at) + '&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>' +
-                                '<a href="{{ url("/publikasi/galeri/detail") }}/' + (galeri.slug || '') + '" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>' +
-                            '</div>' +
+                var media = renderGaleriMedia(galeri, {
+                    imageStyle: 'width:100%;height:auto;max-height:220px;object-fit:contain;background:#f5f5f5;'
+                });
+                var detailUrl = '{{ url("/publikasi/galeri/detail") }}/' + (galeri.slug || '');
+                var targetUrl = (galeri.jenis === 'file') ? detailUrl : (galeri.link || detailUrl);
+                var badge = isGaleriPlayable(galeri)
+                    ? '<span class="label label-primary" style="position:absolute;top:8px;left:8px;z-index:2;"><i class="fa fa-play-circle"></i> ' + (galeri.media_type === 'youtube' ? 'YouTube' : 'Video') + '</span>'
+                    : '';
+
+                return '<div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">' +
+                    '<div class="row">' +
+                        '<div class="col-sm-4" style="position:relative;">' + badge + media + '</div>' +
+                        '<div class="col-sm-8">' +
+                            '<h5 style="margin-top: 5px; text-align: justify;"><b><a href="' + targetUrl + '">' + (galeri.judul || '') + '</a></b></h5>' +
+                            '<p style="font-size:11px;"><i class="fa fa-calendar"></i>&ensp;' + formatDate(galeri.created_at) + '&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>' +
+                            '<a href="' + detailUrl + '" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>' +
                         '</div>' +
-                    '</div>';
-                } else {
-                    return '<div class="post" style="margin-bottom: 5px; padding-top: 5px; padding-bottom: 5px;">' +
-                        '<div class="row">' +
-                            '<div class="col-sm-4">' +
-                                '<img class="img-responsive" src="' + galeriImage + '" alt="' + (galeri.slug || '') + '">' +
-                            '</div>' +
-                            '<div class="col-sm-8">' +
-                                '<h5 style="margin-top: 5px; text-align: justify;"><b><a href="' + (galeri.link || '') + '">' + (galeri.judul || '') + '</a></b></h5>' +
-                                '<p style="font-size:11px;"><i class="fa fa-calendar"></i>&ensp;' + formatDate(galeri.created_at) + '&ensp;|&ensp;<i class="fa fa-user"></i>&ensp;Administrator</p>' +
-                                '<a href="' + (galeri.link || '') + '" class="btn btn-sm btn-primary" target="_blank">Selengkapnya</a>' +
-                            '</div>' +
-                        '</div>' +
-                    '</div>';
-                }
+                    '</div>' +
+                '</div>';
             }).join('');
         }
 

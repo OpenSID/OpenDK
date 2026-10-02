@@ -31,6 +31,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\CspPolicy;
 use Closure;
 
 class SecurityHeaders
@@ -47,10 +48,19 @@ class SecurityHeaders
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
+        foreach ($this->unwantedHeaders as $header) {
+            $response->headers->remove($header);
+        }
+
+        /*
+         * Cegah browser menebak-nebak Content-Type dari isi file. Tanpa header ini
+         * file markup seperti SVG dapat dieksekusi sebagai script meskipun
+         * header dan nama ekstensinya tidak menyerupai HTML.
+         */
+        $response->headers->set('X-Content-Type-Options', 'nosniff');
+
         if (app()->environment('production')) {
-            $localDomain = env('APP_URL', 'http://localhost');
-            $urlDatabaseGabungan = config('setting.api_server_database_gabungan');
-            $response->headers->set('Content-Security-Policy', "default-src 'self';script-src 'self' https://pantau.opensid.my.id/ https://cdnjs.cloudflare.com/ajax/libs/tinymce/ https://cdn.jsdelivr.net/npm/ https://cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js https://website-widgets.pages.dev/dist/sienna.min.js platform.twitter.com unpkg.com 'unsafe-inline' 'unsafe-eval';style-src 'self' https://www.tiny.cloud/ http://www.tinymce.com/css/codepen.min.css https://cdnjs.cloudflare.com/ajax/libs/tinymce/ https://cdn.jsdelivr.net/npm/ fonts.googleapis.com unpkg.com 'unsafe-inline';img-src 'self' * data: blob:;font-src 'self' https://cdnjs.cloudflare.com/ajax/libs/tinymce/ https://cdn.jsdelivr.net/npm/ fonts.gstatic.com data:;connect-src 'self' ".$urlDatabaseGabungan." https://pantau.opensid.my.id/ ;media-src 'self';frame-src 'self' blob: data: platform.twitter.com github.com *.youtube.com *.vimeo.com *.opensid.my.id;object-src 'self' blob:;frame-ancestors 'self';base-uri 'self';");
+            $response->headers->set('Content-Security-Policy', (new CspPolicy())->toHeader());
         }
 
         return $response;

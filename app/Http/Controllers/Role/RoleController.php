@@ -66,7 +66,8 @@ class RoleController extends Controller
      */
     public function getData()
     {
-        $roles = Role::select('roles.*');
+        // Filter hanya guard 'web' untuk menghindari duplikasi dengan role guard 'api'
+        $roles = Role::web()->select('roles.*');
 
         return DataTables::of($roles)
             ->addColumn('users_count', function ($role) {
@@ -212,11 +213,19 @@ class RoleController extends Controller
         try {
             // Jika menggunakan paket Spatie, periksa apakah ada model yang terkait dengan role ini
             $role = Role::findOrFail($id);
+
+            // Cek apakah role ini termasuk role sistem yang tidak boleh dihapus
+            if (in_array($role->name, Role::PROTECTED_ROLES)) {
+                session()->flash('error', 'Role sistem "' . $role->name . '" tidak dapat dihapus.');
+
+                return back();
+            }
+
             if ($role->users()->exists()) {
                 session()->flash('error', 'Role tidak bisa dihapus karena masih memiliki user');
 
                 return back();
-            }else {                
+            } else {
                 $role->delete();
                 session()->flash('success', 'Berhasil menghapus role: ' . $role->name);
 

@@ -2,20 +2,20 @@
     <label for="toilet" class="control-label col-md-4 col-sm-3 col-xs-12">Toilet <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->number('toilet', old('toilet'))->class('form-control')->required()->id('toilet') !!}
+        {!! html()->number('toilet', old('toilet', $toilet->toilet))->class('form-control')->required()->id('toilet') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="sanitasi" class="control-label col-md-4 col-sm-3 col-xs-12">Sanitasi <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        {!! html()->number('sanitasi', old('sanitasi'))->class('form-control')->required()->id('sanitasi') !!}
+        {!! html()->number('sanitasi', old('sanitasi', $toilet->sanitasi))->class('form-control')->required()->id('sanitasi') !!}
     </div>
 </div>
 <div class="form-group">
     <label for="bulan" class="control-label col-md-4 col-sm-3 col-xs-12">Bulan</label>
 
-    <div class="col-md-8">
+    <div class="col-md-6 col-sm-6 col-xs-12">
         <select class="form-control" id="bulan" name="bulan">
             @foreach (months_list() as $key => $month)
                 @if ($toilet->bulan == $key)
@@ -31,7 +31,7 @@
 <div class="form-group">
     <label for="list_year" class="control-label col-md-4 col-sm-3 col-xs-12">Tahun</label>
 
-    <div class="col-md-8">
+    <div class="col-md-6 col-sm-6 col-xs-12">
         <select class="form-control" id="list_year" name="tahun">
             @foreach (years_list() as $year)
                 @if ($toilet->tahun == $year)

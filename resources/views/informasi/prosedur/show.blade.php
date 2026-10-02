@@ -18,21 +18,28 @@
                 <div class="box box-primary">
                     <div class="box-header with-border">
                         <a href="{{ route('informasi.prosedur.index') }}">
-                            <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-arrow-left"></i>&nbsp;
+                            <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i>&nbsp;
                                 Kembali</button>
                         </a>
+                        @if (!empty($prosedur->file_prosedur))
+                            <a href="{{ route('informasi.prosedur.download', $prosedur->id) }}" class="btn btn-primary btn-sm">
+                                <i class="fa fa-download"></i>&nbsp; Unduh
+                            </a>
+                        @endif
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
                         <!-- form start -->
                         <div class="row overflow-x">
                             <div class="col-md-12">
-                                @if (isset($prosedur->file_prosedur) && $prosedur->mime_type != 'pdf')
-                                    <img src="{{ asset($prosedur->file_prosedur) }}" width="100%">
-                                @endif
-
-                                @if (isset($prosedur->file_prosedur) && $prosedur->mime_type == 'pdf')
-                                    <object data="@if (isset($prosedur->file_prosedur)) {{ asset($prosedur->file_prosedur . '#toolbar=1') }} @endif" type="application/pdf" class="showpdf" id="showpdf"> </object>
+                                @if (!empty($prosedur->file_prosedur))
+                                    @if ($prosedur->is_pdf)
+                                        <iframe src="{{ asset($prosedur->file_prosedur) }}#toolbar=1" class="showpdf" id="showpdf" style="width: 100%; height: 750px; border: 1px solid #e0e0e0; border-radius: 4px;" frameborder="0">
+                                            <p>Browser Anda tidak mendukung preview PDF langsung. <a href="{{ route('informasi.prosedur.download', $prosedur->id) }}">Klik di sini untuk mengunduh</a>.</p>
+                                        </iframe>
+                                    @else
+                                        <img src="{{ asset($prosedur->file_prosedur) }}" class="img-responsive" style="max-width: 100%; margin: 0 auto; display: block;">
+                                    @endif
                                 @endif
                             </div>
                         </div>

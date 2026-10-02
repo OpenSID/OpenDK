@@ -32,12 +32,23 @@
 namespace Tests\Feature\Audit;
 
 use App\Models\DataDesa;
+use App\Models\SettingAplikasi;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\Models\Activity;
 use Tests\CrudTestCase;
 
 beforeEach(function () {
-    // Test setup if needed
+    $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+
+    if (count($tables) === 0) {
+        $this->markTestSkipped('Activity log is not installed.');
+    }
+
+    Activity::query()->delete();
+
+    $this->user = User::factory()->create();
+    $this->actingAs($this->user);
 });
 
 describe('Audit Trail', function () {
@@ -75,165 +86,98 @@ describe('Audit Trail', function () {
     });
 
     test('audit trail table exists', function () {
-        // Check if audit_logs or activity_log table exists
         $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
-
-        // If spatie/laravel-activitylog is installed, this table should exist
-        $hasActivityLog = count($tables) > 0;
-
-        if ($hasActivityLog) {
-            expect($hasActivityLog)->toBeTrue();
-        } else {
-            $this->markTestSkipped(
-                'Activity log table does not exist. Install spatie/laravel-activitylog for audit trail.'
-            );
-        }
+        expect(count($tables))->toBeGreaterThan(0);
     });
 
     test('model changes are logged', function () {
-        // This test requires spatie/laravel-activitylog to be installed
-        $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+        $model = SettingAplikasi::factory()->create();
 
-        if (count($tables) === 0) {
-            $this->markTestSkipped(
-                'Activity log is not installed.'
-            );
-        }
+        $initialLogCount = Activity::query()->count();
 
-        $desa = DataDesa::factory()->create();
+        $model->update(['value' => 'Updated Value']);
 
-        $initialLogCount = DB::table('activity_log')->count();
-
-        $desa->update(['nama' => 'Updated Desa Name']);
-
-        $newLogCount = DB::table('activity_log')->count();
+        $newLogCount = Activity::query()->count();
 
         expect($newLogCount)->toBeGreaterThan($initialLogCount);
     });
 
     test('audit log contains correct data', function () {
-        // This test requires spatie/laravel-activitylog to be installed
-        $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+        $model = SettingAplikasi::factory()->create();
 
-        if (count($tables) === 0) {
-            $this->markTestSkipped(
-                'Activity log is not installed.'
-            );
-        }
+        $model->update(['value' => 'Updated Value']);
 
-        $user = User::first();
-        $desa = DataDesa::factory()->create();
-
-        $desa->update(['nama' => 'Updated Desa Name']);
-
-        $log = DB::table('activity_log')
-            ->where('subject_type', 'App\Models\DataDesa')
-            ->where('subject_id', $desa->id)
-            ->orderBy('id', 'desc')
+        $log = Activity::query()
+            ->where('subject_type', SettingAplikasi::class)
+            ->where('subject_id', $model->id)
+            ->orderByDesc('id')
             ->first();
 
         expect($log)->not->toBeNull();
-        expect($log->description)->toContain('updated');
+        expect($log->description)->toContain('ubah pengaturan aplikasi');
     });
 
     test('causer is recorded in audit log', function () {
-        // This test requires spatie/laravel-activitylog to be installed
-        $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+        $model = SettingAplikasi::factory()->create();
 
-        if (count($tables) === 0) {
-            $this->markTestSkipped(
-                'Activity log is not installed.'
-            );
-        }
+        $model->update(['value' => 'Updated Value']);
 
-        $user = User::first();
-        $desa = DataDesa::factory()->create();
-
-        $desa->update(['nama' => 'Updated Desa Name']);
-
-        $log = DB::table('activity_log')
-            ->where('subject_type', 'App\Models\DataDesa')
-            ->where('subject_id', $desa->id)
-            ->orderBy('id', 'desc')
+        $log = Activity::query()
+            ->where('subject_type', SettingAplikasi::class)
+            ->where('subject_id', $model->id)
+            ->orderByDesc('id')
             ->first();
 
-        expect($log->causer_id)->toBe($user->id);
+        expect($log->causer_id)->toBe($this->user->id);
+        expect($log->causer_type)->toBe(User::class);
     });
 
     test('audit log can be queried by model', function () {
-        // This test requires spatie/laravel-activitylog to be installed
-        $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+        $model = SettingAplikasi::factory()->create();
 
-        if (count($tables) === 0) {
-            $this->markTestSkipped(
-                'Activity log is not installed.'
-            );
-        }
+        $model->update(['value' => 'Updated Value 1']);
+        $model->update(['value' => 'Updated Value 2']);
 
-        $desa = DataDesa::factory()->create();
-
-        $desa->update(['nama' => 'Updated Desa Name']);
-        $desa->update(['website' => 'https://updated.com']);
-
-        $logs = DB::table('activity_log')
-            ->where('subject_type', 'App\Models\DataDesa')
-            ->where('subject_id', $desa->id)
+        $logs = Activity::query()
+            ->where('subject_type', SettingAplikasi::class)
+            ->where('subject_id', $model->id)
             ->get();
 
         expect($logs->count())->toBeGreaterThanOrEqual(2);
     });
 
     test('delete action is logged', function () {
-        // This test requires spatie/laravel-activitylog to be installed
-        $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+        $model = SettingAplikasi::factory()->create();
+        $modelId = $model->id;
 
-        if (count($tables) === 0) {
-            $this->markTestSkipped(
-                'Activity log is not installed.'
-            );
-        }
+        $model->delete();
 
-        $desa = DataDesa::factory()->create();
-        $desaId = $desa->id;
-
-        $this->delete(route('data.data-desa.destroy', $desaId));
-
-        $log = DB::table('activity_log')
-            ->where('subject_type', 'App\Models\DataDesa')
-            ->where('subject_id', $desaId)
-            ->orderBy('id', 'desc')
+        $log = Activity::query()
+            ->where('subject_type', SettingAplikasi::class)
+            ->where('subject_id', $modelId)
+            ->orderByDesc('id')
             ->first();
 
         expect($log)->not->toBeNull();
-        expect($log->description)->toContain('deleted');
+        expect($log->description)->toContain('hapus pengaturan aplikasi');
     });
 
     test('properties are stored in audit log', function () {
-        // This test requires spatie/laravel-activitylog to be installed
-        $tables = DB::select("SHOW TABLES LIKE 'activity_log'");
+        $model = SettingAplikasi::factory()->create();
 
-        if (count($tables) === 0) {
-            $this->markTestSkipped(
-                'Activity log is not installed.'
-            );
-        }
+        $oldValue = $model->value;
+        $newValue = 'Updated Value';
 
-        $desa = DataDesa::factory()->create();
+        $model->update(['value' => $newValue]);
 
-        $oldName = $desa->nama;
-        $newName = 'Updated Desa Name';
-
-        $desa->update(['nama' => $newName]);
-
-        $log = DB::table('activity_log')
-            ->where('subject_type', 'App\Models\DataDesa')
-            ->where('subject_id', $desa->id)
-            ->orderBy('id', 'desc')
+        $log = Activity::query()
+            ->where('subject_type', SettingAplikasi::class)
+            ->where('subject_id', $model->id)
+            ->orderByDesc('id')
             ->first();
 
         $properties = json_decode($log->properties, true);
 
-        expect($properties['old'])->toHaveKey('nama', $oldName);
-        expect($properties['new'])->toHaveKey('nama', $newName);
+        expect($properties['changed_attributes']['value'])->toBe($newValue);
     });
 });

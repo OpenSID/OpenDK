@@ -51,7 +51,7 @@
             <div class="tab-content" style="padding-top: 15px;">
                 <!-- Password Login Tab -->
                 <div role="tabpanel" class="tab-pane active" id="password-login">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('login') }}" data-testid="login-form">
                         @csrf
                         <div class="form-group has-feedback {{ $errors->has('email') ? ' has-error' : '' }}">
                             <div class="input-group">
@@ -64,6 +64,7 @@
                                     required
                                     autofocus
                                     placeholder="Email"
+                                    data-testid="login-email"
                                 >
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -75,7 +76,15 @@
                         </div>
                         <div class="form-group has-feedback {{ $errors->has('password') ? ' has-error' : '' }}">
                             <div class="input-group">
-                                <input id="password" type="password" class="form-control" name="password" required placeholder="Password">
+                                <input
+                                    id="password"
+                                    type="password"
+                                    class="form-control"
+                                    name="password"
+                                    required
+                                    placeholder="Password"
+                                    data-testid="login-password"
+                                >
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('password') }}</strong>
@@ -97,7 +106,7 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-xs-4">
-                                <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                                <button type="submit" class="btn btn-primary btn-block btn-flat" data-testid="login-submit">Sign In</button>
                             </div>
                             <!-- /.col -->
                         </div>

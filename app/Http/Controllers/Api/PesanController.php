@@ -44,6 +44,22 @@ use Stevebauman\Purify\Facades\Purify;
 
 class PesanController extends Controller
 {
+    /**
+     * Kirim pesan baru atau balas pesan dari OpenSID.
+     *
+     * @group OpenSID Integration
+     *
+     * @bodyParam kode_desa string required Kode desa pengirim. Example: 3201012001
+     * @bodyParam judul string Judul pesan (wajib untuk pesan baru). Example: Laporan Bulanan
+     * @bodyParam pesan string required Isi pesan. Example: Berikut kami kirimkan laporan bulanan.
+     * @bodyParam pengirim string required Pengirim pesan. Example: operator@desa.id
+     * @bodyParam nama_pengirim string required Nama pengirim. Example: Ahmad
+     * @bodyParam pesan_id int ID pesan untuk membalas percakapan yang sudah ada. Example: 5
+     * @response {
+     *   "status": true,
+     *   "message": "Berhasil mengirim pesan"
+     * }
+     */
     public function store(PesanRequest $request)
     {
         $desa = (new DesaService())->getDesaByKode($request->kode_desa);
@@ -93,6 +109,18 @@ class PesanController extends Controller
         return response()->json(['result' => 'unknow method']);
     }
 
+    /**
+     * Ambil daftar pesan untuk desa tertentu.
+     *
+     * @group OpenSID Integration
+     *
+     * @bodyParam kode_desa string required Kode desa. Example: 3201012001
+     * @bodyParam id int ID pesan terakhir yang diterima (untuk pagination). Example: 0
+     * @response {
+     *   "status": true,
+     *   "data": [{"id": 1, "judul": "Laporan", "detailPesan": []}]
+     * }
+     */
     public function getpesan(GetPesanRequest $request)
     {
         // cek desa
@@ -115,6 +143,17 @@ class PesanController extends Controller
         return response()->json(['status' => true, 'data' => $pesan]);
     }
 
+    /**
+     * Lihat detail percakapan pesan.
+     *
+     * @group OpenSID Integration
+     *
+     * @queryParam id int required ID pesan. Example: 1
+     * @response {
+     *   "status": true,
+     *   "data": {"id": 1, "judul": "Laporan", "detailPesan": [{"id": 1, "text": "Isi pesan"}]}
+     * }
+     */
     public function detail(Request $request)
     {
         if ($request->has('id')) {

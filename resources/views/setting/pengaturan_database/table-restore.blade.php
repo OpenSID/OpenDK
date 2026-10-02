@@ -47,9 +47,9 @@
                         $('#restoreDatabaseForm')[0].reset();
                     },
                     error: function(xhr) {
-                        let errorMsg = (xhr.responseJSON && xhr.responseJSON.message)
-                            ? xhr.responseJSON.message
-                            : 'Terjadi kesalahan server. Silakan cek log aplikasi.';
+                        let errorMsg = (xhr.responseJSON && xhr.responseJSON.message) ?
+                            xhr.responseJSON.message :
+                            'Terjadi kesalahan server. Silakan cek log aplikasi.';
                         restoreMessage.html('<p class="text-danger">Error: ' + errorMsg + '</p>');
                         buttonSubmit.attr("disabled", false)
                         $('#restoreDatabaseForm')[0].reset();

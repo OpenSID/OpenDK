@@ -31,10 +31,10 @@
 
 namespace Database\Seeders\Demo;
 
-use App\Models\Profil;
 use App\Models\Regulasi;
 use App\Models\TipeRegulasi;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DemoRegulasiSeeder extends Seeder
 {
@@ -45,25 +45,33 @@ class DemoRegulasiSeeder extends Seeder
      */
     public function run()
     {
-        $profil_id = Profil::first()->id;
-        $tipe_regulasi = TipeRegulasi::first()->id;
+        Schema::disableForeignKeyConstraints();
+        Regulasi::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        $tipe_regulasi = TipeRegulasi::first()?->id;
 
         $data = [
             [
-                'profil_id' => $profil_id,
                 'tipe_regulasi' => $tipe_regulasi,
-                'judul' => 'Regulasi 1',
-                'deskripsi' => 'Deskripsi regulasi 1',
+                'judul'         => 'Peraturan Camat Ile Boleng Nomor 01 Tahun 2024 tentang Standar Pelayanan Publik',
+                'deskripsi'     => 'Peraturan ini mengatur standar pelayanan publik yang wajib dipenuhi oleh setiap unit pelayanan di lingkungan Kecamatan Ile Boleng, meliputi persyaratan, prosedur, waktu, biaya, dan mekanisme pengaduan.',
                 'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type' => 'pdf',
+                'mime_type'     => 'pdf',
             ],
             [
-                'profil_id' => $profil_id,
                 'tipe_regulasi' => $tipe_regulasi,
-                'judul' => 'Regulasi 2',
-                'deskripsi' => 'Deskripsi regulasi 2',
+                'judul'         => 'Keputusan Camat Ile Boleng Nomor 05 Tahun 2024 tentang Pembentukan Tim Koordinasi Percepatan Pembangunan',
+                'deskripsi'     => 'Keputusan ini menetapkan pembentukan Tim Koordinasi Percepatan Pembangunan Kecamatan Ile Boleng yang bertugas mengkoordinasikan dan memantau pelaksanaan program pembangunan di wilayah kecamatan.',
                 'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
-                'mime_type' => 'pdf',
+                'mime_type'     => 'pdf',
+            ],
+            [
+                'tipe_regulasi' => $tipe_regulasi,
+                'judul'         => 'Instruksi Camat Ile Boleng Nomor 02 Tahun 2024 tentang Percepatan Pelaporan Data Kependudukan',
+                'deskripsi'     => 'Instruksi kepada seluruh Kepala Desa di wilayah Kecamatan Ile Boleng untuk menyampaikan laporan data kependudukan secara tertib dan tepat waktu sesuai ketentuan yang berlaku.',
+                'file_regulasi' => 'storage/template_upload/Panduan_Pengguna_Kecamatan_Dashboard.pdf',
+                'mime_type'     => 'pdf',
             ],
         ];
 

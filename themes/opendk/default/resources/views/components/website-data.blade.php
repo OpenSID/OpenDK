@@ -140,7 +140,7 @@
                 let socialHtml = '';
                 medsos.forEach(sosmed => {
                     const iconClass = getSosmedIcon(sosmed.nama);
-                    sosmed.logo = sosmed.logo.replace(/\/+img\//, 'img/');
+                    sosmed.logo = sosmed.logo ? sosmed.logo.replace(/\/+img\//, 'img/') : '';
 
                     const logoPath = sosmed.logo ? (sosmed.logo.startsWith('http') ? sosmed.logo : '{{ asset('') }}' + sosmed.logo) : '';
                     socialHtml += '<li style="margin: 4px">' +
@@ -194,35 +194,44 @@
 
             // Function to update events widget
             function updateEvents(events) {
-                if (!events) {
+                if (!events || (Array.isArray(events) && events.length === 0)) {
                     $('#events-widget ul').html('<li class="time-label"><span class="bg-gray">Event tidak tersedia.</span></li>');
                     return;
                 }
 
                 let eventsHtml = '';
-                Object.values(events).forEach(eventGroup => {
-                    if (Array.isArray(eventGroup)) {
-                        eventGroup.forEach(event => {
-                            const statusClass = event.status === 'OPEN' ? 'bg-maroon' : 'bg-gray';
-                            const eventDate = event.start ? new Date(event.start).toLocaleDateString('id-ID', {
-                                day: 'numeric',
-                                month: 'long',
-                                year: 'numeric'
-                            }) : '';
 
-                            eventsHtml += '<li>' +
-                                '<i class="fa fa-calendar ' + statusClass + '"></i>' +
-                                '<div class="timeline-item">' +
-                                '<h4 class="timeline-header">' +
-                                '<a href="' + (event.slug ? '/event/' + event.slug : '#') + '">' + (event.slug || 'Event') + '</a>' +
-                                '</h4>' +
-                                '<small class="text-yellow"><i class="fa fa-clock-o"></i> ' + eventDate + '</small>' +
-                                '</div>' +
-                                '</li>' +
-                                '<br />';
-                        });
-                    }
-                });
+                const processEvent = (event) => {
+                    const statusClass = event.status === 'OPEN' ? 'bg-maroon' : 'bg-gray';
+                    const eventDate = event.start ? new Date(event.start).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    }) : '';
+
+                    eventsHtml += '<li>' +
+                        '<i class="fa fa-calendar ' + statusClass + '"></i>' +
+                        '<div class="timeline-item">' +
+                        '<h4 class="timeline-header">' +
+                        '<a href="' + (event.slug ? '/event/' + event.slug : '#') + '">' + (event.event_name || 'Event') + '</a>' +
+                        '</h4>' +
+                        '<small class="text-yellow"><i class="fa fa-clock-o"></i> ' + eventDate + '</small>' +
+                        '</div>' +
+                        '</li>' +
+                        '<br />';
+                };
+
+                if (Array.isArray(events)) {
+                    events.forEach(processEvent);
+                } else {
+                    Object.values(events).forEach(eventGroup => {
+                        if (Array.isArray(eventGroup)) {
+                            eventGroup.forEach(processEvent);
+                        } else {
+                            processEvent(eventGroup);
+                        }
+                    });
+                }
 
                 if (eventsHtml === '') {
                     eventsHtml = '<li class="time-label"><span class="bg-gray">Event tidak tersedia.</span></li>';
@@ -253,7 +262,7 @@
                 // Duplicate for seamless loop if more than 1 item
                 if (jumlahItem > 1) {
                     mediaTerkait.forEach(data => {
-                        const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset('media_terkait/') }}' + data.logo) : '';
+                        const logoPath = data.logo ? (data.logo.startsWith('http') ? data.logo : '{{ asset('storage/media_terkait') }}/' + data.logo) : '';
                         mediaHtml += '<li>' +
                             '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
                             '<img src="' + logoPath + '" alt="Logo">' +
@@ -291,7 +300,7 @@
 
                 let sinergiHtml = '<div class="row" style="margin: 0">';
                 sinergi.forEach(data => {
-                    data.gambar = data.gambar.replace(/\/+img\//, 'img/');
+                    data.gambar = data.gambar ? data.gambar.replace(/\/+img\//, 'img/') : '';
                     const gambarPath = data.gambar ? (data.gambar.startsWith('http') ? data.gambar : '{{ asset('') }}' + data.gambar) : '';
                     sinergiHtml += '<div class="col-md-6" style="padding: 4px;">' +
                         '<a href="' + (data.url || '#') + '" rel="noopener noreferrer" target="_blank">' +
@@ -307,19 +316,20 @@
             function updateProfile(profile) {
                 if (!profile) return;
                 let profileHtml = `<h5 class="text-bold">Kantor {{ $sebutan_wilayah }} ${profile.nama_kecamatan}</h5>
-            <ul class="no-padding">                
-                <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i>
-                        ${profile.alamat}</small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-fax"></i>
-                        ${profile.kode_pos}</small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><a href="mailto:${profile.email}"
-                            target="_blank"><i class="fa fa-envelope"></i> ${profile.email}</a></small></li>
-                <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i>
-                        ${profile.telepon}</small></li>
-            </ul>`;
+                <ul class="no-padding">                
+                    <li> <small style="text-indent: 0px; font-size:15px"><i class="fa fa-map-marker"></i>
+                            ${profile.alamat}</small></li>
+                    <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-fax"></i>
+                            ${profile.kode_pos}</small></li>
+                    <li><small style="text-indent: 0px ;font-size:15px"><a href="mailto:${profile.email}"
+                                target="_blank"><i class="fa fa-envelope"></i> ${profile.email}</a></small></li>
+                    <li><small style="text-indent: 0px ;font-size:15px"><i class="fa fa-phone"></i>
+                            ${profile.telepon}</small></li>
+                </ul>`;
 
                 $('#desa-profil-container').html(profileHtml)
             }
+
             // Function to update pengurus widget
             function updatePengurus(pengurus) {
                 if (!pengurus || !Array.isArray(pengurus)) return;
@@ -377,15 +387,15 @@
             function updateCounter(counter) {
                 if (!counter) return;
                 let counterHtml = `<ul class="nav">
-        <li>Hari Ini <span class="pull-right badge bg-red">${counter.today} Kunjungan</span> </li>
-        <li>Kemarin <span class="pull-right badge bg-purple">${counter.yesterday} Kunjungan</span> </li>
-        <li>Minggu Ini <span class="pull-right badge bg-green">${counter.week} Kunjungan</span> </li>
-        <li>Bulan Ini <span class="pull-right badge bg-yellow">${counter.month} Kunjungan</span> </li>
-        <li>Tahun Ini <span class="pull-right badge bg-gray">${counter.year} Kunjungan</span> </li>
-        <li>Total <span class="pull-right badge bg-blue">${counter.all} Kunjungan</span> </li>
-    </ul>`;
+            <li>Hari Ini <span class="pull-right badge bg-red">${counter.today} Kunjungan</span> </li>
+            <li>Kemarin <span class="pull-right badge bg-purple">${counter.yesterday} Kunjungan</span> </li>
+            <li>Minggu Ini <span class="pull-right badge bg-green">${counter.week} Kunjungan</span> </li>
+            <li>Bulan Ini <span class="pull-right badge bg-yellow">${counter.month} Kunjungan</span> </li>
+            <li>Tahun Ini <span class="pull-right badge bg-gray">${counter.year} Kunjungan</span> </li>
+            <li>Total <span class="pull-right badge bg-blue">${counter.all} Kunjungan</span> </li>
+        </ul>`;
                 $('#desa-visitor-container').html(counterHtml)
             }
-        })
+        });
     </script>
 @endpush

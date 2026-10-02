@@ -35,6 +35,7 @@ namespace App\Models;
 
 use App\Enums\JenisJabatan;
 use App\Enums\Status;
+use App\Observers\WebsiteCacheObserver;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -167,12 +168,12 @@ class Pengurus extends Model
         $kecuali = [];
 
         // Cek apakah kades
-        if (Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->where('status', Status::Aktif)->exists()) {
+        if (self::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->where('status', Status::Aktif)->exists()) {
             $kecuali[] = JenisJabatan::Camat;
         }
 
         // Cek apakah sekdes
-        if (Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Sekretaris))->where('status', Status::Aktif)->exists()) {
+        if (self::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Sekretaris))->where('status', Status::Aktif)->exists()) {
             $kecuali[] = JenisJabatan::Sekretaris;
         }
 
@@ -192,5 +193,10 @@ class Pengurus extends Model
             'das_pengurus.nama AS nama_pengurus',
             'das_pengurus.nik',
         ])->join('ref_jabatan', 'das_pengurus.jabatan_id', '=', 'ref_jabatan.id');
+    }
+
+    protected static function booted(): void
+    {
+        static::observe(WebsiteCacheObserver::class);
     }
 }

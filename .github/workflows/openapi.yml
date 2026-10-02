@@ -1,0 +1,117 @@
+name: OpenAPI Spec
+
+on:
+  pull_request:
+    branches: [master, rilis-dev, dev]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate OpenAPI Spec
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate openapi/openapi.yaml exists
+        run: test -f openapi/openapi.yaml || (echo "::error::openapi/openapi.yaml not found" && exit 1)
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Validate YAML & OpenAPI structure
+        run: php bin/validate-openapi.php
+
+  generate:
+    name: Generate OpenAPI Spec
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_DATABASE: testing_db
+          MYSQL_ROOT_PASSWORD: secret
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, tidy, yaml
+          coverage: none
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Generate key
+        run: php artisan key:generate && php artisan jwt:secret
+
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+
+      - name: Set Installed State
+        run: touch storage/installed
+
+      - name: Extract database testing
+        run: |
+          tar -xzf database/database_test.sql.tar.gz -C database
+
+      - name: Wait for MySQL
+        run: sleep 15
+
+      - name: Import SQL file into MySQL
+        run: |
+          mysql -h 127.0.0.1 -P 3306 -u root -psecret testing_db < ./database/database_test.sql
+
+      - name: Generate OpenAPI Spec
+        env:
+          DB_CONNECTION: mysql
+          DB_DATABASE: testing_db
+          DB_USERNAME: root
+          DB_PASSWORD: secret
+        run: php artisan migrate && php artisan scribe:generate
+
+      - name: Copy Spec to Repo Root
+        run: php artisan scribe:copy-openapi
+
+      - name: Validate Generated Spec
+        run: php bin/validate-openapi.php
+
+      - name: Check for diff (fail if spec changed unexpectedly)
+        run: |
+          if git diff --name-only | grep -q 'openapi/openapi.yaml'; then
+            echo "::warning::openapi/openapi.yaml has uncommitted changes. Run 'composer generate-openapi' locally and commit the updated spec."
+          fi
+
+      - name: Upload OpenAPI Spec as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openapi-spec
+          path: openapi/openapi.yaml

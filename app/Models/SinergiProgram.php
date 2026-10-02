@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Observers\WebsiteCacheObserver;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -58,11 +59,16 @@ class SinergiProgram extends Model
         'gambar',
     ];
 
+    protected static function booted(): void
+    {
+        static::observe(WebsiteCacheObserver::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
 
-        SinergiProgram::creating(function ($model) {
+        self::creating(function ($model) {
             $model->urutan = SinergiProgram::max('urutan') + 1;
         });
     }

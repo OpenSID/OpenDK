@@ -45,7 +45,7 @@ class StatistikChartPendudukService extends BaseApiService
             try {                
                 $filters = [
                     'filter[id]' => 'jenis-kelamin',                    
-                    'filter[kecamatan]' => $this->kodeKecamatan,
+                    'filter[kode_kecamatan]' => $this->kodeKecamatan,
                 ];
                 if($did != 'Semua') {
                     $filters['filter[desa]'] = $did;

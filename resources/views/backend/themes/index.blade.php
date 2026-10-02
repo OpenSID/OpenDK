@@ -24,8 +24,8 @@
                     </button>
                 </form>
                 {{-- tampilkan modal upload --}}
-                @if($showUnggahButton)
-                <a href="javascript:void(0)" class="btn btn-social bg-blue btn-sm" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Unggah</a>
+                @if ($showUnggahButton)
+                    <a href="javascript:void(0)" class="btn btn-social bg-blue btn-sm" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-upload"></i> Unggah</a>
                 @endif
                 <a href="{{ route('setting.themes.rescan') }}" class="btn btn-social bg-orange btn-sm"><i class="fa fa-recycle"></i> Pindai</a>
                 {{-- <a href="{{ site_url() }}" class="btn btn-social btn-info btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" target="_blank"><i class="fa fa-eye"></i> Lihat</a> --}}
@@ -40,29 +40,29 @@
         </div>
 
         {{-- modal form unggah file .zip --}}
-        @if($showUnggahButton)
-        <div class="modal fade" id="modal-upload" tabindex="-1" role="dialog" aria-labelledby="modal-upload-label">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="modal-upload-label">Unggah Tema</h4>
-                    </div>
-                    <form id="upload-form" method="post" enctype="multipart/form-data">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="file" class="control-label">File<code>.zip</code></label>
-                                <input type="file" name="file" id="file" class="form-control" accept=".zip" required>
+        @if ($showUnggahButton)
+            <div class="modal fade" id="modal-upload" tabindex="-1" role="dialog" aria-labelledby="modal-upload-label">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="modal-upload-label">Unggah Tema</h4>
+                        </div>
+                        <form id="upload-form" method="post" enctype="multipart/form-data">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="file" class="control-label">File<code>.zip</code></label>
+                                    <input type="file" name="file" id="file" class="form-control" accept=".zip" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger pull-left">Batal</button>
-                            <button type="submit" class="btn btn-success">Unggah</button>
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger pull-left">Batal</button>
+                                <button type="submit" class="btn btn-success">Unggah</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
         @endif
     </section>
 @endsection

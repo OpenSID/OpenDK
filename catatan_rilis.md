@@ -1,22 +1,33 @@
-Di rilis versi v2607.0.1 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
+Di rilis versi v2610.0.0 di versi ini terdapat modul komentar pada artikel dan perbaikan lain yang diminta Komunitas.
 
 Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikasi OpenDK.
 
 
 #### FITUR
 
-1. [#1616](https://github.com/OpenSID/OpenDK/issues/1616) Penambahan fitur backup dan restore asset storage.
-2. [#1648](https://github.com/OpenSID/OpenDK/issues/1648) Penambahan informasi yang lebih lengkap pada details pembangunan.
-3. [#1646](https://github.com/OpenSID/OpenDK/issues/1646) Penambahan Terapkan Password History (10 Kata Sandi Terakhir).
+1. [#1725](https://github.com/OpenSID/OpenDK/issues/1725) Penambahan fungsi pratinjau file pdf untuk kebutuhan OpenDK tidak di dukung.
 
 #### BUG
 
-1. [#1652](https://github.com/OpenSID/OpenDK/issues/1652) Perbaiki fungsi unduh prosedur.
-2. [#1653](https://github.com/OpenSID/OpenDK/issues/1653) Perbaiki fungsi halaman public regulasi tidak ditampilkan dengan benar.
-3. [#1654](https://github.com/OpenSID/OpenDK/issues/1654) Perbaiki fungsi dokumen saat ini tidak di tampilkan dengan benar.
-6. [#1647](https://github.com/OpenSID/OpenDK/issues/1647) Perbaiki fungsi lihat penduduk details agar hanya menapilkan tanpa field.
-7. [#1655](https://github.com/OpenSID/OpenDK/issues/1655) Perbaiki fungsi Faq yang tampil pada halaman publik.
+1. [#1718](https://github.com/OpenSID/OpenDK/issues/1718) Bug pada Modul Potensi – OpenDK v2608.0.2.
+2. [#1724](https://github.com/OpenSID/OpenDK/issues/1724) eta Letak Geografis kosong (Bounds are not valid) karena $data_umum tidak dikirim ke view gabungan.
+3. [#1721](https://github.com/OpenSID/OpenDK/issues/1721) Halaman Unduhan Dokumen hanya menampilkan data sesuai default pagination API (10 data).
+4. [#1731](https://github.com/OpenSID/OpenDK/issues/1731) Perbaikan menambah anggota penduduk untuk data suplemen tidak menampilkan list penduduk & keluarga.
+5. [#1732](https://github.com/OpenSID/OpenDK/issues/1732) Berkas download dokumen laporan-penduduk pada data tidak sikron dari OpenSID.
+6. [#1727](https://github.com/OpenSID/OpenDK/issues/1727) Perbaikan Tampilan Thumbnail Galeri dan Pratinjau Gambar Dinamis.
+7. [#1733](https://github.com/OpenSID/OpenDK/issues/1733) perbaikan filter kesehatan.
+8. [#1729](https://github.com/OpenSID/OpenDK/issues/1729) perbaikan tombol sarana ui.
+9. [#1730](https://github.com/OpenSID/OpenDK/issues/1730) data yang tampil pada datatable overlaping tidak di handle dengan scroll.
+10. [#1735](https://github.com/OpenSID/OpenDK/issues/1735) Periksa bagian tambah ketua lembaga ketika menggunakan API satu data.
+11. [#1736](http://github.com/OpenSID/OpenDK/issues/1736) Fix Penyesuaian Validasi NIK pada Pengiriman Keluhan untuk Database Gabungan (API Satu Data).
+12. [#1737](https://github.com/OpenSID/OpenDK/issues/1737) fungsi kirim pesan error 500.
+13. [#1761](https://github.com/OpenSID/OpenDK/issues/1761)Perbaikan validasi valid_file menolak PDF sah karena string generik "function".
+14. [#1764](https://github.com/OpenSID/OpenDK/issues/1764) Gagal Menampilkan data foto/video dari link pada web dan admin.
+15. [#1767](https://github.com/OpenSID/OpenDK/issues/1767)Perbaikan menu potensi pada halaman publik tidak berfungsi.
 
 #### TEKNIS
 
-1. [#1670](https://github.com/OpenSID/OpenDK/issues/1670) Penyesuaian sembunyikan tombol unggah pada pengaturan daftar tema.
+1. [#1713](https://github.com/OpenSID/OpenDK/issues/1713) File di storage/app/public 404 karena direktori upload dibuat permission 0700 (Flysystem directory visibility).
+2. [#58](https://github.com/OpenSID/wiki-keamanan/issues/58) Insecure deserialization via Crypt::decrypt() (unserialize=true) on LogViewer user params.
+3. [#57](https://github.com/OpenSID/wiki-keamanan/issues/57) CRITICAL: RCE via Theme Hook include_once — backtick execution operator bypasses ThemeHooksValidator (theme.php).
+4. [#1759](https://github.com/OpenSID/OpenDK/issues/1759) Pastikan perubahan Known security vulnerabilities detected masuk rilis.

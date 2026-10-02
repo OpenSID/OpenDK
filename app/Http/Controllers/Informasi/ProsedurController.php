@@ -31,12 +31,12 @@
 
 namespace App\Http\Controllers\Informasi;
 
-use App\Models\Prosedur;
-use Yajra\DataTables\DataTables;
-use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProsedurRequest;
+use App\Models\Prosedur;
+use App\Traits\HandlesFileUpload;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\DataTables;
 
 class ProsedurController extends Controller
 {
@@ -98,7 +98,6 @@ class ProsedurController extends Controller
                 }
 
                 $data['download_url'] = auth()->user()->can('access.informasi.prosedur.export') ? route('informasi.prosedur.download', $row->id) : null;
-                $data['preview_url'] = auth()->user()->can('access.informasi.prosedur.view') ? route('informasi.prosedur.preview', $row->id) : null;
 
                 return view('forms.aksi', $data);
             })
@@ -196,7 +195,13 @@ class ProsedurController extends Controller
     public function download(Prosedur $prosedur)
     {
         try {
-            return response()->download($prosedur->file_prosedur);
+            $filePath = $this->resolveSecureFilePath($prosedur->file_prosedur);
+
+            if (!$filePath) {
+                return back()->with('error', 'Dokumen prosedur tidak ditemukan');
+            }
+
+            return response()->download($filePath);
         } catch (\Exception $e) {
             Log::error('Prosedur download failed', [
                 'error' => $e->getMessage(),
@@ -206,29 +211,5 @@ class ProsedurController extends Controller
 
             return back()->with('error', 'Dokumen prosedur tidak ditemukan');
         }
-    }
-
-    public function preview(Prosedur $prosedur)
-    {
-        $path = $prosedur->file_prosedur;
-
-        if (empty($path)) {
-            abort(404, 'File tidak ditemukan.');
-        }
-
-        if (file_exists(public_path($path))) {
-            return response()->file(public_path($path));
-        }
-
-        if (file_exists(base_path('public/' . $path))) {
-            return response()->file(base_path('public/' . $path));
-        }
-
-        $storagePath = storage_path('app/public/' . str_replace('storage/', '', $path));
-        if (file_exists($storagePath)) {
-            return response()->file($storagePath);
-        }
-
-        abort(404, 'File tidak ditemukan.');
     }
 }

@@ -30,7 +30,6 @@
                                 <th>Tanggal Selesai</th>
                                 <th>Dihadiri Oleh</th>
                                 <th>Status</th>
-                                <th class="text-center" style="max-width: 100px;">Aksi</th>
                             </tr>
                         </thead>
                     </table>

@@ -60,11 +60,6 @@ class User extends Authenticatable implements JWTSubject
      */
     public const DEFAULT_PASSWORD = '12345678';
 
-    protected static function booted(): void
-    {
-        static::observe(UserObserver::class);
-    }
-
     /**
      * Field yang diizinkan untuk mass assignment.
      *
@@ -155,7 +150,7 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Hash password
+     * Hash password.
      */
     public function setPasswordAttribute($input)
     {
@@ -199,5 +194,10 @@ class User extends Authenticatable implements JWTSubject
     public function passwordHistories()
     {
         return $this->hasMany(PasswordHistory::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::observe(UserObserver::class);
     }
 }

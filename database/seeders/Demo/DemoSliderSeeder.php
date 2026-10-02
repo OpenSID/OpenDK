@@ -33,6 +33,7 @@ namespace Database\Seeders\Demo;
 
 use App\Models\Slide;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DemoSliderSeeder extends Seeder
 {
@@ -43,32 +44,30 @@ class DemoSliderSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        Slide::truncate();
+        Schema::enableForeignKeyConstraints();
+
         $data = [
             [
-                'judul' => 'Pantai Garassikang',
-                'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
-                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/6e15ddc5-cf52-490b-b997-5e8b57f1e446',
+                'judul'     => 'Selamat Datang di Kecamatan Ile Boleng',
+                'deskripsi' => 'Kecamatan Ile Boleng – Kabupaten Flores Timur, Provinsi Nusa Tenggara Timur. Melayani dengan tulus, membangun dengan amanah.',
+                'gambar'    => 'https://picsum.photos/seed/slider-kecamatan/1280/600',
             ],
             [
-                'judul' => 'Batu Siping',
-                'deskripsi' => 'Lokasi: Karampuang, Desa Garassikang, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
-                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/b9a3ba56-8916-4820-ac50-8961a40a279e',
+                'judul'     => 'Pelayanan Prima untuk Masyarakat',
+                'deskripsi' => 'Kami berkomitmen memberikan pelayanan administrasi yang cepat, mudah, dan transparan demi kesejahteraan seluruh warga kecamatan.',
+                'gambar'    => 'https://picsum.photos/seed/slider-pelayanan/1280/600',
             ],
             [
-                'judul' => 'Bukit Sinalu Bulu Jaya',
-                'deskripsi' => 'Lokasi: Bulu Jaya, Kecamatan Bangkala Barat, Kabupaten Jeneponto, Sulawesi Selatan',
-                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/83fcdfde-07eb-4d58-a57f-689b76bcbaa3',
-            ],
-            [
-                'judul' => 'Pantai Tamarunang',
-                'deskripsi' => 'Lokasi: Tamarunang, Pabiringa, Kecamatan Binamu, Kabupaten Jeneponto, Sulawesi Selatan',
-                'gambar' => 'https://github.com/OpenSID/OpenDK/assets/14155050/2eac1709-fa16-4f14-9bde-9853df9d2534',
+                'judul'     => 'Bersama Membangun Desa yang Maju',
+                'deskripsi' => 'Program pembangunan infrastruktur, pengembangan SDM, dan pemberdayaan ekonomi masyarakat terus kami tingkatkan demi kemakmuran bersama.',
+                'gambar'    => 'https://picsum.photos/seed/slider-pembangunan/1280/600',
             ],
         ];
 
         foreach ($data as $slide) {
             Slide::create($slide);
         }
-
     }
 }

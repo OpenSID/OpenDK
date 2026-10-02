@@ -79,7 +79,7 @@ Route::get('/docs', function () {
 })->name('swagger');
 // Custom Installer Routes (menggantikan rachidlaasri/laravel-installer)
 // Menggunakan sintaks modern Laravel 13 — namespace string sudah dihapus di L10+
-Route::prefix('install')->group(function () {
+Route::prefix('install')->middleware(['installer.check'])->group(function () {
     Route::get('/', [InstallerController::class, 'welcome'])->name('installer.welcome');
     Route::get('/requirements', [InstallerController::class, 'requirements'])->name('installer.requirements');
     Route::get('/permissions', [InstallerController::class, 'permissions'])->name('installer.permissions');
@@ -233,9 +233,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             });
 
             Route::group(['prefix' => 'potensi'], function () {
-                Route::permanentRedirect('/', '/');
+                Route::get('/', 'PageController@PotensiIndex')->name('potensi.index');
                 Route::get('{slug}', 'PageController@PotensiByKategory')->name('potensi.kategori');
-                Route::get('{kategori}/{slug}', 'PageController@PotensiShow')->name('potensi.kategori.show');
+                Route::get('{kategori}/{id}', 'PageController@PotensiShow')->name('potensi.kategori.show');
             });
 
             Route::any('refresh-captcha', 'PageController@refresh_captcha')->name('refresh-captcha');
@@ -311,7 +311,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::get('/dashboard', DashboardController::class)->middleware(['auth:web', 'action_permission:access.dashboard'])->name('dashboard');
 
         Route::namespace('\App\Http\Controllers\Auth')->group(function () {
-            Route::group(['prefix' => 'changedefault', 'middleware' => ['action_permission:access.change_default']], function () {
+            Route::group(['prefix' => 'changedefault'], function () {
                 Route::get('/', 'ChangeDefaultController@index')->name('change-default');
                 Route::post('store', ['as' => 'changedefault.store', 'uses' => 'ChangeDefaultController@store']);
             });
@@ -352,7 +352,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::put('update/{prosedur}', ['as' => 'informasi.prosedur.update', 'uses' => 'ProsedurController@update']);
                     Route::delete('destroy/{prosedur}', ['as' => 'informasi.prosedur.destroy', 'uses' => 'ProsedurController@destroy']);
                     Route::get('download/{prosedur}', ['as' => 'informasi.prosedur.download', 'uses' => 'ProsedurController@download']);
-                    Route::get('preview/{prosedur}', ['as' => 'informasi.prosedur.preview', 'uses' => 'ProsedurController@preview']);
                 });
 
                 // Regulasi
@@ -1015,6 +1014,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::post('/store-email-smtp', 'storeEmailSmtp')->name('setting.info-sistem.store-email-smtp');
                 Route::post('/send-test-email-smtp/{email}', 'sendTestEmailSmtp')->name('setting.info-sistem.send-test-email-smtp');
                 Route::get('/migrasi', 'migrasi')->name('setting.info-sistem.migrasi');
+                Route::get('/log-aktivitas', \App\Http\Controllers\Setting\LogAktivitasController::class)->middleware(['action_permission:access.setting.info_sistem'])->name('setting.info-sistem.log-aktivitas');
             });
 
             // Navigasi
@@ -1065,7 +1065,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         /**
          * Group Routing for Counter
          */
-        Route::group(['prefix' => 'counter', 'middleware' => ['action_permission:access.counter']], function () {
+        Route::group(['prefix' => 'counter'], function () {
             Route::get('/', [CounterController::class, 'index'])->name('counter.index');
             Route::get('cetak', [CounterController::class, 'cetak'])->name('counter.cetak');
             Route::get('export-excel', [CounterController::class, 'exportExcel'])->name('counter.export.excel');
@@ -1089,7 +1089,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     // Semua Desa
     Route::get('/api/desa', function () {
         return DataDesa::paginate(10)->name('api.desa');
-    })->middleware('action_permission:access.api');
+    });
 
     Route::get('testEmail', TestEmailController::class)->name('testEmail');
 });

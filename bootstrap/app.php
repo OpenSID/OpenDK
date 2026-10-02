@@ -84,11 +84,13 @@ return Application::configure(basePath: dirname(__DIR__))
         */
         $middleware->alias([
             'installed'         => \App\Http\Middleware\KDInstalled::class,
+            'installer.check'   => \App\Http\Middleware\InstallerCheck::class,
             'maintenance'       => \App\Http\Middleware\MaintenanceMode::class,
             'action_permission' => \App\Http\Middleware\CheckActionPermission::class,
             'xss_sanitization'  => \App\Http\Middleware\XssSanitization::class,
             'complete_profile'  => \App\Http\Middleware\CompleteProfile::class,
             'token.registered'  => \App\Http\Middleware\TokenRegistered::class,
+            'api.key'           => \App\Http\Middleware\ApiKeyMiddleware::class,
             'track.visitors'    => \App\Http\Middleware\TrackVisitors::class,
             'otp.enabled'       => \App\Http\Middleware\CheckOtpEnabled::class,
             'theme.api'         => \App\Http\Middleware\ThemeApiMiddleware::class,

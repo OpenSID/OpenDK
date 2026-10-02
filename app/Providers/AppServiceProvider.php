@@ -31,15 +31,20 @@
 
 namespace App\Providers;
 
+use App\Rules\SafeFileContent;
+use App\Services\ActivityLogService;
 use App\Services\CacheService;
 use App\Support\Collection;
+use Illuminate\Auth\Events\Failed;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -96,6 +101,40 @@ class AppServiceProvider extends ServiceProvider
                 return true;
             });
         }
+
+        // Auto-log login
+        Event::listen(Login::class, function (Login $event) {
+            $user = $event->user;
+            $userId = $user ? $user->id : null;
+            ActivityLogService::log('login', "User: {$user->name} (ID: {$user->id})", [
+                'user_name' => $user ? $user->name : 'Sistem',
+                'user_id' => $userId,
+                'event' => 'login',
+            ]);
+        });
+
+        // Auto-log logout
+        Event::listen(Logout::class, function (Logout $event) {
+            $user = $event->user;
+            $userId = $user ? $user->id : null;
+            ActivityLogService::log('logout', "User: {$user?->name} (ID: {$userId})", [
+                'user_name' => $user ? $user->name : 'Sistem',
+                'user_id' => $userId,
+                'event' => 'logout',
+            ]);
+        });
+
+        // Auto-log failed login
+        Event::listen(Failed::class, function (Failed $event) {
+            $user = $event->user;
+            $userId = $user ? $user->id : null;
+            ActivityLogService::logFailed('login gagal', "User: {$user?->name} (ID: {$user?->id}) login gagal", [
+                'user_name' => $user ? $user->name : 'Sistem',
+                'user_id' => $userId,
+                'event' => 'login gagal',
+                'attempted_username' => $event->username ?? null,
+            ], $userId);
+        });
     }
 
     /**
@@ -205,16 +244,19 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Validator untuk file upload (mencegah file berbahaya).
+     *
+     * Logika berada di App\Rules\SafeFileContent agar dapat diuji terpisah.
      */
     protected function file(): void
     {
         Validator::extend('valid_file', function ($attributes, $value, $parameters) {
-            $contains = preg_match('/<\?php|<script|function|__halt_compiler|<html/i', File::get($value));
-            if ($contains) {
-                return false;
-            }
+            $failed = false;
 
-            return true;
+            (new SafeFileContent())->validate($attributes, $value, function () use (&$failed) {
+                $failed = true;
+            });
+
+            return ! $failed;
         });
     }
 
@@ -223,7 +265,7 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function paginate(): void
     {
-        /**
+        /*
          * Paginate a standard Laravel Collection.
          *
          * @param  int  $perPage

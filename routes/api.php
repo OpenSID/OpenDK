@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Http\Controllers\Api\ApiKeyController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\LaporanApbdesController;
 use App\Http\Controllers\Api\LaporanPendudukController;
@@ -71,6 +72,7 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
         Route::get('test', function () {
             return response()->json('Welcome to api route');
         });
+
         /**
          * Penduduk
          */
@@ -128,6 +130,37 @@ Route::group(['prefix' => 'v1', 'middleware' => 'xss_sanitization'], function ()
             Route::get('/', 'index');
             Route::post('kirim', 'store');
             Route::get('download', 'download');
+        });
+    });
+
+    /**
+     * API Key management (JWT auth only, no token.registered)
+     */
+    Route::group(['prefix' => 'api-keys', 'controller' => ApiKeyController::class, 'middleware' => 'auth:api'], function () {
+        Route::get('/', 'index');
+        Route::post('/', 'store');
+        Route::get('{apiKey}', 'show');
+        Route::post('{apiKey}/revoke', 'revoke');
+        Route::delete('{apiKey}', 'destroy');
+    });
+
+    /**
+     * API Key validation (stateless, no JWT required)
+     */
+    Route::group(['prefix' => 'key', 'middleware' => 'api.key'], function () {
+        Route::get('validate', function () {
+            return response()->json([
+                'message' => 'API key is valid',
+                'data' => request('api_key'),
+            ]);
+        });
+    });
+
+    Route::group(['prefix' => 'key', 'middleware' => 'api.key:read'], function () {
+        Route::get('validate-scope', function () {
+            return response()->json([
+                'message' => 'API key with scope is valid',
+            ]);
         });
     });
 });

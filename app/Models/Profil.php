@@ -31,8 +31,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Observers\ProfilObserver;
+use App\Observers\WebsiteCacheObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
 class Profil extends Model
@@ -93,9 +95,10 @@ class Profil extends Model
     //     return $this->hasMany(Penduduk::class, 'kecamatan_id', 'kecamatan_id')->where('status_dasar', 1);
     // }
 
-    protected static function boot()
+    protected static function booted(): void
     {
-        parent::boot();
+        static::observe(ProfilObserver::class);
+        static::observe(WebsiteCacheObserver::class);
 
         static::saved(function () {
             Cache::forget('profil');

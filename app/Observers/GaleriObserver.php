@@ -30,15 +30,17 @@ class GaleriObserver
         if ($galeri->isDirty('gambar')) {
             // Ambil gambar lama dan baru dari database
             $oldImages = $galeri->getOriginal('gambar');
-            $newImages = $galeri->gambar;
+            $newImages = $galeri->gambar ?? [];
 
             if (is_array($oldImages)) {
                 // Cari gambar yang ada di array lama tapi tidak ada di array baru
-                $deletedImages = array_diff($oldImages, $newImages);
+                $deletedImages = array_diff($oldImages, is_array($newImages) ? $newImages : []);
 
                 // Hapus setiap gambar yang sudah tidak ada di array baru
                 foreach ($deletedImages as $image) {
-                    Storage::disk('public')->delete($image);
+                    if ($image) {
+                        Storage::disk('public')->delete('publikasi/galeri/' . $image);
+                    }
                 }
             }
         }
@@ -59,10 +61,9 @@ class GaleriObserver
 
         if (is_array($images)) {
             foreach ($images as $image) {
-                // Cek jika file ada
-                if (Storage::disk('public')->exists($image)) {
+                if ($image && Storage::disk('public')->exists('publikasi/galeri/' . $image)) {
                     // Hapus file gambar dari storage
-                    Storage::disk('public')->delete($image);
+                    Storage::disk('public')->delete('publikasi/galeri/' . $image);
                 }
             }
         }

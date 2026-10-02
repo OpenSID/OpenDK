@@ -31,17 +31,17 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Carbon;
+use App\Observers\WebsiteCacheObserver;
 use App\Traits\HandlesResourceDeletion;
-use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model
 {
+    use HandlesResourceDeletion;
     use HasFactory;
     use Sluggable;
-    use HandlesResourceDeletion;
 
     protected $table = 'das_events';
 
@@ -82,10 +82,18 @@ class Event extends Model
         return $query->where('slug', $value);
     }
 
+    public function scopeOpen($query)
+    {
+        return $query->where('status', 'OPEN');
+    }
+
     public static function getOpenEvents()
     {
-        return self::orderBy('start', 'desc')->get()->groupBy(function ($item) {
-            return Carbon::parse($item->start)->format('d-M-y');
-        });
+        return self::open()->orderBy('start', 'desc')->get();
+    }
+
+    protected static function booted(): void
+    {
+        static::observe(WebsiteCacheObserver::class);
     }
 }

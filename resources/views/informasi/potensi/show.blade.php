@@ -21,6 +21,11 @@
                             <button type="button" class="btn btn-default btn-sm"><i class="fa fa-arrow-left"></i>&nbsp;
                                 Kembali</button>
                         </a>
+                        @if (!empty($potensi->file_gambar))
+                            <a href="{{ route('informasi.potensi.download', $potensi->id) }}" class="btn btn-sm btn-info">
+                                <i class="fa fa-download"></i>&nbsp; Unduh
+                            </a>
+                        @endif
                         <a href="{!! route('informasi.potensi.edit', $potensi->id) !!}" class="btn btn-sm btn-primary" title="Ubah" data-button="edit"><i class="fa fa-edit"></i>&nbsp; Ubah</a>
 
                         <a href="javascript:void(0)" class="" title="Hapus" data-href="{!! route('informasi.potensi.destroy', $potensi->id) !!}" data-button="delete" id="deleteModal">
@@ -32,7 +37,15 @@
                         <!-- form start -->
                         <div class="row overflow-x">
                             <div class="col-md-12">
-                                <img src="{{ is_img(str_replace('//', '/', $potensi->file_gambar)) }}" width="100%">
+                                @if (!empty($potensi->file_gambar))
+                                    @if ($potensi->is_pdf)
+                                        <iframe src="{{ asset($potensi->file_gambar) }}#toolbar=1" class="showpdf" id="showpdf" style="width: 100%; height: 750px; border: 1px solid #e0e0e0; border-radius: 4px;" frameborder="0">
+                                            <p>Browser Anda tidak mendukung preview PDF langsung. <a href="{{ route('informasi.potensi.download', $potensi->id) }}">Klik di sini untuk mengunduh</a>.</p>
+                                        </iframe>
+                                    @else
+                                        <img src="{{ is_img(str_replace('//', '/', $potensi->file_gambar)) }}" class="img-responsive" style="max-width: 100%; margin: 0 auto; display: block;">
+                                    @endif
+                                @endif
                             </div>
                             <div class="col-md-12">
                                 <h3>{{ $potensi->nama_potensi }}</h3>

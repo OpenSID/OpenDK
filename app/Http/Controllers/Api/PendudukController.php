@@ -43,12 +43,19 @@ use ZipArchive;
 
 class PendudukController extends Controller
 {
-    /**
-     * Hapus Data Penduduk Sesuai OpenSID
+/**
+     * Hapus data penduduk secara batch (via JSON).
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @group OpenSID Integration
+     *
+     * @bodyParam desa_id string required Kode desa. Example: 3201012001
+     * @bodyParam hapus_penduduk array required Array objek penduduk yang akan dihapus. Setiap objek berisi: id_pend_desa (int), foto (string/null), desa_id (string).
+     * @response {
+     *   "status": "success",
+     *   "message": "Proses sync Data Penduduk OpenSID sedang berjalan"
+     * }
      */
-    public function store(PendudukRequest $request)
+public function store(PendudukRequest $request)
     {
         // dispatch queue job penduduk
         PendudukQueueJob::dispatch($request->all());
@@ -60,9 +67,22 @@ class PendudukController extends Controller
     }
 
     /**
-     * Tambah dan Ubah Data dan Foto Penduduk Sesuai OpenSID
+     * Sinkronisasi data dan foto penduduk via ZIP dari OpenSID.
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @group OpenSID Integration
+     *
+     * Kontrak ZIP:
+     * - Berisi 1 file `*.xlsx` (data penduduk) dan file foto `*.jpg`/`*.png`.
+     * - Kolom XLSX: desa_id, id, nomor_nik, nama, nomor_kk, jenis_kelamin,
+     *   tempat_lahir, tanggal_lahir, agama, pendidikan_dlm_kk, pekerjaan,
+     *   kawin, hubungan_keluarga, kewarganegaraan, nama_ibu, nama_ayah,
+     *   gol_darah, akta_lahir, nik_ayah, nik_ibu, foto, alamat, dusun,
+     *   rw, rt, status_dasar, status_rekam.
+     *
+     * @bodyParam file file required File ZIP (max 5MB) berisi data penduduk + foto. Example: null
+     * @response {
+     *   "message": "Data Foto Telah Berhasil di Sinkronkan"
+     * }
      */
     public function storedata(Request $request)
     {
@@ -127,6 +147,19 @@ class PendudukController extends Controller
 
         return response()->json([
             'message' => 'Data Foto Telah Berhasil di Sinkronkan',
+        ]);
+    }
+
+    /**
+     * Test endpoint untuk verifikasi API berjalan.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function test()
+    {
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Penduduk API route is working',
         ]);
     }
 }

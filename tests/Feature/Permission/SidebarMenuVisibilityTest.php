@@ -37,6 +37,10 @@ use Tests\TestCase;
 
 describe('Sidebar Menu Visibility', function () {
     beforeEach(function () {
+        $this->withoutMiddleware([\App\Http\Middleware\CompleteProfile::class]);
+        $this->seed(\Database\Seeders\DasSettingTableSeeder::class);
+        $this->seed(\Database\Seeders\DasProfilTableSeeder::class);
+        $this->seed(\Database\Seeders\DasDataUmumTableSeeder::class);
         $this->seed(\Database\Seeders\RoleSpatieSeeder::class);
     });
 
@@ -93,6 +97,7 @@ describe('Sidebar Menu Visibility', function () {
         $perms = [
             'access.dashboard',
             'access.informasi.prosedur',
+            'access.data',
             'access.data.penduduk',
             'access.data.lembaga',
         ];
@@ -116,5 +121,67 @@ describe('Sidebar Menu Visibility', function () {
         $response->assertSee('Prosedur');
         $response->assertSee('Penduduk');
         $response->assertSee('Lembaga');
+    });
+
+    test('user with admin-komplain role does not see informasi menu in sidebar', function () {
+        $role = \App\Models\Role::where('name', 'admin-komplain')->where('guard_name', 'web')->first();
+        
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+
+        $response = $this->get('/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('<span>Informasi</span>', false);
+    });
+
+    test('user with super-admin role sees all 4 dashboard cards', function () {
+        $role = \App\Models\Role::where('name', 'super-admin')->where('guard_name', 'web')->first();
+        
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+
+        $response = $this->get('/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertSee('data-testid="card-desa"', false);
+        $response->assertSee('data-testid="card-penduduk"', false);
+        $response->assertSee('data-testid="card-keluarga"', false);
+        $response->assertSee('data-testid="card-program-bantuan"', false);
+    });
+
+    test('user without permissions does not see any of the 4 dashboard cards', function () {
+        $role = \App\Models\Role::where('name', 'admin-komplain')->where('guard_name', 'web')->first();
+        
+        $user = User::factory()->create();
+        $user->assignRole($role);
+        $this->actingAs($user);
+
+        $response = $this->get('/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('data-testid="card-desa"', false);
+        $response->assertDontSee('data-testid="card-penduduk"', false);
+        $response->assertDontSee('data-testid="card-keluarga"', false);
+        $response->assertDontSee('data-testid="card-program-bantuan"', false);
+    });
+
+    test('user with only access.data.penduduk permission sees only the penduduk dashboard card', function () {
+        $permDashboard = Permission::firstOrCreate(['name' => 'access.dashboard', 'guard_name' => 'web']);
+        $permPenduduk = Permission::firstOrCreate(['name' => 'access.data.penduduk', 'guard_name' => 'web']);
+        
+        $user = User::factory()->create();
+        $user->givePermissionTo([$permDashboard, $permPenduduk]);
+        $this->actingAs($user);
+
+        $response = $this->get('/dashboard');
+
+        $response->assertStatus(200);
+        $response->assertDontSee('data-testid="card-desa"', false);
+        $response->assertSee('data-testid="card-penduduk"', false);
+        $response->assertDontSee('data-testid="card-keluarga"', false);
+        $response->assertDontSee('data-testid="card-program-bantuan"', false);
     });
 });

@@ -41,13 +41,6 @@ class Potensi extends Model
 
     protected $table = 'das_potensi';
 
-    protected static function booted(): void
-    {
-        static::created(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
-        static::updated(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
-        static::deleted(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
-    }
-
     protected $fillable = [
         'kategori_id',
         'nama_potensi',
@@ -56,6 +49,7 @@ class Potensi extends Model
         'long',
         'lat',
         'file_gambar',
+        'mime_type',
     ];
 
     /**
@@ -70,5 +64,18 @@ class Potensi extends Model
     public function tipe()
     {
         return $this->hasOne(TipePotensi::class, 'id', 'kategori_id');
+    }
+
+    public function getIsPdfAttribute(): bool
+    {
+        return str_contains(strtolower($this->mime_type ?? ''), 'pdf')
+            || str_ends_with(strtolower($this->file_gambar ?? ''), '.pdf');
+    }
+
+    protected static function booted(): void
+    {
+        static::created(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+        static::updated(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
+        static::deleted(fn (Potensi $potensi) => PotensiChanged::dispatch($potensi));
     }
 }

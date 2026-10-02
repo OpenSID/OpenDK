@@ -33,25 +33,31 @@ namespace App\Http\Controllers\Data;
 
 use App\Exports\ExportSuplemen;
 use App\Exports\ExportSuplemenTerdata;
+use App\Exports\ExportSuplemenTerdataGabungan;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\SuplemenRequest;
+use App\Http\Requests\SuplemenTerdataRequest;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\Suplemen;
 use App\Models\SuplemenTerdata;
+use App\Services\PendudukService;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Yajra\DataTables\DataTables;
 
 class SuplemenController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(): View
     {
         $page_title = 'Data Suplemen';
         $page_description = 'Daftar Data Suplemen';
@@ -60,11 +66,11 @@ class SuplemenController extends Controller
     }
 
     /**
-     * Return datatable Data Suplemen
+     * Return datatable Data Suplemen.
      */
-    public function getDataSuplemen()
+    public function getDataSuplemen(Request $request): ?JsonResponse
     {
-        if (request()->ajax()) {
+        if ($request->ajax()) {
             return DataTables::of(Suplemen::withCount('terdata')->get())
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
@@ -88,10 +94,8 @@ class SuplemenController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(): View
     {
         $page_title = 'Data Suplemen';
         $page_description = 'Tambah Data Suplemen';
@@ -101,19 +105,14 @@ class SuplemenController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SuplemenRequest $request): RedirectResponse
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
-        $request['slug'] = Str::slug($request->nama);
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['nama']);
 
         try {
-            Suplemen::create($request->all());
+            Suplemen::create($data);
         } catch (\Exception $e) {
             Log::error('Suplemen creation failed', [
                 'error' => $e->getMessage(),
@@ -129,11 +128,8 @@ class SuplemenController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(int $id): View
     {
         $suplemen = Suplemen::findOrFail($id);
         $page_title = 'Data Suplemen';
@@ -144,20 +140,14 @@ class SuplemenController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(SuplemenRequest $request, int $id): RedirectResponse
     {
-        request()->validate([
-            'nama' => 'required',
-        ]);
-
-        $request['slug'] = Str::slug($request->nama);
+        $data = $request->validated();
+        $data['slug'] = Str::slug($data['nama']);
 
         try {
-            Suplemen::findOrFail($id)->update($request->all());
+            Suplemen::findOrFail($id)->update($data);
         } catch (\Exception $e) {
             Log::error('Suplemen update failed', [
                 'error' => $e->getMessage(),
@@ -173,11 +163,8 @@ class SuplemenController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         if (SuplemenTerdata::where('suplemen_id', $id)->exists()) {
             return redirect()->route('data.data-suplemen.index')->with('error', 'Tidak dapat menghapus Data Suplemen yang mempunyai anggota!');
@@ -200,46 +187,79 @@ class SuplemenController extends Controller
 
     /**
      * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(int $id): View
     {
         $suplemen = Suplemen::findOrFail($id);
         $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title = 'Anggota Suplemen';
         $page_description = 'Anggota Suplemen: ' . ucwords(strtolower($suplemen->nama));
 
-        return view('data.data_suplemen.show', compact('page_title', 'page_description', 'suplemen', 'sasaran'));
+        $view = $this->isDatabaseGabungan() ? 'data.data_suplemen.gabungan.show' : 'data.data_suplemen.show';
+
+        return view($view, compact('page_title', 'page_description', 'suplemen', 'sasaran'));
     }
 
     /**
-     * Return datatable Data Suplemen Terdata
+     * Return datatable Data Suplemen Terdata.
+     *
+     * Saat database gabungan aktif, data dari API database gabungan
+     * (hasil sinkronisasi desa) digabungkan dengan data anggota lokal.
      */
-    public function getDataSuplemenTerdata($id_terdata)
+    public function getDataSuplemenTerdata(Request $request, int $id_terdata): ?JsonResponse
     {
-        if (request()->ajax()) {
-            return DataTables::of(SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('suplemen_id', $id_terdata)->get())
+        if ($request->ajax()) {
+            $desa = $request->input('desa');
+
+            $terdata = SuplemenTerdata::with('penduduk', 'penduduk.desa')
+                ->where('suplemen_id', $id_terdata)
+                ->when($desa && $desa !== 'Semua', fn ($query) => $query->where('desa_id', $desa))
+                ->get();
+
+            if ($this->isDatabaseGabungan()) {
+                $pendudukGabungan = $this->pendudukGabunganBatch(
+                    $terdata->pluck('penduduk_id_gabungan')->filter()->values()->all()
+                );
+
+                $terdata = $terdata->map(function (SuplemenTerdata $row) use ($pendudukGabungan) {
+                    if ($row->penduduk_id_gabungan && ! $row->penduduk) {
+                        $penduduk = $pendudukGabungan[(int) $row->penduduk_id_gabungan] ?? null;
+
+                        if ($penduduk) {
+                            $row->setRelation('penduduk', $penduduk);
+                        }
+                    }
+
+                    return $row;
+                });
+            }
+
+            return DataTables::of($terdata)
                 ->addIndexColumn()
                 ->addColumn('aksi', function ($row) {
-                    if (!auth()->guest()) {
-                        $data['edit_url'] = route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]);
-                        $data['delete_url'] = route('data.data-suplemen.destroydetail', [$row->id, $row->suplemen_id]);
+                    if (! $row instanceof SuplemenTerdata) {
+                        return null;
                     }
+
+                    if (auth()->guest()) {
+                        return null;
+                    }
+
+                    $data['edit_url'] = auth()->user()->can('access.data.data_suplemen.edit') ? route('data.data-suplemen.editdetail', [$row->id, $row->suplemen_id]) : null;
+                    $data['delete_url'] = auth()->user()->can('access.data.data_suplemen.delete') ? route('data.data-suplemen.destroydetail', [$row->id, $row->suplemen_id]) : null;
 
                     return view('forms.aksi', $data);
                 })
                 ->editColumn('penduduk.sex', function ($row) {
                     $sex = ['1' => 'Laki-laki', '2' => 'Perempuan'];
 
-                    return $sex[$row->penduduk->sex];
+                    return $sex[$row->penduduk->sex] ?? '-';
                 })
                 ->make();
         }
     }
 
-    public function getPenduduk($desa, $suplemen)
+    public function getPenduduk(string $desa, int $suplemen): JsonResponse
     {
         $penduduk = [];
 
@@ -258,83 +278,97 @@ class SuplemenController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function createDetail($id_suplemen)
+    public function createDetail(int $id_suplemen): View
     {
         $suplemen = Suplemen::findOrFail($id_suplemen);
         $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title = 'Anggota Suplemen';
         $page_description = 'Tambah Anggota Suplemen';
-        $desa = DataDesa::all();
         $anggota = null;
+        $isDatabaseGabungan = $this->isDatabaseGabungan();
 
-        if ($suplemen->sasaran == 1) {
-            $data = Penduduk::get();
+        if ($isDatabaseGabungan) {
+            $data = collect();
+            $desa = collect();
+            $view = 'data.data_suplemen.gabungan.create_detail';
         } else {
-            $data = Penduduk::where('kk_level', 1)->get();
+            $desa = DataDesa::all();
+            $view = 'data.data_suplemen.create_detail';
+
+            if ($suplemen->sasaran == 1) {
+                $data = Penduduk::get();
+            } else {
+                $data = Penduduk::where('kk_level', 1)->get();
+            }
         }
 
-        return view('data.data_suplemen.create_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
+        return view($view, compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota', 'isDatabaseGabungan'));
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function storeDetail(Request $request)
+    public function storeDetail(SuplemenTerdataRequest $request): RedirectResponse
     {
-        request()->validate(
-            ['penduduk_id' => 'required'],
-            ['penduduk_id.required' => 'isian warga atau penduduk wajib diisi']
-        );
+        $data = $this->normalizePendudukSumber($this->resolveDesaId($request->validated()));
 
         try {
-            SuplemenTerdata::create($request->all());
+            SuplemenTerdata::create($data);
         } catch (\Exception $e) {
             Log::error('Suplemen Terdata creation failed', [
                 'error' => $e->getMessage(),
                 'user_id' => auth()->id(),
-                'suplemen_id' => $request['suplemen_id'],
+                'suplemen_id' => $request->input('suplemen_id'),
             ]);
 
             return back()->withInput()->with('error', 'Anggota Suplemen gagal ditambah!');
         }
 
-        return redirect()->route('data.data-suplemen.show', $request['suplemen_id'])->with('success', 'Anggota Suplemen berhasil ditambah!');
+        return redirect()->route('data.data-suplemen.show', $request->input('suplemen_id'))->with('success', 'Anggota Suplemen berhasil ditambah!');
     }
 
     /**
      * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function editDetail($id, $id_suplemen)
+    public function editDetail(int $id, int $id_suplemen): View
     {
         $suplemen = Suplemen::findOrFail($id_suplemen);
         $sasaran = ['1' => 'Penduduk', '2' => 'Keluarga/KK'];
         $page_title = 'Anggota Suplemen';
         $page_description = 'Ubah Anggota Suplemen';
-        $anggota = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->first();
-        $data = Penduduk::where('id', $anggota->penduduk_id)->get();
-        $desa = DataDesa::all();
+        $anggota = SuplemenTerdata::with('penduduk', 'penduduk.desa')->where('id', $id)->firstOrFail();
+        $isDatabaseGabungan = $this->isDatabaseGabungan();
 
-        return view('data.data_suplemen.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota'));
+        if ($isDatabaseGabungan) {
+            $penduduk = null;
+
+            if ($anggota->penduduk_id_gabungan) {
+                $penduduk = $this->pendudukGabunganBatch([$anggota->penduduk_id_gabungan])[(int) $anggota->penduduk_id_gabungan] ?? null;
+            }
+
+            $selectedDesaId = $penduduk?->desa?->desa_id ?? $anggota->desa_id;
+
+            return view('data.data_suplemen.gabungan.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'anggota', 'isDatabaseGabungan', 'penduduk', 'selectedDesaId'));
+        }
+
+        $desa = DataDesa::all();
+        $data = $anggota->penduduk_id ? Penduduk::where('id', $anggota->penduduk_id)->get() : collect();
+        $selectedDesaId = optional($anggota->penduduk)?->desa?->desa_id ?? $anggota->desa_id;
+        $selectedPendudukId = optional($anggota->penduduk)->id;
+
+        return view('data.data_suplemen.edit_detail', compact('page_title', 'page_description', 'suplemen', 'sasaran', 'data', 'desa', 'anggota', 'isDatabaseGabungan', 'selectedDesaId', 'selectedPendudukId'));
     }
 
     /**
      * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function updateDetail(Request $request, $id)
+    public function updateDetail(SuplemenTerdataRequest $request, int $id): RedirectResponse
     {
+        $data = $this->normalizePendudukSumber($this->resolveDesaId($request->validated()));
+
         try {
-            SuplemenTerdata::findOrFail($id)->update($request->all());
+            SuplemenTerdata::findOrFail($id)->update($data);
         } catch (\Exception $e) {
             Log::error('Suplemen Terdata update failed', [
                 'error' => $e->getMessage(),
@@ -345,16 +379,13 @@ class SuplemenController extends Controller
             return back()->withInput()->with('error', 'Anggota Suplemen gagal diubah!');
         }
 
-        return redirect()->route('data.data-suplemen.show', $request['suplemen_id'])->with('success', 'Anggota Suplemen berhasil diubah!');
+        return redirect()->route('data.data-suplemen.show', $request->input('suplemen_id'))->with('success', 'Anggota Suplemen berhasil diubah!');
     }
 
     /**
      * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
-    public function destroyDetail($id, $id_suplemen)
+    public function destroyDetail(int $id, int $id_suplemen): RedirectResponse
     {
         try {
             SuplemenTerdata::findOrFail($id)->delete();
@@ -374,11 +405,8 @@ class SuplemenController extends Controller
 
     /**
      * Export Excel data suplemen.
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportExcel(Request $request)
+    public function exportExcel(Request $request): BinaryFileResponse
     {
         $filters = $request->only(['nama', 'sasaran']);
         $timestamp = date('Y-m-d-H-i-s');
@@ -389,18 +417,139 @@ class SuplemenController extends Controller
 
     /**
      * Export Excel data suplemen terdata.
-     *
-     * @param Request $request
-     * @param int $id Suplemen ID
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function exportTerdataExcel(Request $request, $id)
+    public function exportTerdataExcel(Request $request, int $id): BinaryFileResponse
     {
         $suplemen = Suplemen::findOrFail($id);
         $filters = $request->only(['desa', 'nama_penduduk']);
         $timestamp = date('Y-m-d-H-i-s');
         $filename = "data-suplemen-terdata-{$suplemen->slug}-{$timestamp}.xlsx";
 
+        if ($this->isDatabaseGabungan()) {
+            $query = SuplemenTerdata::query()->where('suplemen_id', $id);
+
+            if (!empty($filters['desa'])) {
+                $query->where(function ($q) use ($filters) {
+                    $q->where('desa_id', $filters['desa']);
+                });
+            }
+
+            if (!empty($filters['nama_penduduk'])) {
+                $query->whereHas('penduduk', function ($q) use ($filters) {
+                    $q->where('nama', 'like', '%' . $filters['nama_penduduk'] . '%');
+                });
+            }
+
+            $pendudukGabunganIds = $query->whereNotNull('penduduk_id_gabungan')->pluck('penduduk_id_gabungan')->filter()->values()->all();
+
+            return Excel::download(new ExportSuplemenTerdataGabungan($id, $filters, $pendudukGabunganIds), $filename);
+        }
+
         return Excel::download(new ExportSuplemenTerdata($id, $filters), $filename);
+    }
+
+    /**
+     * Normalisasi sumber penduduk untuk anggota suplemen.
+     *
+     * Anggota hanya boleh berisi salah satu sumber: penduduk lokal (penduduk_id)
+     * atau penduduk dari database gabungan (penduduk_id_gabungan), tidak keduanya.
+     */
+    private function normalizePendudukSumber(array $validated): array
+    {
+        if (! empty($validated['penduduk_id_gabungan'])) {
+            $validated['penduduk_id'] = null;
+        } else {
+            $validated['penduduk_id_gabungan'] = null;
+        }
+
+        return $validated;
+    }
+
+    /**
+     * Resolusi desa_id untuk anggota suplemen.
+     *
+     * Nilai desa_id dari form diutamakan. Fallback diambil dari respons API
+     * database gabungan (config.kode_desa) atau kolom desa_id das_penduduk
+     * untuk penduduk lokal.
+     */
+    private function resolveDesaId(array $data): array
+    {
+        if (! empty($data['desa_id'])) {
+            return $data;
+        }
+
+        if (! empty($data['penduduk_id_gabungan'])) {
+            $penduduk = $this->pendudukGabunganBatch([(int) $data['penduduk_id_gabungan']])[(int) $data['penduduk_id_gabungan']] ?? null;
+            $data['desa_id'] = $penduduk?->desa?->desa_id;
+        } elseif (! empty($data['penduduk_id'])) {
+            $data['desa_id'] = Penduduk::where('id', $data['penduduk_id'])->value('desa_id');
+        }
+
+        return $data;
+    }
+
+    /**
+     * Resolusi beberapa penduduk dari database gabungan sekaligus (batch)
+     * menggunakan filter id_penduduk berupa array, agar tidak melakukan
+     * request berulang per anggota.
+     *
+     * @param  array<int, int|string>  $ids
+     *
+     * @return array<int, Penduduk>
+     */
+    private function pendudukGabunganBatch(array $ids): array
+    {
+        if (empty($ids)) {
+            return [];
+        }
+
+        try {
+            $penduduk = [];
+
+            foreach ((new PendudukService())->pendudukGabunganByIds($ids) as $item) {
+                if (! is_array($item)) {
+                    continue;
+                }
+
+                $penduduk[(int) ($item['id'] ?? 0)] = $this->mapGabunganPenduduk($item);
+            }
+
+            return $penduduk;
+        } catch (\Exception $e) {
+            Log::error('Penduduk batch fetch from gabungan failed', [
+                'error' => $e->getMessage(),
+                'ids' => $ids,
+            ]);
+
+            return [];
+        }
+    }
+
+    /**
+     * Map respons penduduk API database gabungan (JSON:API) ke model Eloquent
+     * yang digunakan kolom datatable dan form anggota suplemen.
+     */
+    private function mapGabunganPenduduk(array $item): Penduduk
+    {
+        $attributes = $item['attributes'] ?? [];
+
+        $penduduk = new Penduduk();
+        $penduduk->forceFill([
+            'id' => $item['id'] ?? null,
+            'no_kk' => data_get($attributes, 'keluarga.no_kk') ?? $attributes['no_kk'] ?? null,
+            'nik' => $attributes['nik'] ?? null,
+            'nama' => $attributes['nama'] ?? null,
+            'tempat_lahir' => $attributes['tempatlahir'] ?? $attributes['tempat_lahir'] ?? null,
+            'tanggal_lahir' => $attributes['tanggallahir'] ?? $attributes['tanggal_lahir'] ?? null,
+            'sex' => $attributes['sex'] ?? null,
+            'alamat' => $attributes['alamat_sekarang'] ?? $attributes['alamat'] ?? null,
+        ]);
+
+        $desa = new DataDesa();
+        $desa->nama = data_get($attributes, 'config.nama_desa') ?? $attributes['nama_desa'] ?? null;
+        $desa->desa_id = data_get($attributes, 'config.kode_desa') ?? $attributes['kode_desa'] ?? null;
+        $penduduk->setRelation('desa', $desa);
+
+        return $penduduk;
     }
 }

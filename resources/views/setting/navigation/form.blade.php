@@ -27,18 +27,19 @@
                 @endforeach
             </optgroup>
             <optgroup label="Potensi">
+                <option value="4" data-value="potensi" @selected('potensi' == optional($navigation)->url)>Semua Potensi</option>
                 @foreach (\App\Enums\MenuTipe::getPotensi() as $key => $value)
-                    <option value="3" data-value="{{ 'potensi/' . $key }}" @selected('potensi/' . $key == optional($navigation)->url)>{{ $value }}</option>
+                    <option value="4" data-value="{{ 'potensi/' . $key }}" @selected('potensi/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <optgroup label="Unduhan">
                 @foreach (\App\Enums\MenuTipe::getUnduhan() as $key => $value)
-                    <option value="4" data-value="{{ 'unduhan/' . $key }}" @selected('unduhan/' . $key == optional($navigation)->url)>{{ $value }}</option>
+                    <option value="5" data-value="{{ 'unduhan/' . $key }}" @selected('unduhan/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <optgroup label="Publikasi">
                 @foreach (\App\Enums\MenuTipe::getPublikasi() as $key => $value)
-                    <option value="4" data-value="{{ 'publikasi/' . $key }}" @selected('publikasi/' . $key == optional($navigation)->url)>{{ $value }}</option>
+                    <option value="6" data-value="{{ 'publikasi/' . $key }}" @selected('publikasi/' . $key == optional($navigation)->url)>{{ $value }}</option>
                 @endforeach
             </optgroup>
             <option value="0" @selected('0' == optional($navigation)->type)>Eksternal</option>

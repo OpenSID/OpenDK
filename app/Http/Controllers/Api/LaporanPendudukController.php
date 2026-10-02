@@ -38,9 +38,22 @@ use App\Jobs\LaporanPendudukQueueJob;
 class LaporanPendudukController extends Controller
 {
     /**
-     * Tambah / Ubah Data Laporan Penduduk Dari OpenSID
+     * Sinkronisasi laporan penduduk dari OpenSID (JSON + base64 file).
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @group OpenSID Integration
+     *
+     * @bodyParam desa_id string required Kode desa. Example: 3201012001
+     * @bodyParam laporan_penduduk object[] required Array objek laporan.
+     * @bodyParam laporan_penduduk.id integer required ID laporan. Example: 1
+     * @bodyParam laporan_penduduk.judul string required Judul laporan. Example: Laporan Penduduk Jan 2024
+     * @bodyParam laporan_penduduk.bulan integer required Bulan (1-12). Example: 1
+     * @bodyParam laporan_penduduk.tahun integer required Tahun. Example: 2024
+     * @bodyParam laporan_penduduk.nama_file string required Nama file. Example: penduduk_2024_01.pdf
+     * @bodyParam laporan_penduduk.file string required File base64 encoded.
+     * @response {
+     *   "status": "success",
+     *   "message": "Proses sync data Laporan Penduduk OpenSID sedang berjalan"
+     * }
      */
     public function store(LaporanPendudukRequest $request)
     {

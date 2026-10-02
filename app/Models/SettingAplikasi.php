@@ -31,6 +31,8 @@
 
 namespace App\Models;
 
+use App\Observers\SettingAplikasiObserver;
+use App\Observers\WebsiteCacheObserver;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
@@ -38,6 +40,9 @@ use Illuminate\Support\Facades\Cache;
 class SettingAplikasi extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+
     protected $table = 'das_setting';
 
     protected $fillable = [
@@ -49,17 +54,12 @@ class SettingAplikasi extends Model
         'option',
     ];
 
-    public $timestamps = false;
-
-    protected static function boot()
+    protected static function booted(): void
     {
-        parent::boot();
+        static::observe(SettingAplikasiObserver::class);
+        static::observe(WebsiteCacheObserver::class);
 
         static::saved(function () {
-            Cache::forget('setting');
-        });
-
-        static::updated(function () {
             Cache::forget('setting');
         });
     }

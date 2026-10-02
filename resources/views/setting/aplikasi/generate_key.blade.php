@@ -1,6 +1,6 @@
 @include('partials.asset_sweetalert')
 <div style="margin-top: 5px;">
-    <button id="btn-token" type="button" class="btn btn-success btn-sm btn-social" title="Buat Token Baru">
+    <button id="btn-token" type="button" class="btn btn-success btn-sm btn-social" title="Buat Token Baru" data-testid="generate-token-btn">
         <i class="fa fa-key"></i>Buat Token Baru
     </button>
 </div>

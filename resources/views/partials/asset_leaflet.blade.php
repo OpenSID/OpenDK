@@ -21,6 +21,15 @@
         var layers = {};
 
         function showPolygon(wilayah, layerpeta, warna = '#ffffff') {
+            if (typeof wilayah === 'string' || typeof wilayah === 'number') {
+                try {
+                    wilayah = JSON.parse(wilayah);
+                } catch (e) {
+                    return;
+                }
+            }
+            if (!wilayah || wilayah.length === 0) return;
+
             var area_wilayah = JSON.parse(JSON.stringify(wilayah));
             var bounds = new Array();
 
@@ -68,7 +77,9 @@
                 path.push(layer._latlngs);
             }
 
-            layerpeta.fitBounds(bounds);
+            if (bounds.length > 0) {
+                layerpeta.fitBounds(bounds);
+            }
             document.getElementById("path").value = getLatLong("multi", path).toString();
 
         }

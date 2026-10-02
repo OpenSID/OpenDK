@@ -34,7 +34,9 @@ namespace Database\Seeders\Demo;
 use App\Models\DataDesa;
 use App\Models\Profil;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DemoDasDataDesaTableSeeder extends Seeder
 {
@@ -45,6 +47,11 @@ class DemoDasDataDesaTableSeeder extends Seeder
      */
     public function run()
     {
+        Schema::disableForeignKeyConstraints();
+        DataDesa::truncate();
+        Schema::enableForeignKeyConstraints();
+        Cache::forget('listDesa');
+
         $profil = Profil::first();
 
         $dataDesa = [

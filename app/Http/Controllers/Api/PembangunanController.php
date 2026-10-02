@@ -50,10 +50,23 @@ class PembangunanController extends Controller
     private const SUPPORTED_EXTENSIONS = ['csv', 'xlsx'];
 
     /**
-     * Tambah Data Pembangunan Sesuai OpenSID
+     * Sinkronisasi data pembangunan via ZIP dari OpenSID.
      *
-     * @param  PendudukRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @group OpenSID Integration
+     *
+     * Kontrak ZIP:
+     * - Berisi 1 file `*.csv` atau `*.xlsx`.
+     * - Kolom: desa_id, id, sumber_dana, lokasi, keterangan, judul, volume,
+     *   tahun_anggaran, pelaksana_kegiatan, status, anggaran,
+     *   perubahan_anggaran, sumber_biaya_pemerintah, sumber_biaya_provinsi,
+     *   sumber_biaya_kab_kota, sumber_biaya_swadaya, sumber_biaya_jumlah,
+     *   manfaat, waktu, foto.
+     *
+     * @bodyParam file file required File ZIP (max 50MB) berisi data pembangunan. Example: null
+     * @response {
+     *   "message": "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
+     *   "status": "success"
+     * }
      */
     public function store(PembangunanRequest $request)
     {
@@ -140,6 +153,22 @@ class PembangunanController extends Controller
         ]);
     }
 
+    /**
+     * Sinkronisasi dokumentasi pembangunan via ZIP dari OpenSID.
+     *
+     * @group OpenSID Integration
+     *
+     * Kontrak ZIP:
+     * - Berisi 1 file `*.csv` atau `*.xlsx`.
+     * - Kolom: desa_id, id, id_pembangunan, gambar, persentase, keterangan,
+     *   created_at, updated_at.
+     *
+     * @bodyParam file file required File ZIP (max 50MB) berisi data dokumentasi. Example: null
+     * @response {
+     *   "message": "Proses Sinkronisasi Data Pembangunan OpenSID sedang berjalan",
+     *   "status": "success"
+     * }
+     */
     public function storeDokumentasi(PembangunanDokumentasiRequest $request)
     {
         $fileName = null;

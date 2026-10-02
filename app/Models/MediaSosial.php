@@ -31,6 +31,7 @@
 
 namespace App\Models;
 
+use App\Observers\WebsiteCacheObserver;
 use App\Traits\HandlesResourceDeletion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,4 +57,9 @@ class MediaSosial extends Model
     protected $resources = [
         'logo',
     ];
+
+    protected static function booted(): void
+    {
+        static::observe(WebsiteCacheObserver::class);
+    }
 }

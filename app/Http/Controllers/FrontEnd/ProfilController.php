@@ -76,13 +76,14 @@ class ProfilController extends FrontEndController
         Counter::count('profil.letak-geografis');
 
         $wilayah_desa = (new DesaService())->listPathDesa();
+        $data_umum = DataUmum::first();
         $page_title = 'Letak Geografis';
 
         $page_description = $this->browser_title;
 
         $view = $this->isDatabaseGabungan() ? 'pages.profil.gabungan.letakgeografis' : 'pages.profil.letakgeografis';
 
-        return view($view, compact('page_title', 'page_description', 'wilayah_desa'));
+        return view($view, compact('page_title', 'page_description', 'wilayah_desa', 'data_umum'));
     }
 
     public function StrukturPemerintahan()

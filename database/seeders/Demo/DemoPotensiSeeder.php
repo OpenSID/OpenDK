@@ -34,6 +34,7 @@ namespace Database\Seeders\Demo;
 use App\Models\Potensi;
 use App\Models\TipePotensi;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DemoPotensiSeeder extends Seeder
 {
@@ -44,36 +45,55 @@ class DemoPotensiSeeder extends Seeder
      */
     public function run()
     {
-        $kategori = [
-            ['nama_kategori' => 'Kategori 1'],
-            ['nama_kategori' => 'Kategori 2'],
+        Schema::disableForeignKeyConstraints();
+        Potensi::truncate();
+        TipePotensi::truncate();
+        Schema::enableForeignKeyConstraints();
+
+        $tipeData = [
+            ['nama_kategori' => 'Pertanian & Perkebunan'],
+            ['nama_kategori' => 'Pariwisata & Alam'],
+            ['nama_kategori' => 'UMKM & Ekonomi Kreatif'],
         ];
 
-        foreach ($kategori as $k) {
-            TipePotensi::create($k);
+        $tipeIds = [];
+        foreach ($tipeData as $tipe) {
+            $tipePotensi  = TipePotensi::create($tipe);
+            $tipeIds[]    = $tipePotensi->id;
         }
 
-        $kategori_id = TipePotensi::first()->id;
-
-        $potensi = [
+        $potensiData = [
             [
-                'kategori_id' => $kategori_id,
-                'nama_potensi' => 'Potensi 1',
-                'deskripsi' => 'Deskripsi potensi 1',
-                'lokasi' => 'Lokasi potensi 1',
-                'file_gambar' => '/img/no-image.png',
+                'kategori_id'  => $tipeIds[0],
+                'nama_potensi' => 'Kebun Kopi Arabika Ile Boleng',
+                'deskripsi'    => 'Kawasan perkebunan kopi arabika seluas ±120 hektar yang dikelola oleh kelompok tani Makmur Sejahtera. Kopi Ile Boleng dikenal dengan cita rasa yang khas dan telah diekspor ke beberapa negara di Asia dan Eropa.',
+                'lokasi'       => 'Desa Ile Boleng, Kecamatan Ile Boleng, Flores Timur',
+                'lat'          => '-8.3245',
+                'long'         => '122.9876',
+                'file_gambar'  => 'https://picsum.photos/seed/kopi-arabika/800/500',
             ],
             [
-                'kategori_id' => $kategori_id,
-                'nama_potensi' => 'Potensi 2',
-                'deskripsi' => 'Deskripsi potensi 2',
-                'lokasi' => 'Lokasi potensi 2',
-                'file_gambar' => '/img/no-image.png',
+                'kategori_id'  => $tipeIds[1],
+                'nama_potensi' => 'Pantai Batu Karang Ile Boleng',
+                'deskripsi'    => 'Pantai dengan formasi batu karang unik yang menjadi daya tarik wisata alam. Air laut yang jernih dengan warna biru toska menawarkan pemandangan bawah laut yang memukau, cocok untuk snorkeling dan diving.',
+                'lokasi'       => 'Pesisir Selatan Kecamatan Ile Boleng, Flores Timur',
+                'lat'          => '-8.4120',
+                'long'         => '123.0123',
+                'file_gambar'  => 'https://picsum.photos/seed/pantai-karang/800/500',
+            ],
+            [
+                'kategori_id'  => $tipeIds[2],
+                'nama_potensi' => 'Kerajinan Tenun Ikat Tradisional',
+                'deskripsi'    => 'Kerajinan tenun ikat tradisional Flores yang diproduksi oleh para pengrajin lokal menggunakan teknik turun-temurun. Motif yang beragam mencerminkan kekayaan budaya dan filosofi masyarakat Flores Timur.',
+                'lokasi'       => 'Kelompok Pengrajin Tenun, Desa Terong, Kecamatan Ile Boleng',
+                'lat'          => '-8.3567',
+                'long'         => '122.9543',
+                'file_gambar'  => 'https://picsum.photos/seed/tenun-ikat/800/500',
             ],
         ];
 
-        foreach ($potensi as $p) {
-            Potensi::create($p);
+        foreach ($potensiData as $potensi) {
+            Potensi::create($potensi);
         }
     }
 }

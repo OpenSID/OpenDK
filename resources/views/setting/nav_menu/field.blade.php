@@ -24,6 +24,9 @@
         <label class="form-check-inline">
             {!! html()->radio('source', false)->value('Dokumen')->class('form-check-input')->id('sourceDokumen') !!} Dokumen
         </label>
+        <label class="form-check-inline">
+            {!! html()->radio('source', false)->value('Potensi')->class('form-check-input')->id('sourcePotensi') !!} Potensi
+        </label>
     </div>
 </div>
 
@@ -63,6 +66,7 @@
                         case 'Kategori':
                         case 'Halaman':
                         case 'Dokumen':
+                        case 'Potensi':
                             let select = document.querySelector('select[name=sourcelist]');
                             select.style.display = 'block'; // Tampilkan select sourcelist
 

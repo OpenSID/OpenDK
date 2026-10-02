@@ -16,14 +16,16 @@ return new class extends Migration
     public function up()
     {
         // Tambahkan setting untuk sinkronisasi database gabungan
-        SettingAplikasi::insert([            
-            'key' => 'sinkronisasi_database_gabungan',
-            'value' => Status::TidakAktif,
-            'type' => 'boolean',
-            'description' => 'Aktifkan Sinkronisasi ke Database Gabungan.',
-            'kategori' => 'sinkronisasi',
-            'option' => '{}',
-        ]);
+        if(!SettingAplikasi::where('key','sinkronisasi_database_gabungan')->exists()){
+            SettingAplikasi::insert([            
+                'key' => 'sinkronisasi_database_gabungan',
+                'value' => Status::TidakAktif,
+                'type' => 'boolean',
+                'description' => 'Aktifkan Sinkronisasi ke Database Gabungan.',
+                'kategori' => 'sinkronisasi',
+                'option' => '{}',
+            ]);
+        }        
         SettingAplikasi::insert([            
             'key' => 'api_server_database_gabungan',
             'value' => '',

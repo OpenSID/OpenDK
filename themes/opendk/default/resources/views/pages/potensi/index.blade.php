@@ -4,10 +4,18 @@
     <div class="col-md-8">
         <div class="box box-primary">
             <div class="box-header">
-                <h3 class="box-title text-bold"><i id="title-container" class="fa fa-arrow-circle-right fa-lg text-blue"></i> </h3>
+                <h3 class="box-title text-bold"><i id="title-container" class="fa fa-arrow-circle-right fa-lg text-blue"></i> {{ $page_title ?? 'Potensi' }}</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+                @if(isset($kategori_potensi) && $kategori_potensi->count() > 0)
+                    <div style="margin-bottom: 20px;">
+                        <a href="{{ route('potensi.index') }}" class="btn btn-sm {{ empty($slug) ? 'btn-primary' : 'btn-default' }}" style="margin-right: 5px; margin-bottom: 5px;">Semua</a>
+                        @foreach($kategori_potensi as $kat)
+                            <a href="{{ route('potensi.kategori', $kat->slug) }}" class="btn btn-sm {{ ($slug ?? '') === $kat->slug ? 'btn-primary' : 'btn-default' }}" style="margin-right: 5px; margin-bottom: 5px;">{{ $kat->nama_kategori }}</a>
+                        @endforeach
+                    </div>
+                @endif
                 <div id="potensi-container">
                     <div class="post clearfix">
                         <!-- Loading indicator will be shown here -->

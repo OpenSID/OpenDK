@@ -33,14 +33,14 @@ namespace App\Http\Controllers\Setting;
 
 use App\Http\Controllers\Controller;
 use App\Models\Artikel;
+use App\Models\JenisDokumen;
 use App\Models\Kategori;
 use App\Models\NavMenu;
-use App\Models\JenisDokumen;
+use App\Models\TipePotensi;
 use Illuminate\Http\Request;
 
 class NavMenuController extends Controller
 {
-
     public function index()
     {
         $page_title = 'Pengaturan Menu';
@@ -65,11 +65,16 @@ class NavMenuController extends Controller
             ),
             'Kategori' => Kategori::cursor()->pluck('nama', 'link')->toArray(),
             'Dokumen' => JenisDokumen::cursor()->pluck('nama', 'link')->toArray(),
+            'Potensi' => array_merge(
+                ['/potensi' => 'Semua Potensi'],
+                TipePotensi::cursor()->mapWithKeys(function ($item) {
+                    return ['/potensi/' . $item->slug => $item->nama_kategori];
+                })->toArray()
+            ),
         ];
 
         return view('setting.nav_menu.index', compact('page_title', 'page_description', 'nav_menus', 'sourceItem'));
     }
-
 
     public function store(Request $request)
     {
@@ -90,11 +95,12 @@ class NavMenuController extends Controller
     {
         $sequence = 1;
         foreach ($elements as $element) {
+            $type = strtolower($element['type'] ?? '');
             $input = [
                 'name' => $element['text'],
                 'url' => $element['href'],
                 'target' => $element['target'],
-                'type' => $element['type'],
+                'type' => in_array($type, ['link', 'halaman', 'kategori', 'modul', 'dokumen']) ? $type : 'modul',
                 'is_show' => isset($element['is_show']) ? $element['is_show'] : 1,
                 'order' => $sequence,
                 'parent_id' => $parentId,

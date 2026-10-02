@@ -31,6 +31,7 @@
 
 namespace App\Providers;
 
+use App\Rules\SafeFileContent;
 use App\Services\ActivityLogService;
 use App\Services\CacheService;
 use App\Support\Collection;
@@ -44,7 +45,6 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -244,16 +244,19 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Validator untuk file upload (mencegah file berbahaya).
+     *
+     * Logika berada di App\Rules\SafeFileContent agar dapat diuji terpisah.
      */
     protected function file(): void
     {
         Validator::extend('valid_file', function ($attributes, $value, $parameters) {
-            $contains = preg_match('/<\?php|<script|function|__halt_compiler|<html/i', File::get($value));
-            if ($contains) {
-                return false;
-            }
+            $failed = false;
 
-            return true;
+            (new SafeFileContent())->validate($attributes, $value, function () use (&$failed) {
+                $failed = true;
+            });
+
+            return ! $failed;
         });
     }
 

@@ -21,6 +21,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 10. [#1735](https://github.com/OpenSID/OpenDK/issues/1735) Periksa bagian tambah ketua lembaga ketika menggunakan API satu data.
 11. [#1736](http://github.com/OpenSID/OpenDK/issues/1736) Fix Penyesuaian Validasi NIK pada Pengiriman Keluhan untuk Database Gabungan (API Satu Data).
 12. [#1737](https://github.com/OpenSID/OpenDK/issues/1737) fungsi kirim pesan error 500.
+13. [#1764](https://github.com/OpenSID/OpenDK/issues/1764) Gagal Menampilkan data foto/video dari Link pada web dan admin.
 
 #### TEKNIS
 

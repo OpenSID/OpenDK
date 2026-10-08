@@ -28,7 +28,7 @@
     <label class="control-label col-md-3 col-sm-3 col-xs-12">Email <span class="required">*</span></label>
 
     <div class="col-md-6 col-sm-6 col-xs-12">
-        @if (empty($user))
+        @if (empty($user) || auth()->id() == $user->id)
             {!! html()->text('email')->class('form-control')->placeholder('Email')->value(old('email', isset($user) ? $user->email : '')) !!}
         @else
             {!! html()->text('email', old('email', $user->email))->class('form-control')->placeholder('Email')->isReadonly() !!}

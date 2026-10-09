@@ -1,0 +1,55 @@
+name: Notify Telegram on Dependabot Alert
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check and notify new Dependabot alerts
+        env:
+          GH_TOKEN: ${{ secrets.DEPENDABOT_READ_TOKEN }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          REPO: ${{ github.repository }}
+        run: |
+          STATE_FILE=".github/dependabot-telegram-state.json"
+          if [ ! -f "$STATE_FILE" ]; then
+            echo "[]" > "$STATE_FILE"
+          fi
+
+          ALERTS=$(gh api "repos/$REPO/dependabot/alerts?state=open&per_page=100")
+          echo "$ALERTS" | jq -c '.[]' > /tmp/current_alerts.jsonl
+
+          while IFS= read -r alert; do
+            NUMBER=$(echo "$alert" | jq -r '.number')
+            SEEN=$(jq --argjson n "$NUMBER" 'index($n) != null' "$STATE_FILE")
+            if [ "$SEEN" != "true" ]; then
+              PACKAGE=$(echo "$alert" | jq -r '.security_vulnerability.package.name')
+              SEVERITY=$(echo "$alert" | jq -r '.security_vulnerability.severity')
+              SUMMARY=$(echo "$alert" | jq -r '.security_advisory.summary')
+              URL=$(echo "$alert" | jq -r '.html_url')
+              MESSAGE=$(printf "Dependabot Alert - %s\n\nPackage: %s\nSeverity: %s\nSummary: %s\n\n%s" "$REPO" "$PACKAGE" "$SEVERITY" "$SUMMARY" "$URL")
+              curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" --data-urlencode "chat_id=${TELEGRAM_CHAT_ID}" --data-urlencode "text=${MESSAGE}"
+            fi
+          done < /tmp/current_alerts.jsonl
+
+          echo "$ALERTS" | jq '[.[].number]' > "$STATE_FILE"
+
+      - name: Commit updated state file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .github/dependabot-telegram-state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update dependabot telegram notification state"
+            git push
+          fi

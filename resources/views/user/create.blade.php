@@ -26,7 +26,7 @@
                         </ul>
                     </div>
                 @endif
-                {!! html()->form()->route('setting.user.store')->method('post')->attribute('files', true)->id('form-user')->class('form-horizontal form-label-left')->open() !!}
+                {!! html()->form()->route('setting.user.store')->method('post')->acceptsFiles()->id('form-user')->class('form-horizontal form-label-left')->open() !!}
                 @include('flash::message')
                 @include('user.form')
                 {!! html()->form()->close() !!}

@@ -74,6 +74,18 @@ describe('User Management CRUD', function () {
         $response->assertViewHas('page_description', 'Tambah Data');
     });
 
+    test('create form uses multipart encoding so photo upload reaches the server', function () {
+        $superAdmin = User::whereHas('roles', fn($q) => $q->where('name', 'super-admin'))->first();
+
+        $response = $this->actingAs($superAdmin)->get(route('setting.user.create'));
+
+        $response->assertStatus(200);
+
+        preg_match('/<form[^>]*id="form-user"[^>]*>/', $response->getContent(), $matches);
+
+        expect($matches[0] ?? '')->toContain('enctype="multipart/form-data"');
+    });
+
     test('store creates new user successfully', function () {
         Storage::fake('public');
 

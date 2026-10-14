@@ -71,7 +71,7 @@
 
                 // Make API call to get potensi
                 $.ajax({
-                    url: '{!! $urlApi !!}/potensi?filter[tipe.slug]={!! $slug !!}&include=tipe&page[number]=' + page,
+                    url: '{!! $urlApi !!}/potensi?filter[tipe.slug]={!! $slug ?? '' !!}&include=tipe&page[number]=' + page,
                     method: 'GET',
                     success: function(response) {
                         var items = response.data || response;

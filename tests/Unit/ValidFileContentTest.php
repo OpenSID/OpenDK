@@ -133,4 +133,10 @@ describe('valid_file rule registration', function () {
         expect($validator->errors()->first('file_dokumen'))
             ->toBe(trans('validation.valid_file', ['attribute' => 'file dokumen']));
     });
+
+    test('pesan valid_file tidak menyisakan placeholder', function () {
+        $pesan = trans('validation.valid_file', ['attribute' => 'file dokumen']);
+
+        expect($pesan)->not->toMatch('/:\w+/');
+    });
 });

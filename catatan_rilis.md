@@ -9,5 +9,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### BUG
 
 1. [#1771](https://github.com/OpenSID/OpenDK/issues/1771) Administrator utama bisa mengubah email hanya untuk akunnya sendiri.
+2. [#1770](https://github.com/OpenSID/OpenDK/issues/1770) Perbaiki foto pengurus tidak tersimpan saat tambah data baru.
+
 
 #### TEKNIS

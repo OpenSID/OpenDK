@@ -31,15 +31,14 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use App\Models\Pengurus;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Database\Seeders\RefAgamaTableSeeder;
 use Database\Seeders\RefPendidikanTableSeeder;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 use Tests\CrudTestCase;
 
 class UserControllerTest extends CrudTestCase
@@ -199,6 +198,40 @@ class UserControllerTest extends CrudTestCase
     }
 
     /**
+     * Test edit form keeps email readonly when editing another user.
+     *
+     * @return void
+     */
+    public function test_edit_form_email_is_readonly_when_editing_another_user()
+    {
+        $superAdmin = User::whereHas('roles', function ($query) {
+            $query->where('name', 'super-admin');
+        })->first();
+
+        $targetUser = User::where('id', '!=', $superAdmin->id)->first();
+
+        $response = $this->actingAs($superAdmin)->get(route('setting.user.edit', $targetUser->id));
+
+        $response->assertStatus(200);
+        $this->assertMatchesRegularExpression('/<input[^>]*name="email"[^>]*readonly/i', $response->getContent());
+    }
+
+    /**
+     * Test edit form allows email change when editing own profile.
+     *
+     * @return void
+     */
+    public function test_edit_form_email_is_editable_when_editing_own_profile()
+    {
+        $user = User::first();
+
+        $response = $this->actingAs($user)->get(route('setting.user.edit', $user->id));
+
+        $response->assertStatus(200);
+        $this->assertDoesNotMatchRegularExpression('/<input[^>]*name="email"[^>]*readonly/i', $response->getContent());
+    }
+
+    /**
      * Test update method updates user successfully for super admin.
      *
      * @return void
@@ -318,7 +351,7 @@ class UserControllerTest extends CrudTestCase
      *
      * @return void
      */
-    public function test_getDataUser_returns_json_response()
+    public function test_get_data_user_returns_json_response()
     {
         $user = User::first();
 

@@ -31,6 +31,7 @@
 
 namespace App\Providers;
 
+use App\Helpers\IpAddress;
 use App\Rules\SafeFileContent;
 use App\Services\ActivityLogService;
 use App\Services\CacheService;
@@ -38,13 +39,16 @@ use App\Support\Collection;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Logout;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\AliasLoader;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
@@ -87,6 +91,8 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrap();
         $this->paginate();
+
+        $this->configureRateLimiting();
 
         if (sudahInstal()) {
             $this->penduduk();
@@ -135,6 +141,82 @@ class AppServiceProvider extends ServiceProvider
                 'attempted_username' => $event->username ?? null,
             ], $userId);
         });
+    }
+
+    /**
+     * Rate limiter untuk login dan OTP (issue #1410).
+     * (Sebelumnya di RouteServiceProvider::configureRateLimiting())
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('login', function (Request $request) {
+            $maxAttempts = max(1, (int) env('RATE_LIMIT_LOGIN_MAX', 10));
+            $decayMinutes = max(1, (int) env('RATE_LIMIT_LOGIN_DECAY', 1));
+
+            $identifier = $this->extractAndValidateIdentifier($request);
+
+            return Limit::perMinute($maxAttempts, $decayMinutes)
+                ->by(IpAddress::getRateLimitKey($request, $identifier));
+        });
+
+        RateLimiter::for('otp', function (Request $request) {
+            $maxAttempts = max(1, (int) env('RATE_LIMIT_OTP_MAX', 3));
+            $decayMinutes = max(1, (int) env('RATE_LIMIT_OTP_DECAY', 1));
+
+            $identifier = $this->extractAndValidateIdentifier($request);
+
+            return Limit::perMinute($maxAttempts, $decayMinutes)
+                ->by(IpAddress::getRateLimitKey($request, $identifier));
+        });
+    }
+
+    /**
+     * Extract dan validasi identifier (email/username) dari request.
+     *
+     * Validasi:
+     * - Harus string, bukan array atau tipe lain
+     * - Batasi panjang maksimal 320 karakter (RFC 5321)
+     * - Hapus null bytes dan control characters
+     * - Validasi format email jika terdeteksi sebagai email
+     */
+    protected function extractAndValidateIdentifier(Request $request): ?string
+    {
+        $identifier = $request->input('email')
+            ?? $request->input('username')
+            ?? $request->input('identity')
+            ?? $request->input('identifier')
+            ?? data_get($request->session()->get('two-factor:auth'), 'email')
+            ?? data_get($request->session()->get('two-factor:auth'), 'id')
+            ?? data_get($request->session()->get('otp_login'), 'user_id');
+
+        // Return null jika tidak ada
+        if ($identifier === null) {
+            return null;
+        }
+
+        // Validasi tipe data - harus string
+        if (! is_string($identifier)) {
+            return null;
+        }
+
+        // Batasi panjang maksimal (RFC 5321: 320 characters)
+        if (strlen($identifier) > 320) {
+            $identifier = substr($identifier, 0, 320);
+        }
+
+        // Hapus null bytes dan control characters
+        $identifier = preg_replace('/[\x00-\x1F\x7F]/', '', $identifier);
+
+        if ($identifier === null) {
+            return null;
+        }
+
+        $identifier = mb_strtolower(trim($identifier));
+
+        // Hanya izinkan karakter yang aman untuk rate limit key
+        $result = preg_replace('/[^a-z0-9@._-]/', '', $identifier);
+
+        return ($result !== null && $result !== '') ? $result : null;
     }
 
     /**

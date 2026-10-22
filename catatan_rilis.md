@@ -13,3 +13,5 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 
 #### TEKNIS
+
+1. [#1774](https://github.com/OpenSID/OpenDK/issues/1774) Konsolidasi: lebarkan kolom id ke BIGINT dan perintah geser id per desa.

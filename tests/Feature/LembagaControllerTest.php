@@ -189,6 +189,9 @@ test('it can create lembaga in gabungan mode with integer penduduk_id', function
         ['value' => '1']
     );
 
+    // Jangan bergantung pada cache 'listDesa' dari tes sebelumnya.
+    Http::fake(['*' => Http::response(['data' => []], 200)]);
+
     $penduduk = getLembagaPenduduk();
     $kategori = getLembagaKategori();
 
@@ -212,6 +215,9 @@ test('it can update lembaga in gabungan mode with integer penduduk_id', function
         ['key' => 'sinkronisasi_database_gabungan'],
         ['value' => '1']
     );
+
+    // Jangan bergantung pada cache 'listDesa' dari tes sebelumnya.
+    Http::fake(['*' => Http::response(['data' => []], 200)]);
 
     $penduduk = getLembagaPenduduk();
     $kategori = getLembagaKategori();

@@ -182,3 +182,81 @@ test('2fa verification is throttled using the pending authentication session', f
         'otp' => '000000',
     ])->assertStatus(429);
 });
+
+test('otp request rate limit cannot be bypassed with spoofed proxy headers', function (string $header) {
+    $user = User::factory()->create([
+        'email' => 'otp-spoof@example.com',
+        'name' => 'otp-spoof',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'otp_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
+
+    // Tanpa TRUST_PROXIES, header proxy dari klien tidak boleh dipercaya:
+    // mengganti nilainya di setiap request tidak boleh membuat bucket baru.
+    for ($attempt = 0; $attempt < 3; $attempt++) {
+        $this->withHeader($header, "203.0.113.{$attempt}")
+            ->post(route('otp.request-login'), ['identifier' => $user->email])
+            ->assertRedirect(route('otp.verify-login'));
+    }
+
+    $this->withHeader($header, '203.0.113.99')
+        ->post(route('otp.request-login'), ['identifier' => $user->email])
+        ->assertStatus(429);
+})->with(['X-Forwarded-For', 'X-Real-IP', 'CF-Connecting-IP']);
+
+test('otp request rate limit uses the real client ip behind a trusted proxy', function () {
+    // Request di tes berasal dari 127.0.0.1; anggap itu reverse proxy kita.
+    config(['security.trusted_proxies' => '127.0.0.1']);
+
+    $user = User::factory()->create([
+        'email' => 'otp-proxy@example.com',
+        'name' => 'otp-proxy',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'otp_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
+
+    for ($attempt = 0; $attempt < 3; $attempt++) {
+        $this->withHeader('X-Forwarded-For', '198.51.100.1')
+            ->post(route('otp.request-login'), ['identifier' => $user->email])
+            ->assertRedirect(route('otp.verify-login'));
+    }
+
+    $this->withHeader('X-Forwarded-For', '198.51.100.1')
+        ->post(route('otp.request-login'), ['identifier' => $user->email])
+        ->assertStatus(429);
+
+    // Klien lain di balik proxy yang sama punya bucket sendiri.
+    $this->withHeader('X-Forwarded-For', '198.51.100.2')
+        ->post(route('otp.request-login'), ['identifier' => $user->email])
+        ->assertRedirect(route('otp.verify-login'));
+});
+
+test('trusted proxies wildcard is rejected so forwarded headers stay ignored', function () {
+    config(['security.trusted_proxies' => '*']);
+
+    $user = User::factory()->create([
+        'email' => 'otp-wildcard@example.com',
+        'name' => 'otp-wildcard',
+        'password' => Hash::make('password'),
+        'status' => 1,
+        'otp_enabled' => true,
+        'otp_verified' => true,
+        'otp_channel' => 'email',
+    ]);
+
+    for ($attempt = 0; $attempt < 3; $attempt++) {
+        $this->withHeader('X-Forwarded-For', "203.0.113.{$attempt}")
+            ->post(route('otp.request-login'), ['identifier' => $user->email])
+            ->assertRedirect(route('otp.verify-login'));
+    }
+
+    $this->withHeader('X-Forwarded-For', '203.0.113.99')
+        ->post(route('otp.request-login'), ['identifier' => $user->email])
+        ->assertStatus(429);
+});

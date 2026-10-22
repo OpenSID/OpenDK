@@ -31,7 +31,6 @@
 
 namespace App\Providers;
 
-use App\Helpers\IpAddress;
 use App\Rules\SafeFileContent;
 use App\Services\ActivityLogService;
 use App\Services\CacheService;
@@ -145,29 +144,42 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Rate limiter untuk login dan OTP (issue #1410).
-     * (Sebelumnya di RouteServiceProvider::configureRateLimiting())
+     * (Sebelumnya di RouteServiceProvider::configureRateLimiting()).
      */
     protected function configureRateLimiting(): void
     {
         RateLimiter::for('login', function (Request $request) {
-            $maxAttempts = max(1, (int) env('RATE_LIMIT_LOGIN_MAX', 10));
-            $decayMinutes = max(1, (int) env('RATE_LIMIT_LOGIN_DECAY', 1));
+            $maxAttempts = max(1, (int) config('security.rate_limit.login.max_attempts'));
+            $decayMinutes = max(1, (int) config('security.rate_limit.login.decay_minutes'));
 
             $identifier = $this->extractAndValidateIdentifier($request);
 
             return Limit::perMinute($maxAttempts, $decayMinutes)
-                ->by(IpAddress::getRateLimitKey($request, $identifier));
+                ->by($this->rateLimitKey('login', $request, $identifier));
         });
 
         RateLimiter::for('otp', function (Request $request) {
-            $maxAttempts = max(1, (int) env('RATE_LIMIT_OTP_MAX', 3));
-            $decayMinutes = max(1, (int) env('RATE_LIMIT_OTP_DECAY', 1));
+            $maxAttempts = max(1, (int) config('security.rate_limit.otp.max_attempts'));
+            $decayMinutes = max(1, (int) config('security.rate_limit.otp.decay_minutes'));
 
             $identifier = $this->extractAndValidateIdentifier($request);
 
             return Limit::perMinute($maxAttempts, $decayMinutes)
-                ->by(IpAddress::getRateLimitKey($request, $identifier));
+                ->by($this->rateLimitKey('otp', $request, $identifier));
         });
+    }
+
+    /**
+     * Kunci rate limit: nama limiter + IP klien + identifier.
+     *
+     * $request->ip() hanya memakai X-Forwarded-For bila request datang dari
+     * proxy yang dipercaya (TrustProxies). Jangan membaca header proxy secara
+     * langsung: klien bisa mengisinya dengan nilai acak di setiap request
+     * untuk mendapat bucket baru dan melewati batas.
+     */
+    protected function rateLimitKey(string $limiter, Request $request, ?string $identifier): string
+    {
+        return $limiter.'|'.$request->ip().'|'.($identifier ?? '');
     }
 
     /**

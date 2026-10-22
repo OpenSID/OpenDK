@@ -35,7 +35,7 @@ use Illuminate\Http\Middleware\TrustProxies as Middleware;
 use Illuminate\Http\Request;
 
 /**
- * Middleware untuk mengatur proxy yang dipercaya
+ * Middleware untuk mengatur proxy yang dipercaya.
  *
  * Konfigurasi ini penting ketika aplikasi berada di belakang reverse proxy
  * seperti Nginx, Cloudflare, atau load balancer.
@@ -72,16 +72,16 @@ class TrustProxies extends Middleware
         Request::HEADER_X_FORWARDED_AWS_ELB;
 
     /**
-     * Override untuk mendapatkan proxy dari environment variable
+     * Override untuk mendapatkan proxy dari environment variable.
      *
      * PENTING: TRUST_PROXIES=* TIDAK diizinkan karena risiko IP spoofing.
-     * Jika developer set '*' di environment, akan diabaikan dan return null.
+     * Jika TRUST_PROXIES diisi '*', akan diabaikan dan return null.
      *
      * @return array<int, string>|string|null
      */
     protected function proxies()
     {
-        $envProxies = env('TRUST_PROXIES');
+        $envProxies = config('security.trusted_proxies');
 
         if ($envProxies === null || $envProxies === '' || $envProxies === '*') {
             // Return null: tidak trust proxy headers dari manapun

@@ -56,6 +56,7 @@ class PendudukQueueJob implements ShouldQueue
      * Create a new job instance.
      *
      * @param  array  $request
+     *
      * @return void
      */
     public function __construct($request)
@@ -85,10 +86,12 @@ class PendudukQueueJob implements ShouldQueue
 
         try {
             // Batch delete penduduk
-            if (isset($this->request['hapus_penduduk'])) {
+            if (! empty($this->request['hapus_penduduk'])) {
+                $id_pend_desa = $foto = $desa_id = [];
+
                 foreach ($this->request['hapus_penduduk'] as $item) {
                     $id_pend_desa[] = $item['id_pend_desa'];
-                    $foto[] = $item['foto'];
+                    $foto[] = $item['foto'] ?? null;
                     $desa_id[] = $item['desa_id'];
                 }
 
@@ -96,7 +99,7 @@ class PendudukQueueJob implements ShouldQueue
                 Penduduk::whereIn('desa_id', $desa_id)->whereIn('id_pend_desa', $id_pend_desa)->delete();
 
                 // Hapus file foto di folder
-                foreach ($foto as $hapusfoto) {
+                foreach (array_filter($foto) as $hapusfoto) {
                     Storage::disk('public')->delete('penduduk/foto/'.'kecil_'.$hapusfoto);
                 }
             }

@@ -80,7 +80,6 @@ test('index returns paginated complaints', function () {
                     'laporan',
                     'status',
                     'kategori',
-                    'nik',
                     'nama',
                     'anonim',
                     'dilihat',

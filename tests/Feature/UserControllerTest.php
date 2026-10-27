@@ -297,6 +297,60 @@ class UserControllerTest extends CrudTestCase
     }
 
     /**
+     * Test update method forbids non super admin from updating another user.
+     *
+     * @return void
+     */
+    public function test_update_forbids_non_super_admin_from_updating_another_user()
+    {
+        $actor = User::factory()->create();
+        $actor->assignRole('administrator-website');
+        $actor->givePermissionTo('access.setting');
+
+        $targetEmail = $this->faker->unique()->safeEmail;
+        $targetUser = User::factory()->create(['email' => $targetEmail]);
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $targetUser->id), [
+            'name' => 'Hacked Name',
+            'email' => $this->faker->unique()->safeEmail,
+            'address' => 'Hacked Address',
+        ]);
+
+        $response->assertForbidden();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $targetUser->id,
+            'email' => $targetEmail,
+        ]);
+    }
+
+    /**
+     * Test update method ignores role from non super admin editing own profile.
+     *
+     * @return void
+     */
+    public function test_update_ignores_role_from_non_super_admin_editing_own_profile()
+    {
+        $actor = User::factory()->create();
+        $actor->assignRole('administrator-website');
+        $actor->givePermissionTo('access.setting');
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $actor->id), [
+            'name' => 'Self Name',
+            'email' => $actor->email,
+            'address' => 'Self Address',
+            'role' => ['super-admin'],
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+
+        $actor->refresh();
+        $this->assertSame('Self Name', $actor->name);
+        $this->assertFalse($actor->hasRole('super-admin'));
+        $this->assertTrue($actor->hasRole('administrator-website'));
+    }
+
+    /**
      * Test destroy method deactivates user successfully.
      *
      * @return void

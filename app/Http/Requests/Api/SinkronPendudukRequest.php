@@ -31,6 +31,7 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Services\FileUploadService;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -44,8 +45,10 @@ class SinkronPendudukRequest extends FormRequest
 
     public function rules(): array
     {
+        $maxRule = FileUploadService::isLimitEnabled() ? '|max:5120' : '';
+
         return [
-            'file' => 'required|file|mimes:zip|max:5120',
+            'file' => 'required|file|mimes:zip' . $maxRule,
         ];
     }
 

@@ -143,7 +143,7 @@ public function store(PendudukRequest $request)
             // Proses impor excell
             (new SinkronPenduduk())
                 ->queue($extract . $excellName);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             Log::error('Penduduk storedata failed', [
                 'error' => $e->getMessage(),
             ]);

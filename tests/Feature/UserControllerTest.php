@@ -351,6 +351,87 @@ class UserControllerTest extends CrudTestCase
     }
 
     /**
+     * Test user without access.setting can open edit form for own profile.
+     *
+     * @return void
+     */
+    public function test_edit_displays_own_profile_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+
+        $response = $this->actingAs($actor)->get(route('setting.user.edit', $actor->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.edit');
+        $response->assertViewHas('user', $actor);
+    }
+
+    /**
+     * Test user without access.setting can update own profile.
+     *
+     * @return void
+     */
+    public function test_update_own_profile_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $actor->id), [
+            'name' => 'Profil Sendiri',
+            'email' => $actor->email,
+            'address' => 'Alamat Sendiri',
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+        $this->assertDatabaseHas('users', [
+            'id' => $actor->id,
+            'name' => 'Profil Sendiri',
+        ]);
+    }
+
+    /**
+     * Test user without access.setting cannot open edit form for another user.
+     *
+     * @return void
+     */
+    public function test_edit_forbids_another_user_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+        $targetUser = User::factory()->create();
+
+        $response = $this->actingAs($actor)->get(route('setting.user.edit', $targetUser->id));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Test user without access.setting still cannot open user management list.
+     *
+     * @return void
+     */
+    public function test_index_forbids_user_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+
+        $response = $this->actingAs($actor)->get(route('setting.user.index'));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Create a user whose role has no access.setting permission, like admin-kecamatan.
+     *
+     * @return User
+     */
+    private function createUserWithoutSettingAccess()
+    {
+        $role = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
+        $actor = User::factory()->create();
+        $actor->assignRole($role);
+
+        return $actor;
+    }
+
+    /**
      * Test destroy method deactivates user successfully.
      *
      * @return void

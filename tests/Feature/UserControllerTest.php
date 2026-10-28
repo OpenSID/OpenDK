@@ -253,6 +253,8 @@ class UserControllerTest extends CrudTestCase
             'role' => [$role->name],
         ];
 
+        $originalEmail = $targetUser->email;
+
         $response = $this->actingAs($superAdmin)->put(route('setting.user.update', $targetUser->id), $updateData);
 
         $response->assertRedirect(route('setting.user.index'));
@@ -261,7 +263,61 @@ class UserControllerTest extends CrudTestCase
         $this->assertDatabaseHas('users', [
             'id' => $targetUser->id,
             'name' => 'Updated Name',
-            'email' => $updateData['email'],
+            'email' => $originalEmail,
+        ]);
+    }
+
+    /**
+     * Test update method lets super admin change email of own account.
+     *
+     * @return void
+     */
+    public function test_update_allows_super_admin_to_change_own_email()
+    {
+        $superAdmin = User::whereHas('roles', function ($query) {
+            $query->where('name', 'super-admin');
+        })->first();
+
+        $newEmail = $this->faker->unique()->safeEmail;
+
+        $response = $this->actingAs($superAdmin)->put(route('setting.user.update', $superAdmin->id), [
+            'name' => $superAdmin->name,
+            'email' => $newEmail,
+            'address' => 'Alamat Super Admin',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'id' => $superAdmin->id,
+            'email' => $newEmail,
+        ]);
+    }
+
+    /**
+     * Test update method ignores email change when super admin edits another user.
+     *
+     * @return void
+     */
+    public function test_update_ignores_email_change_when_editing_another_user()
+    {
+        $superAdmin = User::whereHas('roles', function ($query) {
+            $query->where('name', 'super-admin');
+        })->first();
+
+        $targetEmail = $this->faker->unique()->safeEmail;
+        $targetUser = User::factory()->create(['email' => $targetEmail]);
+
+        $response = $this->actingAs($superAdmin)->put(route('setting.user.update', $targetUser->id), [
+            'name' => 'Nama Baru',
+            'email' => $this->faker->unique()->safeEmail,
+            'address' => 'Alamat Baru',
+        ]);
+
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('users', [
+            'id' => $targetUser->id,
+            'name' => 'Nama Baru',
+            'email' => $targetEmail,
         ]);
     }
 
@@ -294,6 +350,167 @@ class UserControllerTest extends CrudTestCase
             'id' => $regularUser->id,
             'name' => 'Updated Profile Name',
         ]);
+    }
+
+    /**
+     * Test update method forbids non super admin from updating another user.
+     *
+     * @return void
+     */
+    public function test_update_forbids_non_super_admin_from_updating_another_user()
+    {
+        $actor = User::factory()->create();
+        $actor->assignRole('administrator-website');
+        $actor->givePermissionTo('access.setting');
+
+        $targetEmail = $this->faker->unique()->safeEmail;
+        $targetUser = User::factory()->create(['email' => $targetEmail]);
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $targetUser->id), [
+            'name' => 'Hacked Name',
+            'email' => $this->faker->unique()->safeEmail,
+            'address' => 'Hacked Address',
+        ]);
+
+        $response->assertForbidden();
+
+        $this->assertDatabaseHas('users', [
+            'id' => $targetUser->id,
+            'email' => $targetEmail,
+        ]);
+    }
+
+    /**
+     * Test update method lets non super admin change email of own profile.
+     *
+     * @return void
+     */
+    public function test_update_allows_non_super_admin_to_change_own_email()
+    {
+        $actor = User::factory()->create();
+        $actor->assignRole('administrator-website');
+        $actor->givePermissionTo('access.setting');
+
+        $newEmail = $this->faker->unique()->safeEmail;
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $actor->id), [
+            'name' => $actor->name,
+            'email' => $newEmail,
+            'address' => 'Alamat Sendiri',
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+        $this->assertDatabaseHas('users', [
+            'id' => $actor->id,
+            'email' => $newEmail,
+        ]);
+    }
+
+    /**
+     * Test update method ignores role from non super admin editing own profile.
+     *
+     * @return void
+     */
+    public function test_update_ignores_role_from_non_super_admin_editing_own_profile()
+    {
+        $actor = User::factory()->create();
+        $actor->assignRole('administrator-website');
+        $actor->givePermissionTo('access.setting');
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $actor->id), [
+            'name' => 'Self Name',
+            'email' => $actor->email,
+            'address' => 'Self Address',
+            'role' => ['super-admin'],
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+
+        $actor->refresh();
+        $this->assertSame('Self Name', $actor->name);
+        $this->assertFalse($actor->hasRole('super-admin'));
+        $this->assertTrue($actor->hasRole('administrator-website'));
+    }
+
+    /**
+     * Test user without access.setting can open edit form for own profile.
+     *
+     * @return void
+     */
+    public function test_edit_displays_own_profile_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+
+        $response = $this->actingAs($actor)->get(route('setting.user.edit', $actor->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.edit');
+        $response->assertViewHas('user', $actor);
+    }
+
+    /**
+     * Test user without access.setting can update own profile.
+     *
+     * @return void
+     */
+    public function test_update_own_profile_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+
+        $response = $this->actingAs($actor)->put(route('setting.user.update', $actor->id), [
+            'name' => 'Profil Sendiri',
+            'email' => $actor->email,
+            'address' => 'Alamat Sendiri',
+        ]);
+
+        $response->assertRedirect(route('dashboard'));
+        $this->assertDatabaseHas('users', [
+            'id' => $actor->id,
+            'name' => 'Profil Sendiri',
+        ]);
+    }
+
+    /**
+     * Test user without access.setting cannot open edit form for another user.
+     *
+     * @return void
+     */
+    public function test_edit_forbids_another_user_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+        $targetUser = User::factory()->create();
+
+        $response = $this->actingAs($actor)->get(route('setting.user.edit', $targetUser->id));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Test user without access.setting still cannot open user management list.
+     *
+     * @return void
+     */
+    public function test_index_forbids_user_without_access_setting_permission()
+    {
+        $actor = $this->createUserWithoutSettingAccess();
+
+        $response = $this->actingAs($actor)->get(route('setting.user.index'));
+
+        $response->assertForbidden();
+    }
+
+    /**
+     * Create a user whose role has no access.setting permission, like admin-kecamatan.
+     *
+     * @return User
+     */
+    private function createUserWithoutSettingAccess()
+    {
+        $role = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
+        $actor = User::factory()->create();
+        $actor->assignRole($role);
+
+        return $actor;
     }
 
     /**

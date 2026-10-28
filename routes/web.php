@@ -893,9 +893,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::delete('permanent-destroy/{id}', 'permanentDestroy')->name('setting.user.permanent-destroy');
             });
 
-            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['action_permission:access.setting']], function () {
+            // Profil sendiri bisa diakses semua user yang login; kepemilikan dicek di UserController
+            Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.user.edit');
                 Route::put('update/{id}', 'update')->name('setting.user.update');
+            });
+
+            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['action_permission:access.setting']], function () {
                 Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
                 Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });

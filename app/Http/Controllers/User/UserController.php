@@ -159,6 +159,9 @@ class UserController extends Controller
 
         try {
             $input = $request->validated();
+            if ($id != $actor->id) {
+                unset($input['email']);
+            }
             $user = User::findOrFail($id);
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user->update($input);

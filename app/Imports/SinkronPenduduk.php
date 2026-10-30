@@ -35,18 +35,19 @@ use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\TingkatPendidikan;
 use Exception;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading, ShouldQueue
+/**
+ * Sengaja tidak ShouldQueue: impor dijalankan sinkron agar kegagalan (mis. desa tidak terdaftar)
+ * langsung dibalas HTTP 500 ke OpenSID, bukan muncul di worker setelah respons 200.
+ */
+class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading
 {
     use Importable;
 
@@ -69,8 +70,7 @@ class SinkronPenduduk implements ToCollection, WithHeadingRow, WithChunkReading,
             if (! in_array($value['desa_id'], $kode_desa)) {
                 Log::debug('Desa tidak terdaftar');
 
-                DB::rollBack(); // rollback data yang sudah masuk karena ada data yang bermasalah
-                Storage::deleteDirectory('temp'); // Hapus folder temp ketika gagal
+                // Rollback chunk ditangani transaction handler maatwebsite (config excel.transactions)
                 throw  new Exception('kode Desa pada baris ke-'.$index + 2 .' tidak terdaftar . kode desa yang bermasalah : '.$value['desa_id']);
             }
 

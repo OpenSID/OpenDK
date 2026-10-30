@@ -59,3 +59,32 @@ test('menghapus penduduk sesuai desa dan id_pend_desa', function () {
     expect(Penduduk::find($dihapus->id))->toBeNull()
         ->and(Penduduk::find($tetap->id))->not->toBeNull();
 });
+
+test('hanya menghapus pasangan desa dan id_pend_desa dalam batch lintas desa', function () {
+    $desaA = DataDesa::factory()->create(['desa_id' => '33.24.03.2008']);
+    $desaB = DataDesa::factory()->create(['desa_id' => '33.24.03.2009']);
+
+    $a1 = Penduduk::factory()->create(['desa_id' => $desaA->desa_id, 'id_pend_desa' => 1]);
+    $a2 = Penduduk::factory()->create(['desa_id' => $desaA->desa_id, 'id_pend_desa' => 2]);
+    $b1 = Penduduk::factory()->create(['desa_id' => $desaB->desa_id, 'id_pend_desa' => 1]);
+    $b2 = Penduduk::factory()->create(['desa_id' => $desaB->desa_id, 'id_pend_desa' => 2]);
+
+    (new PendudukQueueJob(['hapus_penduduk' => [
+        ['id_pend_desa' => 1, 'desa_id' => $desaA->desa_id],
+        ['id_pend_desa' => 2, 'desa_id' => $desaB->desa_id],
+    ]]))->handle();
+
+    expect(Penduduk::find($a1->id))->toBeNull()
+        ->and(Penduduk::find($b2->id))->toBeNull()
+        ->and(Penduduk::find($a2->id))->not->toBeNull()
+        ->and(Penduduk::find($b1->id))->not->toBeNull();
+});
+
+test('melempar ulang exception agar job tercatat gagal', function () {
+    // Nilai bersarang ditolak whereIn sehingga query delete gagal
+    $job = new PendudukQueueJob(['hapus_penduduk' => [
+        ['desa_id' => '33.24.03.2008', 'id_pend_desa' => ['bukan', 'skalar']],
+    ]]);
+
+    expect(fn () => $job->handle())->toThrow(InvalidArgumentException::class);
+});

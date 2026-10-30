@@ -35,6 +35,7 @@ use App\Models\SettingAplikasi;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Queue;
 use function Pest\Laravel\withToken;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
@@ -86,11 +87,11 @@ function barisPenduduk(string $desaId, int $idPendDesa): array
 /**
  * Buat zip seperti kiriman OpenSID; tanpa $baris zip hanya berisi berkas teks.
  */
-function zipPenduduk(?array $baris): UploadedFile
+function zipPenduduk(?array $baris, array $tambahan = []): UploadedFile
 {
     $dir = storage_path('framework/testing/sinkron-penduduk');
     File::ensureDirectoryExists($dir);
-    $zipPath = $dir.'/penduduk.zip';
+    $zipPath = $dir.'/penduduk_'.uniqid().'.zip';
 
     $zip = new ZipArchive();
     $zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
@@ -103,6 +104,10 @@ function zipPenduduk(?array $baris): UploadedFile
         $xlsxPath = $dir.'/penduduk_opendk.xlsx';
         (new Xlsx($spreadsheet))->save($xlsxPath);
         $zip->addFile($xlsxPath, 'penduduk_opendk.xlsx');
+    }
+
+    foreach ($tambahan as $nama => $isi) {
+        $zip->addFromString($nama, $isi);
     }
 
     $zip->close();
@@ -126,6 +131,7 @@ afterEach(function () {
     // storedata meninggalkan zip di disk public/temp; bersihkan hanya berkas hasil test ini
     File::delete(array_diff(File::glob(storage_path('app/public/temp/*')), $this->berkasTempAwal));
     File::deleteDirectory(storage_path('framework/testing/sinkron-penduduk'));
+    File::delete(storage_path('app/public/penduduk/foto/foto_sinkron_test.jpg'));
 });
 
 describe('POST /api/v1/penduduk/storedata', function () {
@@ -169,5 +175,60 @@ describe('POST /api/v1/penduduk/storedata', function () {
         $response->assertStatus(422)
             ->assertJson(['status' => 'danger'])
             ->assertJsonValidationErrors('file');
+    });
+
+    test('impor tidak bergantung pada queue async', function () {
+        // Simulasi produksi dengan worker queue: tidak boleh ada job impor yang ditunda
+        Queue::fake();
+
+        $berhasil = withToken($this->token)->post('/api/v1/penduduk/storedata', [
+            'file' => zipPenduduk(barisPenduduk($this->desa->desa_id, 10)),
+        ]);
+        $gagal = withToken($this->token)->post('/api/v1/penduduk/storedata', [
+            'file' => zipPenduduk(barisPenduduk('99.99.99.9999', 11)),
+        ]);
+
+        $berhasil->assertOk();
+        $gagal->assertStatus(500)->assertJson(['status' => 'danger']);
+        Queue::assertNothingPushed();
+        expect(Penduduk::where('desa_id', $this->desa->desa_id)->where('id_pend_desa', 10)->exists())->toBeTrue();
+    });
+
+    test('menghapus zip dan xlsx temp setelah impor berhasil maupun gagal', function (string $desaId, int $status) {
+        $response = withToken($this->token)->post('/api/v1/penduduk/storedata', [
+            'file' => zipPenduduk(barisPenduduk($desaId, 12)),
+        ]);
+
+        $response->assertStatus($status);
+        expect(array_diff(File::glob(storage_path('app/public/temp/*')), $this->berkasTempAwal))->toBeEmpty()
+            ->and(File::exists(storage_path('app/public/penduduk/foto/penduduk_opendk.xlsx')))->toBeFalse();
+    })->with([
+        'berhasil' => ['33.24.03.2008', 200],
+        'desa tidak terdaftar' => ['99.99.99.9999', 500],
+    ]);
+
+    test('hanya mengekstrak foto di root zip', function () {
+        $response = withToken($this->token)->post('/api/v1/penduduk/storedata', [
+            'file' => zipPenduduk(barisPenduduk($this->desa->desa_id, 13), [
+                'foto_sinkron_test.jpg' => 'foto',
+                'skrip_sinkron_test.php' => '<?php echo 1;',
+                'sub/foto_sinkron_test.jpg' => 'foto',
+            ]),
+        ]);
+
+        $response->assertOk();
+        expect(File::exists(storage_path('app/public/penduduk/foto/foto_sinkron_test.jpg')))->toBeTrue()
+            ->and(File::exists(storage_path('app/public/penduduk/foto/skrip_sinkron_test.php')))->toBeFalse()
+            ->and(File::exists(storage_path('app/public/penduduk/foto/sub')))->toBeFalse();
+    });
+});
+
+describe('POST /api/v1/penduduk', function () {
+    test('membalas json 422 bila hapus_penduduk kosong', function () {
+        $response = withToken($this->token)->post('/api/v1/penduduk', []);
+
+        $response->assertStatus(422)
+            ->assertJson(['status' => 'danger'])
+            ->assertJsonValidationErrors('hapus_penduduk');
     });
 });

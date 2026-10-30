@@ -62,6 +62,21 @@ describe('Konsolidasi: kolom id BIGINT', function () {
         }
     });
 
+    test('id peserta program (kunci utama) bigint unsigned auto-increment dan menyimpan id sebesar offset slot', function () {
+        $kolom = DB::table('information_schema.columns')
+            ->where('table_schema', DB::getDatabaseName())
+            ->where('table_name', 'das_peserta_program')->where('column_name', 'id')
+            ->first(['column_type as tipe', 'extra as tambahan']);
+        expect(strtolower($kolom->tipe))->toBe('bigint unsigned');
+        expect(strtolower($kolom->tambahan))->toContain('auto_increment');
+
+        DB::table('das_peserta_program')->insert([
+            'id' => OFFSET_SLOT + 9, 'desa_id' => '1234567890123', 'peserta' => '1234567890123456',
+            'program_id' => OFFSET_SLOT + 2, 'kartu_nik' => '1234567890123456',
+        ]);
+        expect((int) DB::table('das_peserta_program')->where('desa_id', '1234567890123')->value('id'))->toBe(OFFSET_SLOT + 9);
+    });
+
     test('id sebesar offset slot dapat disimpan', function () {
         DB::table('das_pembangunan')->insert([
             'id' => OFFSET_SLOT + 7, 'desa_id' => '1234567890123', 'judul' => 'uji',

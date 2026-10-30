@@ -77,6 +77,19 @@ describe('Konsolidasi: kolom id BIGINT', function () {
         expect((int) DB::table('das_peserta_program')->where('desa_id', '1234567890123')->value('id'))->toBe(OFFSET_SLOT + 9);
     });
 
+    test('id laporan APBDes dan laporan penduduk bigint dan menyimpan id sebesar offset slot', function () {
+        expect(tipeKolom('das_apbdes', 'id_apbdes'))->toBe('bigint');
+        expect(tipeKolom('das_laporan_penduduk', 'id_laporan_penduduk'))->toBe('bigint');
+
+        DB::table('das_apbdes')->insert(['judul' => 'a', 'desa_id' => '1234567890123', 'id_apbdes' => OFFSET_SLOT + 4]);
+        DB::table('das_laporan_penduduk')->insert([
+            'judul' => 'b', 'bulan' => 1, 'tahun' => 2026, 'nama_file' => 'b.pdf',
+            'desa_id' => '1234567890123', 'id_laporan_penduduk' => OFFSET_SLOT + 6,
+        ]);
+        expect((int) DB::table('das_apbdes')->where('desa_id', '1234567890123')->value('id_apbdes'))->toBe(OFFSET_SLOT + 4);
+        expect((int) DB::table('das_laporan_penduduk')->where('desa_id', '1234567890123')->value('id_laporan_penduduk'))->toBe(OFFSET_SLOT + 6);
+    });
+
     test('id sebesar offset slot dapat disimpan', function () {
         DB::table('das_pembangunan')->insert([
             'id' => OFFSET_SLOT + 7, 'desa_id' => '1234567890123', 'judul' => 'uji',
@@ -103,6 +116,24 @@ describe('konsolidasi:geser-id-desa', function () {
 
         $this->artisan('konsolidasi:geser-id-desa', ['desa_id' => '1234567890123', 'offset' => OFFSET_SLOT])->assertFailed();
         expect((int) DB::table('das_pembangunan')->where('desa_id', '1234567890123')->value('id'))->toBe(OFFSET_SLOT + 5);
+    });
+
+    test('menggeser id_apbdes dan id_laporan_penduduk satu desa saja agar upsert tidak menggandakan baris', function () {
+        DB::table('das_apbdes')->insert([
+            ['judul' => 'a', 'desa_id' => '1234567890123', 'id_apbdes' => 3],
+            ['judul' => 'a', 'desa_id' => '9999999999999', 'id_apbdes' => 3],
+        ]);
+        DB::table('das_laporan_penduduk')->insert([
+            ['judul' => 'b', 'bulan' => 1, 'tahun' => 2026, 'nama_file' => 'b.pdf', 'desa_id' => '1234567890123', 'id_laporan_penduduk' => 8],
+            ['judul' => 'b', 'bulan' => 1, 'tahun' => 2026, 'nama_file' => 'b.pdf', 'desa_id' => '9999999999999', 'id_laporan_penduduk' => 8],
+        ]);
+
+        $this->artisan('konsolidasi:geser-id-desa', ['desa_id' => '1234567890123', 'offset' => OFFSET_SLOT])->assertSuccessful();
+
+        expect((int) DB::table('das_apbdes')->where('desa_id', '1234567890123')->value('id_apbdes'))->toBe(OFFSET_SLOT + 3);
+        expect((int) DB::table('das_apbdes')->where('desa_id', '9999999999999')->value('id_apbdes'))->toBe(3);
+        expect((int) DB::table('das_laporan_penduduk')->where('desa_id', '1234567890123')->value('id_laporan_penduduk'))->toBe(OFFSET_SLOT + 8);
+        expect((int) DB::table('das_laporan_penduduk')->where('desa_id', '9999999999999')->value('id_laporan_penduduk'))->toBe(8);
     });
 
     test('menolak offset yang bukan kelipatan slot', function () {

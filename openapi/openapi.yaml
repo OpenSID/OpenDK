@@ -181,6 +181,34 @@ paths:
                   message:
                     type: string
                     example: 'Proses sync Data Penduduk OpenSID sedang berjalan'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: danger
+                  message: 'The hapus penduduk field is required.'
+                  errors:
+                    hapus_penduduk:
+                      - 'The hapus penduduk field is required.'
+                properties:
+                  status:
+                    type: string
+                    example: danger
+                  message:
+                    type: string
+                    example: 'The hapus penduduk field is required.'
+                  errors:
+                    type: object
+                    properties:
+                      hapus_penduduk:
+                        type: array
+                        example:
+                          - 'The hapus penduduk field is required.'
+                        items:
+                          type: string
       tags:
         - 'OpenSID Integration'
       requestBody:
@@ -218,11 +246,59 @@ paths:
               schema:
                 type: object
                 example:
+                  status: success
                   message: 'Data Foto Telah Berhasil di Sinkronkan'
                 properties:
+                  status:
+                    type: string
+                    example: success
                   message:
                     type: string
                     example: 'Data Foto Telah Berhasil di Sinkronkan'
+        422:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: danger
+                  message: 'The file field is required.'
+                  errors:
+                    file:
+                      - 'The file field is required.'
+                properties:
+                  status:
+                    type: string
+                    example: danger
+                  message:
+                    type: string
+                    example: 'The file field is required.'
+                  errors:
+                    type: object
+                    properties:
+                      file:
+                        type: array
+                        example:
+                          - 'The file field is required.'
+                        items:
+                          type: string
+        500:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  status: danger
+                  message: 'Import data penduduk gagal. Periksa log OpenDK untuk detail kesalahan.'
+                properties:
+                  status:
+                    type: string
+                    example: danger
+                  message:
+                    type: string
+                    example: 'Import data penduduk gagal. Periksa log OpenDK untuk detail kesalahan.'
       tags:
         - 'OpenSID Integration'
       requestBody:

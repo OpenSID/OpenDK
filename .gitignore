@@ -62,6 +62,8 @@ mcp.json
 /.opencode
 /vendor-backup
 
+/public/themes/
+
 .env.testing
 nul
 
@@ -75,3 +77,4 @@ specs/
 .specify/
 
 AGENTS.md
+CLAUDE.md

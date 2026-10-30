@@ -118,7 +118,10 @@ test('request with invalid token is rejected with 401', function () {
 })->group('browser', 'e2e', 'sync-flow', 'negative');
 
 test('request with unregistered (revoked) token is rejected with 401', function () {
-    sendSyncRequest('/api/v1/penduduk', ['hapus_penduduk' => []], $this->registeredToken)
+    // Payload harus valid: hapus_penduduk kosong ditolak 422 oleh PendudukRequest
+    $payload = ['hapus_penduduk' => [['id_pend_desa' => 99999, 'desa_id' => '1234567890']]];
+
+    sendSyncRequest('/api/v1/penduduk', $payload, $this->registeredToken)
         ->assertStatus(200);
 
     $newToken = app(\Tymon\JWTAuth\JWT::class)->fromUser($this->user);
@@ -127,11 +130,11 @@ test('request with unregistered (revoked) token is rejected with 401', function 
         ['value' => $newToken, 'type' => 'textarea']
     );
 
-    sendSyncRequest('/api/v1/penduduk', ['hapus_penduduk' => []], $this->registeredToken)
+    sendSyncRequest('/api/v1/penduduk', $payload, $this->registeredToken)
         ->assertStatus(401)
         ->assertJson(['error' => 'Token not registered']);
 
-    sendSyncRequest('/api/v1/penduduk', ['hapus_penduduk' => []], $newToken)
+    sendSyncRequest('/api/v1/penduduk', $payload, $newToken)
         ->assertStatus(200);
 })->group('browser', 'e2e', 'sync-flow', 'negative');
 

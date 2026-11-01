@@ -49,7 +49,6 @@ class KomplainApiRepository extends BaseApiRepository
             AllowedFilter::exact('id'),
             AllowedFilter::exact('status'),
             AllowedFilter::exact('kategori'),
-            AllowedFilter::exact('nik'),
             AllowedFilter::exact('komplain_id'),
             AllowedFilter::callback('search', function($query, $value){                
                 $query->where('judul', 'LIKE', '%'.$value.'%')
@@ -57,7 +56,7 @@ class KomplainApiRepository extends BaseApiRepository
             }),
         ];
         $this->allowedSorts = ['created_at', 'updated_at', 'judul', 'id'];
-        $this->allowedIncludes = ['kategori_komplain', 'penduduk', 'jawabs'];
+        $this->allowedIncludes = ['kategori_komplain', 'jawabs'];
         $this->defaultSort = '-created_at';
     }
     

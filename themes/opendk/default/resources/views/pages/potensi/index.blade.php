@@ -34,6 +34,8 @@
 @push('scripts')
     <script>
         $(function() {
+            var slug = @json($slug ?? '');
+
             function renderPotensi(items) {
                 if (!items || items.length === 0) {
                     return '<h4 class="text-center"><span class="fa fa-times"></span> Data tidak ditemukan.</h4>';
@@ -71,7 +73,7 @@
 
                 // Make API call to get potensi
                 $.ajax({
-                    url: '{!! $urlApi !!}/potensi?filter[tipe.slug]={!! $slug ?? '' !!}&include=tipe&page[number]=' + page,
+                    url: '{!! $urlApi !!}/potensi?filter[tipe.slug]=' + encodeURIComponent(slug) + '&include=tipe&page[number]=' + page,
                     method: 'GET',
                     success: function(response) {
                         var items = response.data || response;

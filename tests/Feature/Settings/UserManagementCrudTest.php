@@ -147,6 +147,8 @@ describe('User Management CRUD', function () {
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $role = Role::where('name', 'administrator-website')->first();
 
+        $originalEmail = $targetUser->email;
+
         $updateData = [
             'name' => 'Updated Name',
             'email' => 'updated@test.com',
@@ -160,10 +162,11 @@ describe('User Management CRUD', function () {
         $response->assertRedirect(route('setting.user.index'));
         $response->assertSessionHas('success');
 
+        // Email user lain tidak boleh diubah (lihat #1783)
         $this->assertDatabaseHas('users', [
             'id' => $targetUser->id,
             'name' => 'Updated Name',
-            'email' => 'updated@test.com',
+            'email' => $originalEmail,
         ]);
     });
 

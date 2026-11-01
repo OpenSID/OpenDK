@@ -10,7 +10,8 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 1. [#1771](https://github.com/OpenSID/OpenDK/issues/1771) Administrator utama bisa mengubah email hanya untuk akunnya sendiri.
 2. [#1770](https://github.com/OpenSID/OpenDK/issues/1770) Perbaiki foto pengurus tidak tersimpan saat tambah data baru.
-
+3. [#1777](https://github.com/OpenSID/OpenDK/issues/1777) Sembunyikan identitas pelapor dan NIK pada API komplain.
+4. [#1781](https://github.com/OpenSID/OpenDK/issues/1781) Reflected XSS di halaman kategori potensi.
 
 #### TEKNIS
 

@@ -457,3 +457,59 @@ it('can get path desa list when not using database gabungan', function () {
     expect($pathDesaList)->toHaveCount(1);
     expect($pathDesaList->first()->path)->toBe('[[[-6.2, 106.8]]]');
 });
+
+it('decodes slug to nama desa when not using database gabungan', function () {
+    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
+
+    DataDesa::factory()->create(['nama' => 'Desa Sukamaju']);
+
+    $service = new DesaService();
+    $desa = $service->dataDesa('desa-sukamaju');
+
+    expect($desa)->not->toBeNull();
+    expect($desa->nama)->toBe('Desa Sukamaju');
+});
+
+it('throws not found when slug does not match any desa when not using database gabungan', function () {
+    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
+
+    $service = new DesaService();
+
+    expect(fn () => $service->dataDesa('desa-tidak-ada'))
+        ->toThrow(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+});
+
+it('decodes slug to nama desa filter when using database gabungan', function () {
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
+
+    Http::fake([
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'kode_desa' => 'SUKA001',
+                        'nama_desa' => 'Desa Sukamaju',
+                        'sebutan_desa' => 'Desa',
+                        'website' => null,
+                        'luas_wilayah' => null,
+                        'path' => null,
+                    ],
+                ],
+            ],
+        ], 200),
+        '*' => Http::response([], 200),
+    ]);
+
+    $service = new DesaService();
+    $desa = $service->dataDesa('desa-sukamaju');
+
+    expect($desa->nama)->toBe('Desa Sukamaju');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), 'api/v1/wilayah/desa')
+            && str_contains(urldecode($request->url()), 'filter[nama_desa]=desa sukamaju');
+    });
+});

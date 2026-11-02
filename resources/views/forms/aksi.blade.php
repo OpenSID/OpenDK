@@ -50,13 +50,13 @@
         <li><a href="javascript:void(0)" data-href="{!! $unlock_url !!}" id="unlockModal" title="Aktif" data-testid="btn-unlock"><i class="fa fa-unlock text-success"></i> Aktifkan</a></li>
     @endif
     @if (!empty($active_url))
-        <li><a href="javascript:void(0)" data-href="{!! $active_url !!}" id="activeModal" title="Aktif"><i class="fa fa-check text-success"></i> Aktifkan</a></li>
+        <li><a href="javascript:void(0)" data-href="{!! $active_url !!}" data-method="{{ $active_method ?? 'POST' }}" id="activeModal" title="Aktif"><i class="fa fa-check text-success"></i> Aktifkan</a></li>
     @endif
     @if (!empty($agree_url))
         <li><a href="javascript:void(0)" data-href="{!! $agree_url !!}" id="agreeModal" title="Ubah Status"><i class="fa fa-check text-success"></i> Setujui</a></li>
     @endif
     @if (!empty($suspend_url))
-        <li><a href="javascript:void(0)" data-href="{!! $suspend_url !!}" id="suspendModal" title="Tangguhkan"><i class="fa fa-power-off text-warning"></i> Tangguhkan</a></li>
+        <li><a href="javascript:void(0)" data-href="{!! $suspend_url !!}" data-method="{{ $suspend_method ?? 'POST' }}" id="suspendModal" title="Tangguhkan"><i class="fa fa-power-off text-warning"></i> Tangguhkan</a></li>
     @endif
     @if (!empty($suspend_span))
         <li class="disabled"><a href="javascript:void(0)" title="Tangguhkan"><span style="color: green;">Active</span></a></li>

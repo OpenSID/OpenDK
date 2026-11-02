@@ -147,13 +147,6 @@
                     window.location.href = href;
                 });
             });
-            $('#run-linkstorage').click(function(e) {
-                e.preventDefault();
-                var href = $(this).attr('href');
-                openConfirm('Yakin Untuk Menjalankan php artisan storage:link?', 'Konfirmasi', function() {
-                    window.location.href = href;
-                });
-            });
         });
     </script>
     @include('forms.datatable-vertical')

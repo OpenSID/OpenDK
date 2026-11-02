@@ -60,9 +60,12 @@
                                     <label>Ubah Konfigurasi OTP</label>
                                     <p class="help-block">Jika Anda ingin mengubah konfigurasi OTP, nonaktifkan terlebih
                                         dahulu lalu aktifkan kembali dengan konfigurasi baru.</p>
-                                    <a href="{{ route('otp.deactivate') }}" class="btn btn-warning btn-deactivate-otp">
-                                        <i class="fa fa-times"></i> Nonaktifkan OTP
-                                    </a>
+                                    <form method="POST" action="{{ route('otp.deactivate') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning btn-deactivate-otp">
+                                            <i class="fa fa-times"></i> Nonaktifkan OTP
+                                        </button>
+                                    </form>
                                 </div>
                             @else
                                 @if (!$user->otp_channel)
@@ -132,7 +135,7 @@
                 // SweetAlert2 confirmation for deactivating OTP
                 $(document).on('click', '.btn-deactivate-otp', function(e) {
                     e.preventDefault();
-                    var url = $(this).attr('href');
+                    var form = $(this).closest('form')[0];
                     Swal.fire({
                         title: 'Nonaktifkan OTP?',
                         text: 'Apakah Anda yakin ingin menonaktifkan OTP?',
@@ -142,8 +145,8 @@
                         cancelButtonText: 'Batal',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Redirect to the deactivate route
-                            window.location.href = url;
+                            // Submit the POST form to the deactivate route
+                            form.submit();
                         }
                     });
                 });

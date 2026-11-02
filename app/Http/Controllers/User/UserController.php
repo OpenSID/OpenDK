@@ -311,8 +311,10 @@ class UserController extends Controller
                 if ($user->id != 1) {
                     if ($user->status == 1) {
                         $data['suspend_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.destroy', $user->id) : null;
+                        $data['suspend_method'] = 'DELETE';
                     } else {
                         $data['active_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.active', $user->id) : null;
+                        $data['active_method'] = 'PATCH';
                     }
 
                     $data['delete_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.permanent-destroy', $user->id) : null;

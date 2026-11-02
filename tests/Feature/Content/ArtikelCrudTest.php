@@ -126,7 +126,7 @@ describe('Artikel CRUD', function () {
             'tanggal_terbit' => now()->toDateString(),
         ];
 
-        $response = $this->post(route('informasi.artikel.update', $artikel->id), $updateData);
+        $response = $this->put(route('informasi.artikel.update', $artikel->id), $updateData);
 
         $response->assertRedirect(route('informasi.artikel.index'));
         $response->assertSessionHas('success');

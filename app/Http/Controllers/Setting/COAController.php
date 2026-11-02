@@ -107,6 +107,9 @@ class COAController extends Controller
             ->where('sub_sub_id', $sub_sub_id)
             ->orderBy('id', 'desc')->take(2)->get();
 
-        return str_pad(intval($last_id[1]['id']) + 1, 2, '0', STR_PAD_LEFT);
+        // Baris kedua dipakai bila ada; tanpa data cukup, mulai dari 0 agar tidak error
+        $previous = $last_id[1]['id'] ?? 0;
+
+        return str_pad(intval($previous) + 1, 2, '0', STR_PAD_LEFT);
     }
 }

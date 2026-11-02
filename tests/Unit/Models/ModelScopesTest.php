@@ -7,8 +7,11 @@ use App\Models\Keluarga;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\OtpToken;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+
+uses(DatabaseTransactions::class);
 
 
 
@@ -26,10 +29,11 @@ it('can filter users by role', function () {
     $adminUsers = User::role('admin')->get();
     $regularUsers = User::role('user')->get();
 
-    expect($adminUsers->count())->toBeGreaterThanOrEqual(1);
-    expect($adminUsers->first()->id)->toBe($adminUser->id);
-    expect($regularUsers->count())->toBeGreaterThanOrEqual(1);
-    expect($regularUsers->first()->id)->toBe($regularUser->id);
+    // Tabel bisa berisi user lain dengan role yang sama, jadi cek keanggotaan
+    expect($adminUsers->pluck('id'))->toContain($adminUser->id)
+        ->and($adminUsers->pluck('id'))->not->toContain($regularUser->id);
+    expect($regularUsers->pluck('id'))->toContain($regularUser->id)
+        ->and($regularUsers->pluck('id'))->not->toContain($adminUser->id);
 });
 
 it('can filter users by permission', function () {
@@ -44,8 +48,8 @@ it('can filter users by permission', function () {
 
     $usersWithPermission = User::permission('edit-users')->get();
 
-    expect($usersWithPermission->count())->toBeGreaterThanOrEqual(1);
-    expect($usersWithPermission->first()->id)->toBe($adminUser->id);
+    expect($usersWithPermission->pluck('id'))->toContain($adminUser->id)
+        ->and($usersWithPermission->pluck('id'))->not->toContain($regularUser->id);
 });
 
 // Penduduk Model Scopes

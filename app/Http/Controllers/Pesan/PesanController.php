@@ -42,6 +42,7 @@ use App\Models\Pesan;
 use App\Models\PesanDetail;
 use App\Services\DesaService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Purify\Facades\Purify;
@@ -150,10 +151,6 @@ class PesanController extends Controller
     public function readPesan(int $id_pesan): View
     {
         $pesan = Pesan::findOrFail($id_pesan);
-        if ($pesan->sudah_dibaca == Pesan::BELUM_DIBACA) {
-            $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
-            $pesan->save();
-        }
 
         $data = collect([]);
         $data->put('page_title', 'Pesan');
@@ -162,6 +159,20 @@ class PesanController extends Controller
         $data = $data->merge($this->loadCounter());
 
         return view('pesan.read_pesan', $data->all());
+    }
+
+    /**
+     * Tandai pesan sudah dibaca. Dipanggil dari halaman baca lewat PATCH, bukan GET.
+     */
+    public function markAsRead(int $id_pesan): JsonResponse
+    {
+        $pesan = Pesan::findOrFail($id_pesan);
+        if ($pesan->sudah_dibaca == Pesan::BELUM_DIBACA) {
+            $pesan->sudah_dibaca = Pesan::SUDAH_DIBACA;
+            $pesan->save();
+        }
+
+        return response()->json(['success' => true]);
     }
 
     public function composePesan(): View

@@ -74,8 +74,10 @@ class PengurusController extends Controller
                         $data['delete_url'] = auth()->user()->can('access.data.pengurus.delete') ? route('data.pengurus.destroy', $row->id) : null;
                         if ($row->status == Status::Aktif) {
                             $data['suspend_url'] = route('data.pengurus.lock', [$row->id, Status::TidakAktif]);
+                            $data['suspend_method'] = 'PATCH';
                         } else {
                             $data['active_url'] = route('data.pengurus.lock', [$row->id, Status::Aktif]);
+                            $data['active_method'] = 'PATCH';
                         }
                     }
 

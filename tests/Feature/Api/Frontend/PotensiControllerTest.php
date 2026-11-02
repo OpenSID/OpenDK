@@ -32,6 +32,7 @@ beforeEach(function () {
         'nama_kategori' => 'Test Kategori',
         'slug' => 'test-kategori',
     ]);
+    $this->tipePotensi = $tipePotensi;
 
     Potensi::create([
         'kategori_id' => $tipePotensi->id,
@@ -55,7 +56,8 @@ beforeEach(function () {
 });
 
 test('potensi api returns correct structure', function () {
-    $response = $this->getJson('/api/frontend/v1/potensi');
+    // Filter ke kategori test agar data dari test lain tidak ikut
+    $response = $this->getJson('/api/frontend/v1/potensi?filter[kategori_id]='.$this->tipePotensi->id);
 
     $response->assertStatus(200);
     $response->assertJsonStructure([
@@ -81,9 +83,9 @@ test('potensi api returns correct structure', function () {
         'links'
     ]);
 
-    $data = $response->json('data');
-    expect($data[0]['type'])->toBe('potensi')
-        ->and($data[0]['id'])->toBeString()
-        ->and($data[0]['attributes']['nama_potensi'])->toBe('Potensi 1')
-        ->and($data[0]['attributes']['file_gambar_path'])->toBeString()->not->toBeEmpty();
+    $potensi = collect($response->json('data'))->firstWhere('attributes.nama_potensi', 'Potensi 1');
+    expect($potensi)->not->toBeNull()
+        ->and($potensi['type'])->toBe('potensi')
+        ->and($potensi['id'])->toBeString()
+        ->and($potensi['attributes']['file_gambar_path'])->toBeString()->not->toBeEmpty();
 });

@@ -71,11 +71,14 @@
                     <div class="box-body">
                         <p>OTP diaktifkan: <strong>{{ $otpEnabled ? 'Ya' : 'Tidak' }}</strong></p>
 
-                        <form action="{{ route('otp.request-activation') }}" method="POST">
-                            @csrf
-                            @if ($otpEnabled)
-                                <a href="{{ route('otp.deactivate') }}" class="btn btn-warning">Nonaktifkan OTP</a>
-                            @else
+                        @if ($otpEnabled)
+                            <form method="POST" action="{{ route('otp.deactivate') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-confirm-deactivate">Nonaktifkan OTP</button>
+                            </form>
+                        @else
+                            <form action="{{ route('otp.request-activation') }}" method="POST">
+                                @csrf
                                 <button type="submit" class="btn btn-primary" {{ !$user->otp_verified ? 'disabled' : '' }}>
                                     Aktifkan OTP
                                 </button>
@@ -83,8 +86,8 @@
                                     <p class="help-block text-danger" style="margin-top:8px">Silakan verifikasi channel
                                         terlebih dahulu di halaman pengaturan.</p>
                                 @endif
-                            @endif
-                        </form>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -98,11 +101,14 @@
                     <div class="box-body">
                         <p>2FA diaktifkan: <strong>{{ $twoFaEnabled ? 'Ya' : 'Tidak' }}</strong></p>
 
-                        <form action="{{ route('2fa.request-activation') }}" method="POST">
-                            @csrf
-                            @if ($twoFaEnabled)
-                                <a href="{{ route('2fa.deactivate') }}" class="btn btn-warning">Nonaktifkan 2FA</a>
-                            @else
+                        @if ($twoFaEnabled)
+                            <form method="POST" action="{{ route('2fa.deactivate') }}">
+                                @csrf
+                                <button type="submit" class="btn btn-warning btn-confirm-deactivate">Nonaktifkan 2FA</button>
+                            </form>
+                        @else
+                            <form action="{{ route('2fa.request-activation') }}" method="POST">
+                                @csrf
                                 <button type="submit" class="btn btn-primary" {{ !$user->otp_verified ? 'disabled' : '' }}>
                                     Aktifkan 2FA
                                 </button>
@@ -110,8 +116,8 @@
                                     <p class="help-block text-danger" style="margin-top:8px">Silakan verifikasi channel
                                         terlebih dahulu di halaman pengaturan.</p>
                                 @endif
-                            @endif
-                        </form>
+                            </form>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -121,11 +127,11 @@
     @include('partials.asset_sweetalert')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const deactivateButtons = document.querySelectorAll('.btn-warning');
+            const deactivateButtons = document.querySelectorAll('.btn-confirm-deactivate');
             deactivateButtons.forEach(function(button) {
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
-                    const url = this.href;
+                    const form = this.closest('form');
                     Swal.fire({
                         title: 'Apakah Anda yakin?',
                         text: "Tindakan ini akan menonaktifkan fitur ini.",
@@ -137,7 +143,7 @@
                         cancelButtonText: 'Batal'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = url;
+                            form.submit();
                         }
                     });
                 });

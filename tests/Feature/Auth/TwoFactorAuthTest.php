@@ -10,9 +10,9 @@
  * Hak Cipta 2017 - 2025 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
  */
 
-use App\Models\User;
 use App\Models\OtpToken;
 use App\Models\SettingAplikasi;
+use App\Models\User;
 use App\Services\OtpService;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
@@ -138,9 +138,15 @@ describe('2FA Management', function () {
     test('user can deactivate 2FA', function () {
         $this->actingAs($this->user);
 
-        // The route is a GET according to routes/web.php
-        $response = $this->get(route('2fa.deactivate'));
-        $response->assertRedirect('/');
+        $response = $this->post(route('2fa.deactivate'));
+        $response->assertRedirect();
         expect($this->user->fresh()->two_fa_enabled)->toBeFalse();
+    });
+
+    test('2FA deactivation cannot be triggered by GET', function () {
+        $this->actingAs($this->user);
+
+        $this->get('/2fa/deactivate')->assertStatus(405);
+        expect($this->user->fresh()->two_fa_enabled)->toBeTrue();
     });
 });

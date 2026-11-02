@@ -66,7 +66,13 @@
                 cancelButtonText: 'Tidak!',
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
-                    return fetch(`{{ route('surat.permohonan.setujui', $surat->id) }}`)
+                    return fetch(`{{ route('surat.permohonan.setujui', $surat->id) }}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(response.statusText)

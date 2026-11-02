@@ -54,9 +54,12 @@
                                 <div class="form-group">
                                     <label>Nonaktifkan 2FA</label>
                                     <p class="help-block">Jika Anda ingin menonaktifkan 2FA, klik tombol di bawah.</p>
-                                    <a href="{{ route('2fa.deactivate') }}" class="btn btn-warning btn-deactivate-2fa">
-                                        <i class="fa fa-times"></i> Nonaktifkan 2FA
-                                    </a>
+                                    <form method="POST" action="{{ route('2fa.deactivate') }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-warning btn-deactivate-2fa">
+                                            <i class="fa fa-times"></i> Nonaktifkan 2FA
+                                        </button>
+                                    </form>
                                 </div>
                             @else
                                 @if ($needsSetup)
@@ -101,7 +104,7 @@
                 // SweetAlert2 confirmation for deactivating 2FA
                 $(document).on('click', '.btn-deactivate-2fa', function(e) {
                     e.preventDefault();
-                    var url = $(this).attr('href');
+                    var form = $(this).closest('form')[0];
                     Swal.fire({
                         title: 'Nonaktifkan 2FA?',
                         text: 'Apakah Anda yakin ingin menonaktifkan 2FA?',
@@ -111,8 +114,8 @@
                         cancelButtonText: 'Batal',
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            // Redirect to the deactivate route
-                            window.location.href = url;
+                            // Submit the POST form to the deactivate route
+                            form.submit();
                         }
                     });
                 });

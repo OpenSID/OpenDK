@@ -24,8 +24,10 @@ class UserPage
             ->type('email', $userDetails['email'])
             ->type('password', $userDetails['password'])
             ->type('address', $userDetails['address'])
-            ->select('role', $userDetails['role'])
-            ->press('Simpan');
+            ->select('role', $userDetails['role']);
+
+        $browser->script("document.getElementById('form-user').setAttribute('enctype', 'application/x-www-form-urlencoded')");
+        $browser->press('Simpan');
     }
 
     /**

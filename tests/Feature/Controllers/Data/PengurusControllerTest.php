@@ -39,6 +39,7 @@ use App\Models\PendidikanKK;
 use App\Models\Pengurus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 
@@ -115,6 +116,8 @@ test('store creates new pengurus successfully', function () {
 });
 
 test('store creates pengurus with file upload', function () {
+    Storage::fake('local');
+
     $jabatan = Jabatan::factory()->create();
     $pendidikan = PendidikanKK::factory()->create();
     $agama = Agama::factory()->create();
@@ -142,6 +145,11 @@ test('store creates pengurus with file upload', function () {
         'nama' => 'Jane Doe',
         'nik' => '1234567890123457',
     ]);
+
+    $pengurus = Pengurus::where('nik', '1234567890123457')->first();
+    $foto = $pengurus?->getRawOriginal('foto');
+    expect($foto)->not->toBeNull()
+        ->and(Storage::disk('local')->exists('public/pengurus/'.$foto))->toBeTrue();
 });
 
 test('store fails with duplicate nik', function () {

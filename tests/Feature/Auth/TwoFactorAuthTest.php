@@ -139,7 +139,8 @@ describe('2FA Management', function () {
         $this->actingAs($this->user);
 
         $response = $this->post(route('2fa.deactivate'));
-        $response->assertRedirect();
+        // Controller memakai back(); tanpa referer tujuannya '/'
+        $response->assertRedirect('/');
         expect($this->user->fresh()->two_fa_enabled)->toBeFalse();
     });
 

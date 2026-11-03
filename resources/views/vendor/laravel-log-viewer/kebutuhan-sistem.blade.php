@@ -52,9 +52,15 @@
     <script>
         $(document).on('click', '#run-linkstorage', function(e) {
             e.preventDefault();
-            openConfirm('Yakin Untuk Menjalankan php artisan storage:link?', 'Konfirmasi', function() {
+            var submitLinkStorage = function() {
                 $('#form-linkstorage')[0].submit();
-            });
+            };
+            // openConfirm dimuat dari public/js/modal-helper.js; fallback ke confirm() bawaan browser
+            if (typeof openConfirm === 'function') {
+                openConfirm('Yakin Untuk Menjalankan php artisan storage:link?', 'Konfirmasi', submitLinkStorage);
+            } else if (window.confirm('Yakin Untuk Menjalankan php artisan storage:link?')) {
+                submitLinkStorage();
+            }
         });
 
         $(document).on('click', '#run-migrasi', function(e) {

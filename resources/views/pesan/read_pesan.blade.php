@@ -104,6 +104,9 @@
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     }
+                }).fail(function (xhr) {
+                    // Pesan tetap belum dibaca di server; catat agar bisa ditelusuri
+                    console.error('Gagal menandai pesan sebagai dibaca', xhr.status);
                 });
             @endif
 

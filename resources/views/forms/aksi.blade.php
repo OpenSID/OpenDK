@@ -36,11 +36,22 @@
         <li><a href="{!! $download_zip !!}" title="Unduh: {{ $nama_file ?? 'Arsip' }}"><i class="glyphicon glyphicon-download-alt text-primary"></i> Unduh ZIP</a></li>
     @endif
 
+    {{-- Pindah posisi mengubah state, jadi dikirim sebagai POST (form), bukan link GET --}}
     @if (!empty($turun))
-        <li><a href="{!! $turun !!}" title="Pindah Posisi ke Bawah"><i class="fa fa-arrow-down text-success"></i> Turun</a></li>
+        <li>
+            <form method="POST" action="{{ $turun }}" class="m-0" data-testid="btn-turun">
+                @csrf
+                <button type="submit" title="Pindah Posisi ke Bawah" style="display:block;width:100%;padding:3px 20px;clear:both;font-weight:normal;line-height:1.42857143;color:#333;white-space:nowrap;background:none;border:0;text-align:left;"><i class="fa fa-arrow-down text-success"></i> Turun</button>
+            </form>
+        </li>
     @endif
     @if (!empty($naik))
-        <li><a href="{!! $naik !!}" title="Pindah Posisi ke Atas"><i class="fa fa-arrow-up text-success"></i> Naik</a></li>
+        <li>
+            <form method="POST" action="{{ $naik }}" class="m-0" data-testid="btn-naik">
+                @csrf
+                <button type="submit" title="Pindah Posisi ke Atas" style="display:block;width:100%;padding:3px 20px;clear:both;font-weight:normal;line-height:1.42857143;color:#333;white-space:nowrap;background:none;border:0;text-align:left;"><i class="fa fa-arrow-up text-success"></i> Naik</button>
+            </form>
+        </li>
     @endif
 
     @if (!empty($lock_url))

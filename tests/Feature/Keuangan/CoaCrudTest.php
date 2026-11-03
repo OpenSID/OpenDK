@@ -34,6 +34,7 @@ namespace Tests\Feature\Keuangan;
 use App\Models\Coa;
 use App\Models\SubCoa;
 use App\Models\SubSubCoa;
+use Illuminate\Support\Facades\DB;
 use Tests\CrudTestCase;
 
 beforeEach(function () {
@@ -136,4 +137,40 @@ describe('COA CRUD', function () {
         $response->assertStatus(200);
         $response->assertJsonFragment(['sub_sub_name' => 'Test Sub Sub Coa 99']);
     });    
+});
+
+describe('COA generate_id', function () {
+    // Tabel ini tidak memakai transaksi, jadi baris uji dibersihkan sendiri
+    $bersihkan = fn () => DB::table('ref_coa')->where('type_id', '9')->where('sub_id', '9')->where('sub_sub_id', '9')->delete();
+    beforeEach($bersihkan);
+    afterEach($bersihkan);
+
+    test('generate_id tidak error ketika belum ada data', function () {
+        $response = $this->get(route('setting.coa.generate_id', ['9', '9', '9']));
+
+        $response->assertStatus(200);
+        expect($response->getContent())->toBe('01');
+    });
+
+    test('generate_id tidak error ketika hanya ada satu baris', function () {
+        DB::table('ref_coa')->insert([
+            'id' => '05', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'Satu',
+        ]);
+
+        $response = $this->get(route('setting.coa.generate_id', ['9', '9', '9']));
+
+        $response->assertStatus(200);
+        expect($response->getContent())->toBe('01');
+    });
+
+    test('generate_id hanya membaca dan tidak mengubah data', function () {
+        DB::table('ref_coa')->insert([
+            'id' => '01', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'A',
+        ]);
+        $sebelum = DB::table('ref_coa')->count();
+
+        $this->get(route('setting.coa.generate_id', ['9', '9', '9']))->assertStatus(200);
+
+        expect(DB::table('ref_coa')->count())->toBe($sebelum);
+    });
 });

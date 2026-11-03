@@ -116,7 +116,11 @@
             // delete backup
             deleteBackup = function(url) {
                 openConfirm('Apakah Anda yakin ingin menghapus file backup ini?', 'Konfirmasi', function() {
-                    window.location.href = url;
+                    // Kirim DELETE lewat form POST dengan _method dan token CSRF
+                    var form = $('<form method="POST"></form>').attr('action', url).appendTo('body');
+                    form.append($('<input type="hidden" name="_token">').val('{{ csrf_token() }}'));
+                    form.append($('<input type="hidden" name="_method">').val('DELETE'));
+                    form.get(0).submit();
                 });
             }
 

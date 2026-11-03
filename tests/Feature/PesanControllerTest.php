@@ -70,10 +70,22 @@ test('read pesan', function () {
 
     $response->assertStatus(200);
     $response->assertViewIs('pesan.read_pesan');
-    $this->assertDatabaseHas((new Pesan())->getTable(), [
-        'id' => $pesan->id,
-        'sudah_dibaca' => Pesan::SUDAH_DIBACA,
-    ]);
+});
+
+test('membuka pesan tidak mengubah status baca', function () {
+    $pesan = Pesan::factory()->create(['sudah_dibaca' => Pesan::BELUM_DIBACA]);
+
+    $this->get(route('pesan.read', $pesan->id))->assertStatus(200);
+
+    expect($pesan->fresh()->sudah_dibaca)->toBe(Pesan::BELUM_DIBACA);
+});
+
+test('pesan ditandai dibaca lewat PATCH', function () {
+    $pesan = Pesan::factory()->create(['sudah_dibaca' => Pesan::BELUM_DIBACA]);
+
+    $this->patch(route('pesan.read.mark', $pesan->id))->assertOk();
+
+    expect($pesan->fresh()->sudah_dibaca)->toBe(Pesan::SUDAH_DIBACA);
 });
 
 test('compose pesan', function () {

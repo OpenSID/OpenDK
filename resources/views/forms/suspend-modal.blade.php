@@ -22,7 +22,13 @@
 
         $(document).on('click', '#suspendModal', function(e) {
             var url = $(this).attr('data-href');
+            var method = $(this).attr('data-method') || 'POST';
             $('#suspend').attr('action', url);
+            // Method HTTP sebenarnya lewat _method, form tetap POST
+            $('#suspend').find('input[name="_method"]').remove();
+            if (method !== 'POST') {
+                $('#suspend').append($('<input type="hidden" name="_method">').val(method));
+            }
             $('#import').attr('method', 'post');
             $('#suspend-modal').modal('show');
             e.preventDefault();

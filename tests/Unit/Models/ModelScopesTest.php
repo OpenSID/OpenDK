@@ -7,8 +7,11 @@ use App\Models\Keluarga;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\OtpToken;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+
+uses(DatabaseTransactions::class);
 
 
 
@@ -26,10 +29,16 @@ it('can filter users by role', function () {
     $adminUsers = User::role('admin')->get();
     $regularUsers = User::role('user')->get();
 
-    expect($adminUsers->count())->toBeGreaterThanOrEqual(1);
-    expect($adminUsers->first()->id)->toBe($adminUser->id);
-    expect($regularUsers->count())->toBeGreaterThanOrEqual(1);
-    expect($regularUsers->first()->id)->toBe($regularUser->id);
+    // Tabel bisa berisi user lain dengan role yang sama, jadi cek keanggotaan,
+    // semua hasil memang punya role tersebut, dan tidak ada duplikasi
+    expect($adminUsers->pluck('id'))->toContain($adminUser->id)
+        ->and($adminUsers->pluck('id'))->not->toContain($regularUser->id)
+        ->and($adminUsers->every(fn ($user) => $user->hasRole('admin')))->toBeTrue()
+        ->and($adminUsers->pluck('id')->unique()->count())->toBe($adminUsers->count());
+    expect($regularUsers->pluck('id'))->toContain($regularUser->id)
+        ->and($regularUsers->pluck('id'))->not->toContain($adminUser->id)
+        ->and($regularUsers->every(fn ($user) => $user->hasRole('user')))->toBeTrue()
+        ->and($regularUsers->pluck('id')->unique()->count())->toBe($regularUsers->count());
 });
 
 it('can filter users by permission', function () {
@@ -44,8 +53,10 @@ it('can filter users by permission', function () {
 
     $usersWithPermission = User::permission('edit-users')->get();
 
-    expect($usersWithPermission->count())->toBeGreaterThanOrEqual(1);
-    expect($usersWithPermission->first()->id)->toBe($adminUser->id);
+    expect($usersWithPermission->pluck('id'))->toContain($adminUser->id)
+        ->and($usersWithPermission->pluck('id'))->not->toContain($regularUser->id)
+        ->and($usersWithPermission->every(fn ($user) => $user->can('edit-users')))->toBeTrue()
+        ->and($usersWithPermission->pluck('id')->unique()->count())->toBe($usersWithPermission->count());
 });
 
 // Penduduk Model Scopes

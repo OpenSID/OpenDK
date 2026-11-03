@@ -250,7 +250,7 @@ test('destroy deletes pengurus successfully', function () {
 test('lock activates pengurus', function () {
     $pengurus = Pengurus::factory()->create(['status' => Status::TidakAktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$pengurus->id, Status::Aktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$pengurus->id, Status::Aktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('success');
@@ -263,7 +263,7 @@ test('lock activates pengurus', function () {
 test('lock deactivates pengurus', function () {
     $pengurus = Pengurus::factory()->create(['status' => Status::Aktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$pengurus->id, Status::TidakAktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$pengurus->id, Status::TidakAktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('success');
@@ -279,7 +279,7 @@ test('lock prevents multiple active camat', function () {
 
     $anotherPengurus = Pengurus::factory()->create(['jabatan_id' => $camatJabatan->id, 'status' => Status::TidakAktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('error', 'Camat aktif sudah ditetapkan!');
@@ -291,7 +291,7 @@ test('lock prevents multiple active sekretaris', function () {
 
     $anotherPengurus = Pengurus::factory()->create(['jabatan_id' => $sekretarisJabatan->id, 'status' => Status::TidakAktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('error', 'Sekretaris aktif sudah ditetapkan!');

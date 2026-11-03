@@ -22,7 +22,13 @@
 
         $(document).on('click', '#activeModal', function(e) {
             var url = $(this).attr('data-href');
+            var method = $(this).attr('data-method') || 'POST';
             $('#active').attr('action', url);
+            // Method HTTP sebenarnya lewat _method, form tetap POST
+            $('#active').find('input[name="_method"]').remove();
+            if (method !== 'POST') {
+                $('#active').append($('<input type="hidden" name="_method">').val(method));
+            }
             $('#import').attr('method', 'post');
             $('#active-modal').modal('show');
             e.preventDefault();

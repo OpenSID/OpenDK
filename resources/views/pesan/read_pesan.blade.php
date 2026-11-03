@@ -96,6 +96,20 @@
     <script type="application/javascript">
         $(document).ready(function () {
 
+            @if ($pesan->sudah_dibaca == \App\Models\Pesan::BELUM_DIBACA)
+                // Tandai dibaca lewat PATCH, bukan lewat GET saat halaman dibuka
+                $.ajax({
+                    url: "{{ route('pesan.read.mark', $pesan->id) }}",
+                    method: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                }).fail(function (xhr) {
+                    // Pesan tetap belum dibaca di server; catat agar bisa ditelusuri
+                    console.error('Gagal menandai pesan sebagai dibaca', xhr.status);
+                });
+            @endif
+
             $('#prev-links').click(function () {
                 let page = $(this).data('currentPage');
                 if (page <= 1) {

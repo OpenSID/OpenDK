@@ -528,7 +528,7 @@ class UserControllerTest extends CrudTestCase
         $targetUser->status = 1;
         $targetUser->save();
 
-        $response = $this->actingAs($user)->post(route('setting.user.destroy', $targetUser->id));
+        $response = $this->actingAs($user)->delete(route('setting.user.destroy', $targetUser->id));
 
         $response->assertRedirect(route('setting.user.index'));
 
@@ -553,7 +553,7 @@ class UserControllerTest extends CrudTestCase
         $targetUser->status = 0;
         $targetUser->save();
 
-        $response = $this->actingAs($user)->post(route('setting.user.active', $targetUser->id));
+        $response = $this->actingAs($user)->patch(route('setting.user.active', $targetUser->id));
 
         $response->assertRedirect(route('setting.user.index'));
 

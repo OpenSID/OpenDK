@@ -93,7 +93,6 @@ test('can get all articles', function () {
                         'id_kategori',
                         'slug',
                         'judul',
-                        'kategori_id',
                         'gambar',
                         'isi',
                         'status',

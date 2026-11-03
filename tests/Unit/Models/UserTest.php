@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -12,6 +13,8 @@ beforeEach(function () {
     Role::firstOrCreate(['name' => 'admin']);
     Permission::firstOrCreate(['name' => 'manage-users']);
 });
+
+uses(DatabaseTransactions::class);
 
 it('can create a user', function () {
     $user = User::factory()->create([

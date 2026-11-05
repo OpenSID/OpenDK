@@ -109,6 +109,11 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         'register' => false,
     ]);
 
+    Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
+        Route::post('/login', 'LoginController@login')
+            ->middleware('throttle:login');
+    });
+
     // OTP Routes
     Route::namespace('\App\Http\Controllers\Auth')->middleware('otp.enabled')->group(function () {
         // OTP Activation (requires auth)
@@ -126,13 +131,18 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         // OTP Login (guest only)
         Route::middleware('guest')->group(function () {
             Route::get('/otp/login', 'OtpController@showLoginForm')->name('otp.login');
-            Route::post('/otp/request-login', 'OtpController@requestLoginOtp')->name('otp.request-login');
+            Route::post('/otp/request-login', 'OtpController@requestLoginOtp')
+                ->middleware('throttle:otp')
+                ->name('otp.request-login');
             Route::get('/otp/verify-login', 'OtpController@showVerifyLoginForm')->name('otp.verify-login');
-            Route::post('/otp/verify-login', 'OtpController@loginWithOtp');
+            Route::post('/otp/verify-login', 'OtpController@loginWithOtp')
+                ->middleware('throttle:login');
         });
 
         // OTP Resend (both auth and guest)
-        Route::post('/otp/resend', 'OtpController@resendOtp')->name('otp.resend');
+        Route::post('/otp/resend', 'OtpController@resendOtp')
+            ->middleware('throttle:otp')
+            ->name('otp.resend');
     });
 
     // 2FA Routes
@@ -166,7 +176,8 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
     // 2FA Login Routes (guest access)
     Route::namespace('\App\Http\Controllers\Auth')->middleware('guest')->group(function () {
         Route::get('/2fa/verify-login', 'TwoFactorController@showVerifyLoginForm')->name('2fa.verify-login');
-        Route::post('/2fa/verify-login', 'TwoFactorController@verifyLogin');
+        Route::post('/2fa/verify-login', 'TwoFactorController@verifyLogin')
+            ->middleware('throttle:login');
     });
 
     Route::group(['prefix' => 'filemanager', 'middleware' => ['auth:web', 'action_permission:access.setting']], function () {

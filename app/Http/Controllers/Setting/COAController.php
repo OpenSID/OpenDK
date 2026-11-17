@@ -101,15 +101,15 @@ class COAController extends Controller
 
     public function generate_id($type_id, $sub_id, $sub_sub_id)
     {
-        $last_id = Coa::select('id')
-            ->where('type_id', $type_id)
+        // Ambil id terbesar dalam grup ini (kode numerik, mis. '01', '02')
+        // Urutkan secara numerik, bukan string, agar '100' dihitung lebih besar dari '99'
+        $last = Coa::where('type_id', $type_id)
             ->where('sub_id', $sub_id)
             ->where('sub_sub_id', $sub_sub_id)
-            ->orderBy('id', 'desc')->take(2)->get();
+            ->orderByRaw('CAST(id AS UNSIGNED) DESC')
+            ->value('id');
 
-        // Baris kedua dipakai bila ada; tanpa data cukup, mulai dari 0 agar tidak error
-        $previous = $last_id[1]['id'] ?? 0;
-
-        return str_pad(intval($previous) + 1, 2, '0', STR_PAD_LEFT);
+        // Tanpa data, mulai dari 0 sehingga hasilnya '01'
+        return str_pad(intval($last ?? 0) + 1, 2, '0', STR_PAD_LEFT);
     }
 }

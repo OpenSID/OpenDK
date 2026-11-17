@@ -152,7 +152,7 @@ describe('COA generate_id', function () {
         expect($response->getContent())->toBe('01');
     });
 
-    test('generate_id tidak error ketika hanya ada satu baris', function () {
+    test('generate_id mengambil id terbesar + 1 ketika hanya ada satu baris', function () {
         DB::table('ref_coa')->insert([
             'id' => '05', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'Satu',
         ]);
@@ -160,7 +160,32 @@ describe('COA generate_id', function () {
         $response = $this->get(route('setting.coa.generate_id', ['9', '9', '9']));
 
         $response->assertStatus(200);
-        expect($response->getContent())->toBe('01');
+        expect($response->getContent())->toBe('06');
+    });
+
+    test('generate_id mengambil id terbesar + 1 ketika ada beberapa baris', function () {
+        DB::table('ref_coa')->insert([
+            ['id' => '01', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'A'],
+            ['id' => '02', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'B'],
+            ['id' => '03', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'C'],
+        ]);
+
+        $response = $this->get(route('setting.coa.generate_id', ['9', '9', '9']));
+
+        $response->assertStatus(200);
+        expect($response->getContent())->toBe('04');
+    });
+
+    test('generate_id membandingkan id secara numerik (99 lalu 100)', function () {
+        DB::table('ref_coa')->insert([
+            ['id' => '99', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'A'],
+            ['id' => '100', 'type_id' => '9', 'sub_id' => '9', 'sub_sub_id' => '9', 'coa_name' => 'B'],
+        ]);
+
+        $response = $this->get(route('setting.coa.generate_id', ['9', '9', '9']));
+
+        $response->assertStatus(200);
+        expect($response->getContent())->toBe('101');
     });
 
     test('generate_id hanya membaca dan tidak mengubah data', function () {

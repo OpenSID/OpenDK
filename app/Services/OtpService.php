@@ -75,7 +75,7 @@ class OtpService
             ->delete();
 
         // Create new token
-        $expiryMinutes = config('otp.expiry_minutes', 5);
+        $expiryMinutes = max(1, (int) config('otp.expiry_minutes', 5));
         $token = OtpToken::create([
             'user_id' => $user->id,
             'token_hash' => $tokenHash,

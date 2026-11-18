@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Models\SettingAplikasi;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7;
@@ -26,7 +26,7 @@ class ApiService
     public function register($data)
     {
 
-        $response = Http::withHeaders([
+        $response = OutboundHttp::client()->withHeaders([
             'X-Requested-With' => 'XMLHttpRequest',
         ])->attach(
             'permohonan',
@@ -67,7 +67,7 @@ class ApiService
 
     public function terdaftar($kode_kecamatan)
     {
-        $response = Http::withHeaders([
+        $response = OutboundHttp::client()->withHeaders([
             'Authorization' => 'Bearer ' . $this->setting->layanan_opendesa_token,
             'X-Requested-With' => 'XMLHttpRequest',
         ])->post("{$this->server}/api/v1/pelanggan/terdaftar-kecamatan", [
@@ -84,7 +84,7 @@ class ApiService
 
             return [
                 'success' => false,
-                'message' => $response->object()->message,
+                'message' => $response->json('message'),
                 'data'  => $response->body(),
             ];
         }
@@ -92,7 +92,7 @@ class ApiService
 
     public function getFormRegister()
     {
-        $response = Http::withHeaders([
+        $response = OutboundHttp::client()->withHeaders([
             'Authorization' => 'Bearer ' . $this->setting->layanan_opendesa_token,
             'X-Requested-With' => 'XMLHttpRequest',
         ])->get("{$this->server}/api/v1/pelanggan/form-register-kecamatan");

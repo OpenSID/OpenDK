@@ -31,6 +31,7 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
@@ -50,7 +51,7 @@ class StatistikChartPendudukService extends BaseApiService
                 if($did != 'Semua') {
                     $filters['filter[desa]'] = $did;
                 }
-                $client = new Client(['base_uri' => $this->baseUrl, 'headers' => $this->header]);
+                $client = new Client(OutboundHttp::guzzleOptions(['base_uri' => $this->baseUrl, 'headers' => $this->header]));
                 $requests = [];
                 foreach ($listYears as $year) {
                     $filters['filter[tahun]'] = $year;

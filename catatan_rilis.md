@@ -13,6 +13,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 2. [#1770](https://github.com/OpenSID/OpenDK/issues/1770) Perbaiki foto pengurus tidak tersimpan saat tambah data baru.
 3. [#1777](https://github.com/OpenSID/OpenDK/issues/1777) Sembunyikan identitas pelapor dan NIK pada API komplain.
 4. [#1789](https://github.com/OpenSID/OpenDK/pull/1789) Desa dengan nama lebih dari satu kata tidak ditemukan (404) saat menggunakan database lokal.
+5. [#1793](https://github.com/OpenSID/OpenDK/issues/1793) Fix: Perubahan data umum tidak langsung tampil pada API profil.
 
 #### TEKNIS
 

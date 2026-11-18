@@ -32,12 +32,13 @@
 namespace App\Http\Requests\Api;
 
 use App\Services\FileUploadService;
-use Illuminate\Contracts\Validation\Validator;
+use App\Traits\RespondsWithJsonValidationErrors;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class SinkronPendudukRequest extends FormRequest
 {
+    use RespondsWithJsonValidationErrors;
+
     public function authorize(): bool
     {
         return true;
@@ -50,18 +51,5 @@ class SinkronPendudukRequest extends FormRequest
         return [
             'file' => 'required|file|mimes:zip' . $maxRule,
         ];
-    }
-
-    /**
-     * Endpoint dipanggil OpenSID tanpa header Accept JSON; tanpa ini validasi gagal
-     * dibalas redirect 302 yang dianggap sukses oleh OpenSID.
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'status' => 'danger',
-            'message' => $validator->errors()->first(),
-            'errors' => $validator->errors(),
-        ], 422));
     }
 }

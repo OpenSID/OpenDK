@@ -31,12 +31,13 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Contracts\Validation\Validator;
+use App\Traits\RespondsWithJsonValidationErrors;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class PendudukRequest extends FormRequest
 {
+    use RespondsWithJsonValidationErrors;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -55,24 +56,11 @@ class PendudukRequest extends FormRequest
     public function rules()
     {
         return [
-            // Batch delete validation
-            'hapus_penduduk' => 'required|array|min:1',
+            // OpenSID selalu mengirim kunci ini setelah storedata, berisi [] bila tidak ada yang dihapus
+            'hapus_penduduk' => 'present|array',
             'hapus_penduduk.*.id_pend_desa' => 'required|integer',
             'hapus_penduduk.*.foto' => 'nullable',
             'hapus_penduduk.*.desa_id' => 'required|string|exists:das_data_desa,desa_id',
         ];
-    }
-
-    /**
-     * Endpoint dipanggil OpenSID tanpa header Accept JSON; tanpa ini validasi gagal
-     * dibalas redirect 302 yang dianggap sukses oleh OpenSID.
-     */
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(response()->json([
-            'status' => 'danger',
-            'message' => $validator->errors()->first(),
-            'errors' => $validator->errors(),
-        ], 422));
     }
 }

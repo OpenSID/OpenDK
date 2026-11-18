@@ -36,6 +36,7 @@ use App\Http\Requests\Api\SinkronPendudukRequest;
 use App\Http\Requests\PendudukRequest;
 use App\Imports\SinkronPenduduk;
 use App\Jobs\PendudukQueueJob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use ZipArchive;
@@ -56,8 +57,8 @@ class PendudukController extends Controller
      * }
      * @response 422 {
      *   "status": "danger",
-     *   "message": "The hapus penduduk field is required.",
-     *   "errors": {"hapus_penduduk": ["The hapus penduduk field is required."]}
+     *   "message": "The hapus penduduk field must be present.",
+     *   "errors": {"hapus_penduduk": ["The hapus penduduk field must be present."]}
      * }
      */
 public function store(PendudukRequest $request)
@@ -152,8 +153,9 @@ public function store(PendudukRequest $request)
             $zip->extractTo($extract, $entries);
             $zip->close();
 
-            // Impor sinkron agar kegagalan langsung dibalas ke OpenSID
-            (new SinkronPenduduk())->import($extract . $excellName);
+            // Impor sinkron agar kegagalan langsung dibalas ke OpenSID. Transaksi per chunk dari
+            // maatwebsite menjadi savepoint di sini, sehingga satu berkas tersimpan utuh atau tidak sama sekali.
+            DB::transaction(fn () => (new SinkronPenduduk())->import($extract . $excellName));
         } catch (\Throwable $e) {
             Log::error('Penduduk storedata failed', [
                 'error' => $e->getMessage(),

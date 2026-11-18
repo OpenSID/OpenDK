@@ -82,32 +82,26 @@ class PendudukQueueJob implements ShouldQueue
      */
     public function handle()
     {
-        DB::beginTransaction();
+        if (empty($this->request['hapus_penduduk'])) {
+            return;
+        }
 
-        try {
-            // Batch delete penduduk
-            if (! empty($this->request['hapus_penduduk'])) {
-                $hapus = collect($this->request['hapus_penduduk']);
+        $hapus = collect($this->request['hapus_penduduk']);
 
-                // Hapus per desa agar id_pend_desa milik desa lain dalam batch yang sama tidak ikut terhapus
-                foreach ($hapus->groupBy('desa_id') as $desa_id => $items) {
-                    Penduduk::where('desa_id', $desa_id)
-                        ->whereIn('id_pend_desa', $items->pluck('id_pend_desa'))
-                        ->delete();
-                }
-
-                // Hapus file foto di folder
-                foreach ($hapus->pluck('foto')->filter() as $hapusfoto) {
-                    Storage::disk('public')->delete('penduduk/foto/'.'kecil_'.$hapusfoto);
-                }
+        // Exception dilempar ulang oleh DB::transaction agar job tercatat gagal dan failed() terpanggil
+        DB::transaction(function () use ($hapus) {
+            // Hapus per desa agar id_pend_desa milik desa lain dalam batch yang sama tidak ikut terhapus
+            foreach ($hapus->groupBy('desa_id') as $desa_id => $items) {
+                Penduduk::where('desa_id', $desa_id)
+                    ->whereIn('id_pend_desa', $items->pluck('id_pend_desa'))
+                    ->delete();
             }
+        });
 
-            DB::commit();
-        } catch (\Throwable $e) {
-            DB::rollBack();
-
-            // Lempar ulang agar job tercatat gagal dan failed() terpanggil
-            throw $e;
+        // Foto dihapus setelah commit agar tidak hilang bila penghapusan data dibatalkan.
+        // basename() mencegah path traversal dari nilai foto kiriman klien.
+        foreach ($hapus->pluck('foto')->filter() as $hapusfoto) {
+            Storage::disk('public')->delete('penduduk/foto/kecil_'.basename((string) $hapusfoto));
         }
     }
 }

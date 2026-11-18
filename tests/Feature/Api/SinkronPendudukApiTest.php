@@ -29,6 +29,7 @@
  * @link       https://github.com/OpenSID/opendk
  */
 
+use App\Jobs\PendudukQueueJob;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\SettingAplikasi;
@@ -85,7 +86,8 @@ function barisPenduduk(string $desaId, int $idPendDesa): array
 }
 
 /**
- * Buat zip seperti kiriman OpenSID; tanpa $baris zip hanya berisi berkas teks.
+ * Buat zip seperti kiriman OpenSID; $baris berupa satu baris atau daftar baris,
+ * tanpa $baris zip hanya berisi berkas teks.
  */
 function zipPenduduk(?array $baris, array $tambahan = []): UploadedFile
 {
@@ -100,7 +102,8 @@ function zipPenduduk(?array $baris, array $tambahan = []): UploadedFile
         $zip->addFromString('bukan_data.txt', 'kosong');
     } else {
         $spreadsheet = new Spreadsheet();
-        $spreadsheet->getActiveSheet()->fromArray([KOLOM_XLSX_PENDUDUK, array_values($baris)]);
+        $daftarBaris = array_is_list($baris) ? $baris : [$baris];
+        $spreadsheet->getActiveSheet()->fromArray([KOLOM_XLSX_PENDUDUK, ...array_map('array_values', $daftarBaris)]);
         $xlsxPath = $dir.'/penduduk_opendk.xlsx';
         (new Xlsx($spreadsheet))->save($xlsxPath);
         $zip->addFile($xlsxPath, 'penduduk_opendk.xlsx');
@@ -168,6 +171,19 @@ describe('POST /api/v1/penduduk/storedata', function () {
         $response->assertStatus(500)->assertJson(['status' => 'danger']);
     });
 
+    test('tidak menyimpan baris apa pun bila impor gagal di chunk berikutnya', function () {
+        // chunkSize 1000: baris 1-1000 valid (chunk pertama), baris 1001 desanya tidak terdaftar
+        $daftarBaris = array_map(fn ($id) => barisPenduduk($this->desa->desa_id, $id), range(1, 1000));
+        $daftarBaris[] = barisPenduduk('99.99.99.9999', 1001);
+
+        $response = withToken($this->token)->post('/api/v1/penduduk/storedata', [
+            'file' => zipPenduduk($daftarBaris),
+        ]);
+
+        $response->assertStatus(500)->assertJson(['status' => 'danger']);
+        expect(Penduduk::where('desa_id', $this->desa->desa_id)->count())->toBe(0);
+    });
+
     test('membalas json 422 tanpa redirect bila file tidak dikirim', function () {
         // OpenSID tidak mengirim header Accept: application/json
         $response = withToken($this->token)->post('/api/v1/penduduk/storedata', []);
@@ -224,11 +240,25 @@ describe('POST /api/v1/penduduk/storedata', function () {
 });
 
 describe('POST /api/v1/penduduk', function () {
-    test('membalas json 422 bila hapus_penduduk kosong', function () {
-        $response = withToken($this->token)->post('/api/v1/penduduk', []);
+    test('membalas sukses bila hapus_penduduk berupa array kosong', function () {
+        // Payload yang selalu dikirim OpenSID setelah storedata bila tidak ada penduduk yang dihapus
+        Queue::fake();
+
+        $response = withToken($this->token)->postJson('/api/v1/penduduk', ['hapus_penduduk' => []]);
+
+        $response->assertOk()->assertJson(['status' => 'success']);
+        Queue::assertPushed(PendudukQueueJob::class);
+    });
+
+    test('membalas json 422 bila hapus_penduduk tidak dikirim atau bukan array', function (array $payload) {
+        $response = withToken($this->token)->postJson('/api/v1/penduduk', $payload);
 
         $response->assertStatus(422)
             ->assertJson(['status' => 'danger'])
             ->assertJsonValidationErrors('hapus_penduduk');
-    });
+    })->with([
+        'kunci tidak ada' => [[]],
+        'string' => [['hapus_penduduk' => 'semua']],
+        'null' => [['hapus_penduduk' => null]],
+    ]);
 });

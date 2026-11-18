@@ -33,6 +33,7 @@ use App\Jobs\PendudukQueueJob;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use Illuminate\Support\Facades\Exceptions;
+use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
     Exceptions::fake();
@@ -87,4 +88,40 @@ test('melempar ulang exception agar job tercatat gagal', function () {
     ]]);
 
     expect(fn () => $job->handle())->toThrow(InvalidArgumentException::class);
+});
+
+test('menghapus foto kecil penduduk setelah data terhapus', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('penduduk/foto/kecil_foto_a.jpg', 'foto');
+    $desa = DataDesa::factory()->create(['desa_id' => '33.24.03.2008']);
+    Penduduk::factory()->create(['desa_id' => $desa->desa_id, 'id_pend_desa' => 5]);
+
+    (new PendudukQueueJob(['hapus_penduduk' => [
+        ['id_pend_desa' => 5, 'desa_id' => $desa->desa_id, 'foto' => 'foto_a.jpg'],
+    ]]))->handle();
+
+    Storage::disk('public')->assertMissing('penduduk/foto/kecil_foto_a.jpg');
+});
+
+test('tidak menghapus foto bila penghapusan data gagal', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('penduduk/foto/kecil_foto_a.jpg', 'foto');
+
+    $job = new PendudukQueueJob(['hapus_penduduk' => [
+        ['desa_id' => '33.24.03.2008', 'id_pend_desa' => ['bukan', 'skalar'], 'foto' => 'foto_a.jpg'],
+    ]]);
+
+    expect(fn () => $job->handle())->toThrow(InvalidArgumentException::class);
+    Storage::disk('public')->assertExists('penduduk/foto/kecil_foto_a.jpg');
+});
+
+test('nama foto dengan path traversal tidak menghapus berkas di luar folder foto', function () {
+    Storage::fake('public');
+    Storage::disk('public')->put('penduduk/sasaran.txt', 'jangan dihapus');
+
+    (new PendudukQueueJob(['hapus_penduduk' => [
+        ['id_pend_desa' => 6, 'desa_id' => '33.24.03.2008', 'foto' => '../../../sasaran.txt'],
+    ]]))->handle();
+
+    Storage::disk('public')->assertExists('penduduk/sasaran.txt');
 });

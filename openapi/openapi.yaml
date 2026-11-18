@@ -189,24 +189,24 @@ paths:
                 type: object
                 example:
                   status: danger
-                  message: 'The hapus penduduk field is required.'
+                  message: 'The hapus penduduk field must be present.'
                   errors:
                     hapus_penduduk:
-                      - 'The hapus penduduk field is required.'
+                      - 'The hapus penduduk field must be present.'
                 properties:
                   status:
                     type: string
                     example: danger
                   message:
                     type: string
-                    example: 'The hapus penduduk field is required.'
+                    example: 'The hapus penduduk field must be present.'
                   errors:
                     type: object
                     properties:
                       hapus_penduduk:
                         type: array
                         example:
-                          - 'The hapus penduduk field is required.'
+                          - 'The hapus penduduk field must be present.'
                         items:
                           type: string
       tags:

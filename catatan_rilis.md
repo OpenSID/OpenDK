@@ -5,6 +5,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### FITUR
 
+1. [#1790](https://github.com/OpenSID/OpenDK/issues/1790) Fix: Tema default belum bisa diunggah karena theme.json belum ada.
 
 #### BUG
 

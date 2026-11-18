@@ -42,8 +42,8 @@ class DesaService extends BaseApiService
 {
     public function dataDesa(string $slug)
     {
+        $slug = kembalikanSlug($slug);
         if ($this->useDatabaseGabungan()) {
-            $slug = kembalikanSlug($slug);
             $dataDesa = $this->desa(['filter[nama_desa]' => $slug, 'page[size]' => 1])?->first();
 
             return $dataDesa;
@@ -103,7 +103,7 @@ class DesaService extends BaseApiService
     {
         // Cache feeds for 1 hour to improve performance
         return Cache::remember('desa_feeds', 60 * 60, function () {
-            try {                
+            try {
                 $allDesa = $this->listDesa()->map(function($item){
                         return ($item instanceof DataDesa) ? $item : new DataDesa((array) $item);
                     })->filter(static fn($q) => !empty($q->website));
@@ -151,7 +151,7 @@ class DesaService extends BaseApiService
                         }
                     }
                 }
-                
+
                 Log::info('Total feeds collected', ['count' => count($feeds)]);
                 return $feeds;
             } catch (Exception $e) {
@@ -159,7 +159,7 @@ class DesaService extends BaseApiService
                 return [];
             }
         });
-    }                       
+    }
 
     public function listPathDesa()
     {

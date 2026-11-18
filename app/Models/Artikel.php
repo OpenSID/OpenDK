@@ -65,7 +65,6 @@ class Artikel extends Model
         'id_kategori',
         'judul',
         'gambar',
-        'kategori_id',
         'isi',
         'status',
         'tanggal_terbit'

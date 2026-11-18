@@ -37,10 +37,18 @@ use App\Models\Slide;
 use App\Models\Profil;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Tests\CrudTestCase;
 
 beforeEach(function () {
     Storage::fake('public');
+
+    // Kategori artikel default, karena das_artikel.id_kategori memiliki foreign key
+    // id_kategori tidak fillable (guarded), jadi ditulis langsung lewat DB
+    DB::table('das_artikel_kategori')->updateOrInsert(
+        ['id_kategori' => 1],
+        ['nama_kategori' => 'Berita Umum', 'slug' => 'berita-umum']
+    );
 });
 
 describe('File Upload Functionality', function () {
@@ -50,7 +58,7 @@ describe('File Upload Functionality', function () {
 
             $validData = [
                 'judul' => 'Artikel dengan Gambar',
-                'kategori_id' => 1,
+                'id_kategori' => 1,
                 'isi' => 'Isi artikel dengan gambar.',
                 'status' => 1,
                 'tanggal_terbit' => now()->toDateString(),
@@ -73,7 +81,7 @@ describe('File Upload Functionality', function () {
 
             $validData = [
                 'judul' => 'Artikel dengan PDF',
-                'kategori_id' => 1,
+                'id_kategori' => 1,
                 'isi' => 'Isi artikel.',
                 'status' => 1,
                 'tanggal_terbit' => now()->toDateString(),
@@ -91,7 +99,7 @@ describe('File Upload Functionality', function () {
 
             $validData = [
                 'judul' => 'Artikel dengan Gambar Besar',
-                'kategori_id' => 1,
+                'id_kategori' => 1,
                 'isi' => 'Isi artikel.',
                 'status' => 1,
                 'tanggal_terbit' => now()->toDateString(),
@@ -111,14 +119,14 @@ describe('File Upload Functionality', function () {
 
             $updateData = [
                 'judul' => 'Updated Artikel',
-                'kategori_id' => 1,
+                'id_kategori' => 1,
                 'isi' => 'Updated content',
                 'status' => 1,
                 'tanggal_terbit' => now()->toDateString(),
                 'gambar' => $newFile,
             ];
 
-            $response = $this->post(route('informasi.artikel.update', $artikel->id), $updateData);
+            $response = $this->put(route('informasi.artikel.update', $artikel->id), $updateData);
 
             $response->assertRedirect(route('informasi.artikel.index'));
             $response->assertSessionHas('success');
@@ -334,7 +342,7 @@ describe('File Upload Functionality', function () {
 
             $validData = [
                 'judul' => 'Artikel',
-                'kategori_id' => 1,
+                'id_kategori' => 1,
                 'isi' => 'Content',
                 'status' => 1,
                 'gambar' => $file,
@@ -349,7 +357,7 @@ describe('File Upload Functionality', function () {
             // File upload should be optional for some models
             $validData = [
                 'judul' => 'Artikel tanpa Gambar',
-                'kategori_id' => 1,
+                'id_kategori' => 1,
                 'isi' => 'Isi artikel tanpa gambar.',
                 'tanggal_terbit' => now()->toDateString(),
                 'status' => 1,

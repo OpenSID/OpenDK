@@ -9,6 +9,9 @@ use App\Models\Regulasi;
 use App\Models\TipePotensi;
 use App\Models\TipeRegulasi;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+uses(DatabaseTransactions::class);
 
 describe('File Preview Feature & Security Tests', function () {
     beforeEach(function () {
@@ -103,7 +106,11 @@ describe('File Preview Feature & Security Tests', function () {
     });
 
     test('potensi show page renders iframe for PDF and img for image', function () {
-        $tipe = TipePotensi::first();
+        // Tabel kategori potensi tidak selalu berisi data, jadi buat sendiri
+        $tipe = TipePotensi::firstOrCreate(
+            ['slug' => 'test-preview-potensi'],
+            ['nama_kategori' => 'Test Preview Potensi']
+        );
 
         $potensiPdf = Potensi::create([
             'kategori_id'  => $tipe->id,

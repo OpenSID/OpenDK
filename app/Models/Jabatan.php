@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Model;
 class Jabatan extends Model
 {
     use HasFactory;
-    
+
     protected $table = 'ref_jabatan';
 
     protected $fillable = [
@@ -54,6 +54,22 @@ class Jabatan extends Model
     public function setJenisAttribute($value)
     {
         $this->attributes['jenis'] = $value ?? JenisJabatan::JabatanLainnya;
+    }
+
+    /**
+     * Jabatan inti (Camat dan Sekretaris) wajib ada dan tidak boleh dihapus.
+     */
+    public function isJabatanInti(): bool
+    {
+        return (int) $this->jenis !== JenisJabatan::JabatanLainnya;
+    }
+
+    /**
+     * Ambil nama jabatan berdasarkan jenis, atau nilai bawaan bila tidak ditemukan.
+     */
+    public static function sebutan(int $jenis, string $default): string
+    {
+        return static::where('jenis', $jenis)->value('nama') ?? $default;
     }
 
     public function pengurus()

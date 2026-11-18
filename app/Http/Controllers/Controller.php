@@ -108,8 +108,8 @@ class Controller extends BaseController
 
             // Tambahan global variabel di luar setting aplikasi
             $this->sebutan_tambahan = [
-                'sebutan_camat' => Jabatan::where('jenis', JenisJabatan::Camat)->first()->nama,
-                'sebutan_sekretaris' => Jabatan::where('jenis', JenisJabatan::Sekretaris)->first()->nama,
+                'sebutan_camat' => Jabatan::sebutan(JenisJabatan::Camat, 'Camat'),
+                'sebutan_sekretaris' => Jabatan::sebutan(JenisJabatan::Sekretaris, 'Sekretaris'),
             ];
 
             // Global variabel setting aplikasi

@@ -181,7 +181,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
-            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');            
+            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
             /* route kategori */
             // Redirect dari /kategori ke halaman home secara permanent
@@ -1085,8 +1085,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
     // Semua Desa
     Route::get('/api/desa', function () {
-        return DataDesa::paginate(10)->name('api.desa');
-    });
+        return DataDesa::paginate(10);
+    })->name('api.desa');
 
-    Route::get('testEmail', TestEmailController::class)->name('testEmail');
+    // Fitur uji email khusus admin yang sudah login
+    Route::get('testEmail', TestEmailController::class)->middleware('auth:web')->name('testEmail');
 });

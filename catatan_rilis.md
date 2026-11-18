@@ -17,6 +17,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 #### TEKNIS
 
 1. [#1774](https://github.com/OpenSID/OpenDK/issues/1774) Konsolidasi: lebarkan kolom id ke BIGINT dan perintah geser id per desa.
+2. [#1780](https://github.com/OpenSID/OpenDK/issues/1780) Audit HTTP verb route: GET mengubah state dan verb tidak sesuai aksi.
 
 
 #### KEAMANAN

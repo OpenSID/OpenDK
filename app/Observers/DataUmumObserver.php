@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\DataUmum;
 use App\Services\ActivityLogService;
+use App\Services\CacheService;
 
 class DataUmumObserver
 {
@@ -14,6 +15,8 @@ class DataUmumObserver
 
     public function created(DataUmum $dataUmum): void
     {
+        $this->clearProfilApiCache();
+
         if ($dataUmum->wasChanged()) {
             $changed = $dataUmum->getChanges();
             ActivityLogService::logAttributeChange(
@@ -32,6 +35,8 @@ class DataUmumObserver
 
     public function updated(DataUmum $dataUmum): void
     {
+        $this->clearProfilApiCache();
+
         if ($dataUmum->wasChanged()) {
             $changed = $dataUmum->getChanges();
             ActivityLogService::logAttributeChange(
@@ -50,11 +55,21 @@ class DataUmumObserver
 
     public function deleted(DataUmum $dataUmum): void
     {
+        $this->clearProfilApiCache();
+
         ActivityLogService::logAttributeChange(
             'hapus data umum',
             'deleted',
             auth()->id() ?? null,
             $dataUmum->getOriginal()
         );
+    }
+
+    /**
+     * Hapus cache API profil (yang memuat relasi dataUmum) agar website tidak menampilkan data lama.
+     */
+    protected function clearProfilApiCache(): void
+    {
+        app(CacheService::class)->removeCachePrefix(config('theme-api.profil.cache_prefix', 'profil:api'));
     }
 }

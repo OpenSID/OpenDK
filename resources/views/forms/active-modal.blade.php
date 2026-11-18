@@ -19,13 +19,6 @@
 </div>
 <script>
     $(document).ready(function() {
-
-        $(document).on('click', '#activeModal', function(e) {
-            var url = $(this).attr('data-href');
-            $('#active').attr('action', url);
-            $('#import').attr('method', 'post');
-            $('#active-modal').modal('show');
-            e.preventDefault();
-        });
+        bindMethodModal('#activeModal', 'active', 'active-modal');
     });
 </script>

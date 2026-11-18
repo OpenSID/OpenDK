@@ -75,3 +75,22 @@ it('smoke: session restoration berfungsi', function () {
         ->assertPathIs('/dashboard')
         ->assertSee('Dashboard');
 })->group('smoke', 'browser', 'login');
+
+
+it('smoke: logout berhasil dan dashboard tidak bisa diakses lagi', function () {
+    $user = SessionState::loginAdminUser();
+
+    $this->page = SessionState::loginAndNavigate($user, '/dashboard');
+    $this->page->assertPathIs('/dashboard');
+
+    // Buka menu user di header, lalu klik Logout
+    $this->page->script("document.querySelector('li.user-menu > a.dropdown-toggle').click()");
+    $this->page->press('#logout-form button');
+
+    // Logout mengarahkan ke halaman utama, bukan ke /login
+    $this->page->assertPathIs('/');
+
+    // Setelah logout, halaman dashboard tidak lagi bisa diakses tanpa login
+    $this->page->navigate('/dashboard');
+    $this->page->assertPathIs('/login');
+})->group('smoke', 'browser', 'login');

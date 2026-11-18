@@ -60,9 +60,9 @@
                                     <label>Ubah Konfigurasi OTP</label>
                                     <p class="help-block">Jika Anda ingin mengubah konfigurasi OTP, nonaktifkan terlebih
                                         dahulu lalu aktifkan kembali dengan konfigurasi baru.</p>
-                                    <a href="{{ route('otp.deactivate') }}" class="btn btn-warning btn-deactivate-otp">
-                                        <i class="fa fa-times"></i> Nonaktifkan OTP
-                                    </a>
+                                    <button type="submit" form="form-deactivate-otp" class="btn btn-warning btn-deactivate-otp">
+                                            <i class="fa fa-times"></i> Nonaktifkan OTP
+                                    </button>
                                 </div>
                             @else
                                 @if (!$user->otp_channel)
@@ -101,6 +101,10 @@
                             @endif
                         </div>
                     </form>
+
+                    <form id="form-deactivate-otp" method="POST" action="{{ route('otp.deactivate') }}">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>
@@ -130,23 +134,7 @@
                 $('input[name="channel"]:checked').trigger('change');
 
                 // SweetAlert2 confirmation for deactivating OTP
-                $(document).on('click', '.btn-deactivate-otp', function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    Swal.fire({
-                        title: 'Nonaktifkan OTP?',
-                        text: 'Apakah Anda yakin ingin menonaktifkan OTP?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, nonaktifkan',
-                        cancelButtonText: 'Batal',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Redirect to the deactivate route
-                            window.location.href = url;
-                        }
-                    });
-                });
+                bindSubmitConfirm('.btn-deactivate-otp', 'Nonaktifkan OTP?', 'Apakah Anda yakin ingin menonaktifkan OTP?', 'Ya, nonaktifkan');
             });
         </script>
     @endpush

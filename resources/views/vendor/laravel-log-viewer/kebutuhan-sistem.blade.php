@@ -3,15 +3,21 @@
         <div class="box box-info">
             <div class="box-header with-border">
                 <div class="p-3">
-                    <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/linkstorage') }}">
-                        <span class="fa fa-play-circle"></span> Jalankan php artisan storage:link
-                    </a>
+                    <form method="POST" action="{{ route('setting.info-sistem.linkstorage') }}" class="d-inline" id="form-linkstorage">
+                        @csrf
+                        <button type="button" class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage">
+                            <span class="fa fa-play-circle"></span> Jalankan php artisan storage:link
+                        </button>
+                    </form>
                     <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-queue">
                         <span class="fa fa-play-circle"></span> Jalankan php artisan queue:listen
                     </a>
-                    <a class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-linkstorage" href="{{ URL('setting/info-sistem/migrasi') }}">
-                        <span class="fa fa-play-circle"></span> Jalankan migrasi
-                    </a>
+                    <form method="POST" action="{{ route('setting.info-sistem.migrasi') }}" class="d-inline" id="form-migrasi">
+                        @csrf
+                        <button type="button" class="btn btn-social btn-sm btn-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block" id="run-migrasi">
+                            <span class="fa fa-play-circle"></span> Jalankan migrasi
+                        </button>
+                    </form>
                 </div>
             </div>
             <p id="#ajaxProgress" style="display: none;">asdasd</p>
@@ -44,10 +50,31 @@
 
 @push('scripts')
     <script>
+        $(document).on('click', '#run-linkstorage', function(e) {
+            e.preventDefault();
+            var submitLinkStorage = function() {
+                $('#form-linkstorage')[0].submit();
+            };
+            // openConfirm dimuat dari public/js/modal-helper.js; fallback ke confirm() bawaan browser
+            if (typeof openConfirm === 'function') {
+                openConfirm('Yakin Untuk Menjalankan php artisan storage:link?', 'Konfirmasi', submitLinkStorage);
+            } else if (window.confirm('Yakin Untuk Menjalankan php artisan storage:link?')) {
+                submitLinkStorage();
+            }
+        });
+
+        $(document).on('click', '#run-migrasi', function(e) {
+            e.preventDefault();
+            $('#form-migrasi')[0].submit();
+        });
+
         $(document).on('click', '#run-queue', function(e) {
             $.ajax({
-                type: "GET",
-                url: "{{ URL('setting/info-sistem/queuelisten') }}",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': "{{ csrf_token() }}"
+                },
+                url: "{{ route('setting.info-sistem.queuelisten') }}",
                 beforeSend: function() {
                     Swal.showLoading()
                 },

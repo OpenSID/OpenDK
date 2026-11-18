@@ -165,7 +165,7 @@
 
                 $.ajax({
                     url: "{{ route('informasi.komentar-artikel.updateStatus') }}", // Ganti dengan URL yang sesuai untuk update status
-                    method: 'POST',
+                    method: 'PATCH',
                     data: {
                         id: commentId,
                         status: newStatus,

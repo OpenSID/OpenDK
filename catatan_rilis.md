@@ -5,13 +5,14 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 
 #### FITUR
 
+1. [#1790](https://github.com/OpenSID/OpenDK/issues/1790) Fix: Tema default belum bisa diunggah karena theme.json belum ada.
 
 #### BUG
 
 1. [#1771](https://github.com/OpenSID/OpenDK/issues/1771) Administrator utama bisa mengubah email hanya untuk akunnya sendiri.
 2. [#1770](https://github.com/OpenSID/OpenDK/issues/1770) Perbaiki foto pengurus tidak tersimpan saat tambah data baru.
 3. [#1777](https://github.com/OpenSID/OpenDK/issues/1777) Sembunyikan identitas pelapor dan NIK pada API komplain.
-
+4. [#1789](https://github.com/OpenSID/OpenDK/pull/1789) Desa dengan nama lebih dari satu kata tidak ditemukan (404) saat menggunakan database lokal.
 
 #### TEKNIS
 

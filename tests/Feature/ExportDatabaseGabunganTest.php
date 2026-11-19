@@ -387,7 +387,7 @@ test('DesaService listDesa with database gabungan active uses cache', function (
     $cachedData = collect([
         (object) ['desa_id' => '111', 'nama' => 'Cached Desa']
     ]);
-    Cache::put('listDesa', $cachedData, 60 * 60 * 24);
+    Cache::put((new DesaService())->listDesaCacheKey(), $cachedData, 60 * 60 * 24);
 
     // Mock API (tidak seharusnya dipanggil karena ada cache)
     Http::fake([

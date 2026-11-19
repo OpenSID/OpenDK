@@ -134,8 +134,18 @@ class DownloadController extends FrontEndController
             })->make();
     }
 
-    public function downloadDokumen(FormDokumen $file)
+    public function downloadDokumen($file)
     {
-        return response()->download($file->file_dokumen);
+        // Terapkan filter yang sama dengan daftar publik agar dokumen yang
+        // belum dipublikasi atau sudah kedaluwarsa tidak bisa diunduh (404).
+        $dokumen = FormDokumen::query()
+            ->where('is_published', true)
+            ->where(function ($q) {
+                $q->whereNull('expired_at')
+                ->orWhere('expired_at', '>', now());
+            })
+            ->findOrFail($file);
+
+        return response()->download($dokumen->file_dokumen);
     }
 }

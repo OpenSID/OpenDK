@@ -32,7 +32,6 @@
 namespace App\Services;
 
 use App\Models\DataDesa;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -73,7 +72,7 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function desa(array $filters = [])
     {
@@ -97,7 +96,7 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Get feeds for all desa
+     * Get feeds for all desa.
      */
     public function getFeeds(): array
     {
@@ -109,14 +108,17 @@ class DesaService extends BaseApiService
                     })->filter(static fn($q) => !empty($q->website));
                 $feeds = [];
                 foreach ($allDesa as $desa) {
-                    $feedReader = new SimplePie();
-                    $feedReader->set_feed_url($desa->website_url_feed['website']);
-                    //$feedReader->set_item_limit(5);
-                    $feedReader->force_fsockopen(true);
-                    $feedReader->set_cache_location(storage_path('framework/cache/simplepie'));
-                    $feedReader->init();
-                    $feedReader->handle_content_type();
-                    $items = $feedReader->get_items();
+                    // Kegagalan satu feed desa tidak boleh menggagalkan feed desa lain
+                    try {
+                        $items = $this->makeFeedReader($desa->website_url_feed['website'])->get_items();
+                    } catch (\Throwable $feedError) {
+                        Log::warning('Gagal mengambil feed desa', [
+                            'desa_id' => $desa->desa_id,
+                            'website' => $desa->website,
+                            'message' => $feedError->getMessage(),
+                        ]);
+                        continue;
+                    }
 
                     // Handle case where no items returned
                     if (empty($items)) {
@@ -129,19 +131,7 @@ class DesaService extends BaseApiService
 
                     foreach ($items as $item) {
                         try {
-                            $feeds[] = [
-                                'desa_id' => $desa->desa_id,
-                                'nama_desa' => $desa->nama,
-                                'feed_link' => $item->get_feed()->get_permalink(),
-                                'feed_title' => $item->get_feed()->get_title(),
-                                'link' => $item->get_link(),
-                                'date' => \Carbon\Carbon::createFromTimestamp((int) $item->get_date('U')),
-                                'author' => $item->get_author()->get_name() ?? 'Administrator',
-                                'title' => $item->get_title(),
-                                'image' => get_tag_image($item->get_description()),
-                                'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
-                                'content' => $item->get_content(),
-                            ];
+                            $feeds[] = $this->mapFeedItem($item, $desa);
                         } catch (\Throwable $itemError) {
                             Log::error('Error processing feed item', [
                                 'desa_id' => $desa->desa_id,
@@ -154,7 +144,7 @@ class DesaService extends BaseApiService
 
                 Log::info('Total feeds collected', ['count' => count($feeds)]);
                 return $feeds;
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 Log::error('Error fetching desa feeds', ['message' => $e->getMessage()]);
                 return [];
             }
@@ -171,7 +161,7 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Get Unique Desa
+     * Get Unique Desa.
      */
     public function jumlahDesa(array $filters = [])
     {
@@ -197,14 +187,41 @@ class DesaService extends BaseApiService
     }
 
     /**
-     * Dapatkan object desa berdasarkan kode_desa tertentu
-     *
-     * @param string $kodeDesa
-     * @return collection|DataDesa|\stdClass|null
+     * Dapatkan object desa berdasarkan kode_desa tertentu.
      */
     public function getDesaByKode(string $kodeDesa): Collection|DataDesa|\stdClass|null
     {
         $listDesa = $this->listDesa();
         return $listDesa->where('desa_id', $kodeDesa)->first();
+    }
+
+    protected function makeFeedReader(string $url): SimplePie
+    {
+        $feedReader = new SimplePie();
+        $feedReader->set_feed_url($url);
+        $feedReader->force_fsockopen(true);
+        $feedReader->set_cache_location(storage_path('framework/cache/simplepie'));
+        $feedReader->init();
+        $feedReader->handle_content_type();
+
+        return $feedReader;
+    }
+
+    protected function mapFeedItem($item, DataDesa $desa): array
+    {
+        return [
+            'desa_id' => $desa->desa_id,
+            'nama_desa' => $desa->nama,
+            'feed_link' => $item->get_feed()->get_permalink(),
+            'feed_title' => $item->get_feed()->get_title(),
+            'link' => $item->get_link(),
+            'date' => \Carbon\Carbon::createFromTimestamp((int) $item->get_date('U')),
+            // get_author() mengembalikan null bila item feed tidak memiliki author
+            'author' => $item->get_author()?->get_name() ?? 'Administrator',
+            'title' => $item->get_title(),
+            'image' => get_tag_image($item->get_description()),
+            'description' => strip_tags(substr(str_replace(['&amp;', 'nbsp;', '[...]'], '', $item->get_description()), 0, 250) . '[...]'),
+            'content' => $item->get_content(),
+        ];
     }
 }

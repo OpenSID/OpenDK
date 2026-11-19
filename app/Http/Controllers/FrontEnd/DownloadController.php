@@ -36,6 +36,7 @@ use App\Http\Controllers\FrontEndController;
 use App\Models\Prosedur;
 use App\Models\Regulasi;
 use App\Models\FormDokumen;
+use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
 
 class DownloadController extends FrontEndController
@@ -134,18 +135,15 @@ class DownloadController extends FrontEndController
             })->make();
     }
 
-    public function downloadDokumen($file)
+    public function downloadDokumen(FormDokumen $file)
     {
         // Terapkan filter yang sama dengan daftar publik agar dokumen yang
         // belum dipublikasi atau sudah kedaluwarsa tidak bisa diunduh (404).
-        $dokumen = FormDokumen::query()
-            ->where('is_published', true)
-            ->where(function ($q) {
-                $q->whereNull('expired_at')
-                ->orWhere('expired_at', '>', now());
-            })
-            ->findOrFail($file);
+        $isPublished = (bool) $file->is_published;
+        $isActive = $file->expired_at === null || Carbon::parse($file->expired_at)->isFuture();
 
-        return response()->download($dokumen->file_dokumen);
+        abort_unless($isPublished && $isActive, 404);
+
+        return response()->download($file->file_dokumen);
     }
 }

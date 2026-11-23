@@ -28,7 +28,7 @@ class ApiService
 
         $response = OutboundHttp::client()->withHeaders([
             'X-Requested-With' => 'XMLHttpRequest',
-        ])->attach(
+        ])->timeout(10)->connectTimeout(5)->attach(
             'permohonan',
             Storage::get($data['permohonan']),
             'dokumen-permohonan.pdf'
@@ -70,7 +70,7 @@ class ApiService
         $response = OutboundHttp::client()->withHeaders([
             'Authorization' => 'Bearer ' . $this->setting->layanan_opendesa_token,
             'X-Requested-With' => 'XMLHttpRequest',
-        ])->post("{$this->server}/api/v1/pelanggan/terdaftar-kecamatan", [
+        ])->timeout(10)->connectTimeout(5)->post("{$this->server}/api/v1/pelanggan/terdaftar-kecamatan", [
             'kecamatan_id' => $kode_kecamatan,
         ]);
 
@@ -84,7 +84,7 @@ class ApiService
 
             return [
                 'success' => false,
-                'message' => $response->json('message'),
+                'message' => $response->json('message', 'Gagal mengambil data.'),
                 'data'  => $response->body(),
             ];
         }
@@ -95,7 +95,7 @@ class ApiService
         $response = OutboundHttp::client()->withHeaders([
             'Authorization' => 'Bearer ' . $this->setting->layanan_opendesa_token,
             'X-Requested-With' => 'XMLHttpRequest',
-        ])->get("{$this->server}/api/v1/pelanggan/form-register-kecamatan");
+        ])->timeout(10)->connectTimeout(5)->get("{$this->server}/api/v1/pelanggan/form-register-kecamatan");
 
         if ($response->successful()) {
             return [

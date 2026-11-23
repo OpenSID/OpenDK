@@ -15,6 +15,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 4. [#1789](https://github.com/OpenSID/OpenDK/pull/1789) Desa dengan nama lebih dari satu kata tidak ditemukan (404) saat menggunakan database lokal.
 5. [#1793](https://github.com/OpenSID/OpenDK/issues/1793) Fix: Perubahan data umum tidak langsung tampil pada API profil.
 6. [#1802](https://github.com/OpenSID/OpenDK/issues/1802) Perbaikan Detail komplain slug tidak ada jadi 404, dan hapus 3 route user yatim.
+7. [#1800](https://github.com/OpenSID/OpenDK/issues/1800)  Cegah 500 pada respons non-JSON dan tambah timeout di ApiService.
 
 #### TEKNIS
 

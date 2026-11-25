@@ -31,12 +31,12 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Models\OtpToken;
 use App\Models\User;
 use App\Mail\OtpMail;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -130,7 +130,7 @@ class OtpService
 
             $message = $this->formatTelegramMessage($otp, $purpose);
 
-            $response = Http::post("https://api.telegram.org/bot{$botToken}/sendMessage", [
+            $response = OutboundHttp::client()->post("https://api.telegram.org/bot{$botToken}/sendMessage", [
                 'chat_id' => $chatId,
                 'text' => $message,
                 'parse_mode' => 'HTML',
@@ -296,7 +296,7 @@ class OtpService
                 return false;
             }
 
-            $response = Http::post("https://api.telegram.org/bot{$botToken}/getChat", [
+            $response = OutboundHttp::client()->post("https://api.telegram.org/bot{$botToken}/getChat", [
                 'chat_id' => $chatId,
             ]);
 

@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Models\SettingAplikasi;
-use Illuminate\Support\Facades\Http;
 
 class LaporanPendudukService
 {
@@ -23,7 +23,7 @@ class LaporanPendudukService
         $baseUrl = $this->settings['api_server_database_gabungan'];
 
         // Buat permintaan API dengan Header dan Parameter
-        $response = Http::withHeaders([
+        $response = OutboundHttp::client()->withHeaders([
             'Accept' => 'application/ld+json',
             'Content-Type' => 'application/json',
             'Authorization' => 'Bearer ' . $this->settings['api_key_database_gabungan'],

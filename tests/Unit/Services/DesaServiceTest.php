@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
-use willvincent\Feeds\Facades\FeedsFacade;
 
 uses(DatabaseTransactions::class);
 

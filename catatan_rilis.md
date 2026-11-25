@@ -20,6 +20,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 9. [#1805](https://github.com/OpenSID/OpenDK/issues/1805) Tambahkan timeout dan penanganan error pada pemanggilan HTTP di luar ApiService.
 10. [#1795](https://github.com/OpenSID/OpenDK/issues/1795) Fix: Impor Toilet & Sanitasi berhasil tetapi redirect error 500 (nama route salah).
 11. [#1796](https://github.com/OpenSID/OpenDK/issues/1796) Menghapus Jabatan Camat/Sekretaris membuat seluruh aplikasi error 500.
+12. [#1797](https://github.com/OpenSID/OpenDK/issues/1797) Persentase belanja barang/jasa salah dan division by zero di AnggaranRealisasiChartService.
 
 #### TEKNIS
 

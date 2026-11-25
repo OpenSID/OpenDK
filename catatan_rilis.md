@@ -23,6 +23,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 12. [#1797](https://github.com/OpenSID/OpenDK/issues/1797) Persentase belanja barang/jasa salah dan division by zero di AnggaranRealisasiChartService.
 13. [#1798](https://github.com/OpenSID/OpenDK/issues/1798) Perbaikan Cache listDesa terus diperpanjang dan tidak membedakan parameter $all.
 14. [#1799](https://github.com/OpenSID/OpenDK/issues/1799) Perbaikan getFeeds() error jika item RSS tidak punya author dan gagal per feed.
+15. [#1813](https://github.com/OpenSID/OpenDK/issues/1813) Perbaikan Batasi unduh dokumen hanya untuk dokumen terbit dan belum kedaluwarsa.
 
 
 #### TEKNIS

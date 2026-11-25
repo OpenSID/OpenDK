@@ -31,7 +31,6 @@
 
 namespace App\Http\Controllers\Data;
 
-use App\Enums\JenisJabatan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JabatanRequest;
 use App\Models\Jabatan;
@@ -58,7 +57,7 @@ class JabatanController extends Controller
                 ->addColumn('aksi', function ($row) {
                     if (!auth()->guest()) {
                         $data['edit_url'] = auth()->user()->can('access.data.jabatan.edit') ? route('data.jabatan.edit', $row->id) : null;
-                        if ($row->jenis == JenisJabatan::JabatanLainnya) {
+                        if (! $row->isJabatanInti()) {
                             $data['delete_url'] = auth()->user()->can('access.data.jabatan.delete') ? route('data.jabatan.destroy', $row->id) : null;
                         }
                     }
@@ -111,6 +110,7 @@ class JabatanController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
+     *
      * @return Response
      */
     public function edit($id)
@@ -126,6 +126,7 @@ class JabatanController extends Controller
      * Update the specified resource in storage.
      *
      * @param  int  $id
+     *
      * @return Response
      */
     public function update(JabatanRequest $request, $id)
@@ -149,12 +150,19 @@ class JabatanController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
+     *
      * @return Response
      */
     public function destroy($id)
     {
+        $jabatan = Jabatan::findOrFail($id);
+
+        if ($jabatan->isJabatanInti()) {
+            return redirect()->route('data.jabatan.index')->with('error', 'Jabatan ' . $jabatan->nama . ' tidak dapat dihapus karena merupakan jabatan inti!');
+        }
+
         try {
-            Jabatan::findOrFail($id)->delete();
+            $jabatan->delete();
         } catch (\Exception $e) {
             Log::error('Jabatan deletion failed', [
                 'error' => $e->getMessage(),

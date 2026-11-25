@@ -888,7 +888,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('create', 'create')->name('setting.user.create');
                 Route::post('store', 'store')->name('setting.user.store');
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
-                Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::delete('destroy/{id}', 'destroy')->name('setting.user.destroy');
                 Route::patch('active/{id}', 'active')->name('setting.user.active');
                 Route::delete('permanent-destroy/{id}', 'permanentDestroy')->name('setting.user.permanent-destroy');
@@ -898,11 +897,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.user.edit');
                 Route::put('update/{id}', 'update')->name('setting.user.update');
-            });
-
-            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['action_permission:access.setting']], function () {
-                Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
-                Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
 
             // Widget

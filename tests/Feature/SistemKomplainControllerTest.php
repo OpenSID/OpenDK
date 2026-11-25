@@ -121,3 +121,9 @@ test('komplain store with valid data', function () {
         'value' => 1,
     ]);
 });
+
+test('detail komplain dengan slug tidak ada mengembalikan 404', function () {
+    $response = $this->get(route('sistem-komplain.komplain', ['slug' => 'slug-ngawur-tidak-ada']));
+
+    $response->assertNotFound();
+});

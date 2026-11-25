@@ -181,7 +181,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('\App\Http\Controllers\FrontEnd')->group(function () {
             Route::get('/', 'PageController@index')->name('beranda');
             Route::get('berita-desa', 'PageController@beritaDesa')->name('berita-desa');
-            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');            
+            Route::get('filter-berita-desa', 'PageController@filterFeeds')->name('filter-berita-desa');
 
             /* route kategori */
             // Redirect dari /kategori ke halaman home secara permanent
@@ -888,7 +888,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('create', 'create')->name('setting.user.create');
                 Route::post('store', 'store')->name('setting.user.store');
                 Route::put('updatePassword/{id}', 'updatePassword')->name('setting.user.updatePassword');
-                Route::put('password/{id}', 'password')->name('setting.user.password');
                 Route::delete('destroy/{id}', 'destroy')->name('setting.user.destroy');
                 Route::patch('active/{id}', 'active')->name('setting.user.active');
                 Route::delete('permanent-destroy/{id}', 'permanentDestroy')->name('setting.user.permanent-destroy');
@@ -898,11 +897,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
             Route::group(['prefix' => 'user', 'controller' => UserController::class], function () {
                 Route::get('edit/{id}', 'edit')->name('setting.user.edit');
                 Route::put('update/{id}', 'update')->name('setting.user.update');
-            });
-
-            Route::group(['prefix' => 'user', 'controller' => UserController::class, 'middleware' => ['action_permission:access.setting']], function () {
-                Route::get('photo-profil/{id}', 'photo')->name('setting.user.photo');
-                Route::put('update-photo/{id}', 'updatePhoto')->name('setting.user.uphoto');
             });
 
             // Widget
@@ -1085,8 +1079,9 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
 
     // Semua Desa
     Route::get('/api/desa', function () {
-        return DataDesa::paginate(10)->name('api.desa');
-    });
+        return DataDesa::paginate(10);
+    })->name('api.desa');
 
-    Route::get('testEmail', TestEmailController::class)->name('testEmail');
+    // Fitur uji email khusus admin yang sudah login
+    Route::get('testEmail', TestEmailController::class)->middleware('auth:web')->name('testEmail');
 });

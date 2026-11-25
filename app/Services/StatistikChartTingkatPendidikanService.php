@@ -31,6 +31,7 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Enums\LabelStatistik;
 use App\Models\DataDesa;
 use GuzzleHttp\Client;
@@ -70,7 +71,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
 
     private function dataGabunganSemua()
     {
-        $client = new Client(['base_uri' => $this->baseUrl, 'headers' => $this->header]);
+        $client = new Client(OutboundHttp::guzzleOptions(['base_uri' => $this->baseUrl, 'headers' => $this->header]));
         $requests = [];
         $dataPendidikan = [];
         $filters = [
@@ -97,7 +98,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
 
     private function dataGabunganSemuaDesa($year)
     {
-        $client = new Client(['base_uri' => $this->baseUrl, 'headers' => $this->header]);
+        $client = new Client(OutboundHttp::guzzleOptions(['base_uri' => $this->baseUrl, 'headers' => $this->header]));
         $requests = [];
         $dataPendidikan = [];
         $filters = [
@@ -145,7 +146,7 @@ class StatistikChartTingkatPendidikanService extends BaseApiService
 
     private function dataGabunganSemuaTahun($did)
     {
-        $client = new Client(['base_uri' => $this->baseUrl, 'headers' => $this->header]);
+        $client = new Client(OutboundHttp::guzzleOptions(['base_uri' => $this->baseUrl, 'headers' => $this->header]));
         $requests = [];
         $dataPendidikan = [];
         $filters = [

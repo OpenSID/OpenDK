@@ -14,7 +14,11 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 3. [#1777](https://github.com/OpenSID/OpenDK/issues/1777) Sembunyikan identitas pelapor dan NIK pada API komplain.
 4. [#1789](https://github.com/OpenSID/OpenDK/pull/1789) Desa dengan nama lebih dari satu kata tidak ditemukan (404) saat menggunakan database lokal.
 5. [#1793](https://github.com/OpenSID/OpenDK/issues/1793) Fix: Perubahan data umum tidak langsung tampil pada API profil.
-6. [#1795](https://github.com/OpenSID/OpenDK/issues/1795) Fix: Impor Toilet & Sanitasi berhasil tetapi redirect error 500 (nama route salah).
+6. [#1802](https://github.com/OpenSID/OpenDK/issues/1802) Perbaikan Detail komplain slug tidak ada jadi 404, dan hapus 3 route user yatim.
+7. [#1800](https://github.com/OpenSID/OpenDK/issues/1800)  Cegah 500 pada respons non-JSON dan tambah timeout di ApiService.
+8. [#1801](https://github.com/OpenSID/OpenDK/issues/1801) Route /api/desa dan /testEmail menghasilkan 500 untuk pengunjung publik.
+9. [#1805](https://github.com/OpenSID/OpenDK/issues/1805) Tambahkan timeout dan penanganan error pada pemanggilan HTTP di luar ApiService.
+10. [#1795](https://github.com/OpenSID/OpenDK/issues/1795) Fix: Impor Toilet & Sanitasi berhasil tetapi redirect error 500 (nama route salah).
 
 #### TEKNIS
 

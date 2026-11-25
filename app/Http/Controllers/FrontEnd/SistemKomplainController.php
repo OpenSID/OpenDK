@@ -37,6 +37,7 @@ use App\Models\JawabKomplain;
 use App\Models\Komplain;
 use App\Models\Penduduk;
 use App\Services\PendudukService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -197,7 +198,9 @@ class SistemKomplainController extends FrontEndController
     public function show($slug)
     {
         try {
-            $komplain = Komplain::where('slug', '=', $slug)->first();
+            $komplain = Komplain::where('slug', '=', $slug)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            abort(404);
         } catch (\Exception $e) {
             Log::error('Komplain show failed', [
                 'error' => $e->getMessage(),

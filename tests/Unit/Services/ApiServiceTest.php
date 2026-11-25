@@ -217,3 +217,35 @@ it('handles missing layanan_opendesa_token setting', function () {
     // Should still instantiate but may have issues with API calls
     expect($service)->toBeInstanceOf(ApiService::class);
 });
+it('returns default message when terdaftar receives non-JSON error body', function () {
+    SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
+
+    Http::fake([
+        '*/api/v1/pelanggan/terdaftar-kecamatan' => Http::response(
+            '<html><body>502 Bad Gateway</body></html>',
+            502,
+            ['Content-Type' => 'text/html']
+        ),
+    ]);
+
+    $service = new ApiService();
+    $response = $service->terdaftar('3201');
+
+    expect($response['success'])->toBeFalse();
+    expect($response['message'])->toBe('Gagal mengambil data.');
+    expect($response['data'])->toContain('502 Bad Gateway');
+});
+
+it('returns default message when terdaftar error JSON has no message field', function () {
+    SettingAplikasi::firstOrCreate(['key' => 'layanan_opendesa_token'], ['value' => 'test_token']);
+
+    Http::fake([
+        '*/api/v1/pelanggan/terdaftar-kecamatan' => Http::response(['error' => 'internal'], 500),
+    ]);
+
+    $service = new ApiService();
+    $response = $service->terdaftar('3201');
+
+    expect($response['success'])->toBeFalse();
+    expect($response['message'])->toBe('Gagal mengambil data.');
+});

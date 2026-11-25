@@ -31,6 +31,7 @@
 
 namespace App\Http\Controllers\Data;
 
+use App\Support\OutboundHttp;
 use App\Exports\ExportDataDesa;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DesaRequest;
@@ -49,7 +50,7 @@ class DataDesaController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->client = new Client();
+        $this->client = new Client(OutboundHttp::guzzleOptions());
     }
 
     /**

@@ -31,6 +31,7 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Enums\LabelStatistik;
 use App\Models\Penduduk;
 use GuzzleHttp\Client;
@@ -115,7 +116,7 @@ class StatistikPendudukService extends BaseApiService
                 $filtersAkta['filter[id]'] = 'akta-kelahiran';
                 $filtersAktaNikah['filter[id]'] = 'akta-nikah';
                 $filtersNikah['filter[id]'] = 'status-perkawinan';
-                $client = new Client(['base_uri' => $this->baseUrl, 'headers' => $this->header]);
+                $client = new Client(OutboundHttp::guzzleOptions(['base_uri' => $this->baseUrl, 'headers' => $this->header]));
                 $promises = Utils::unwrap([
                     'penduduk' => $client->getAsync('/api/v1/statistik-web/penduduk', ['query' => $filters]),
                     'cacat' => $client->getAsync('/api/v1/statistik-web/penduduk', ['query' => $filtersCacat]),

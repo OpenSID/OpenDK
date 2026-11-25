@@ -18,6 +18,7 @@ Terimakasih [isi disini] yang telah berkontribusi langsung mengembangkan aplikas
 7. [#1800](https://github.com/OpenSID/OpenDK/issues/1800)  Cegah 500 pada respons non-JSON dan tambah timeout di ApiService.
 8. [#1801](https://github.com/OpenSID/OpenDK/issues/1801) Route /api/desa dan /testEmail menghasilkan 500 untuk pengunjung publik.
 9. [#1805](https://github.com/OpenSID/OpenDK/issues/1805) Tambahkan timeout dan penanganan error pada pemanggilan HTTP di luar ApiService.
+10. [#1795](https://github.com/OpenSID/OpenDK/issues/1795) Fix: Impor Toilet & Sanitasi berhasil tetapi redirect error 500 (nama route salah).
 
 #### TEKNIS
 

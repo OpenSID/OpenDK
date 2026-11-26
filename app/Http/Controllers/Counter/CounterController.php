@@ -35,25 +35,31 @@ use App\Enums\VisitorFilterEnum;
 use App\Models\Visitor;
 use App\Models\CounterPage;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Profil;
 
 class CounterController extends Controller
 {
+    private const CACHE_TOP_PAGES = 'counter.top_pages';
+
+    private const CACHE_TTL_MINUTES = 5;
+
     public function index()
     {
         $page_title = 'Statistik Pengunjung';
         $page_description = 'Jumlah Statistik Pengunjung Website';
 
-        // hitung statistik
+        // hitung statistik: enam periode dalam satu query, di-cache agar tidak dihitung ulang setiap buka halaman
+        $summary = Visitor::cachedSummaryStats();
         $visitors = [
-            'todayVisitors'     => Visitor::stats(VisitorFilterEnum::TODAY),
-            'yesterdayVisitors' => Visitor::stats(VisitorFilterEnum::YESTERDAY),
-            'weeklyVisitors'    => Visitor::stats(VisitorFilterEnum::THIS_WEEK),
-            'monthlyVisitors'   => Visitor::stats(VisitorFilterEnum::THIS_MONTH),
-            'yearlyVisitors'    => Visitor::stats(VisitorFilterEnum::THIS_YEAR),
-            'totalVisitors'     => Visitor::stats(VisitorFilterEnum::ALL),
+            'todayVisitors'     => $summary['today'],
+            'yesterdayVisitors' => $summary['yesterday'],
+            'weeklyVisitors'    => $summary['thisWeek'],
+            'monthlyVisitors'   => $summary['thisMonth'],
+            'yearlyVisitors'    => $summary['thisYear'],
+            'totalVisitors'     => $summary['all'],
         ];
 
         // request url query parameter 'filter'
@@ -67,7 +73,7 @@ class CounterController extends Controller
         ];
 
         // Halaman populer
-        $top_pages_visited = Visitor::getTopPagesVisited();
+        $top_pages_visited = Cache::remember(self::CACHE_TOP_PAGES, now()->addMinutes(self::CACHE_TTL_MINUTES), fn () => Visitor::getTopPagesVisited());
 
         return view('counter.index', compact(
             'page_title',

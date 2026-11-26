@@ -21,31 +21,98 @@ class Visitor extends Model
         'visited_at' => 'datetime',
     ];
 
-    /* Query scope filter date */
+    protected static function booted(): void
+    {
+        // url_hash menjadi kunci pengelompokan dan lookup, karena kolom url berupa TEXT (tidak bisa di-index penuh).
+        static::saving(function (Visitor $visitor) {
+            if ($visitor->isDirty('url') && $visitor->url !== null) {
+                $visitor->url_hash = hash('sha256', $visitor->url);
+            }
+        });
+    }
+
+    /* Query scope filter date. Memakai rentang [awal, akhir) agar index visited_at bisa dipakai. */
     public function scopeFilter($query, $filter = null)
     {
         switch ($filter) {
             case VisitorFilterEnum::YESTERDAY:
-                $query->whereDate('visited_at', Carbon::yesterday());
-                break;
+                $start = Carbon::yesterday()->startOfDay();
+                return self::applyRange($query, $start, $start->copy()->addDay());
             case VisitorFilterEnum::THIS_WEEK:
-                $query->whereBetween('visited_at', [now()->startOfWeek(), now()->endOfWeek()]);
-                break;
+                $start = now()->startOfWeek();
+                return self::applyRange($query, $start, $start->copy()->addWeek());
             case VisitorFilterEnum::THIS_MONTH:
-                $query->whereMonth('visited_at', now()->month)
-                    ->whereYear('visited_at', now()->year);
-                break;
+                $start = now()->startOfMonth();
+                return self::applyRange($query, $start, $start->copy()->addMonth());
             case VisitorFilterEnum::THIS_YEAR:
-                $query->whereYear('visited_at', now()->year);
-                break;
+                $start = now()->startOfYear();
+                return self::applyRange($query, $start, $start->copy()->addYear());
             case VisitorFilterEnum::ALL:
                 // tidak ada filter
                 break;
             default:
-                $query->whereDate('visited_at', Carbon::today());
+                $start = Carbon::today();
+                return self::applyRange($query, $start, $start->copy()->addDay());
         }
 
         return $query;
+    }
+
+    private static function applyRange($query, Carbon $start, Carbon $end)
+    {
+        return $query->where('visited_at', '>=', $start)->where('visited_at', '<', $end);
+    }
+
+    /**
+     * Ringkasan enam periode dalam satu kali pemindaian tabel.
+     * Mengembalikan array dengan kunci: today, yesterday, thisWeek, thisMonth, thisYear, all.
+     * Setiap nilai berupa object dengan properti page_views dan unique_visitors.
+     */
+    public static function summaryStats(): array
+    {
+        $now = now();
+        $todayStart = $now->copy()->startOfDay();
+        $weekStart = $now->copy()->startOfWeek();
+        $monthStart = $now->copy()->startOfMonth();
+        $yearStart = $now->copy()->startOfYear();
+
+        $periods = [
+            'today' => [$todayStart, $todayStart->copy()->addDay()],
+            'yesterday' => [$todayStart->copy()->subDay(), $todayStart],
+            'thisWeek' => [$weekStart, $weekStart->copy()->addWeek()],
+            'thisMonth' => [$monthStart, $monthStart->copy()->addMonth()],
+            'thisYear' => [$yearStart, $yearStart->copy()->addYear()],
+            'all' => null,
+        ];
+
+        $columns = [];
+        $bindings = [];
+        foreach ($periods as $key => $range) {
+            if ($range === null) {
+                $columns[] = "SUM(page_views) AS {$key}_page_views";
+                $columns[] = "COUNT(DISTINCT ip_address) AS {$key}_unique_visitors";
+
+                continue;
+            }
+
+            [$start, $end] = $range;
+            $condition = 'visited_at >= ? AND visited_at < ?';
+            $columns[] = "SUM(CASE WHEN {$condition} THEN page_views ELSE 0 END) AS {$key}_page_views";
+            $columns[] = "COUNT(DISTINCT CASE WHEN {$condition} THEN ip_address END) AS {$key}_unique_visitors";
+            array_push($bindings, $start, $end, $start, $end);
+        }
+
+        $row = self::query()->selectRaw(implode(', ', $columns), $bindings)->first();
+
+        $summary = [];
+        foreach (array_keys($periods) as $key) {
+            $summary[$key] = (object) [
+                'page_views' => (int) $row->{"{$key}_page_views"},
+                'unique_visitors' => (int) $row->{"{$key}_unique_visitors"},
+            ];
+        }
+
+        return $summary;
     }
 
     public static function stats($filter = null)
@@ -75,21 +142,32 @@ class Visitor extends Model
             ->get();
     }
 
-    /* data untuk halaman populer */
+    /* data untuk halaman populer. Dikelompokkan per url_hash (indexed), bukan url (TEXT). */
     public static function getTopPagesVisited()
     {
-        return self::select('url')
+        return self::select('url_hash')
+            ->selectRaw('MAX(url) as url')
             ->selectRaw('SUM(page_views) as total_views')
             ->selectRaw('COUNT(DISTINCT ip_address) as unique_visitors')
             ->selectRaw('SUM(CASE WHEN page_views = 1 THEN 1 ELSE 0 END) as bounces')
-            ->groupBy('url')
+            ->groupBy('url_hash')
             ->orderByDesc('total_views')
             ->limit(10)
             ->get();
     }
 
+    /* Ringkasan di-cache bersama, sehingga sidebar (dipanggil di setiap halaman admin) tidak memindai tabel lagi. */
+    public static function cachedSummaryStats(): array
+    {
+        return \Illuminate\Support\Facades\Cache::remember(
+            'counter.summary',
+            now()->addMinutes(5),
+            fn () => self::summaryStats()
+        );
+    }
+
     public static function countAllVisitors()
     {
-        return \Illuminate\Support\Facades\DB::table('visitors')->distinct('ip_address')->count('ip_address');
+        return self::cachedSummaryStats()['all']->unique_visitors;
     }
 }

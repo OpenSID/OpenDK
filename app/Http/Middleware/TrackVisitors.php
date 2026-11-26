@@ -48,12 +48,12 @@ class TrackVisitors
         $ipAddress = $request->ip();
         $hashedIpAddress = hash('sha256', $ipAddress); // Hash IP address
         $url = $request->fullUrl();
-        $today = now()->toDateString();
         $userAgent = $request->userAgent();
 
-        $visitor = Visitor::where('ip_address', $hashedIpAddress)
-            ->where('url', $url)
-            ->whereDate('visited_at', $today)
+        // Lookup memakai index (ip_address, url_hash, visited_at), bukan membandingkan kolom TEXT url.
+        $visitor = Visitor::filter(\App\Enums\VisitorFilterEnum::TODAY)
+            ->where('ip_address', $hashedIpAddress)
+            ->where('url_hash', hash('sha256', $url))
             ->first();
 
         if ($visitor) {

@@ -88,6 +88,16 @@ class Visitor extends Model
             ->get();
     }
 
+    /* jumlah kemunculan tiap user_agent, dihitung di database (satu baris per string unik) */
+    public static function countByUserAgent(): \Illuminate\Support\Collection
+    {
+        return self::query()
+            ->select('user_agent')
+            ->selectRaw('COUNT(*) as total')
+            ->groupBy('user_agent')
+            ->pluck('total', 'user_agent');
+    }
+
     public static function countAllVisitors()
     {
         return \Illuminate\Support\Facades\DB::table('visitors')->distinct('ip_address')->count('ip_address');

@@ -70,15 +70,15 @@ class DashboardController extends Controller
         // Halaman populer
         $top_pages_visited = \App\Models\Visitor::getTopPagesVisited();
 
-        // User agent
-        $userAgents = \App\Models\Visitor::query()->pluck('user_agent');
+        // User agent: dihitung per string unik di database, lalu di-parse sekali per string unik
+        $userAgents = \App\Models\Visitor::countByUserAgent();
 
         // Parsing user_agent
         $browserCounts = [];
         $deviceCounts = [];
         $platformCounts = [];
 
-        foreach ($userAgents as $userAgent) {
+        foreach ($userAgents as $userAgent => $total) {
             $agent = new \Jenssegers\Agent\Agent();
             $agent->setUserAgent($userAgent);
 
@@ -86,9 +86,9 @@ class DashboardController extends Controller
             $device = $agent->device() ?: 'Unknown';
             $platform = $agent->platform() ?: 'Unknown';
 
-            $browserCounts[$browser] = ($browserCounts[$browser] ?? 0) + 1;
-            $deviceCounts[$device] = ($deviceCounts[$device] ?? 0) + 1;
-            $platformCounts[$platform] = ($platformCounts[$platform] ?? 0) + 1;
+            $browserCounts[$browser] = ($browserCounts[$browser] ?? 0) + $total;
+            $deviceCounts[$device] = ($deviceCounts[$device] ?? 0) + $total;
+            $platformCounts[$platform] = ($platformCounts[$platform] ?? 0) + $total;
         }
 
         // Konversi ke format yang sesuai untuk Highcharts

@@ -56,6 +56,7 @@ class PendudukQueueJob implements ShouldQueue
      * Create a new job instance.
      *
      * @param  array  $request
+     *
      * @return void
      */
     public function __construct($request)
@@ -68,7 +69,7 @@ class PendudukQueueJob implements ShouldQueue
      *
      * @return void
      */
-    public function failed(\Exception $e)
+    public function failed(\Throwable $e)
     {
         // TODO: Send notification when job failure.
         report($e);
@@ -81,30 +82,26 @@ class PendudukQueueJob implements ShouldQueue
      */
     public function handle()
     {
-        DB::beginTransaction();
+        if (empty($this->request['hapus_penduduk'])) {
+            return;
+        }
 
-        try {
-            // Batch delete penduduk
-            if (isset($this->request['hapus_penduduk'])) {
-                foreach ($this->request['hapus_penduduk'] as $item) {
-                    $id_pend_desa[] = $item['id_pend_desa'];
-                    $foto[] = $item['foto'];
-                    $desa_id[] = $item['desa_id'];
-                }
+        $hapus = collect($this->request['hapus_penduduk']);
 
-                // Hapus data penduduk di database
-                Penduduk::whereIn('desa_id', $desa_id)->whereIn('id_pend_desa', $id_pend_desa)->delete();
-
-                // Hapus file foto di folder
-                foreach ($foto as $hapusfoto) {
-                    Storage::disk('public')->delete('penduduk/foto/'.'kecil_'.$hapusfoto);
-                }
+        // Exception dilempar ulang oleh DB::transaction agar job tercatat gagal dan failed() terpanggil
+        DB::transaction(function () use ($hapus) {
+            // Hapus per desa agar id_pend_desa milik desa lain dalam batch yang sama tidak ikut terhapus
+            foreach ($hapus->groupBy('desa_id') as $desa_id => $items) {
+                Penduduk::where('desa_id', $desa_id)
+                    ->whereIn('id_pend_desa', $items->pluck('id_pend_desa'))
+                    ->delete();
             }
+        });
 
-            DB::commit();
-        } catch (\Exception $e) {
-            report($e);
-            DB::rollBack();
+        // Foto dihapus setelah commit agar tidak hilang bila penghapusan data dibatalkan.
+        // basename() mencegah path traversal dari nilai foto kiriman klien.
+        foreach ($hapus->pluck('foto')->filter() as $hapusfoto) {
+            Storage::disk('public')->delete('penduduk/foto/kecil_'.basename((string) $hapusfoto));
         }
     }
 }

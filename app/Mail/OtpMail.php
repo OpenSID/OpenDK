@@ -54,7 +54,7 @@ class OtpMail extends Mailable
     {
         $this->otp = $otp;
         $this->purpose = $purpose;
-        $this->expiryMinutes = config('otp.expiry_minutes', 5);
+        $this->expiryMinutes = max(1, (int) config('otp.expiry_minutes', 5));
     }
 
     /**

@@ -53,6 +53,8 @@ class GeserIdKonsolidasi extends Command
         'das_pembangunan_dokumentasi' => ['id', 'id_pembangunan'],
         'das_program' => ['id'],
         'das_peserta_program' => ['program_id'],
+        'das_apbdes' => ['id_apbdes'],
+        'das_laporan_penduduk' => ['id_laporan_penduduk'],
         'das_suplemen_terdata' => ['penduduk_id_gabungan'],
     ];
 

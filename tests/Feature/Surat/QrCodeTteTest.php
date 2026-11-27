@@ -28,6 +28,9 @@ beforeEach(function () {
         CompleteProfile::class,
     ]);
 
+    // Pastikan camat uji yang dibuat di bawah satu-satunya camat aktif yang dipakai controller.
+    Pengurus::whereHas('jabatan', fn ($q) => $q->where('jenis', JenisJabatan::Camat))->update(['status' => 0]);
+
     $jabatanCamat = Jabatan::factory()->create([
         'nama' => 'Camat',
         'jenis' => JenisJabatan::Camat,

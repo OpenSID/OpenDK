@@ -34,8 +34,11 @@ namespace Tests\Feature\Settings;
 use App\Models\User;
 use App\Models\Pengurus;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 use Tests\CrudTestCase;
+
+uses(DatabaseTransactions::class);
 
 beforeEach(function () {
     Storage::fake('public');
@@ -72,6 +75,18 @@ describe('User Management CRUD', function () {
         $response->assertViewIs('user.create');
         $response->assertViewHas('page_title', 'Pengguna');
         $response->assertViewHas('page_description', 'Tambah Data');
+    });
+
+    test('create form uses multipart encoding so photo upload reaches the server', function () {
+        $superAdmin = User::whereHas('roles', fn($q) => $q->where('name', 'super-admin'))->first();
+
+        $response = $this->actingAs($superAdmin)->get(route('setting.user.create'));
+
+        $response->assertStatus(200);
+
+        preg_match('/<form[^>]*id="form-user"[^>]*>/', $response->getContent(), $matches);
+
+        expect($matches[0] ?? '')->toContain('enctype="multipart/form-data"');
     });
 
     test('store creates new user successfully', function () {
@@ -135,6 +150,8 @@ describe('User Management CRUD', function () {
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $role = Role::where('name', 'administrator-website')->first();
 
+        $originalEmail = $targetUser->email;
+
         $updateData = [
             'name' => 'Updated Name',
             'email' => 'updated@test.com',
@@ -148,10 +165,11 @@ describe('User Management CRUD', function () {
         $response->assertRedirect(route('setting.user.index'));
         $response->assertSessionHas('success');
 
+        // Email user lain tidak boleh diubah (lihat #1783)
         $this->assertDatabaseHas('users', [
             'id' => $targetUser->id,
             'name' => 'Updated Name',
-            'email' => 'updated@test.com',
+            'email' => $originalEmail,
         ]);
     });
 
@@ -160,7 +178,7 @@ describe('User Management CRUD', function () {
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $targetUser->update(['status' => 1]);
 
-        $response = $this->actingAs($superAdmin)->post(route('setting.user.destroy', $targetUser->id));
+        $response = $this->actingAs($superAdmin)->delete(route('setting.user.destroy', $targetUser->id));
 
         $response->assertRedirect(route('setting.user.index'));
 
@@ -175,7 +193,7 @@ describe('User Management CRUD', function () {
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $targetUser->update(['status' => 0]);
 
-        $response = $this->actingAs($superAdmin)->post(route('setting.user.active', $targetUser->id));
+        $response = $this->actingAs($superAdmin)->patch(route('setting.user.active', $targetUser->id));
 
         $response->assertRedirect(route('setting.user.index'));
 

@@ -56,8 +56,6 @@ class PengurusController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
-     * @return mixed
      */
     public function index(Request $request)
     {
@@ -76,8 +74,10 @@ class PengurusController extends Controller
                         $data['delete_url'] = auth()->user()->can('access.data.pengurus.delete') ? route('data.pengurus.destroy', $row->id) : null;
                         if ($row->status == Status::Aktif) {
                             $data['suspend_url'] = route('data.pengurus.lock', [$row->id, Status::TidakAktif]);
+                            $data['suspend_method'] = 'PATCH';
                         } else {
                             $data['active_url'] = route('data.pengurus.lock', [$row->id, Status::Aktif]);
+                            $data['active_method'] = 'PATCH';
                         }
                     }
 
@@ -106,9 +106,9 @@ class PengurusController extends Controller
                 ->editColumn('status', function ($row) {
                     if ($row->status == 0) {
                         return '<span class="label label-danger">Tidak Aktif</span>';
-                    } else {
-                        return '<span class="label label-success">Aktif</span>';
                     }
+                        return '<span class="label label-success">Aktif</span>';
+
                 })
                 ->rawColumns(['foto', 'identitas', 'status'])
                 ->make(true);
@@ -150,7 +150,7 @@ class PengurusController extends Controller
             $this->handleFileUpload($request, $input, 'foto', 'pengurus', false);
 
             $pengurus = new Pengurus;
-            $fillableFields = ['nama', 'nik', 'gelar_depan', 'gelar_belakang', 'nip', 'tempat_lahir', 'tanggal_lahir', 'sex', 'pendidikan_id', 'agama_id', 'pangkat', 'no_sk', 'tanggal_sk', 'no_henti', 'tanggal_henti', 'masa_jabatan', 'jabatan_id', 'atasan', 'bagan_tingkat', 'bagan_warna'];
+            $fillableFields = ['nama', 'nik', 'gelar_depan', 'gelar_belakang', 'nip', 'tempat_lahir', 'tanggal_lahir', 'sex', 'pendidikan_id', 'agama_id', 'pangkat', 'no_sk', 'tanggal_sk', 'no_henti', 'tanggal_henti', 'masa_jabatan', 'jabatan_id', 'atasan', 'bagan_tingkat', 'bagan_warna', 'foto'];
 
             foreach ($fillableFields as $field) {
                 if (isset($input[$field])) {
@@ -221,7 +221,7 @@ class PengurusController extends Controller
     }
 
     public function destroy(Pengurus $penguru): RedirectResponse
-    {        
+    {
         try {
             $penguru->delete();
         } catch (\Exception $e) {

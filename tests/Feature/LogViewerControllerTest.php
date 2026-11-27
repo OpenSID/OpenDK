@@ -33,6 +33,7 @@ use App\Http\Middleware\Authenticate;
 use App\Http\Middleware\CompleteProfile;
 use App\Http\Middleware\GlobalShareMiddleware;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
@@ -59,6 +60,22 @@ beforeEach(function () {
         CompleteProfile::class,
         GlobalShareMiddleware::class,
     ]);
+});
+
+test('info sistem perintah artisan hanya menerima POST', function (string $path) {
+    $this->get("/setting/info-sistem/{$path}")->assertStatus(405);
+})->with(['linkstorage', 'queuelisten', 'migrasi']);
+
+test('info sistem linkstorage dijalankan lewat POST', function () {
+    Artisan::shouldReceive('call')->once()->with('storage:link');
+
+    $this->post(route('setting.info-sistem.linkstorage'))->assertRedirect();
+});
+
+test('info sistem migrasi dijalankan lewat POST', function () {
+    Artisan::shouldReceive('call')->once()->with('migrate', ['--force' => true]);
+
+    $this->post(route('setting.info-sistem.migrasi'))->assertRedirect();
 });
 
 test('user-supplied log params are decrypted without unserialization', function () {

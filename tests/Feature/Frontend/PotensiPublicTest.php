@@ -12,6 +12,11 @@ beforeEach(function () {
         ['nama_kategori' => 'Pariwisata']
     );
 
+    NavMenu::updateOrCreate(
+        ['name' => 'Potensi'],
+        ['url' => '/potensi', 'target' => '_self', 'type' => 'modul', 'is_show' => true]
+    );
+
     $this->potensi = Potensi::firstOrCreate(
         ['nama_potensi' => 'Air Terjun Indah'],
         [
@@ -70,4 +75,14 @@ it('returns /potensi in the website api navmenus data', function () {
 
     expect($potensiMenu)->not->toBeNull();
     expect($potensiMenu['url'])->toBe('/potensi');
+});
+
+it('escapes the category slug rendered inside the potensi page script', function () {
+    $payload = "x'-alert(1)-'";
+
+    $response = $this->get('/potensi/' . rawurlencode($payload));
+
+    $response->assertOk();
+    $response->assertDontSee($payload, false);
+    $response->assertSee('var slug = ', false);
 });

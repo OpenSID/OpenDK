@@ -38,6 +38,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\LogTte;
 use App\Models\Surat;
+use App\Support\OutboundHttp;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -230,22 +231,22 @@ class PermohonanController extends Controller
         $request->validate(['passphrase' => 'required|string']);
 
 
-        DB::beginTransaction();
-
-        $client = new \GuzzleHttp\Client([
+        // Panggilan ke server TTE dilakukan di luar transaksi DB agar server TTE yang lambat
+        // tidak menahan transaksi database.
+        $client = new \GuzzleHttp\Client(OutboundHttp::tteGuzzleOptions([
             'base_uri' => $this->settings['tte_api'],
             'auth' => [
                 $this->settings['tte_username'],
                 $this->settings['tte_password'],
             ],
-        ]);
+        ]));
+
+        $file_path = public_path("storage/surat/{$surat->file}");
+        $width = 90;
+        $height = 90;
+        $tag = '[qr_camat]';
 
         try {
-            $file_path = public_path("storage/surat/{$surat->file}");
-            $width = 90;
-            $height = 90;
-            $tag = '[qr_camat]';
-
             $response = $client->post('api/sign/pdf', [
                 'headers' => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
@@ -259,26 +260,6 @@ class PermohonanController extends Controller
                     ['name' => 'tag_koordinat', 'contents' => $tag],
                 ],
             ]);
-
-            $surat->update([
-                'status' => StatusSurat::Arsip,
-                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
-            ]);
-
-            DB::commit();
-
-            // overwrite dokumen lama dengan response dari bsre
-            if ($response->getStatusCode() == 200) {
-                $file = fopen($file_path, 'wb');
-                fwrite($file, $response->getBody()->getContents());
-                fclose($file);
-            }
-
-            return $this->response([
-                'status' => true,
-                'pesan_error' => 'success',
-                'jenis' => 'success',
-            ], $surat->id);
         } catch (ClientException $e) {
             Log::error('Permohonan Surat TTE signing failed', [
                 'error' => $e->getMessage(),
@@ -286,14 +267,39 @@ class PermohonanController extends Controller
                 'surat_id' => $surat->id,
             ]);
 
-            DB::rollback();
-
             return $this->response([
                 'status' => false,
                 'pesan_error' => 'Terjadi kesalahan saat menandatangani surat.',
                 'jenis' => 'ClientException',
             ], $surat->id);
         }
+
+        DB::beginTransaction();
+        try {
+            $surat->update([
+                'status' => StatusSurat::Arsip,
+                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // overwrite dokumen lama dengan response dari bsre
+        if ($response->getStatusCode() == 200) {
+            $file = fopen($file_path, 'wb');
+            fwrite($file, $response->getBody()->getContents());
+            fclose($file);
+        }
+
+        return $this->response([
+            'status' => true,
+            'pesan_error' => 'success',
+            'jenis' => 'success',
+        ], $surat->id);
     }
 
     public function tandatanganQr(Surat $surat): JsonResponse
@@ -398,6 +404,33 @@ class PermohonanController extends Controller
                 'jenis' => 'Exception',
             ]);
         }
+
+        DB::beginTransaction();
+        try {
+            $surat->update([
+                'status' => StatusSurat::Arsip,
+                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // overwrite dokumen lama dengan response dari bsre
+        if ($response->getStatusCode() == 200) {
+            $file = fopen($file_path, 'wb');
+            fwrite($file, $response->getBody()->getContents());
+            fclose($file);
+        }
+
+        return $this->response([
+            'status' => true,
+            'pesan_error' => 'success',
+            'jenis' => 'success',
+        ]);
     }
 
     protected function response(array $notif = [], $suratId = null): JsonResponse

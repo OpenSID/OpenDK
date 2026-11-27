@@ -151,17 +151,25 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
+        $actor = Auth::user();
+        $isSuperAdmin = $actor->roles->contains('name', 'super-admin');
+        if (!$isSuperAdmin && $id != $actor->id) {
+            abort(403, 'Anda tidak berhak mengubah user tersebut');
+        }
+
         try {
             $input = $request->validated();
+            if ($id != $actor->id) {
+                unset($input['email']);
+            }
             $user = User::findOrFail($id);
             $this->handleFileUpload($request, $input, 'image', 'user', false);
             $user->update($input);
-            if (!empty($request->role)) {
+            if ($isSuperAdmin && !empty($request->role)) {
                 $roles = $request->input('role') ? $request->input('role') : [];
                 $user->syncRoles($roles);
             }
-            $user = Auth::user();
-            if (!$user->roles->contains('name', 'super-admin')) {
+            if (!$isSuperAdmin) {
                 return redirect()->route('dashboard')->with('success', 'User berhasil diperbarui!');
             }
             return redirect()->route('setting.user.index')->with('success', 'User berhasil diperbarui!');
@@ -303,8 +311,10 @@ class UserController extends Controller
                 if ($user->id != 1) {
                     if ($user->status == 1) {
                         $data['suspend_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.destroy', $user->id) : null;
+                        $data['suspend_method'] = 'DELETE';
                     } else {
                         $data['active_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.active', $user->id) : null;
+                        $data['active_method'] = 'PATCH';
                     }
 
                     $data['delete_url'] = auth()->user()->can('access.setting.user.delete') ? route('setting.user.permanent-destroy', $user->id) : null;

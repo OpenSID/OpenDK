@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Config;
-use willvincent\Feeds\Facades\FeedsFacade;
 
 uses(DatabaseTransactions::class);
 
@@ -187,7 +186,7 @@ it('caches list desa when using database gabungan', function () {
     config(['api_key_database_gabungan' => 'test-key']);
     
     // Clear cache first
-    Cache::forget('listDesa');
+    Cache::forget((new DesaService())->listDesaCacheKey());
     
     // Mock API response
     $apiResponse = [
@@ -241,7 +240,7 @@ it('returns cached list desa when available', function () {
         ]
     ]);
     
-    Cache::put('listDesa', $cachedData, 60 * 60 * 24);
+    Cache::put((new DesaService())->listDesaCacheKey(), $cachedData, 60 * 60 * 24);
     
     $service = new DesaService();
     $desaList = $service->listDesa();
@@ -411,7 +410,7 @@ it('can get path desa list when using database gabungan', function () {
     config(['api_key_database_gabungan' => 'test-key']);
     
     // Clear cache first
-    Cache::forget('listDesa');
+    Cache::forget((new DesaService())->listDesaCacheKey());
     
     // Mock API response
     $apiResponse = [
@@ -456,4 +455,137 @@ it('can get path desa list when not using database gabungan', function () {
     expect($pathDesaList)->toBeIterable();
     expect($pathDesaList)->toHaveCount(1);
     expect($pathDesaList->first()->path)->toBe('[[[-6.2, 106.8]]]');
+});
+
+it('decodes slug to nama desa when not using database gabungan', function () {
+    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
+
+    DataDesa::factory()->create(['nama' => 'Desa Sukamaju']);
+
+    $service = new DesaService();
+    $desa = $service->dataDesa('desa-sukamaju');
+
+    expect($desa)->not->toBeNull();
+    expect($desa->nama)->toBe('Desa Sukamaju');
+});
+
+it('throws not found when slug does not match any desa when not using database gabungan', function () {
+    SettingAplikasi::where('key', 'sinkronisasi_database_gabungan')->update(['value' => '0']);
+
+    $service = new DesaService();
+
+    expect(fn () => $service->dataDesa('desa-tidak-ada'))
+        ->toThrow(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
+});
+
+it('decodes slug to nama desa filter when using database gabungan', function () {
+    config(['sinkronisasi_database_gabungan' => '1']);
+    config(['api_server_database_gabungan' => 'https://api.example.com']);
+    config(['api_key_database_gabungan' => 'test-key']);
+
+    Http::fake([
+        'https://api.example.com/api/v1/wilayah/desa*' => Http::response([
+            'data' => [
+                [
+                    'id' => 1,
+                    'attributes' => [
+                        'kode_desa' => 'SUKA001',
+                        'nama_desa' => 'Desa Sukamaju',
+                        'sebutan_desa' => 'Desa',
+                        'website' => null,
+                        'luas_wilayah' => null,
+                        'path' => null,
+                    ],
+                ],
+            ],
+        ], 200),
+        '*' => Http::response([], 200),
+    ]);
+
+    $service = new DesaService();
+    $desa = $service->dataDesa('desa-sukamaju');
+
+    expect($desa->nama)->toBe('Desa Sukamaju');
+
+    Http::assertSent(function ($request) {
+        return str_contains($request->url(), 'api/v1/wilayah/desa')
+            && str_contains(urldecode($request->url()), 'filter[nama_desa]=desa sukamaju');
+    });
+});
+describe('cache listDesa database gabungan', function () {
+    beforeEach(function () {
+        config([
+            'sinkronisasi_database_gabungan' => '1',
+            'api_server_database_gabungan' => 'https://api.example.com',
+            'api_key_database_gabungan' => 'test-key',
+        ]);
+
+        $service = new DesaService();
+        Cache::forget($service->listDesaCacheKey(false));
+        Cache::forget($service->listDesaCacheKey(true));
+    });
+
+    $responseDesa = fn (string $kode, string $nama) => Http::response([
+        'data' => [
+            ['attributes' => ['kode_desa' => $kode, 'nama_desa' => $nama]],
+        ],
+    ], 200);
+
+    it('tidak memperpanjang ttl cache saat cache hit', function () use ($responseDesa) {
+        Http::fake(['https://api.example.com/api/v1/wilayah/desa*' => $responseDesa('001', 'Desa A')]);
+
+        $service = new DesaService();
+
+        $service->listDesa();
+        Http::assertSentCount(1);
+
+        $this->travel(23)->hours();
+        $service->listDesa();
+        Http::assertSentCount(1);
+
+        // Total 25 jam sejak data diambil: cache harus sudah kedaluwarsa
+        $this->travel(2)->hours();
+        $service->listDesa();
+        Http::assertSentCount(2);
+    });
+
+    it('memisahkan cache berdasarkan parameter all', function () use ($responseDesa) {
+        Http::fake(function ($request) use ($responseDesa) {
+            return str_contains($request->url(), 'all=1')
+                ? $responseDesa('002', 'Desa Semua')
+                : $responseDesa('001', 'Desa Default');
+        });
+
+        $service = new DesaService();
+
+        $default = $service->listDesa(false);
+        $semua = $service->listDesa(true);
+
+        expect($default->first()->nama)->toBe('Desa Default')
+            ->and($semua->first()->nama)->toBe('Desa Semua');
+        Http::assertSentCount(2);
+
+        // Pemanggilan ulang memakai cache masing-masing
+        expect($service->listDesa(false)->first()->nama)->toBe('Desa Default')
+            ->and($service->listDesa(true)->first()->nama)->toBe('Desa Semua');
+        Http::assertSentCount(2);
+    });
+
+    it('tidak menyimpan hasil kosong ke cache', function () {
+        Http::fake(['https://api.example.com/api/v1/wilayah/desa*' => Http::response(['data' => []], 200)]);
+
+        $service = new DesaService();
+
+        expect($service->listDesa())->toBeEmpty()
+            ->and(Cache::has($service->listDesaCacheKey(false)))->toBeFalse();
+    });
+
+    it('menyertakan kode kecamatan dan parameter all pada kunci cache', function () {
+        config(['profil.kecamatan_id' => '53.06.01']);
+
+        $service = new DesaService();
+
+        expect($service->listDesaCacheKey(false))->toBe('listDesa_530601_default')
+            ->and($service->listDesaCacheKey(true))->toBe('listDesa_530601_all');
+    });
 });

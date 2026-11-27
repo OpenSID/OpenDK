@@ -32,10 +32,10 @@
 namespace App\Http\Controllers\Api\Frontend;
 
 use App\Repositories\ProfilApiRepository;
+use App\Services\CacheService;
 use App\Transformers\ProfilTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Fractal\Fractal;
 
@@ -222,8 +222,9 @@ class ProfilController extends BaseController
         $params = $request->only(['page', 'per_page', 'filter', 'fields', 'search', 'sort', 'order', 'include']);
         $cacheKey = $this->getCacheKey('index', $params);
 
-        return Cache::remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
+        // Pakai CacheService agar key tercatat di tabel cache_keys dan bisa dihapus per prefix
+        return app(CacheService::class)->remember($cacheKey, $this->getCacheDuration(), function () use ($request) {
             return $this->fractal($this->profilApiRepository->data(), new ProfilTransformer());
-        });
+        }, $this->prefix);
     }    
 }

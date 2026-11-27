@@ -31,13 +31,13 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Support\OutboundHttp;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuratResource;
 use App\Models\DataDesa;
 use App\Models\Penduduk;
 use App\Models\Surat;
-use Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -130,7 +130,7 @@ class SuratController extends Controller
         // jika api gabungan aktif, maka pengecekan penduduk melalui api gabungan
         if ($this->isDatabaseGabungan()) {
             $url = $this->settings['api_server_database_gabungan'].'/api/v1/opendk';
-            $response = Http::withHeaders([
+            $response = OutboundHttp::client()->withHeaders([
                 'Accept' => 'application/ld+json',
                 'Content-Type' => 'application/json; charset=utf-8',
                 'Authorization' => 'Bearer ' . ($this->settings['api_key_database_gabungan'] ?? ''),

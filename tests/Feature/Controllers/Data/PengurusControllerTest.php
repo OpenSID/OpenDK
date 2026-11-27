@@ -39,6 +39,7 @@ use App\Models\PendidikanKK;
 use App\Models\Pengurus;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Middleware\PermissionMiddleware;
 use Spatie\Permission\Middleware\RoleMiddleware;
 
@@ -115,6 +116,8 @@ test('store creates new pengurus successfully', function () {
 });
 
 test('store creates pengurus with file upload', function () {
+    Storage::fake('local');
+
     $jabatan = Jabatan::factory()->create();
     $pendidikan = PendidikanKK::factory()->create();
     $agama = Agama::factory()->create();
@@ -142,6 +145,11 @@ test('store creates pengurus with file upload', function () {
         'nama' => 'Jane Doe',
         'nik' => '1234567890123457',
     ]);
+
+    $pengurus = Pengurus::where('nik', '1234567890123457')->first();
+    $foto = $pengurus?->getRawOriginal('foto');
+    expect($foto)->not->toBeNull()
+        ->and(Storage::disk('local')->exists('public/pengurus/'.$foto))->toBeTrue();
 });
 
 test('store fails with duplicate nik', function () {
@@ -242,7 +250,7 @@ test('destroy deletes pengurus successfully', function () {
 test('lock activates pengurus', function () {
     $pengurus = Pengurus::factory()->create(['status' => Status::TidakAktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$pengurus->id, Status::Aktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$pengurus->id, Status::Aktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('success');
@@ -255,7 +263,7 @@ test('lock activates pengurus', function () {
 test('lock deactivates pengurus', function () {
     $pengurus = Pengurus::factory()->create(['status' => Status::Aktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$pengurus->id, Status::TidakAktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$pengurus->id, Status::TidakAktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('success');
@@ -271,7 +279,7 @@ test('lock prevents multiple active camat', function () {
 
     $anotherPengurus = Pengurus::factory()->create(['jabatan_id' => $camatJabatan->id, 'status' => Status::TidakAktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('error', 'Camat aktif sudah ditetapkan!');
@@ -283,7 +291,7 @@ test('lock prevents multiple active sekretaris', function () {
 
     $anotherPengurus = Pengurus::factory()->create(['jabatan_id' => $sekretarisJabatan->id, 'status' => Status::TidakAktif]);
 
-    $response = $this->post(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
+    $response = $this->patch(route('data.pengurus.lock', [$anotherPengurus->id, Status::Aktif]));
 
     $response->assertRedirect(route('data.pengurus.index'));
     $response->assertSessionHas('error', 'Sekretaris aktif sudah ditetapkan!');

@@ -54,9 +54,9 @@
                                 <div class="form-group">
                                     <label>Nonaktifkan 2FA</label>
                                     <p class="help-block">Jika Anda ingin menonaktifkan 2FA, klik tombol di bawah.</p>
-                                    <a href="{{ route('2fa.deactivate') }}" class="btn btn-warning btn-deactivate-2fa">
-                                        <i class="fa fa-times"></i> Nonaktifkan 2FA
-                                    </a>
+                                    <button type="submit" form="form-deactivate-2fa" class="btn btn-warning btn-deactivate-2fa">
+                                            <i class="fa fa-times"></i> Nonaktifkan 2FA
+                                    </button>
                                 </div>
                             @else
                                 @if ($needsSetup)
@@ -89,6 +89,10 @@
                             </a>
                         </div>
                     </form>
+
+                    <form id="form-deactivate-2fa" method="POST" action="{{ route('2fa.deactivate') }}">
+                        @csrf
+                    </form>
                 </div>
             </div>
         </div>
@@ -99,23 +103,7 @@
         <script>
             $(document).ready(function() {
                 // SweetAlert2 confirmation for deactivating 2FA
-                $(document).on('click', '.btn-deactivate-2fa', function(e) {
-                    e.preventDefault();
-                    var url = $(this).attr('href');
-                    Swal.fire({
-                        title: 'Nonaktifkan 2FA?',
-                        text: 'Apakah Anda yakin ingin menonaktifkan 2FA?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Ya, nonaktifkan',
-                        cancelButtonText: 'Batal',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            // Redirect to the deactivate route
-                            window.location.href = url;
-                        }
-                    });
-                });
+                bindSubmitConfirm('.btn-deactivate-2fa', 'Nonaktifkan 2FA?', 'Apakah Anda yakin ingin menonaktifkan 2FA?', 'Ya, nonaktifkan');
             });
         </script>
     @endpush

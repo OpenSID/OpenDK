@@ -156,3 +156,12 @@ test('destroy success', function () {
         'id' => $sinergi->id,
     ]);
 });
+
+test('urut menolak arah selain naik dan turun', function () {
+    $sinergi = SinergiProgram::factory()->create();
+    $urutanAwal = $sinergi->fresh()->urutan;
+
+    $this->post(route('informasi.sinergi-program.urut', [$sinergi->id, 5]))->assertStatus(404);
+
+    expect($sinergi->fresh()->urutan)->toBe($urutanAwal);
+});

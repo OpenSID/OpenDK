@@ -119,7 +119,7 @@ class ToiletSanitasiController extends Controller
             return back()->with('error', 'Import data gagal.');
         }
 
-        return redirect()->route('data.toilet_sanitasi.index')->with('success', 'Data berhasil diimpor!');        
+        return redirect()->route('data.toilet-sanitasi.index')->with('success', 'Data berhasil diimpor!');
     }
 
     /**

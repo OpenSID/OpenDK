@@ -55,6 +55,22 @@ beforeEach(function () {
     ]);
 });
 
+test('user can deactivate otp with post', function () {
+    $this->actingAs($this->user);
+
+    $response = $this->post(route('otp.deactivate'));
+
+    $response->assertRedirect();
+    expect($this->user->fresh()->otp_enabled)->toBeFalse();
+});
+
+test('otp deactivation cannot be triggered by GET', function () {
+    $this->actingAs($this->user);
+
+    $this->get('/otp/deactivate')->assertStatus(405);
+    expect($this->user->fresh()->otp_enabled)->toBeTrue();
+});
+
 test('user can request otp for login', function () {
     // Request OTP
     $response = $this->post(route('otp.request-login'), [

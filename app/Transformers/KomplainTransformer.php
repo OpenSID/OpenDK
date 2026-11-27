@@ -31,6 +31,7 @@
 
 namespace App\Transformers;
 
+use App\Enums\Anonim;
 use App\Models\Komplain;
 use League\Fractal\TransformerAbstract;
 
@@ -43,7 +44,6 @@ class KomplainTransformer extends TransformerAbstract
      */
     protected array $availableIncludes = [
         'kategori_komplain',
-        'penduduk',
         'jawabs'
     ];
 
@@ -55,6 +55,8 @@ class KomplainTransformer extends TransformerAbstract
      */
     public function transform(Komplain $komplain): array
     {
+        $identitasDisembunyikan = $this->identitasDisembunyikan($komplain);
+
         return [
             'id' => $komplain->id,
             'komplain_id' => $komplain->komplain_id,
@@ -62,16 +64,15 @@ class KomplainTransformer extends TransformerAbstract
             'slug' => $komplain->slug,
             'laporan' => $komplain->laporan,
             'status' => $komplain->status,
-            'kategori' => $komplain->kategori,
-            'nik' => $komplain->nik,
-            'nama' => $komplain->nama,
+            'kategori' => $komplain->kategori,            
+            'nama' => $identitasDisembunyikan ? null : $komplain->nama,
             'anonim' => $komplain->anonim,
             'dilihat' => $komplain->dilihat,
             'lampiran1' => $komplain->lampiran1,
             'lampiran2' => $komplain->lampiran2,
             'lampiran3' => $komplain->lampiran3,
             'lampiran4' => $komplain->lampiran4,
-            'detail_penduduk' => $komplain->detail_penduduk,
+            'detail_penduduk' => null,
             'created_at' => $komplain->created_at,
             'updated_at' => $komplain->updated_at,
         ];
@@ -95,23 +96,6 @@ class KomplainTransformer extends TransformerAbstract
     }
 
     /**
-     * Include Penduduk
-     *
-     * @param Komplain $komplain
-     * @return \League\Fractal\Resource\Item|null
-     */
-    public function includePenduduk(Komplain $komplain)
-    {
-        $penduduk = $komplain->penduduk;
-        
-        if ($penduduk) {
-            return $this->item($penduduk, new \App\Transformers\PendudukTransformer(), 'penduduk');
-        }
-
-        return null;
-    }
-
-    /**
      * Include Jawaban Komplain
      *
      * @param Komplain $komplain
@@ -120,11 +104,23 @@ class KomplainTransformer extends TransformerAbstract
     public function includeJawabs(Komplain $komplain)
     {
         $jawabs = $komplain->jawabs;
-        
+
         if ($jawabs) {
             return $this->collection($jawabs, new \App\Transformers\JawabKomplainTransformer(), 'jawabs');
         }
 
         return null;
+    }
+
+    /**
+     * Identitas pelapor disembunyikan kecuali komplain secara eksplisit ditampilkan.
+     * Nilai anonim yang kosong juga disembunyikan agar data pribadi tidak bocor.
+     *
+     * @param Komplain $komplain
+     * @return bool
+     */
+    protected function identitasDisembunyikan(Komplain $komplain): bool
+    {
+        return $komplain->anonim === null || (int) $komplain->anonim !== Anonim::Tampilkan;
     }
 }

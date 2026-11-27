@@ -12,6 +12,7 @@
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 uses(DatabaseTransactions::class);
@@ -21,7 +22,10 @@ beforeEach(function () {
 
     // Ensure roles exist
     $this->adminRole = Role::firstOrCreate(['name' => 'super-admin']);
-    $this->kecamatanRole = Role::firstOrCreate(['name' => 'admin-kecamatan']);
+    $this->kecamatanRole = Role::firstOrCreate(['name' => 'admin-kecamatan', 'guard_name' => 'web']);
+    $this->kecamatanRole->syncPermissions([
+        Permission::firstOrCreate(['name' => 'access.dashboard', 'guard_name' => 'web']),
+    ]);
 
     $this->admin = User::factory()->create(['status' => 1]);
     $this->admin->assignRole($this->adminRole);

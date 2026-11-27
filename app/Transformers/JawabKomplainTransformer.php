@@ -57,8 +57,7 @@ class JawabKomplainTransformer extends TransformerAbstract
             'id' => $jawabKomplain->id,
             'komplain_id' => $jawabKomplain->komplain_id,
             'jawaban' => $jawabKomplain->jawaban,
-            'penjawab' => $jawabKomplain->penjawab,
-            'nik' => $jawabKomplain->nik,
+            'penjawab' => $jawabKomplain->penjawab,            
             'created_at' => $jawabKomplain->created_at,
             'updated_at' => $jawabKomplain->updated_at,
         ];

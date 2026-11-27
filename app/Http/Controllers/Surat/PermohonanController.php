@@ -35,6 +35,8 @@ use App\Enums\LogVerifikasiSurat;
 use App\Enums\StatusSurat;
 use App\Enums\StatusVerifikasiSurat;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PassphraseSuratRequest;
+use App\Http\Requests\TolakSuratRequest;
 use App\Models\DataDesa;
 use App\Models\LogTte;
 use App\Models\Surat;
@@ -47,7 +49,6 @@ use Endroid\QrCode\Writer\PngWriter;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -205,11 +206,9 @@ class PermohonanController extends Controller
         return response()->json();
     }
 
-    public function tolak(Request $request, Surat $surat): JsonResponse
+    public function tolak(TolakSuratRequest $request, Surat $surat): JsonResponse
     {
         try {
-            $request->validate(['keterangan' => 'required|string|max:500']);
-
             $surat->update([
                 'log_verifikasi' => LogVerifikasiSurat::Ditolak,
                 'status' => StatusSurat::Ditolak,
@@ -226,11 +225,8 @@ class PermohonanController extends Controller
         return response()->json();
     }
 
-    public function passphrase(Request $request, Surat $surat): JsonResponse
+    public function passphrase(PassphraseSuratRequest $request, Surat $surat): JsonResponse
     {
-        $request->validate(['passphrase' => 'required|string']);
-
-
         // Panggilan ke server TTE dilakukan di luar transaksi DB agar server TTE yang lambat
         // tidak menahan transaksi database.
         $client = new \GuzzleHttp\Client(OutboundHttp::tteGuzzleOptions([
@@ -322,15 +318,15 @@ class PermohonanController extends Controller
 
             $verificationUrl = route('surat.arsip.qrcode', $surat->id);
 
-            $qrCode = Builder::create()
-                ->writer(new PngWriter())
-                ->data($verificationUrl)
-                ->encoding(new Encoding('UTF-8'))
-                ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-                ->size(200)
-                ->margin(10)
-                ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
-                ->build();
+            $qrCode = (new Builder(
+                writer: new PngWriter(),
+                data: $verificationUrl,
+                encoding: new Encoding('UTF-8'),
+                errorCorrectionLevel: ErrorCorrectionLevel::High,
+                size: 200,
+                margin: 10,
+                roundBlockSizeMode: RoundBlockSizeMode::Margin,
+            ))->build();
 
             $qrTempPath = public_path('storage/surat/qr_temp_' . uniqid() . '_' . $surat->id . '.png');
             $qrCode->saveToFile($qrTempPath);
@@ -359,23 +355,23 @@ class PermohonanController extends Controller
 
             $fileHash = hash_file('sha256', $signed_path);
 
+            if (!rename($signed_path, $file_path)) {
+                throw new \RuntimeException('Gagal memindahkan file signed ke lokasi asal.');
+            }
+
             $surat->update([
                 'status' => StatusSurat::Arsip,
                 'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
                 'file_hash' => $fileHash,
             ]);
 
-            DB::commit();
-
-            if (!rename($signed_path, $file_path)) {
-                throw new \RuntimeException('Gagal memindahkan file signed ke lokasi asal.');
-            }
-
             LogTte::create([
                 'pesan_error' => 'success',
                 'jenis' => 'QRCode',
                 'surat_id' => $surat->id,
             ]);
+
+            DB::commit();
 
             return response()->json([
                 'status' => true,

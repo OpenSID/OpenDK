@@ -34,12 +34,12 @@ namespace App\Http\Controllers\Surat;
 use App\Enums\StatusSurat;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PengaturanSuratRequest;
+use App\Http\Requests\VerifikasiSuratRequest;
 use App\Models\Profil;
 use App\Models\SettingAplikasi;
 use App\Models\Surat;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -154,12 +154,8 @@ class SuratController extends Controller
         return view('surat.verifikasi.index', compact('page_title', 'page_description'));
     }
 
-    public function verifikasiStore(Request $request): View|RedirectResponse
+    public function verifikasiStore(VerifikasiSuratRequest $request): View|RedirectResponse
     {
-        $request->validate([
-            'file' => 'required|mimes:pdf|max:5120',
-        ]);
-
         try {
             $uploadedFile = $request->file('file');
             $uploadedHash = hash_file('sha256', $uploadedFile->getRealPath());

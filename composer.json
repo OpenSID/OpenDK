@@ -31,6 +31,7 @@
         "proengsoft/laravel-jsvalidation": "^4.4",
         "rap2hpoutre/laravel-log-viewer": "^3.0",
         "sentry/sentry-laravel": "^4.0",
+        "setasign/fpdf": "^1.8",
         "setasign/fpdi": "^2.6",
         "simplepie/simplepie": "^1.0",
         "spatie/laravel-activitylog": "^5.1",

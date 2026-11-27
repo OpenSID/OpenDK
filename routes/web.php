@@ -299,6 +299,7 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
         Route::namespace('\App\Http\Controllers\Surat')->group(function () {
             Route::get('/surat/verifikasi', ['as' => 'surat.verifikasi', 'uses' => 'SuratController@verifikasi']);
             Route::post('/surat/verifikasi', ['as' => 'surat.verifikasi.store', 'uses' => 'SuratController@verifikasiStore'])->middleware('throttle:10,1');
+            Route::get('/surat/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
         });
     });
 
@@ -875,7 +876,6 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 // arsip
                 Route::get('/arsip', ['as' => 'surat.arsip', 'uses' => 'SuratController@arsip']);
                 Route::get('/arsip/getdata', ['as' => 'surat.arsip.getdata', 'uses' => 'SuratController@getData']);
-                Route::get('/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
                 Route::get('/arsip/download/{surat}', ['as' => 'surat.arsip.download', 'uses' => 'SuratController@download']);
 
                 // pengaturan

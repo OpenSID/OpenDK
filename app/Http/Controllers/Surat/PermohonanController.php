@@ -355,6 +355,13 @@ class PermohonanController extends Controller
 
             $fileHash = hash_file('sha256', $signed_path);
 
+            // File asli dicadangkan dulu agar bisa dikembalikan jika transaksi DB gagal,
+            // sehingga surat tidak hilang saat status di database di-rollback.
+            $backup_path = $file_path . '.bak';
+            if (!copy($file_path, $backup_path)) {
+                throw new \RuntimeException('Gagal membuat cadangan file surat.');
+            }
+
             if (!rename($signed_path, $file_path)) {
                 throw new \RuntimeException('Gagal memindahkan file signed ke lokasi asal.');
             }
@@ -373,6 +380,10 @@ class PermohonanController extends Controller
 
             DB::commit();
 
+            if (file_exists($backup_path)) {
+                unlink($backup_path);
+            }
+
             return response()->json([
                 'status' => true,
                 'pesan_error' => 'success',
@@ -380,6 +391,16 @@ class PermohonanController extends Controller
             ]);
         } catch (\Exception $e) {
             DB::rollback();
+
+            // Kembalikan file asli bila sudah terlanjur ditimpa versi bertanda tangan.
+            if (isset($backup_path) && file_exists($backup_path)) {
+                if (!rename($backup_path, $file_path)) {
+                    Log::error('QR Code signing failed: gagal mengembalikan file asli', [
+                        'surat_id' => $surat->id,
+                        'backup' => $backup_path,
+                    ]);
+                }
+            }
 
             if (isset($signed_path) && file_exists($signed_path)) {
                 unlink($signed_path);
@@ -400,33 +421,6 @@ class PermohonanController extends Controller
                 'jenis' => 'Exception',
             ]);
         }
-
-        DB::beginTransaction();
-        try {
-            $surat->update([
-                'status' => StatusSurat::Arsip,
-                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
-            ]);
-
-            DB::commit();
-        } catch (\Throwable $e) {
-            DB::rollBack();
-
-            throw $e;
-        }
-
-        // overwrite dokumen lama dengan response dari bsre
-        if ($response->getStatusCode() == 200) {
-            $file = fopen($file_path, 'wb');
-            fwrite($file, $response->getBody()->getContents());
-            fclose($file);
-        }
-
-        return $this->response([
-            'status' => true,
-            'pesan_error' => 'success',
-            'jenis' => 'success',
-        ]);
     }
 
     protected function response(array $notif = [], $suratId = null): JsonResponse

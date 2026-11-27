@@ -294,6 +294,13 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                 Route::get('jawabans', ['as' => 'sistem-komplain.jawabans', 'uses' => 'SistemKomplainController@getJawabans']);
             });
         });
+
+        // Verifikasi surat (publik - tidak perlu login)
+        Route::namespace('\App\Http\Controllers\Surat')->group(function () {
+            Route::get('/surat/verifikasi', ['as' => 'surat.verifikasi', 'uses' => 'SuratController@verifikasi']);
+            Route::post('/surat/verifikasi', ['as' => 'surat.verifikasi.store', 'uses' => 'SuratController@verifikasiStore'])->middleware('throttle:10,1');
+            Route::get('/surat/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
+        });
     });
 
     /**
@@ -863,12 +870,12 @@ Route::group(['middleware' => ['installed', 'xss_sanitization']], function () {
                     Route::get('ditolak', ['as' => 'surat.permohonan.ditolak', 'uses' => 'PermohonanController@ditolak']);
                     Route::get('getdataditolak', ['as' => 'surat.permohonan.getdataditolak', 'uses' => 'PermohonanController@getDataDitolak']);
                     Route::post('passphrase/{surat}', ['as' => 'surat.permohonan.passphrase', 'uses' => 'PermohonanController@passphrase']);
+                    Route::post('tandatangan-qr/{surat}', ['as' => 'surat.permohonan.tandatangan_qr', 'uses' => 'PermohonanController@tandatanganQr']);
                 });
 
                 // arsip
                 Route::get('/arsip', ['as' => 'surat.arsip', 'uses' => 'SuratController@arsip']);
                 Route::get('/arsip/getdata', ['as' => 'surat.arsip.getdata', 'uses' => 'SuratController@getData']);
-                Route::get('/arsip/qrcode/{surat}', ['as' => 'surat.arsip.qrcode', 'uses' => 'SuratController@qrcode']);
                 Route::get('/arsip/download/{surat}', ['as' => 'surat.arsip.download', 'uses' => 'SuratController@download']);
 
                 // pengaturan

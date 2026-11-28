@@ -61,7 +61,7 @@
                                     <p class="help-block">Jika Anda ingin mengubah konfigurasi OTP, nonaktifkan terlebih
                                         dahulu lalu aktifkan kembali dengan konfigurasi baru.</p>
                                     <button type="submit" form="form-deactivate-otp" class="btn btn-warning btn-deactivate-otp">
-                                            <i class="fa fa-times"></i> Nonaktifkan OTP
+                                        <i class="fa fa-times"></i> Nonaktifkan OTP
                                     </button>
                                 </div>
                             @else

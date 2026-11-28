@@ -55,7 +55,7 @@
                                     <label>Nonaktifkan 2FA</label>
                                     <p class="help-block">Jika Anda ingin menonaktifkan 2FA, klik tombol di bawah.</p>
                                     <button type="submit" form="form-deactivate-2fa" class="btn btn-warning btn-deactivate-2fa">
-                                            <i class="fa fa-times"></i> Nonaktifkan 2FA
+                                        <i class="fa fa-times"></i> Nonaktifkan 2FA
                                     </button>
                                 </div>
                             @else

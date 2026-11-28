@@ -263,7 +263,13 @@
                 cancelButtonText: 'Tidak!',
                 showLoaderOnConfirm: true,
                 preConfirm: () => {
-                    return fetch(`{{ route('data.data-umum.resetpeta', $data_umum->id) }}`)
+                    return fetch(`{{ route('data.data-umum.resetpeta', $data_umum->id) }}`, {
+                            method: 'PATCH',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        })
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(response.statusText)

@@ -2,8 +2,8 @@
 
 namespace App\Services;
 
+use App\Support\OutboundHttp;
 use App\Models\SettingAplikasi;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class BaseApiService
@@ -52,7 +52,7 @@ class BaseApiService
     {
         try {
             // Buat permintaan API dengan Header dan Parameter
-            $response = Http::withHeaders($this->header)->{$this->resolveMethod($method)}($this->baseUrl . $endpoint, $params);
+            $response = OutboundHttp::client()->withHeaders($this->header)->{$this->resolveMethod($method)}($this->baseUrl . $endpoint, $params);
             session()->forget('error_api');
 
             // Jika response gagal (non-2xx), kembalikan array kosong

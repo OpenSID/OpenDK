@@ -71,7 +71,7 @@ class AdminKomplainController extends Controller
                 return view('forms.aksi', $data);
             })
             ->editColumn('kategori', function ($row) {
-                return $row->kategori_komplain->nama;
+                return $row->kategori_komplain?->nama ?? '-';
             })
             ->editColumn('status', function ($row) {
                 $status = '';

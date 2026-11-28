@@ -18,7 +18,7 @@
                 <div class="box box-primary">
 
                     <!-- form start -->
-                    {!! html()->form('POST', route('informasi.faq.update', $faq->id))->id('form-faq')->class('form-horizontal form-label-left')->open() !!}
+                    {!! html()->form('PUT', route('informasi.faq.update', $faq->id))->id('form-faq')->class('form-horizontal form-label-left')->open() !!}
                     @include('layouts.fragments.error_message')
 
                     <div class="box-body">

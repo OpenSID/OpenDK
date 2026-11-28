@@ -38,6 +38,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DataDesa;
 use App\Models\LogTte;
 use App\Models\Surat;
+use App\Support\OutboundHttp;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7;
 use Illuminate\Http\Request;
@@ -223,22 +224,22 @@ class PermohonanController extends Controller
     {
         $surat = Surat::findOrFail($id);
 
-        DB::beginTransaction();
-
-        $client = new \GuzzleHttp\Client([
+        // Panggilan ke server TTE dilakukan di luar transaksi DB agar server TTE yang lambat
+        // tidak menahan transaksi database.
+        $client = new \GuzzleHttp\Client(OutboundHttp::tteGuzzleOptions([
             'base_uri' => $this->settings['tte_api'],
             'auth' => [
                 $this->settings['tte_username'],
                 $this->settings['tte_password'],
             ],
-        ]);
+        ]));
+
+        $file_path = public_path("storage/surat/{$surat->file}");
+        $width = 90;
+        $height = 90;
+        $tag = '[qr_camat]';
 
         try {
-            $file_path = public_path("storage/surat/{$surat->file}");
-            $width = 90;
-            $height = 90;
-            $tag = '[qr_camat]';
-
             $response = $client->post('api/sign/pdf', [
                 'headers' => ['X-Requested-With' => 'XMLHttpRequest'],
                 'multipart' => [
@@ -252,26 +253,6 @@ class PermohonanController extends Controller
                     ['name' => 'tag_koordinat', 'contents' => $tag],
                 ],
             ]);
-
-            $surat->update([
-                'status' => StatusSurat::Arsip,
-                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
-            ]);
-
-            DB::commit();
-
-            // overwrite dokumen lama dengan response dari bsre
-            if ($response->getStatusCode() == 200) {
-                $file = fopen($file_path, 'wb');
-                fwrite($file, $response->getBody()->getContents());
-                fclose($file);
-            }
-
-            return $this->response([
-                'status' => true,
-                'pesan_error' => 'success',
-                'jenis' => 'success',
-            ]);
         } catch (ClientException $e) {
             Log::error('Permohonan Surat TTE signing failed', [
                 'error' => $e->getMessage(),
@@ -279,14 +260,39 @@ class PermohonanController extends Controller
                 'surat_id' => $id,
             ]);
 
-            DB::rollback();
-
             return $this->response([
                 'status' => false,
                 'pesan_error' => $e->getMessage(),
                 'jenis' => 'ClientException',
             ]);
         }
+
+        DB::beginTransaction();
+        try {
+            $surat->update([
+                'status' => StatusSurat::Arsip,
+                'log_verifikasi' => LogVerifikasiSurat::SudahTTE,
+            ]);
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
+
+        // overwrite dokumen lama dengan response dari bsre
+        if ($response->getStatusCode() == 200) {
+            $file = fopen($file_path, 'wb');
+            fwrite($file, $response->getBody()->getContents());
+            fclose($file);
+        }
+
+        return $this->response([
+            'status' => true,
+            'pesan_error' => 'success',
+            'jenis' => 'success',
+        ]);
     }
 
     protected function response($notif = [])

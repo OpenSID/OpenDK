@@ -54,3 +54,51 @@ $(document).on('click', '[data-confirm]', function (e) {
         }
     }, btnText);
 });
+
+/**
+ * Modal aksi dengan method HTTP sebenarnya (PUT/PATCH/DELETE) lewat _method.
+ * Form tetap dikirim sebagai POST.
+ * @param {string} trigger  selector tombol pemicu (mis. '#activeModal')
+ * @param {string} formId   id form di dalam modal
+ * @param {string} modalId  id modal yang ditampilkan
+ */
+function bindMethodModal(trigger, formId, modalId) {
+    $(document).on('click', trigger, function (e) {
+        e.preventDefault();
+        var url = $(this).attr('data-href');
+        var method = $(this).attr('data-method') || 'POST';
+        var form = $('#' + formId);
+        form.attr('action', url);
+        form.find('input[name="_method"]').remove();
+        if (method !== 'POST') {
+            form.append($('<input type="hidden" name="_method">').val(method));
+        }
+        $('#' + modalId).modal('show');
+    });
+}
+
+/**
+ * Konfirmasi SweetAlert sebelum mengirim form tombol ini.
+ * @param {string} selector    selector tombol pemicu
+ * @param {string} title       judul dialog
+ * @param {string} text        isi dialog
+ * @param {string} confirmText teks tombol konfirmasi
+ */
+function bindSubmitConfirm(selector, title, text, confirmText) {
+    $(document).on('click', selector, function (e) {
+        e.preventDefault();
+        var form = this.form;
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: confirmText,
+            cancelButtonText: 'Batal',
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+    });
+}

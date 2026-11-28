@@ -28,7 +28,7 @@
                             @if ($pesan->diarsipkan === 0)
                                 {!! html()->form('POST', route('pesan.arsip.post'))->class(
                                         'form-group
-                                                                                                                                                                                                                                                                                                                                inline',
+                                                                                                                                                                                                                                                                                                                                                                inline',
                                     )->id('form-arisp-pesan')->open() !!}
                                 {!! html()->hidden('id', $pesan->id) !!}
                                 <button id="arsip-action" type="submit" class="btn btn-default btn-sm"><i class="fa fa-archive"></i> Arsipkan </button>
@@ -77,11 +77,11 @@
                     <div style="padding-right: 10px; padding-left: 10px" class="box-footer form-group {{ $pesan->diarsipkan == 1 ? 'hidden' : '' }}">
                         {!! html()->form('POST', route('pesan.reply.post'))->class(
                                 'form-group
-                                                                                                                                                                                                                                                inline',
+                                                                                                                                                                                                                                                                        inline',
                             )->id('form-reply-pesan')->open() !!}
                         {!! html()->hidden('id', $pesan->id) !!}
                         {!! html()->textarea('text')->class('textarea')->id('reply_message')->placeholder('Balas Pesan')->style('width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid
-                                                                                                                                                                                                                                                #dddddd; padding: 10px;') !!}
+                                                                                                                                                                                                                                                                        #dddddd; padding: 10px;') !!}
                         <button id="action-reply" type="submit" class="btn btn-default" style="margin-top: 1rem"><i class="fa fa-reply"></i> Balas</button>
                         {!! html()->form()->close() !!}
                     </div>
@@ -95,6 +95,20 @@
 @push('scripts')
     <script type="application/javascript">
         $(document).ready(function () {
+
+            @if ($pesan->sudah_dibaca == \App\Models\Pesan::BELUM_DIBACA)
+                // Tandai dibaca lewat PATCH, bukan lewat GET saat halaman dibuka
+                $.ajax({
+                    url: "{{ route('pesan.read.mark', $pesan->id) }}",
+                    method: 'PATCH',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                }).fail(function (xhr) {
+                    // Pesan tetap belum dibaca di server; catat agar bisa ditelusuri
+                    console.error('Gagal menandai pesan sebagai dibaca', xhr.status);
+                });
+            @endif
 
             $('#prev-links').click(function () {
                 let page = $(this).data('currentPage');

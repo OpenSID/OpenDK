@@ -1,5 +1,34 @@
 <?php
 
+/*
+ * File ini bagian dari:
+ *
+ * OpenDK
+ *
+ * Aplikasi dan source code ini dirilis berdasarkan lisensi GPL V3
+ *
+ * Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ *
+ * Dengan ini diberikan izin, secara gratis, kepada siapa pun yang mendapatkan salinan
+ * dari perangkat lunak ini dan file dokumentasi terkait ("Aplikasi Ini"), untuk diperlakukan
+ * tanpa batasan, termasuk hak untuk menggunakan, menyalin, mengubah dan/atau mendistribusikan,
+ * asal tunduk pada syarat berikut:
+ *
+ * Pemberitahuan hak cipta di atas dan pemberitahuan izin ini harus disertakan dalam
+ * setiap salinan atau bagian penting Aplikasi Ini. Barang siapa yang menghapus atau menghilangkan
+ * pemberitahuan ini melanggar ketentuan lisensi Aplikasi Ini.
+ *
+ * PERANGKAT LUNAK INI DISEDIAKAN "SEBAGAIMANA ADANYA", TANPA JAMINAN APA PUN, BAIK TERSURAT MAUPUN
+ * TERSIRAT. PENULIS ATAU PEMEGANG HAK CIPTA SAMA SEKALI TIDAK BERTANGGUNG JAWAB ATAS KLAIM, KERUSAKAN ATAU
+ * KEWAJIBAN APAPUN ATAS PENGGUNAAN ATAU LAINNYA TERKAIT APLIKASI INI.
+ *
+ * @package    OpenDK
+ * @author     Tim Pengembang OpenDesa
+ * @copyright  Hak Cipta 2017 - 2024 Perkumpulan Desa Digital Terbuka (https://opendesa.id)
+ * @license    http://www.gnu.org/licenses/gpl.html    GPL V3
+ * @link       https://github.com/OpenSID/opendk
+ */
+
 namespace App\Services;
 
 use App\Models\Profil;
@@ -50,34 +79,34 @@ class AnggaranRealisasiChartService
 
             $data_pendidikan['sum'] = [
                 'total_belanja' => (float) ($total_belanja),
-                'total_belanja_persen' => (float) (($total_belanja == 0) ? 0 : ($total_belanja / $total_anggaran) * 100),
+                'total_belanja_persen' => $this->persen($total_belanja, $total_anggaran),
                 'selisih_anggaran_realisasi' => (float) (0),
                 'selisih_anggaran_realisasi_persen' => (float) (0),
                 'belanja_pegawai' => (float) ($belanja_pegawai),
-                'belanja_pegawai_persen' => (float) (($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
+                'belanja_pegawai_persen' => $this->persen($belanja_pegawai, $total_belanja),
                 'belanja_barang_jasa' => (float) ($belanja_barang_jasa),
-                'belanja_barang_jasa_persen' => (float) (($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
+                'belanja_barang_jasa_persen' => $this->persen($belanja_barang_jasa, $total_belanja),
                 'belanja_modal' => (float) ($belanja_modal),
-                'belanja_modal_persen' => (float) (($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
+                'belanja_modal_persen' => $this->persen($belanja_modal, $total_belanja),
                 'belanja_tidak_langsung' => (float) ($belanja_tidak_langsung),
-                'belanja_tidak_langsung_persen' => (float) (($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
+                'belanja_tidak_langsung_persen' => $this->persen($belanja_tidak_langsung, $total_belanja),
             ];
             $data_pendidikan['chart'] = [
                 [
                     'anggaran' => 'Belanja Pegawai',
-                    'value' => (float) (($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_pegawai, $total_belanja),
                 ],
                 [
                     'anggaran' => 'Belanja Barang dan Jasa',
-                    'value' => (float) (($belanja_barang_jasa == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_barang_jasa, $total_belanja),
                 ],
                 [
                     'anggaran' => 'Belanja Modal',
-                    'value' => (float) (($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_modal, $total_belanja),
                 ],
                 [
                     'anggaran' => 'Belanja Tidak Langsung',
-                    'value' => (float) (($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_tidak_langsung, $total_belanja),
                 ],
             ];
         } else {
@@ -117,38 +146,48 @@ class AnggaranRealisasiChartService
 
             $data_pendidikan['sum'] = [
                 'total_belanja' => (float) ($total_belanja),
-                'total_belanja_persen' => (float) (($total_belanja == 0) ? 0 : ($total_belanja / $total_anggaran) * 100),
+                'total_belanja_persen' => $this->persen($total_belanja, $total_anggaran),
                 'selisih_anggaran_realisasi' => (float) (0),
                 'selisih_anggaran_realisasi_persen' => (float) (0),
                 'belanja_pegawai' => (float) ($belanja_pegawai),
-                'belanja_pegawai_persen' => (float) (($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
+                'belanja_pegawai_persen' => $this->persen($belanja_pegawai, $total_belanja),
                 'belanja_barang_jasa' => (float) ($belanja_barang_jasa),
-                'belanja_barang_jasa_persen' => (float) (($belanja_pegawai == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
+                'belanja_barang_jasa_persen' => $this->persen($belanja_barang_jasa, $total_belanja),
                 'belanja_modal' => (float) ($belanja_modal),
-                'belanja_modal_persen' => (float) (($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
+                'belanja_modal_persen' => $this->persen($belanja_modal, $total_belanja),
                 'belanja_tidak_langsung' => (float) ($belanja_tidak_langsung),
-                'belanja_tidak_langsung_persen' => (float) (($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
+                'belanja_tidak_langsung_persen' => $this->persen($belanja_tidak_langsung, $total_belanja),
             ];
             $data_pendidikan['chart'] = [
                 [
                     'anggaran' => 'Belanja Pegawai',
-                    'value' => (float) (($belanja_pegawai == 0) ? 0 : ($belanja_pegawai / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_pegawai, $total_belanja),
                 ],
                 [
                     'anggaran' => 'Belanja Barang dan Jasa',
-                    'value' => (float) (($belanja_barang_jasa == 0) ? 0 : ($belanja_barang_jasa / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_barang_jasa, $total_belanja),
                 ],
                 [
                     'anggaran' => 'Belanja Modal',
-                    'value' => (float) (($belanja_modal == 0) ? 0 : ($belanja_modal / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_modal, $total_belanja),
                 ],
                 [
                     'anggaran' => 'Belanja Tidak Langsung',
-                    'value' => (float) (($belanja_tidak_langsung == 0) ? 0 : ($belanja_tidak_langsung / $total_belanja) * 100),
+                    'value' => $this->persen($belanja_tidak_langsung, $total_belanja),
                 ],
             ];
         }
 
         return $data_pendidikan;
+    }
+
+    /**
+     * Hitung persentase nilai terhadap pembagi; bernilai 0 bila pembagi kosong/nol.
+     */
+    private function persen($nilai, $pembagi): float
+    {
+        $pembagi = (float) $pembagi;
+
+        return $pembagi == 0.0 ? 0.0 : ((float) $nilai / $pembagi) * 100;
     }
 }

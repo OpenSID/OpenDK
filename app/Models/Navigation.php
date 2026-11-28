@@ -73,7 +73,7 @@ class Navigation extends Model
 
     public function childrens()
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id')->orderBy('order', 'asc');
     }
 
     public function setParentIdAttribute($value)

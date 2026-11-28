@@ -37,6 +37,7 @@ use Yajra\DataTables\DataTables;
 use App\Traits\HandlesFileUpload;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SinergiProgramRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class SinergiProgramController extends Controller
@@ -181,16 +182,30 @@ class SinergiProgramController extends Controller
 
     public function urut(SinergiProgram $sinergi, $urutan)
     {
+        // Hanya arah naik (-1) dan turun (1) yang diizinkan
+        if (!in_array((int) $urutan, [-1, 1], true)) {
+            abort(404);
+        }
+        $urutan = (int) $urutan;
+
         try {
-            if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
-                return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan pertama!');
-            } elseif ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
-                return redirect()->route('informasi.sinergi-program.index')->with('error', 'Urutan Sinergi Program sudah berada diurutan terakhir!');
-            } else {
+            DB::transaction(function () use ($sinergi, $urutan) {
+                // Kunci baris agar dua perubahan urutan tidak saling bertabrakan
+                $sinergi = SinergiProgram::whereKey($sinergi->id)->lockForUpdate()->firstOrFail();
+
+                if ($urutan == -1 && SinergiProgram::min('urutan') == $sinergi->urutan) {
+                    throw new \DomainException('Urutan Sinergi Program sudah berada diurutan pertama!');
+                }
+                if ($urutan == 1 && SinergiProgram::max('urutan') == $sinergi->urutan) {
+                    throw new \DomainException('Urutan Sinergi Program sudah berada diurutan terakhir!');
+                }
+
                 $perubahan = $sinergi->urutan + $urutan;
                 SinergiProgram::where('urutan', $perubahan)->update(['urutan' => $sinergi->urutan]);
                 $sinergi->update(['urutan' => $perubahan]);
-            }
+            });
+        } catch (\DomainException $e) {
+            return redirect()->route('informasi.sinergi-program.index')->with('error', $e->getMessage());
         } catch (\Exception $e) {
             Log::error('Sinergi Program urutan change failed', [
                 'error' => $e->getMessage(),

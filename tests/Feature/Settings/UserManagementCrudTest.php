@@ -34,8 +34,11 @@ namespace Tests\Feature\Settings;
 use App\Models\User;
 use App\Models\Pengurus;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Storage;
 use Tests\CrudTestCase;
+
+uses(DatabaseTransactions::class);
 
 beforeEach(function () {
     Storage::fake('public');
@@ -175,7 +178,7 @@ describe('User Management CRUD', function () {
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $targetUser->update(['status' => 1]);
 
-        $response = $this->actingAs($superAdmin)->post(route('setting.user.destroy', $targetUser->id));
+        $response = $this->actingAs($superAdmin)->delete(route('setting.user.destroy', $targetUser->id));
 
         $response->assertRedirect(route('setting.user.index'));
 
@@ -190,7 +193,7 @@ describe('User Management CRUD', function () {
         $targetUser = User::where('id', '!=', $superAdmin->id)->first();
         $targetUser->update(['status' => 0]);
 
-        $response = $this->actingAs($superAdmin)->post(route('setting.user.active', $targetUser->id));
+        $response = $this->actingAs($superAdmin)->patch(route('setting.user.active', $targetUser->id));
 
         $response->assertRedirect(route('setting.user.index'));
 
